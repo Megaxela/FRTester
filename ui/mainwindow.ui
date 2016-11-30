@@ -108,7 +108,7 @@
            <enum>QTabWidget::Triangular</enum>
           </property>
           <property name="currentIndex">
-           <number>3</number>
+           <number>0</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -797,7 +797,7 @@
            <widget class="QLabel" name="label">
             <property name="maximumSize">
              <size>
-              <width>350</width>
+              <width>250</width>
               <height>16777215</height>
              </size>
             </property>
@@ -807,26 +807,115 @@
            </widget>
           </item>
           <item>
-           <widget class="QListWidget" name="unitTestsListWidget">
+           <widget class="QTestsTreeWidget" name="unitTestsTreeWidget">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="maximumSize">
              <size>
-              <width>200</width>
+              <width>250</width>
               <height>16777215</height>
              </size>
             </property>
+            <property name="dragEnabled">
+             <bool>true</bool>
+            </property>
+            <property name="dragDropMode">
+             <enum>QAbstractItemView::NoDragDrop</enum>
+            </property>
+            <property name="defaultDropAction">
+             <enum>Qt::IgnoreAction</enum>
+            </property>
+            <property name="selectionMode">
+             <enum>QAbstractItemView::ExtendedSelection</enum>
+            </property>
+            <property name="animated">
+             <bool>true</bool>
+            </property>
+            <attribute name="headerVisible">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="headerCascadingSectionResizes">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="headerShowSortIndicator" stdset="0">
+             <bool>false</bool>
+            </attribute>
+            <column>
+             <property name="text">
+              <string/>
+             </property>
+            </column>
+            <item>
+             <property name="text">
+              <string>Тесты</string>
+             </property>
+             <property name="flags">
+              <set>ItemIsEnabled</set>
+             </property>
+             <item>
+              <property name="text">
+               <string>Какой-то тест</string>
+              </property>
+              <property name="checkState">
+               <enum>Unchecked</enum>
+              </property>
+              <property name="flags">
+               <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsEnabled</set>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Какой-то тест №2</string>
+              </property>
+              <property name="checkState">
+               <enum>Unchecked</enum>
+              </property>
+              <property name="flags">
+               <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsEnabled</set>
+              </property>
+             </item>
+            </item>
+            <item>
+             <property name="text">
+              <string>Триггеры</string>
+             </property>
+             <property name="flags">
+              <set>ItemIsEnabled</set>
+             </property>
+             <item>
+              <property name="text">
+               <string>Какой-то триггер</string>
+              </property>
+              <property name="flags">
+               <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsEnabled</set>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Какой-то триггер №2</string>
+              </property>
+              <property name="flags">
+               <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsEnabled</set>
+              </property>
+             </item>
+            </item>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="unitTestsUpdateTestsPushButton">
             <property name="maximumSize">
              <size>
-              <width>350</width>
+              <width>250</width>
               <height>16777215</height>
              </size>
             </property>
@@ -842,12 +931,12 @@
           <item>
            <widget class="QLabel" name="label_2">
             <property name="text">
-             <string>Лог теста</string>
+             <string>Лог тестирования</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPlainTextEdit" name="unitTestLogPlainText">
+           <widget class="QTextEdit" name="unitTestsLogTextEdit">
             <property name="font">
              <font>
               <family>Noto Mono</family>
@@ -858,22 +947,27 @@
               <kerning>true</kerning>
              </font>
             </property>
-            <property name="undoRedoEnabled">
-             <bool>false</bool>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-            <property name="plainText">
-             <string/>
-            </property>
             <property name="placeholderText">
-             <string>Здесь будет лог</string>
+             <string>Тут будет лог</string>
             </property>
            </widget>
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <widget class="QPushButton" name="unitTestsClearLogPushButton">
+              <property name="text">
+               <string>Очистить лог</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="unitTestsSaveLogPushButton">
+              <property name="text">
+               <string>Сохранить лог</string>
+              </property>
+             </widget>
+            </item>
             <item>
              <spacer name="horizontalSpacer">
               <property name="orientation">
@@ -888,14 +982,17 @@
              </spacer>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_3">
+             <widget class="QPushButton" name="unitTestsPauseResumePushButton">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="text">
-               <string>Остановить</string>
+               <string>Приостановить</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton">
+             <widget class="QPushButton" name="unitTestsStartStopPushButton">
               <property name="text">
                <string>Начать</string>
               </property>
@@ -912,6 +1009,57 @@
         <string>Граф состояний</string>
        </attribute>
       </widget>
+      <widget class="QWidget" name="tab_4">
+       <attribute name="title">
+        <string>Настройки</string>
+       </attribute>
+       <widget class="QGroupBox" name="groupBox_3">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>361</width>
+          <height>80</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Тестирование</string>
+        </property>
+        <widget class="QWidget" name="">
+         <property name="geometry">
+          <rect>
+           <x>30</x>
+           <y>30</y>
+           <width>296</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <layout class="QFormLayout" name="formLayout_2">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_19">
+            <property name="text">
+             <string>Путь к тестам</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <item>
+             <widget class="QLineEdit" name="settingsTestsPathLineEdit"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="settingsTestsPathPushButton">
+              <property name="text">
+               <string>Выбрать</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -922,11 +1070,18 @@
      <x>0</x>
      <y>0</y>
      <width>755</width>
-     <height>30</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QTestsTreeWidget</class>
+   <extends>QTreeWidget</extends>
+   <header>include/Windows/Widgets/QTestsTreeWidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

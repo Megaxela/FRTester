@@ -1,8 +1,3 @@
-# distutils: language = c++
-# distutils: include_dirs = ../include ../
-# distutils: sources = ../src/Tools/TTY.cpp ../src/Tools/Logger.cpp ../src/Tools/ByteArray.cpp ../src/Abstract/PhysicalInterface.cpp ../src/Abstract/Protocol.cpp ../src/Implementation/COMInterface.cpp ../src/Implementation/DefaultProtocol.cpp ../src/Implementation/TestProtocol.cpp ../src/FRDriver.cpp
-
-cimport driver
 
 cdef class PyFRDriver:
 

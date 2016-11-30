@@ -42,11 +42,26 @@ public:
      */
     void updateDatabase();
 
+//    void runTests();
+
     /**
-     * @brief Метод для запуска тестов.
-     * Тестирование происходит в одном потоке.
+     * @brief Метод для проверки наличия не
+     * обработанных триггеров, вернувших неудачу.
+     * @return Наличие неуспешных тригеров.
      */
-    void runTests();
+    bool hasFailedTriggers();
+
+    /**
+     * @brief Метод для получения массива с триггерами
+     * которые вернули ошибку во время исполнения.
+     * @return Массив с триггерами.
+     */
+    std::vector<TriggerTestPtr> getFailedTriggers();
+
+    /**
+     * @brief Метод для очистки триггеров, вернувших ошибку.
+     */
+    void clearFailedTriggers();
 
     /**
      * @brief Метод для указания, что какой-то
@@ -67,6 +82,16 @@ public:
      */
     std::vector<TriggerTestPtr> getTriggers();
 
+    /**
+     * @brief Метод для восстановления состояния
+     * ФР. Начальное состояние ФР:
+     * 4 режим.
+     * Для восстановления используется не тестировочная
+     * версия драйвера, поэтому триггеры во время
+     * восстановления вызваны не будут.
+     */
+    bool restoreFRState();
+
 private:
 
     /**
@@ -74,26 +99,13 @@ private:
      */
     TestCore();
 
-    /**
-     * @brief Метод для восстановления состояния
-     * ФР. Начальное состояние ФР:
-     * 4 режим.
-     */
-    bool restoreFRState();
-
     std::vector<TriggerTestPtr> m_triggers;
 
     std::vector<TestPtr> m_tests;
 
-    TestDriver m_testDriver;
-
-    bool m_triggerFailed;
+    TestEnvironment* m_environment;
 
     std::vector<TriggerTestPtr> m_failedTriggers;
-
-    TestPtr m_failedTest;
-
-    std::vector<TriggerTestPtr> m_allFailedTriggers;
 };
 
 

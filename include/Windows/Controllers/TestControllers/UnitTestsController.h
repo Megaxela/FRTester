@@ -7,28 +7,70 @@
 
 
 #include <Windows/Controllers/AbstractTabController.h>
-#include <ui_mainwindow.h>
+#include <include/Executor/TestingExecutor.h>
+#include "ui_mainwindow.h"
 
+/**
+ * @brief Контроллер, управляющий вкладкой с тестированием.
+ */
 class UnitTestsController : public AbstractTabController
 {
 public:
+    /**
+     * @brief Конструктор.
+     * @param ptr Указатель на UI.
+     * @param parent Указатель на родительский объект.
+     */
     UnitTestsController(Ui::MainWindow* ptr, QWidget* parent);
 
+    /**
+     * @brief Деструктор.
+     */
     ~UnitTestsController() override;
 
 protected:
+    /**
+     * @brief Метод для настройки коннектов.
+     */
     void setupConnections() override;
 
+    /**
+     * @brief Метод для настройки виджетов.
+     */
     void configureWidgets() override;
 
+    /**
+     * @brief Метод вызываемый при выборе вкладки.
+     */
     void tabSelected() override;
 
 private slots:
-    void onUnitTestUpdate();
 
-    void onTestingStarted();
+    /**
+     * @brief Слот, вызываемый при обновлении
+     * набора тестов.
+     */
+    void onUnitTestUpdateButtonPressed();
 
-    void onTestingStopped();
+    /**
+     * @brief Слот, вызываемый при запуске/остановке тестов.
+     */
+    void onTestingStartedStoppedButtonPressed();
+
+    /**
+     * @brief Слот, вызываемый при приостановке/продолжении тестирования.
+     */
+    void onTestingPausedResumedButtonPressed();
+
+    /**
+     * @brief Слот, вызываемый при нажатии на кнопку сохранения лога.
+     */
+    void onSavingLogButtonPressed();
+
+    /**
+     * @brief Слот, вызываемый при нажатии на кнопку очистки лога.
+     */
+    void onClearLogButtonPressed();
 
 private:
     void updateUnitTestsSet();
@@ -37,6 +79,7 @@ private:
 
     QWidget* m_parent;
 
+    std::shared_ptr<TestingExecutor> m_testingExecutor;
 };
 
 

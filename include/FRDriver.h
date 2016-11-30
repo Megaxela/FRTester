@@ -11,6 +11,11 @@
 #include "Abstract/Protocol.h"
 #include "Abstract/PhysicalInterface.h"
 
+/**
+ * @brief Класс, описывающий драйвер для работы с
+ * Фискальным Регистратором напрямую через указанный
+ * интерфейс с использованием указанного протокола.
+ */
 class FRDriver
 {
 public:

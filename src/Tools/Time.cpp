@@ -4,8 +4,6 @@
 
 #include "Tools/Time.h"
 
-#include <chrono>
-
 Time::time_t Time::getMilliseconds()
 {
     return std::chrono::duration_cast< std::chrono::milliseconds >(

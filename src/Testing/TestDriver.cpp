@@ -67,7 +67,7 @@ ByteArray TestDriver::sendCommand(const FRDriver::Command &c, const ByteArray &a
 
 std::string TestDriver::getCommandTag(const FRDriver::Command &c)
 {
-    static std::map<int, std::string> commandTags = {
+    static std::map<FRDriver::Command, std::string> commandTags = {
             {Command::Beep, "beep"},
             {Command::Sell, "sell"},
             {Command::ShortStateRequest, "short_state_request"},

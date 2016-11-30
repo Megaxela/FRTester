@@ -3,7 +3,7 @@ project(FRTester)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/../${CMAKE_PROJECT_NAME}_executable")
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS -pthread )
+set(CMAKE_CXX_FLAGS "-pthread -D_hypot=hypot")
 
 include_directories(${CMAKE_INCLUDE_PATH})
 link_directories(${CMAKE_LIBRARY_PATH})
@@ -30,6 +30,10 @@ qt5_wrap_ui(
         ui/mainwindow.ui
 )
 
+set(CYTHON_FILES
+        cython/frdriver.h
+        cython/frdriver.cpp)
+
 set(DRIVER_FILES
         include/FRDriver.h
         include/Tools/TTY.h
@@ -44,7 +48,6 @@ set(DRIVER_FILES
         include/Implementation/COMInterface.h
         include/Implementation/TestProtocol.h
         include/Implementation/DefaultProtocol.h
-        cython/driver.h
         src/Tools/TTY.cpp
         src/Tools/ByteArray.cpp
         src/Tools/SystemTools.cpp
@@ -56,7 +59,6 @@ set(DRIVER_FILES
         src/Implementation/DefaultProtocol.cpp
         src/Tools/Time.cpp
         src/Implementation/TestProtocol.cpp
-        cython/driver.cpp
         )
 
 set(SOURCE_FILES main.cpp
@@ -98,8 +100,8 @@ set(SOURCE_FILES main.cpp
         tests/Tests/PythonTest.h
         src/Testing/TestEnvironment.cpp
         include/Testing/TestEnvironment.h
-    )
+        src/Tools/Settings.cpp include/Tools/Settings.h src/Windows/Widgets/QTestsTreeWidget.cpp include/Windows/Widgets/QTestsTreeWidget.h)
 
-add_executable(FRTester ${SOURCE_FILES} ${DRIVER_FILES} ${UIS_HDRS})
+add_executable(FRTester ${SOURCE_FILES} ${DRIVER_FILES} ${UIS_HDRS} ${CYTHON_FILES})
 qt5_use_modules(FRTester Core Widgets Gui)
-target_link_libraries(FRTester ${Qt5Widgets_LIBRARIES})
+target_link_libraries(FRTester ${Qt5Widgets_LIBRARIES} -lpython27)

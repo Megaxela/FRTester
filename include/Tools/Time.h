@@ -18,6 +18,7 @@ namespace Time
 {
 
     typedef long long time_t;
+
     /**
      * @brief Get milliseconds since epoch.
      * @return Number of milliseconds.
