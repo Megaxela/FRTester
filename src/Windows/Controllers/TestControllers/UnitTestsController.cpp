@@ -4,7 +4,7 @@
 
 #include <include/Testing/TestCore.h>
 #include <Tools/Logger.h>
-#include "UnitTestsController.h"
+#include "include/Windows/Controllers/TestControllers/UnitTestsController.h"
 
 UnitTestsController::UnitTestsController(Ui::MainWindow *ptr, QWidget *parent) :
     m_ui(ptr),

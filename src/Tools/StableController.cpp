@@ -5,7 +5,7 @@
 
 #include <csignal>
 #include <stdlib.h>
-#include "StableController.h"
+#include "include/Tools/StableController.h"
 
 void posix_death_signal(int signum)
 {
@@ -17,12 +17,12 @@ void posix_death_signal(int signum)
 
 void StableController::init(std::function<void()> cb)
 {
-    m_cb = cb;
+    _cb = cb;
 
     signal(SIGSEGV, posix_death_signal);
 }
 
 void StableController::excessExecute()
 {
-    m_cb();
+    _cb();
 }

@@ -6,6 +6,7 @@
 #define FRTESTER_MAINWINDOW_H
 
 #include <QMainWindow>
+#include <include/Windows/Controllers/AbstractTabController.h>
 
 namespace Ui
 {
@@ -32,6 +33,10 @@ public:
     ~MainWindow();
 
 private:
+    void addTabController(AbstractTabController* controller);
+
+    QVector<AbstractTabController*> m_tabControllers;
+
     Ui::MainWindow* m_ui;
 };
 

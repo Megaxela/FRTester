@@ -3,3 +3,8 @@
 //
 
 #include "PythonTest.h"
+
+bool PythonTest::execute()
+{
+    return false;
+}

@@ -5,20 +5,29 @@
 #ifndef FRTESTER_ABSTRACTTABCONTROLLER_H
 #define FRTESTER_ABSTRACTTABCONTROLLER_H
 
+#include <QtCore/QObject>
+
 /**
  * @brief Класс, контроллирующий вкладку
  * меню.
  */
-class AbstractTabController
+class AbstractTabController : public QObject
 {
+    Q_OBJECT
+
 public:
     AbstractTabController();
 
     virtual ~AbstractTabController();
 
-    virtual void tabSelected() = 0;
+    virtual void tabSelected();
 
-    virtual void setUI(void* pointer) = 0;
+    void init();
+
+protected:
+    virtual void setupConnections() = 0;
+
+    virtual void configureWidgets() = 0;
 };
 
 

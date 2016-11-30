@@ -5,12 +5,16 @@
 #ifndef FRTESTER_DRIVERHOLDER_H
 #define FRTESTER_DRIVERHOLDER_H
 
+#include "FRDriver.h"
 
-
-class DriverHolder {
-
+/**
+ * @brief Типа синглетон, хранящий объект драйвера, чтобы
+ * он был доступен из любого места в программе.
+ */
+namespace DriverHolder
+{
+    FRDriver& driver();
 };
-
 
 
 #endif //FRTESTER_DRIVERHOLDER_H

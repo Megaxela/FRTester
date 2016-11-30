@@ -13,11 +13,19 @@
  * Весь инструментарий, доступный для тестирования
  * будет храниться здесь.
  */
-class TestEnviroment
+class TestEnvironment
 {
 public:
-    TestEnviroment(TestDriver* driver);
+    /**
+     * @brief Конструктор.
+     * @param driver Тестовый драйвер.
+     */
+    TestEnvironment(TestDriver* driver);
 
+    /**
+     * @brief Метод для получения тестового драйвера.
+     * @return
+     */
     TestDriver* driver() const;
 
 private:

@@ -1,7 +1,23 @@
 #include <iostream>
+#include <include/Windows/MainWindow.h>
+#include <QtWidgets/QApplication>
+#include <csignal>
+#include <Tools/Logger.h>
+#include <include/Tools/StableController.h>
 
-int main()
+int main(int argc, char* argv[])
 {
-    std::cout << "Hello, World!" << std::endl;
-    return 0;
+    StableController::init(
+            []()
+            {
+                Logger::i().waitForLogToBeWritten();
+            }
+    );
+
+    QApplication a(argc, argv);
+
+    MainWindow w;
+    w.show();
+
+    return a.exec();
 }

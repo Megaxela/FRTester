@@ -3,6 +3,12 @@ project(FRTester)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/../${CMAKE_PROJECT_NAME}_executable")
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS -pthread )
+
+include_directories(${CMAKE_INCLUDE_PATH})
+link_directories(${CMAKE_LIBRARY_PATH})
+
+message("${CMAKE_LIBRARY_PATH}")
 
 #------------------------
 # Setuping Qt
@@ -14,7 +20,7 @@ find_package( Qt5Core REQUIRED )
 find_package( Qt5Widgets REQUIRED )
 find_package( Qt5Gui REQUIRED )
 
-include_directories(driver)
+include_directories(include)
 
 #-----------------------
 # Files
@@ -24,13 +30,76 @@ qt5_wrap_ui(
         ui/mainwindow.ui
 )
 
+set(DRIVER_FILES
+        include/FRDriver.h
+        include/Tools/TTY.h
+        include/Tools/Time.h
+        include/Tools/byte.h
+        include/Tools/Logger.h
+        include/Tools/Platform.h
+        include/Tools/ByteArray.h
+        include/Tools/SystemTools.h
+        include/Abstract/Protocol.h
+        include/Abstract/PhysicalInterface.h
+        include/Implementation/COMInterface.h
+        include/Implementation/TestProtocol.h
+        include/Implementation/DefaultProtocol.h
+        cython/driver.h
+        src/Tools/TTY.cpp
+        src/Tools/ByteArray.cpp
+        src/Tools/SystemTools.cpp
+        src/FRDriver.cpp
+        src/Abstract/Protocol.cpp
+        src/Tools/Logger.cpp
+        src/Abstract/PhysicalInterface.cpp
+        src/Implementation/COMInterface.cpp
+        src/Implementation/DefaultProtocol.cpp
+        src/Tools/Time.cpp
+        src/Implementation/TestProtocol.cpp
+        cython/driver.cpp
+        )
 
 set(SOURCE_FILES main.cpp
-        include/MainWindow.cpp
-        include/MainWindow.h
-        include/DriverHolder.cpp
-        include/DriverHolder.h)
+        src/Windows/MainWindow.cpp
+        include/Windows/MainWindow.h
+        src/DriverHolder.cpp
+        include/DriverHolder.h
+        src/Windows/Controllers/ConnectTabController.cpp
+        include/Windows/Controllers/ConnectTabController.h
+        src/Windows/Controllers/AbstractTabController.cpp
+        include/Windows/Controllers/AbstractTabController.h
+        src/Windows/Controllers/CommandsTabController.cpp
+        include/Windows/Controllers/CommandsTabController.h
+        src/Windows/Controllers/CommandsControllers/StateCommandsTabController.cpp
+        include/Windows/Controllers/CommandsControllers/StateCommandsTabController.h
+        src/Tools/StableController.cpp
+        include/Tools/StableController.h
+        src/Windows/Controllers/CommandsControllers/RegisterCommandsTabController.cpp
+        include/Windows/Controllers/CommandsControllers/RegisterCommandsTabController.h
+        src/Windows/Controllers/CommandsControllers/ReportsCommandsTabController.cpp
+        include/Windows/Controllers/CommandsControllers/ReportsCommandsTabController.h
+        src/Tools/TypeConverters.cpp
+        include/Tools/TypeConverters.h
+        src/Testing/TestCore.cpp
+        include/Testing/TestCore.h
+        src/Testing/TestDriver.cpp
+        include/Testing/TestDriver.h
+        src/Testing/AbstractTriggerTest.cpp
+        include/Testing/AbstractTriggerTest.h
+        src/Testing/AbstractTest.cpp
+        include/Testing/AbstractTest.h
+        tests/Tests/CycleTest.cpp
+        tests/Tests/CycleTest.h
+        src/Windows/Controllers/TestControllers/UnitTestsController.cpp
+        include/Windows/Controllers/TestControllers/UnitTestsController.h
+        src/Executor/TestingExecutor.cpp
+        include/Executor/TestingExecutor.h
+        tests/Tests/PythonTest.cpp
+        tests/Tests/PythonTest.h
+        src/Testing/TestEnvironment.cpp
+        include/Testing/TestEnvironment.h
+    )
 
-add_executable(FRTester ${SOURCE_FILES} ${UIS_HDRS})
+add_executable(FRTester ${SOURCE_FILES} ${DRIVER_FILES} ${UIS_HDRS})
 qt5_use_modules(FRTester Core Widgets Gui)
 target_link_libraries(FRTester ${Qt5Widgets_LIBRARIES})

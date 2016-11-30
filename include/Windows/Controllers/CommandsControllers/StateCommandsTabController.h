@@ -7,6 +7,7 @@
 
 
 #include <Windows/Controllers/AbstractTabController.h>
+#include <include/Windows/Controllers/CommandsTabController.h>
 
 namespace Ui
 {
@@ -25,7 +26,9 @@ public:
      * @param ptr Указатель на UI.
      * @param parent Указатель на родительский виджет.
      */
-    StateCommandsTabController(Ui::MainWindow *ptr, QWidget* parent);
+    StateCommandsTabController(Ui::MainWindow *ptr,
+                               QWidget* parent,
+                               AbstractTabController* parentController=nullptr);
 
     /**
      * @brief Деструктор.
@@ -44,12 +47,22 @@ protected:
     void configureWidgets() override;
 
 private slots:
-    
+    /**
+     * @brief Слот, вызываемый при запросе полного состояния ФР.
+     */
+    void onFullRequest();
+
+    /**
+     * @brief Слот, вызываемый при запроса краткого
+     */
+    void onShortRequest();
 
 private:
     Ui::MainWindow* m_ui;
 
     QWidget* m_parent;
+
+    CommandsTabController* m_parentController;
 };
 
 

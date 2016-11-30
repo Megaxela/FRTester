@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="mainTabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <property name="movable">
        <bool>true</bool>
@@ -80,7 +80,7 @@
          </attribute>
         </widget>
        </widget>
-       <widget class="QPushButton" name="pushButton_12">
+       <widget class="QPushButton" name="connectionConnectPushButton">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -98,22 +98,7 @@
        <attribute name="title">
         <string>Команды</string>
        </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <property name="spacing">
-         <number>3</number>
-        </property>
-        <property name="leftMargin">
-         <number>3</number>
-        </property>
-        <property name="topMargin">
-         <number>3</number>
-        </property>
-        <property name="rightMargin">
-         <number>3</number>
-        </property>
-        <property name="bottomMargin">
-         <number>3</number>
-        </property>
+       <layout class="QVBoxLayout" name="verticalLayout_5">
         <item>
          <widget class="QTabWidget" name="commandsTabWidget">
           <property name="tabPosition">
@@ -123,7 +108,7 @@
            <enum>QTabWidget::Triangular</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>3</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -138,48 +123,48 @@
            <attribute name="title">
             <string>Состояния</string>
            </attribute>
-           <widget class="QPlainTextEdit" name="commandsStatePlainTextEdit">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>10</y>
-              <width>491</width>
-              <height>491</height>
-             </rect>
-            </property>
-           </widget>
-           <widget class="QPushButton" name="commandsFullStateRequestPushButton">
-            <property name="geometry">
-             <rect>
-              <x>520</x>
-              <y>10</y>
-              <width>161</width>
-              <height>34</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Полный запрос</string>
-            </property>
-           </widget>
-           <widget class="QPushButton" name="commandsShortStateRequestPushButton">
-            <property name="geometry">
-             <rect>
-              <x>520</x>
-              <y>50</y>
-              <width>161</width>
-              <height>34</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Короткий запрос</string>
-            </property>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_6">
+            <item>
+             <widget class="QPlainTextEdit" name="commandsStatePlainTextEdit"/>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_6">
+              <item>
+               <widget class="QPushButton" name="commandsFullStateRequestPushButton">
+                <property name="text">
+                 <string>Полный запрос</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="commandsShortStateRequestPushButton">
+                <property name="text">
+                 <string>Короткий запрос</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
           </widget>
           <widget class="QWidget" name="commandsRegistrationTab">
            <attribute name="title">
             <string>Регистрация</string>
            </attribute>
-           <widget class="QPushButton" name="pushButton_4">
+           <widget class="QPushButton" name="commandsRegistrationSellPushButton">
             <property name="geometry">
              <rect>
               <x>460</x>
@@ -192,7 +177,7 @@
              <string>Продажа</string>
             </property>
            </widget>
-           <widget class="QPushButton" name="pushButton_5">
+           <widget class="QPushButton" name="commandsRegistrationReturnSellPushButton">
             <property name="geometry">
              <rect>
               <x>560</x>
@@ -205,7 +190,7 @@
              <string>Возврат продажи</string>
             </property>
            </widget>
-           <widget class="QPushButton" name="pushButton_6">
+           <widget class="QPushButton" name="commandsRegistrationBuyPushButton">
             <property name="geometry">
              <rect>
               <x>460</x>
@@ -218,7 +203,7 @@
              <string>Покупка</string>
             </property>
            </widget>
-           <widget class="QPushButton" name="pushButton_7">
+           <widget class="QPushButton" name="commandsRegistrationReturnBuyPushButton">
             <property name="geometry">
              <rect>
               <x>560</x>
@@ -257,20 +242,20 @@
              <string>Смена</string>
             </property>
            </widget>
-           <widget class="QLineEdit" name="lineEdit_2">
+           <widget class="QLineEdit" name="commandsRegistrationChangeLineEdit">
             <property name="geometry">
              <rect>
-              <x>90</x>
+              <x>120</x>
               <y>90</y>
               <width>113</width>
               <height>32</height>
              </rect>
             </property>
            </widget>
-           <widget class="QDoubleSpinBox" name="doubleSpinBox">
+           <widget class="QDoubleSpinBox" name="commandsRegistrationPriceDoubleSpinBox">
             <property name="geometry">
              <rect>
-              <x>90</x>
+              <x>120</x>
               <y>10</y>
               <width>111</width>
               <height>32</height>
@@ -282,7 +267,7 @@
              <rect>
               <x>40</x>
               <y>60</y>
-              <width>41</width>
+              <width>90</width>
               <height>18</height>
              </rect>
             </property>
@@ -290,14 +275,248 @@
              <string>Количество</string>
             </property>
            </widget>
-           <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+           <widget class="QDoubleSpinBox" name="commandsRegistrationCountDoubleSpinBox">
             <property name="geometry">
              <rect>
-              <x>90</x>
+              <x>120</x>
               <y>50</y>
               <width>111</width>
               <height>32</height>
              </rect>
+            </property>
+           </widget>
+           <widget class="QSpinBox" name="commandsRegistration1TaxSpinBox">
+            <property name="geometry">
+             <rect>
+              <x>120</x>
+              <y>140</y>
+              <width>52</width>
+              <height>32</height>
+             </rect>
+            </property>
+            <property name="maximum">
+             <number>255</number>
+            </property>
+           </widget>
+           <widget class="QSpinBox" name="commandsRegistration2TaxSpinBox">
+            <property name="geometry">
+             <rect>
+              <x>120</x>
+              <y>180</y>
+              <width>52</width>
+              <height>32</height>
+             </rect>
+            </property>
+            <property name="maximum">
+             <number>255</number>
+            </property>
+           </widget>
+           <widget class="QSpinBox" name="commandsRegistration3TaxSpinBox">
+            <property name="geometry">
+             <rect>
+              <x>120</x>
+              <y>220</y>
+              <width>52</width>
+              <height>32</height>
+             </rect>
+            </property>
+            <property name="maximum">
+             <number>255</number>
+            </property>
+           </widget>
+           <widget class="QSpinBox" name="commandsRegistration4TaxSpinBox">
+            <property name="geometry">
+             <rect>
+              <x>120</x>
+              <y>260</y>
+              <width>52</width>
+              <height>32</height>
+             </rect>
+            </property>
+            <property name="maximum">
+             <number>255</number>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_11">
+            <property name="geometry">
+             <rect>
+              <x>40</x>
+              <y>150</y>
+              <width>59</width>
+              <height>18</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>1 налог</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_12">
+            <property name="geometry">
+             <rect>
+              <x>40</x>
+              <y>190</y>
+              <width>59</width>
+              <height>18</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>2 налог</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_13">
+            <property name="geometry">
+             <rect>
+              <x>40</x>
+              <y>230</y>
+              <width>59</width>
+              <height>18</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>3 налог</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_14">
+            <property name="geometry">
+             <rect>
+              <x>40</x>
+              <y>270</y>
+              <width>59</width>
+              <height>18</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>4 налог</string>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="commandsRegisterCancelPushButton">
+            <property name="geometry">
+             <rect>
+              <x>560</x>
+              <y>100</y>
+              <width>120</width>
+              <height>34</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Аннулировать</string>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="commandsRegisterClosePushButton">
+            <property name="geometry">
+             <rect>
+              <x>560</x>
+              <y>140</y>
+              <width>120</width>
+              <height>34</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Закрыть чек</string>
+            </property>
+           </widget>
+           <widget class="QLineEdit" name="commandsRegistration1MoneyLineEdit">
+            <property name="geometry">
+             <rect>
+              <x>330</x>
+              <y>10</y>
+              <width>120</width>
+              <height>32</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>0</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_15">
+            <property name="geometry">
+             <rect>
+              <x>260</x>
+              <y>10</y>
+              <width>70</width>
+              <height>30</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Оплата 1</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_16">
+            <property name="geometry">
+             <rect>
+              <x>260</x>
+              <y>50</y>
+              <width>70</width>
+              <height>30</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Оплата 2</string>
+            </property>
+           </widget>
+           <widget class="QLineEdit" name="commandsRegistration2MoneyLineEdit">
+            <property name="geometry">
+             <rect>
+              <x>330</x>
+              <y>50</y>
+              <width>120</width>
+              <height>32</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>0</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_17">
+            <property name="geometry">
+             <rect>
+              <x>260</x>
+              <y>130</y>
+              <width>70</width>
+              <height>30</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Оплата 4</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_18">
+            <property name="geometry">
+             <rect>
+              <x>260</x>
+              <y>90</y>
+              <width>70</width>
+              <height>30</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Оплата 3</string>
+            </property>
+           </widget>
+           <widget class="QLineEdit" name="commandsRegistration3MoneyLineEdit">
+            <property name="geometry">
+             <rect>
+              <x>330</x>
+              <y>90</y>
+              <width>120</width>
+              <height>32</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>0</string>
+            </property>
+           </widget>
+           <widget class="QLineEdit" name="commandsRegistration4MoneyLineEdit">
+            <property name="geometry">
+             <rect>
+              <x>330</x>
+              <y>130</y>
+              <width>120</width>
+              <height>32</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>0</string>
             </property>
            </widget>
           </widget>
@@ -305,7 +524,7 @@
            <attribute name="title">
             <string>Отчеты</string>
            </attribute>
-           <widget class="QPushButton" name="pushButton_8">
+           <widget class="QPushButton" name="commandsReportsZReportPushButton">
             <property name="geometry">
              <rect>
               <x>10</x>
@@ -316,6 +535,19 @@
             </property>
             <property name="text">
              <string>Z Отчет</string>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="commandsReportsOpenChangePushButton">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>10</y>
+              <width>151</width>
+              <height>34</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Открыть смену</string>
             </property>
            </widget>
           </widget>
@@ -342,7 +574,7 @@
             <item>
              <widget class="QTabWidget" name="commnadsPrintTabWidget">
               <property name="currentIndex">
-               <number>0</number>
+               <number>1</number>
               </property>
               <widget class="QWidget" name="commandsPrintTextTab">
                <attribute name="title">
@@ -367,7 +599,7 @@
                 <item>
                  <widget class="QTabWidget" name="tabWidget">
                   <property name="currentIndex">
-                   <number>0</number>
+                   <number>1</number>
                   </property>
                   <widget class="QWidget" name="tab">
                    <attribute name="title">
@@ -502,6 +734,53 @@
           </widget>
          </widget>
         </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_10">
+            <property name="text">
+             <string>Пароль</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="commandsPasswordLineEdit">
+            <property name="text">
+             <string>30</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="commandsResultLineEdit"/>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="unitTestTab">
@@ -612,13 +891,6 @@
              <widget class="QPushButton" name="pushButton_3">
               <property name="text">
                <string>Остановить</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_2">
-              <property name="text">
-               <string>Пауза</string>
               </property>
              </widget>
             </item>

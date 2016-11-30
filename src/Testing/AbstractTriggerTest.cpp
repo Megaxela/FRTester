@@ -3,14 +3,44 @@
 //
 
 #include <Tools/Logger.h>
-#include "include/Testing/TriggerTest.h"
+#include "include/Testing/AbstractTriggerTest.h"
 
-TriggerTest::TriggerTest()
+AbstractTriggerTest::AbstractTriggerTest(const std::string& name,
+                                         const std::string& description,
+                                         bool critical) :
+    m_name(name),
+    m_description(description),
+    m_critical(critical)
 {
 
 }
 
-TriggerTest::~TriggerTest()
+AbstractTriggerTest::~AbstractTriggerTest()
 {
 
+}
+
+std::string AbstractTriggerTest::name() const
+{
+    return m_name;
+}
+
+std::string AbstractTriggerTest::description() const
+{
+    return m_description;
+}
+
+void AbstractTriggerTest::setName(const std::string &name)
+{
+    m_name = name;
+}
+
+void AbstractTriggerTest::setDescription(const std::string &description)
+{
+    m_description = description;
+}
+
+bool AbstractTriggerTest::isCritical() const
+{
+    return m_critical;
 }
