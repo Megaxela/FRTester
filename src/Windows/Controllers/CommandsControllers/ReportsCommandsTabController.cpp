@@ -1,0 +1,56 @@
+//
+// Created by megaxela on 21.11.16.
+//
+
+#include <Tools/Logger.h>
+#include <include/DriverHolder.h>
+#include <QtWidgets/QMessageBox>
+#include "ReportsCommandsTabController.h"
+
+ReportsCommandsTabController::ReportsCommandsTabController(Ui::MainWindow *ptr,
+                                                           QWidget *parent,
+                                                           AbstractTabController *parentController) :
+    AbstractTabController(),
+    m_ui(ptr),
+    m_parent(parent),
+    m_parentController(dynamic_cast<CommandsTabController*>(parentController))
+{
+
+}
+
+void ReportsCommandsTabController::setupConnections()
+{
+    // Кнопка Z отчета
+    connect(m_ui->commandsReportsZReportPushButton,
+            &QPushButton::clicked,
+            this,
+            &ReportsCommandsTabController::onZReportPressed);
+}
+
+void ReportsCommandsTabController::configureWidgets()
+{
+
+}
+
+void ReportsCommandsTabController::onZReportPressed()
+{
+    Log("Формируем Z отчет. (Ответ с гашением)");
+
+    ExcessLog("Проверка наличия соединения");
+    if (!DriverHolder::driver().checkConnection())
+    {
+        Error("Соединение с ФР отсутствует.");
+        QMessageBox::critical(m_parent, "Ошибка", "Соединение с ФР отсутствует.");
+        return;
+    }
+
+    ExcessLog("Запрос на ФР.");
+    if (!DriverHolder::driver().shiftCloseReport(
+            m_parentController->password()
+    ))
+    {
+        Error("Не удалось сформировать Z отчет.");
+    }
+
+    m_parentController->setLastStatus();
+}

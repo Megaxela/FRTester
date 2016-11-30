@@ -1,0 +1,16 @@
+//
+// Created by megaxela on 21.11.16.
+//
+
+#ifndef FRTESTER_REPORTSCOMMANDSTABCONTROLLER_H
+#define FRTESTER_REPORTSCOMMANDSTABCONTROLLER_H
+
+
+
+class ReportsCommandsTabController {
+
+};
+
+
+
+#endif //FRTESTER_REPORTSCOMMANDSTABCONTROLLER_H
