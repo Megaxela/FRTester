@@ -2,13 +2,12 @@
 // Created by megaxela on 17.11.16.
 //
 
-#include <include/Windows/Controllers/ConnectTabController.h>
 #include "include/Windows/MainWindow.h"
-
 #include "ui_mainwindow.h"
-#include <QDebug>
-#include <iostream>
-#include <include/Windows/Controllers/CommandsTabController.h>
+
+#include "include/Windows/Controllers/CommandsTabController.h"
+#include "include/Windows/Controllers/TestControllers/UnitTestsController.h"
+#include "include/Windows/Controllers/ConnectTabController.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -18,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     addTabController(new ConnectTabController(m_ui, this));
     addTabController(new CommandsTabController(m_ui, this));
+    addTabController(new UnitTestsController(m_ui, this));
 }
 
 MainWindow::~MainWindow()

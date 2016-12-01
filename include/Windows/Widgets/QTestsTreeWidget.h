@@ -9,6 +9,7 @@
 #include <QTreeWidget>
 #include <include/Testing/AbstractTest.h>
 #include <include/Testing/AbstractTriggerTest.h>
+#include "QTestsTreeWidgetMenu.h"
 
 /**
  * @brief Класс, описывающий древовидное меню
@@ -45,20 +46,25 @@ public:
      */
     void addTest(TestPtr test);
 
-protected:
+public slots:
+    void OnContextEnableStateChanged(bool state);
 
+protected:
+    void mousePressEvent(QMouseEvent *event) override;
 
 private:
     struct TestData
     {
         TestPtr test;
         QTreeWidgetItem* item;
+        bool enabled;
     };
 
     struct TriggerData
     {
         TriggerTestPtr trigger;
         QTreeWidgetItem* item;
+        bool enabled;
     };
 
     QVector<TestData> m_tests;
@@ -66,6 +72,8 @@ private:
 
     QTreeWidgetItem* m_testsRootItem;
     QTreeWidgetItem* m_triggersRootItem;
+
+    QTestsTreeWidgetMenu* m_testsMenu;
 };
 
 

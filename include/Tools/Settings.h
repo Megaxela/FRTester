@@ -5,7 +5,8 @@
 #ifndef FRTESTER_SETTINGS_H
 #define FRTESTER_SETTINGS_H
 
-#include <QVariant>
+#include <map>
+#include <string>
 
 /**
  * @brief Класс, отвечающий за хранение настроек.
@@ -13,6 +14,13 @@
 class Settings
 {
 public:
+    class Names
+    {
+    public:
+        const static std::string testsPath;
+        const static std::string triggersPath;
+    };
+
 
     /**
      * @brief Деструктор.
@@ -32,21 +40,21 @@ public:
      * @param def Значение поля по-умолчанию.
      * @return Значение поля.
      */
-    QString getValue(const QString &name, const QString &def) const;
+    std::string getValue(const std::string &name, const std::string &def);
 
     /**
      * @brief Метод для установки значения.
      * @param name Название поля.
      * @param value Значение поля.
      */
-    void setValue(const QString &name, const QString &value);
+    void setValue(const std::string &name, const std::string &value);
 
     /**
      * @brief Метод для установки местоположения файла
      * с настройками.
      * @param name
      */
-    void setFilename(const QString &name);
+    void setFilename(const std::string &name);
 
     /**
      * @brief Метод для загрузки настроек из указанного файла.
@@ -64,9 +72,9 @@ private:
      */
     Settings();
 
-    QString m_filename;
+    std::string m_filename;
 
-    QMap<QString, QString> m_data;
+    std::map<std::string, std::string> m_data;
 };
 
 

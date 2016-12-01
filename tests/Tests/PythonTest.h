@@ -6,6 +6,7 @@
 #define FRTESTER_PYTHONTEST_H
 
 #include <Testing/AbstractTest.h>
+#include <Python.h>
 
 /**
  * @brief Тест, обрабатывающий любой
@@ -30,14 +31,14 @@ public:
      * @param moduleName Название модуля.
      * @return Результат загрузки модуля.
      */
-    bool loadModule(const std::string &moduleName);
+    bool loadModule(const std::string &modulePath, const std::string &moduleName);
 
     /**
      * @brief Метод для статической загрузки теста.
      * @param moduleName
      * @return
      */
-    static TestPtr loadTest(const std::string &moduleName);
+    static TestPtr loadTest(TestEnvironment *environment, const std::string &moduleName, const std::string &modulePath);
 
     /**
      * @brief Метод - исполнитель
@@ -46,7 +47,9 @@ public:
     bool execute() override;
 
 private:
+    std::string m_testPath;
 
+    PyObject* m_pTest;
 };
 
 

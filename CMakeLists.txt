@@ -100,8 +100,12 @@ set(SOURCE_FILES main.cpp
         tests/Tests/PythonTest.h
         src/Testing/TestEnvironment.cpp
         include/Testing/TestEnvironment.h
-        src/Tools/Settings.cpp include/Tools/Settings.h src/Windows/Widgets/QTestsTreeWidget.cpp include/Windows/Widgets/QTestsTreeWidget.h)
+        src/Tools/Settings.cpp
+        include/Tools/Settings.h
+        src/Windows/Widgets/QTestsTreeWidget.cpp
+        include/Windows/Widgets/QTestsTreeWidget.h
+        tests/Triggers/PythonTrigger.cpp tests/Triggers/PythonTrigger.h src/Windows/Widgets/QTestsTreeWidgetMenu.cpp include/Windows/Widgets/QTestsTreeWidgetMenu.h)
 
 add_executable(FRTester ${SOURCE_FILES} ${DRIVER_FILES} ${UIS_HDRS} ${CYTHON_FILES})
 qt5_use_modules(FRTester Core Widgets Gui)
-target_link_libraries(FRTester ${Qt5Widgets_LIBRARIES} -lpython27)
+target_link_libraries(FRTester ${Qt5Widgets_LIBRARIES} -lpython2.7)

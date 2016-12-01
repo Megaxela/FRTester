@@ -6,16 +6,23 @@
 #include <include/DriverHolder.h>
 #include <tests/Tests/CycleTest.h>
 #include <Tools/Logger.h>
+#include <Python.h>
+#include <include/Tools/Settings.h>
+#include <tests/Tests/PythonTest.h>
 
 TestCore::TestCore()
 {
     m_environment = new TestEnvironment(new TestDriver());
+    Py_Initialize();
+//    Py_SetPythonHome("/home/megaxela/Development/Projects/C++/FRTester_executable/python/");
 }
 
 TestCore::~TestCore()
 {
     delete m_environment->driver();
     delete m_environment;
+
+    Py_Finalize();
 }
 
 TestCore &TestCore::instance()
@@ -30,8 +37,104 @@ void TestCore::updateDatabase()
     m_tests.clear();
     m_triggers.clear();
 
-    m_tests.push_back(std::make_shared<CycleTest>(m_environment));
+    // Загрузка статических тестов
+//    m_tests.push_back(std::make_shared<CycleTest>(m_environment));
 
+    std::string testsPath = Settings::instance().getValue(
+            Settings::Names::testsPath, "tests"
+    );
+
+    // Загрузка Python тестов
+    std::string pythonTestsPath = SystemTools::Path::join(testsPath, "python");
+
+    if (!testsPath.empty())
+    {
+        // Получение всех файлов в директории
+        std::vector<std::string> testFiles = SystemTools::getAllFilesInDir(pythonTestsPath);
+        if (testFiles.empty())
+        {
+            Error("Папки с тестами не существует или тесты отсутствуют.");
+        }
+
+        for (auto filename : testFiles)
+        {
+            // Название файла слишком мало
+            if (filename.size() <= 3)
+            {
+                continue;
+            }
+
+            // Заканчивается ли файл на .py
+            if (filename.substr(filename.length() - 3, 3) != ".py")
+            {
+                continue;
+            }
+
+            auto loadedTest = PythonTest::loadTest(
+                    m_environment,
+                    filename.substr(0, filename.length() - 3),
+                    pythonTestsPath
+            );
+
+            if (loadedTest != nullptr)
+            {
+                m_tests.push_back(loadedTest);
+            }
+        }
+    }
+    else
+    {
+        Critical("Путь к тестам пуст.");
+    }
+
+    std::string triggersPath = Settings::instance().getValue(
+            Settings::Names::triggersPath, "triggers"
+    );
+
+    std::string pythonTriggersPath = SystemTools::Path::join(
+            triggersPath, "python"
+    );
+
+    if (!triggersPath.empty())
+    {
+        // Получение всех файлов в директории
+        std::vector<std::string> testFiles = SystemTools::getAllFilesInDir(pythonTriggersPath);
+        if (testFiles.empty())
+        {
+            Error("Папки с триггерами не существует или тесты отсутствуют.");
+        }
+
+        for (auto filename : testFiles)
+        {
+            // Название файла слишком мало
+            if (filename.size() <= 3)
+            {
+                continue;
+            }
+
+            // Заканчивается ли файл на .py
+            if (filename.substr(filename.length() - 3, 3) != ".py")
+            {
+                continue;
+            }
+
+            auto loadedTrigger = nullptr;
+//            auto loadedTrigger = PythonTrigger::loadTrigger(
+//                    SystemTools::Path::join(
+//                            pythonTestsPath, filename
+//                    )
+//            );
+
+            if (loadedTrigger != nullptr)
+            {
+//                m_triggers.push_back(loadedTrigger );
+            }
+        }
+    }
+    else
+    {
+        Error("Путь к триггерам пуст.");
+    }
 }
 
 void TestCore::getTriggers(const std::string &tag,
@@ -45,60 +148,6 @@ void TestCore::getTriggers(const std::string &tag,
         }
     }
 }
-
-//void TestCore::runTests()
-//{
-//    m_triggerFailed = false;
-//
-//    m_allFailedTriggers.clear();
-//    m_failedTriggers.clear();
-//
-//    for (auto test : m_tests)
-//    {
-//        // Пытаемся восстановить состояние ФР
-//        if (!restoreFRState())
-//        {
-//            Critical("Не удалось восстановить состояние ФР. Прерываем тестирование.");
-//            return;
-//        }
-//
-//        // Запускаем тест
-//        if (!test->execute())
-//        {
-//            Critical("Тест \"" +
-//                     test->name() +
-//                     "\" прошел неудачно. Останавливаем тестирование.");
-//            return;
-//        }
-//
-//        // Проверяем как там с тригерами
-//        if (!m_failedTriggers.empty())
-//        {
-//            for (auto trigger : m_failedTriggers)
-//            {
-//                m_allFailedTriggers.push_back(trigger);
-//            }
-//
-//            for (auto trigger : m_failedTriggers)
-//            {
-//                if (trigger->isCritical())
-//                {
-//                    Critical("Критичный тригер \"" +
-//                             trigger->name() +
-//                             "\" обнаружил ошибку. Останавливаем тестирование.");
-//                    return;
-//                }
-//
-//                Error("Некритичный триггер \"" +
-//                      trigger->name() +
-//                      "\" обнаружил ошибку.");
-//                return;
-//            }
-//
-//            m_failedTriggers.clear();
-//        }
-//    }
-//}
 
 bool TestCore::restoreFRState()
 {

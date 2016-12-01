@@ -3,7 +3,11 @@
 //
 
 #include <QFile>
+#include <include/Tools/Logger.h>
 #include "include/Tools/Settings.h"
+
+const std::string Settings::Names::testsPath = std::string("tests_path");
+const std::string Settings::Names::triggersPath = std::string("triggers_path");
 
 Settings::Settings() :
     m_filename("settings.cfg")
@@ -23,73 +27,39 @@ Settings &Settings::instance()
     return instance;
 }
 
-void Settings::setValue(const QString &name, const QString &value)
+void Settings::setValue(const std::string &name, const std::string &value)
 {
     m_data[name] = value;
 }
 
-QString Settings::getValue(const QString &name, const QString &def) const
+std::string Settings::getValue(const std::string &name, const std::string &def)
 {
-    if (!m_data.contains(name))
+    for (auto item : m_data)
     {
-        return def;
+        if (item.first == name)
+        {
+            return item.second;
+        }
     }
 
-    return m_data[name];
+    return def;
 }
 
 bool Settings::save()
 {
-    QFile file(m_filename);
-
-    if (!file.open(QIODevice::WriteOnly))
-    {
-        return false;
-    }
-
-    for (auto key : m_data)
-    {
-        QString line = key + "=" + m_data[key] + "\n";
-        file.write(QByteArray(line.toStdString().c_str(), line.length()));
-    }
+    Error("Not reimplemented yet.");
 
     return true;
 }
 
-void Settings::setFilename(const QString &name)
+void Settings::setFilename(const std::string &name)
 {
     m_filename = name;
 }
 
 bool Settings::load()
 {
-    QFile file(m_filename);
-
-    if (!file.open(QIODevice::ReadOnly))
-    {
-        return false;
-    }
-
-    QByteArray data = file.readAll();
-
-    QString fileContent = QString::fromUtf8(data);
-
-    QStringList fileLines = fileContent.split('\n');
-
-    m_data.clear();
-    for (auto line : fileLines)
-    {
-        QStringList values = line.split('=');
-
-        if (values.length() != 2)
-        {
-            return false;
-        }
-
-        m_data[values[0]] = values[1];
-    }
-
-    file.close();
+    Error("Not reimplemented yet.");
 
     return true;
 }

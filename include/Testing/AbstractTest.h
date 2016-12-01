@@ -23,7 +23,7 @@ public:
      * @brief Конструктор.
      * @param driver Драйвер для вызова функций.
      */
-    AbstractTest(TestEnvironment *driver,
+    AbstractTest(TestEnvironment *environment,
                  const std::string &name,
                  const std::string &description);
 

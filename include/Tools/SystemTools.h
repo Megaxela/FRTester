@@ -6,6 +6,9 @@
 #define CARDMASTER_SYSTEMTOOLS_H
 
 #include <cinttypes>
+#include <vector>
+#include <string>
+#include "Tools/Platform.h"
 
 namespace SystemTools
 {
@@ -59,6 +62,19 @@ namespace SystemTools
 
         return v;
     }
+
+    /**
+     * @brief Метод для получения всех файлов в директории.
+     * @param path Путь к директории.
+     * @return Массив с названиями файлов.
+     */
+    std::vector<std::string> getAllFilesInDir(const std::string &path);
+
+    namespace Path
+    {
+        std::string join(const std::string& l, const std::string &r);
+    }
+
 };
 
 

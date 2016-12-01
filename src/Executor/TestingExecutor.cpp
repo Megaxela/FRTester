@@ -19,17 +19,20 @@ TestingExecutor::~TestingExecutor()
 
 void TestingExecutor::pause()
 {
-
+    std::unique_lock<std::mutex> lock(m_mutex);
+    m_paused = true;
 }
 
 void TestingExecutor::stop()
 {
-
+    std::unique_lock<std::mutex> lock(m_mutex);
+    m_running = false;
 }
 
 void TestingExecutor::resume()
 {
-
+    std::unique_lock<std::mutex> lock(m_mutex);
+    m_paused = false;
 }
 
 void TestingExecutor::run()
@@ -157,6 +160,7 @@ void TestingExecutor::run()
     }
 
     emit testingLogAcquired("Тестирование завершено");
+    emit testingFinished();
 }
 
 bool TestingExecutor::isTestingRunning()

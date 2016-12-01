@@ -10,7 +10,7 @@ class Test(test_gear.AbstractTest):
         self.environment = env
 
     def execute(self):
-        self.environment.driver.short_state_request()
+        print self.environment
 
         return True
 

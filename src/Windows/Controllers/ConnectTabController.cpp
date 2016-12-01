@@ -18,7 +18,7 @@ ConnectTabController::ConnectTabController(Ui::MainWindow *ptr, QWidget* parent)
 {
     m_ui = ptr;
 
-    Log("Установлен стендартный протокол.");
+    Log("Установлен стандартный протокол.");
 
     DriverHolder::driver().setProtocol(std::make_shared<DefaultProtocol>());
     DriverHolder::driver().setInterface(m_comInterface);

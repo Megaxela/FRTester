@@ -72,14 +72,44 @@ private slots:
      */
     void onClearLogButtonPressed();
 
+    // Слоты для TestingExecutor
+    void onTestingFailed(QString reason);
+
+    void onTestingStopped();
+
+    void onTestingFinished();
+
+    void onTestingPaused();
+
+    void onTestingResumed();
+
+    void onTestingStarted();
+
+    void onTestingTestResultAcquired(TestPtr test, bool result);
+
+    void onTestingTriggerFailAcquired(TriggerTestPtr trigger);
+
+    void onTestingLogAcquired(QString log);
+
 private:
+    enum class MessageType
+    {
+        Log,
+        Error,
+        Good,
+        Bad,
+        Critical
+    };
+
     void updateUnitTestsSet();
+
+    void addLogMessage(QString message, MessageType type=MessageType::Log);
 
     Ui::MainWindow* m_ui;
 
     QWidget* m_parent;
 
-    std::shared_ptr<TestingExecutor> m_testingExecutor;
+    TestingExecutor* m_testingExecutor;
 };
 
 
