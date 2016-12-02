@@ -50,6 +50,7 @@ private:
     std::string m_testPath;
 
     PyObject* m_pTest;
+    PyObject* m_pModule;
 };
 
 

@@ -32,7 +32,7 @@ ByteArray TestDriver::sendCommand(const FRDriver::Command &c, const ByteArray &a
 
     for (auto trigger : m_currentTriggers)
     {
-        trigger->onPreExecute();
+        trigger->onPreExecute(tag);
     }
 
     Log("Вызываем команду " + std::to_string((int) c) + " с тэгом \"" + tag + "\"");

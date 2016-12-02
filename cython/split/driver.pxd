@@ -44,12 +44,16 @@ cdef extern from "../include/Tools/ByteArray.h" namespace "ByteArray":
         ByteOrder_LittleEndian
 
 cdef extern from "../include/FRDriver.h":
+    cdef cppclass InterfacePtr:
+        PhysicalInterface* get()
+
+cdef extern from "../include/FRDriver.h":
     cdef cppclass FRDriver:
         FRDriver()
 
         ByteArray sendRaw(const ByteArray &data)
         void setInterface(PhysicalInterface* interface)
-        PhysicalInterface* physicalInterface()
+        InterfacePtr physicalInterface()
         ErrorCode getLastError()
         uint8_t getLastReceivedCashierNumber()
         bint beep(uint32_t password)
@@ -67,7 +71,69 @@ cdef extern from "../include/FRDriver.h":
 
 cdef extern from "../include/FRDriver.h" namespace "FRDriver":
     cdef enum ErrorCode:
-        pass
+        NoError = 0x00
+        FiscalAccumulatorUnknownCommand = 0x01
+        FiscalAccumulatorWrongFiscalAccumulatorState = 0x02
+        FiscalAccumulatorError = 0x03
+        FiscalAccumulatorCryptographCoprocessorError = 0x04
+        FiscalAccumulatorLifetimeExpired = 0x05
+        FiscalAccumulatorArchiveIsFull = 0x06
+        FiscalAccumulatorWrongDateAndTime = 0x07
+        FiscalAccumulatorNoRequestedData = 0x08
+        FiscalAccumulatorWrongArgumentsInCommand = 0x09
+        FiscalAccumulatorTLVDataExcessSize = 0x10
+        FiscalAccumulatorNoTransportConnection = 0x11
+        FiscalAccumulatorCryptographCoprocessorResourceExcess = 0x12
+        FiscalAccumulatorHolderResourceExcess = 0x14
+        FiscalAccumulatorWaitingForMessage = 0x15
+        FiscalAccumulatorDurationOfChangeIsMoreThan24Hours = 0x16
+        FiscalAccumulatorWrongTimeDifferenceBetweenOperations = 0x17
+        FiscalAccumulatorMessageFromFiscalDataOperatorCantBeRecieved = 0x20
+        PointOfSalesClientSummIsLowerThanCheckSumm = 0x26
+        PointOfSalesCantCancelLastCommand = 0x2B
+        PointOfSalesNilledCashbox = 0x2C
+        PointOfSalesCheckSummIsLowerThanReversal = 0x2D
+        PointOfSalesHasNoCashToPay = 0x2E
+        PointOfSalesIsLockedWaitingForTaxInspector = 0x30
+        PointOfSalesTotalExtintionIsRequired = 0x32
+        PointOfSalesWrongArgumnetsInCommand = 0x33
+        PointOfSalesNoData = 0x34
+        PointOfSalesWrongArgumentOnSetup = 0x35
+        PointOfSalesWrongArgumentInCommandForThisPointOfSalesImplementation = 0x36
+        PointOfSalesWrongCommandIsNotSupportedForThisPointOfSalesImplementation = 0x37
+        PointOfSalesROMError = 0x38
+        PointOfSalesInternalSoftwareError = 0x39
+        PointOfSalesAllowanceStorageOverflowForChange  = 0x3A
+        PointOfSalesStorageOverflowForChange = 0x3B
+        PointOfSalesCommandCantBeExecutedChangeIsOpened = 0x3C
+        PointOfSalesCommandCantBeExecutedChangeIsClosed = 0x3D
+        PointOfSalesAllowanceStorageBySectionForChange = 0x3E
+        PointOfSalesAllowanceStorageByDiscountForChange = 0x3F
+        PointOfSaleRangeOfDiscountsOverflow = 0x40
+        PointOfSaleRangeOfCashPayOverflow = 0x41
+        PointOfSaleRangeOfEx2PayOverfloat = 0x42
+        PointOfSaleRangeOfEx3PayOverfloat = 0x43
+        PointOfSaleRangeOfEx4PayOverfloat = 0x44
+        PointOfSalePaySummLesserThanResultOfCheck = 0x45
+        PointOfSaleNotEnoughCashInPointOfSales = 0x46
+        PointOfSaleAllowanceStorageByTaxForChange = 0x47
+        PointOfSaleResultOfCheckOverflow = 0x48
+        PointOfSaleCommandCantBeExecutedInOpenedCheckOfThisType = 0x49
+        PointOfSaleCantBeExecutedCheckIsOpened = 0x4A
+        PointOfSaleCheckBufferOverflow = 0x4B
+        PointOfSaleAccumulatorOverflowOfTaxTurnoverOfChange = 0x4C
+        PointOfSaleInsertionOfCashlessPaymentSumIsGreaterThanSumOfCheck = 0x4D
+        ShiftIsMoreThan24Hour = 0x4E
+        WrongPassword = 0x4F
+        PreviousCommandPrintingIsActive = 0x50
+        CashAccumulationOverflowOfChange = 0x51
+        PayType1AccumulationOverflowOfChange = 0x52
+        PayType2AccumulationOverflowOfChange = 0x53
+        PayType3AccumulationOverflowOfChange = 0x54
+        PayType4AccumulationOverflowOfChange = 0x55
+        CheckIsClosed = 0x56
+        ThereIsNoDocumentToRepeat = 0x57
+        WaitingForCommandToContinuePrinting = 0x58
 
     cdef struct ShortState:
         uint16_t posFlags

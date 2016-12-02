@@ -2,12 +2,8 @@
 // Created by xelam on 30.11.2016.
 //
 
-#include <QFile>
 #include <include/Tools/Logger.h>
 #include "include/Tools/Settings.h"
-
-const std::string Settings::Names::testsPath = std::string("tests_path");
-const std::string Settings::Names::triggersPath = std::string("triggers_path");
 
 Settings::Settings() :
     m_filename("settings.cfg")

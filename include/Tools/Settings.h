@@ -8,20 +8,15 @@
 #include <map>
 #include <string>
 
+#define SETTINGS_NAMES_TESTSPATH "tests_path"
+#define SETTINGS_NAMES_TRIGGERSPATH "triggers_path"
+
 /**
  * @brief Класс, отвечающий за хранение настроек.
  */
 class Settings
 {
 public:
-    class Names
-    {
-    public:
-        const static std::string testsPath;
-        const static std::string triggersPath;
-    };
-
-
     /**
      * @brief Деструктор.
      */

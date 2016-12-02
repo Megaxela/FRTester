@@ -20,7 +20,8 @@ typedef std::shared_ptr<PhysicalInterface> InterfacePtr;
 class PhysicalInterface
 {
 public:
-    const int Type = 0;
+
+    static const int Type;
 
     typedef uint32_t size_t;
 

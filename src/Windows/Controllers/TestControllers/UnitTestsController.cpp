@@ -8,12 +8,15 @@
 #include <QPushButton>
 #include <include/Executor/TestingExecutor.h>
 #include <QtWidgets/QFileDialog>
+#include "Executor/TestLoggerWaiter.h"
 
 UnitTestsController::UnitTestsController(Ui::MainWindow *ptr, QWidget *parent) :
     m_ui(ptr),
     m_parent(parent)
 {
     m_testingExecutor = new TestingExecutor();
+    m_testLoggerWaiter = new TestLoggerWaiter();
+    m_testLoggerWaiter->start();
 }
 
 UnitTestsController::~UnitTestsController()
@@ -105,6 +108,16 @@ void UnitTestsController::setupConnections()
             this,
             &UnitTestsController::onTestingLogAcquired
     );
+
+    connect(m_testingExecutor,
+            &TestingExecutor::testingErrorAcquired,
+            this,
+            &UnitTestsController::onTestingErrorAcquired);
+
+    connect(m_testLoggerWaiter,
+            &TestLoggerWaiter::logReceived,
+            this,
+            &UnitTestsController::onTestLoggerWaiterLogAcquired);
 }
 
 void UnitTestsController::configureWidgets()
@@ -223,6 +236,7 @@ void UnitTestsController::onTestingFailed(QString reason)
 void UnitTestsController::addLogMessage(QString message,
                                         UnitTestsController::MessageType type)
 {
+#error Доделай тут экранирование текста при выводе в HTML
     QColor color;
 
     switch (type)
@@ -246,10 +260,13 @@ void UnitTestsController::addLogMessage(QString message,
 
     Log("TEST: " + message.toStdString());
 
+//    auto textCursor = m_ui->unitTestsLogTextEdit->textCursor();
+    m_ui->unitTestsLogTextEdit->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
+
     m_ui->unitTestsLogTextEdit->insertHtml(
-        "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:" +
+        "<span style=\" color:" +
         color.name() +
-        ";\">" + message + "</span></p><br>"
+        ";\">" + message + "</span><br>"
     );
 }
 
@@ -258,13 +275,15 @@ void UnitTestsController::onTestingStopped()
     addLogMessage("Тестирование было остановлено.");
     m_ui->unitTestsStartStopPushButton->setText("Начать");
     m_ui->unitTestsPauseResumePushButton->setText("Приостановить");
+    m_ui->unitTestsPauseResumePushButton->setEnabled(false);
 }
 
 void UnitTestsController::onTestingFinished()
 {
-    addLogMessage("Тесетирование было завершено.");
+    addLogMessage("Тестирование было завершено.");
     m_ui->unitTestsStartStopPushButton->setText("Начать");
     m_ui->unitTestsPauseResumePushButton->setText("Приостановить");
+    m_ui->unitTestsPauseResumePushButton->setEnabled(false);
 }
 
 void UnitTestsController::onTestingPaused()
@@ -315,4 +334,14 @@ void UnitTestsController::onTestingTriggerFailAcquired(TriggerTestPtr trigger)
 void UnitTestsController::onTestingLogAcquired(QString log)
 {
     addLogMessage(log);
+}
+
+void UnitTestsController::onTestingErrorAcquired(QString log)
+{
+    addLogMessage(log, MessageType::Critical);
+}
+
+void UnitTestsController::onTestLoggerWaiterLogAcquired(QString log)
+{
+    addLogMessage("[ТЕСТ]-> " + log);
 }

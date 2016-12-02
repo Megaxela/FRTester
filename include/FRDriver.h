@@ -25,7 +25,7 @@ public:
      */
     enum class ErrorCode
     {
-          NoError
+          NoError = 0x00
         , FiscalAccumulatorUnknownCommand = 0x01
         , FiscalAccumulatorWrongFiscalAccumulatorState = 0x02
         , FiscalAccumulatorError = 0x03
@@ -87,7 +87,7 @@ public:
         , PayType4AccumulationOverflowOfChange = 0x55
         , CheckIsClosed = 0x56
         , ThereIsNoDocumentToRepeat = 0x57
-        , WayingForCommandToContinuePrinting = 0x58
+        , WaitingForCommandToContinuePrinting = 0x58
 
         /* ... todo: Добавить остальные коды ошибок */
         , Unknown

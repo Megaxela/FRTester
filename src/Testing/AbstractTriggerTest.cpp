@@ -3,14 +3,15 @@
 //
 
 #include <Tools/Logger.h>
+#include <include/Testing/TestEnvironment.h>
 #include "include/Testing/AbstractTriggerTest.h"
 
-AbstractTriggerTest::AbstractTriggerTest(const std::string& name,
-                                         const std::string& description,
-                                         bool critical) :
+AbstractTriggerTest::AbstractTriggerTest(TestEnvironment *environment, const std::string &name,
+                                         const std::string &description, bool critical) :
     m_name(name),
     m_description(description),
-    m_critical(critical)
+    m_critical(critical),
+    m_environment(environment)
 {
 
 }
@@ -43,4 +44,9 @@ void AbstractTriggerTest::setDescription(const std::string &description)
 bool AbstractTriggerTest::isCritical() const
 {
     return m_critical;
+}
+
+TestEnvironment *AbstractTriggerTest::environment() const
+{
+    return m_environment;
 }

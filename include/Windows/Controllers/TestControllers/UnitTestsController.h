@@ -10,6 +10,8 @@
 #include <include/Executor/TestingExecutor.h>
 #include "ui_mainwindow.h"
 
+class TestLoggerWaiter;
+
 /**
  * @brief Контроллер, управляющий вкладкой с тестированием.
  */
@@ -91,6 +93,11 @@ private slots:
 
     void onTestingLogAcquired(QString log);
 
+    void onTestingErrorAcquired(QString log);
+
+    // Слоты для TestLoggerWaiter
+    void onTestLoggerWaiterLogAcquired(QString log);
+
 private:
     enum class MessageType
     {
@@ -110,6 +117,8 @@ private:
     QWidget* m_parent;
 
     TestingExecutor* m_testingExecutor;
+
+    TestLoggerWaiter* m_testLoggerWaiter;
 };
 
 

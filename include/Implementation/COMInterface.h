@@ -17,7 +17,7 @@ class COMInterface : public PhysicalInterface,
                       protected TTY
 {
 public:
-    const int Type = 1;
+    static const int Type;
 
     /**
      * @brief Конструктор.

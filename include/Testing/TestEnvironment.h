@@ -8,6 +8,7 @@
 
 #include "TestDriver.h"
 
+class TestLogger;
 /**
  * @brief Класс, описывающий тестовое окружение.
  * Весь инструментарий, доступный для тестирования
@@ -20,7 +21,10 @@ public:
      * @brief Конструктор.
      * @param driver Тестовый драйвер.
      */
-    TestEnvironment(TestDriver* driver);
+    TestEnvironment(
+            TestDriver* driver,
+            TestLogger* logger
+    );
 
     /**
      * @brief Метод для получения тестового драйвера.
@@ -28,8 +32,15 @@ public:
      */
     TestDriver* driver() const;
 
+    /**
+     * @brief
+     * @return
+     */
+    TestLogger* logger() const;
+
 private:
     TestDriver* m_driver;
+    TestLogger* m_logger;
 };
 
 

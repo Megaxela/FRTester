@@ -1,7 +1,11 @@
 
+
 cdef class PyFRDriver:
 
         cdef FRDriver *driver;
+
+        def __init__(self):
+            pass
 
         cpdef send_raw(self, data):
             if not isinstance(data, list):
@@ -27,12 +31,8 @@ cdef class PyFRDriver:
 
             return list_obj
 
-        cpdef set_interface(self, interface):
-            print "Didn't implemented yet"
-
         def physical_interface(self):
-            print "Didn't implemented yet"
-            return None
+            return createPhysicalInterface(self.driver.physicalInterface().get())
 
         def get_last_error(self):
             return self.driver.getLastError()
@@ -52,10 +52,10 @@ cdef class PyFRDriver:
         def sell(self, password, count, price, department, firstTax, secondTax, thirdTax, fourthTax, good):
             return self.driver.sell(password, count, price, department, firstTax, secondTax, thirdTax, fourthTax, good)
 
-        def short_state_report(self, password):
+        def short_state_request(self, password):
             return self.driver.shortStateRequest(password)
 
-        def full_state_report(self, password):
+        def full_state_request(self, password):
             return self.driver.fullStateRequest(password)
 
         def check_connection(self):
@@ -78,7 +78,11 @@ cdef class PyFRDriver:
 
 
 cdef class PyCOMInterface:
+
         cdef COMInterface *thisptr
+
+        def __init__(self):
+            pass
 
         def open_connection(self):
             return self.thisptr.openConnection()

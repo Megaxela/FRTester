@@ -4,6 +4,8 @@
 
 #include "Abstract/PhysicalInterface.h"
 
+const int PhysicalInterface::Type = 0;
+
 PhysicalInterface::PhysicalInterface(int t) :
     m_t(t)
 {

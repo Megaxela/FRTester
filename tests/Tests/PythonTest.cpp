@@ -9,14 +9,18 @@
 
 PythonTest::PythonTest(TestEnvironment *environment) :
     AbstractTest(environment, std::string(), std::string()),
-    m_pTest(nullptr)
+    m_pTest(nullptr),
+    m_pModule(nullptr)
 {
 
 }
 
 PythonTest::~PythonTest()
 {
-
+    if (m_pModule)
+    {
+        Py_DECREF(m_pModule);
+    }
 }
 
 bool PythonTest::execute()
@@ -43,21 +47,38 @@ bool PythonTest::execute()
 
     if (pCreatedObject == nullptr)
     {
+        PyObject* pExceptionType;
+        PyObject* pValue;
+        PyObject* pTraceback;
+
+        PyErr_Fetch(&pExceptionType, &pValue, &pTraceback);
+
+        char* pStrErrorMessage = PyString_AsString(pValue);
+
         Py_DECREF(pArguments);
         Py_DECREF(pEnvironment);
-        Critical("Не удалось создать объект теста.");
-        throw std::runtime_error("Не удалось создать объект теста.");
+        Critical("Не удалось создать объект теста. Ошибка: " + std::string(pStrErrorMessage));
+        throw std::runtime_error("Не удалось создать объект теста. Ошибка: " + std::string(pStrErrorMessage));
     }
 
     auto pAnswerResult = PyObject_CallMethod(pCreatedObject, "execute", NULL);
 
     if (pAnswerResult == nullptr)
     {
+        PyObject* pExceptionType;
+        PyObject* pValue;
+        PyObject* pTraceback;
+
+        PyErr_Fetch(&pExceptionType, &pValue, &pTraceback);
+
+        char* pStrErrorMessage = PyString_AsString(pValue);
+
         Py_DECREF(pCreatedObject);
         Py_DECREF(pArguments);
         Py_DECREF(pEnvironment);
-        Critical("Не удалось выполнить метод execute теста.");
-        throw std::runtime_error("Не удалось выполнить метод execute теста.");
+        Critical("Не удалось выполнить метод execute теста. Ошибка: " + std::string(pStrErrorMessage));
+
+        throw std::runtime_error("Не удалось выполнить метод execute теста. Ошибка: " + std::string(pStrErrorMessage));
     }
 
     if (!PyBool_Check(pAnswerResult))
@@ -70,7 +91,7 @@ bool PythonTest::execute()
         throw std::runtime_error("Результат выполнения теста должен быть bool.");
     }
 
-    bool result = pAnswerResult == Py_True;
+    bool result = PyObject_IsTrue(pAnswerResult) == 1;
 
     Py_DECREF(pAnswerResult);
     Py_DECREF(pCreatedObject);
@@ -105,7 +126,13 @@ bool PythonTest::loadModule(const std::string &modulePath, const std::string &mo
 
         char* pStrErrorMessage = PyString_AsString(pValue);
 
-        Critical("Не удалось загрузить модуль" + moduleName + ", ошибка: " + std::string(pStrErrorMessage));
+        std::string str = "None";
+        if (pStrErrorMessage)
+        {
+            str = std::string(pStrErrorMessage);
+        }
+
+        Critical("Не удалось загрузить модуль" + moduleName + ", ошибка: " + str);
 
         Py_DECREF(pModuleName);
         return false;
@@ -166,6 +193,9 @@ bool PythonTest::loadModule(const std::string &modulePath, const std::string &mo
 
     setName(PyString_AsString(pName));
     setDescription(PyString_AsString(pDescription));
+
+    m_pModule = pModule;
+    Py_DECREF(pModuleName);
 
     return true;
 }

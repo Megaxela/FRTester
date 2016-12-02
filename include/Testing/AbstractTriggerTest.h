@@ -7,6 +7,7 @@
 
 #include <memory>
 
+class TestEnvironment;
 class AbstractTriggerTest;
 
 typedef std::shared_ptr<AbstractTriggerTest> TriggerTestPtr;
@@ -20,9 +21,10 @@ public:
     /**
      * @brief Конструктор.
      */
-    AbstractTriggerTest(const std::string& name,
-                        const std::string& description,
-                        bool critical = false);
+    AbstractTriggerTest(TestEnvironment *environment,
+                        const std::string &name,
+                        const std::string &description,
+                        bool critical);
 
     /**
      * @brief Деструктор.
@@ -33,7 +35,7 @@ public:
      * @brief Метод, вызываемый перед выполнением
      * команды на который данный триггер повешен.
      */
-    virtual void onPreExecute() = 0;
+    virtual void onPreExecute(const std::string &realTag) = 0;
 
     /**
      * @brief Метод, вызываемый после выполнения
@@ -88,12 +90,21 @@ public:
      */
     void setDescription(const std::string& description);
 
+    /**
+     * @brief Метод дляп получения тестировочного
+     * окружения.
+     * @return Тестировочное окружение.
+     */
+    TestEnvironment* environment() const;
+
 private:
     std::string m_name;
 
     std::string m_description;
 
     bool m_critical;
+
+    TestEnvironment* m_environment;
 };
 
 

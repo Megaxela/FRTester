@@ -4,8 +4,12 @@
 
 #include "include/Testing/TestEnvironment.h"
 
-TestEnvironment::TestEnvironment(TestDriver *driver) :
-    m_driver(driver)
+TestEnvironment::TestEnvironment(
+        TestDriver *driver,
+        TestLogger* logger
+) :
+    m_driver(driver),
+    m_logger(logger)
 {
 
 }
@@ -13,4 +17,9 @@ TestEnvironment::TestEnvironment(TestDriver *driver) :
 TestDriver *TestEnvironment::driver() const
 {
     return m_driver;
+}
+
+TestLogger *TestEnvironment::logger() const
+{
+    return m_logger;
 }

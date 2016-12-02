@@ -5,6 +5,8 @@
 #include "Implementation/COMInterface.h"
 #include "Tools/Logger.h"
 
+const int COMInterface::Type = 1;
+
 COMInterface::COMInterface() :
     PhysicalInterface(COMInterface::Type),
     m_byteSendTime(20000),

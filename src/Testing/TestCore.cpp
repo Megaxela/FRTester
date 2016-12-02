@@ -9,17 +9,24 @@
 #include <Python.h>
 #include <include/Tools/Settings.h>
 #include <tests/Tests/PythonTest.h>
+#include <cython/frdriver.h>
+#include <tests/Triggers/PythonTrigger.h>
+#include <include/Testing/TestLogger.h>
+#include <include/TestDriverHolder.h>
 
 TestCore::TestCore()
 {
-    m_environment = new TestEnvironment(new TestDriver());
+    m_environment = new TestEnvironment(
+            &TestDriverHolder::driver(),
+            &TestLogger::instance()
+    );
     Py_Initialize();
+    initfrdriver();
 //    Py_SetPythonHome("/home/megaxela/Development/Projects/C++/FRTester_executable/python/");
 }
 
 TestCore::~TestCore()
 {
-    delete m_environment->driver();
     delete m_environment;
 
     Py_Finalize();
@@ -34,14 +41,23 @@ TestCore &TestCore::instance()
 
 void TestCore::updateDatabase()
 {
+
     m_tests.clear();
     m_triggers.clear();
 
     // Загрузка статических тестов
 //    m_tests.push_back(std::make_shared<CycleTest>(m_environment));
 
+    if (Py_IsInitialized())
+    {
+        Log("Переинициализация интерпретатора.");
+        Py_Finalize();
+        Py_Initialize();
+        initfrdriver();
+    }
+
     std::string testsPath = Settings::instance().getValue(
-            Settings::Names::testsPath, "tests"
+            SETTINGS_NAMES_TESTSPATH, "tests"
     );
 
     // Загрузка Python тестов
@@ -88,7 +104,7 @@ void TestCore::updateDatabase()
     }
 
     std::string triggersPath = Settings::instance().getValue(
-            Settings::Names::triggersPath, "triggers"
+            SETTINGS_NAMES_TRIGGERSPATH, "triggers"
     );
 
     std::string pythonTriggersPath = SystemTools::Path::join(
@@ -118,16 +134,15 @@ void TestCore::updateDatabase()
                 continue;
             }
 
-            auto loadedTrigger = nullptr;
-//            auto loadedTrigger = PythonTrigger::loadTrigger(
-//                    SystemTools::Path::join(
-//                            pythonTestsPath, filename
-//                    )
-//            );
+            auto loadedTrigger = PythonTrigger::loadTrigger(
+                    m_environment,
+                    filename.substr(0, filename.length() - 3),
+                    pythonTriggersPath
+            );
 
             if (loadedTrigger != nullptr)
             {
-//                m_triggers.push_back(loadedTrigger );
+                m_triggers.push_back(loadedTrigger );
             }
         }
     }
@@ -151,25 +166,25 @@ void TestCore::getTriggers(const std::string &tag,
 
 bool TestCore::restoreFRState()
 {
-    auto state = DriverHolder::driver().fullStateRequest(30);
-    if (state.posMode == 8) // Открытый документ
-    {
-        // Отменяем документ
-        if (!DriverHolder::driver().cancelCheck(30))
-        {
-            Error("Не удалось отменить открытый чек.");
-            return false;
-        }
-    }
-    else if (state.posMode == 2) // Открытая смена
-    {
-        // Закрываем смену
-        if (!DriverHolder::driver().shiftCloseReport(30))
-        {
-            Error("Не удалось закрыть смену.");
-            return false;
-        }
-    }
+//    auto state = DriverHolder::driver().fullStateRequest(30);
+//    if (state.posMode == 8) // Открытый документ
+//    {
+//        // Отменяем документ
+//        if (!DriverHolder::driver().cancelCheck(30))
+//        {
+//            Error("Не удалось отменить открытый чек.");
+//            return false;
+//        }
+//    }
+//    else if (state.posMode == 2) // Открытая смена
+//    {
+//        // Закрываем смену
+//        if (!DriverHolder::driver().shiftCloseReport(30))
+//        {
+//            Error("Не удалось закрыть смену.");
+//            return false;
+//        }
+//    }
 
     return true;
 }

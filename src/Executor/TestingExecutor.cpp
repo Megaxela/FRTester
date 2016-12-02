@@ -9,7 +9,7 @@ TestingExecutor::TestingExecutor() :
     m_paused(false),
     m_running(false)
 {
-
+    qRegisterMetaType<TestPtr>("TestPtr");
 }
 
 TestingExecutor::~TestingExecutor()
@@ -44,8 +44,6 @@ void TestingExecutor::run()
     }
 
     emit testingStarted();
-
-    emit testingLogAcquired("Тестирование началось");
 
     auto tests = TestCore::instance().getTests();
     auto triggers = TestCore::instance().getTriggers();
@@ -91,15 +89,14 @@ void TestingExecutor::run()
         {
             // Запускаем тест
             lastTestResult = tests[index]->execute();
-
-            emit testResultAcquired(tests[index], lastTestResult);
         }
         catch (const std::exception &e)
         {
             lastTestResult = false;
-            emit testingLogAcquired("Во время выполнения теста было вызвано исключение: " + QString(e.what()));
-            emit testResultAcquired(tests[index], false);
+            emit testingErrorAcquired("Во время выполнения теста было вызвано исключение: " + QString(e.what()));
         }
+
+        emit testResultAcquired(tests[index], lastTestResult);
 
         // Проверка тригеров
         if (TestCore::instance().hasFailedTriggers())
@@ -135,7 +132,6 @@ void TestingExecutor::run()
             std::unique_lock<std::mutex> lock(m_mutex);
             if (!lastTestResult && !m_passthroughTesting)
             {
-                emit testingLogAcquired("Тестирование будет прервано, поскольку тест не прошел успешно.");
                 emit testingStopped();
             }
         }
@@ -145,10 +141,16 @@ void TestingExecutor::run()
             std::unique_lock<std::mutex> lock(m_mutex);
             if (!m_running)
             {
-                emit testingLogAcquired("Тестирование остановлено.");
                 emit testingStopped();
                 break;
             }
+        }
+
+        ++index;
+        if (index >= tests.size())
+        {
+            emit testingFinished();
+            break;
         }
     }
 
@@ -158,9 +160,6 @@ void TestingExecutor::run()
         m_running = false;
         m_paused = false;
     }
-
-    emit testingLogAcquired("Тестирование завершено");
-    emit testingFinished();
 }
 
 bool TestingExecutor::isTestingRunning()
@@ -176,4 +175,5 @@ bool TestingExecutor::isPaused()
 
     return m_paused;
 }
+
 

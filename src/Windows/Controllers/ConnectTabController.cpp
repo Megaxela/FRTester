@@ -10,6 +10,7 @@
 #include <include/DriverHolder.h>
 #include <QtWidgets/QMessageBox>
 #include <Implementation/DefaultProtocol.h>
+#include <include/TestDriverHolder.h>
 
 ConnectTabController::ConnectTabController(Ui::MainWindow *ptr, QWidget* parent) :
     AbstractTabController(),
@@ -20,8 +21,12 @@ ConnectTabController::ConnectTabController(Ui::MainWindow *ptr, QWidget* parent)
 
     Log("Установлен стандартный протокол.");
 
-    DriverHolder::driver().setProtocol(std::make_shared<DefaultProtocol>());
+    auto proto = std::make_shared<DefaultProtocol>();
+
+    DriverHolder::driver().setProtocol(proto);
     DriverHolder::driver().setInterface(m_comInterface);
+    TestDriverHolder::driver().setProtocol(proto);
+    TestDriverHolder::driver().setInterface(m_comInterface);
 
     m_comInterface->setByteSendTime(0);
 }
