@@ -37,6 +37,7 @@ if __name__ == "__main__":
                     '../src/Testing/TestDriver.cpp',
                     '../src/Testing/TestCore.cpp',
                     '../src/DriverHolder.cpp',
+                    '../src/TestDriverHolder.cpp',
                     '../src/Testing/AbstractTest.cpp',
                     '../src/Testing/AbstractTriggerTest.cpp',
                     '../src/Testing/TestLogger.cpp',

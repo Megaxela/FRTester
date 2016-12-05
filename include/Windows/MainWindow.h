@@ -7,6 +7,7 @@
 
 #include <QMainWindow>
 #include <include/Windows/Controllers/AbstractTabController.h>
+#include <QMap>
 
 namespace Ui
 {
@@ -32,10 +33,14 @@ public:
      */
     ~MainWindow();
 
-private:
-    void addTabController(AbstractTabController* controller);
+private slots:
+    void onCurrentTabChanged(int index);
 
-    QVector<AbstractTabController*> m_tabControllers;
+private:
+    void addTabController(QWidget* tabWidget, AbstractTabController* controller);
+
+    QMap<QWidget*, AbstractTabController*> m_tabControllers;
+    QWidget* m_previousTab;
 
     Ui::MainWindow* m_ui;
 };

@@ -22,7 +22,9 @@ public:
 
     virtual void tabSelected();
 
-    void init();
+    virtual void tabLeaved();
+
+    virtual void init();
 
 protected:
     virtual void setupConnections() = 0;

@@ -105,12 +105,15 @@ private:
         Error,
         Good,
         Bad,
-        Critical
+        Critical,
+        TestMessage
     };
 
     void updateUnitTestsSet();
 
     void addLogMessage(QString message, MessageType type=MessageType::Log);
+
+    QString htmlScreening(QString source);
 
     Ui::MainWindow* m_ui;
 

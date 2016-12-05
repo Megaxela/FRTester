@@ -64,13 +64,13 @@ cdef class PyFRDriver:
         def close_check(self, password, cashPaySum, type2PaySum, type3PaySum, type4PaySum, discount, tax1, tax2, tax3, tax4, textToPrint):
             return self.driver.closeCheck(password, cashPaySum, type2PaySum, type3PaySum, type4PaySum, discount, tax1, tax2, tax3, tax4, textToPrint)
 
-        def resumt_printing(self, password):
+        def resume_printing(self, password):
             return self.driver.resumePrinting(password)
 
         def operating_register_request(self, password, registerNumber):
             return self.driver.operatingRegisterRequest(password, registerNumber)
 
-        def readTable(self, password, table, row, field):
+        def read_table(self, password, table, row, field):
             return self.driver.readTable(password, table, row, field)
 
         def cancel_check(self, password):

@@ -26,3 +26,8 @@ void AbstractTabController::init()
     configureWidgets();
     setupConnections();
 }
+
+void AbstractTabController::tabLeaved()
+{
+
+}

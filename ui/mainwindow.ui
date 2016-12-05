@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="mainTabWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>3</number>
       </property>
       <property name="movable">
        <bool>true</bool>
@@ -37,7 +37,7 @@
          </rect>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="connectionCOMTab">
          <attribute name="title">
@@ -783,7 +783,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="unitTestTab">
+      <widget class="QWidget" name="unitTestsTab">
        <attribute name="title">
         <string>Unit тесты</string>
        </attribute>
@@ -968,7 +968,7 @@ p, li { white-space: pre-wrap; }
         <string>Граф состояний</string>
        </attribute>
       </widget>
-      <widget class="QWidget" name="tab_4">
+      <widget class="QWidget" name="settingsTab">
        <attribute name="title">
         <string>Настройки</string>
        </attribute>
@@ -978,45 +978,60 @@ p, li { white-space: pre-wrap; }
           <x>10</x>
           <y>10</y>
           <width>361</width>
-          <height>80</height>
+          <height>128</height>
          </rect>
         </property>
         <property name="title">
          <string>Тестирование</string>
         </property>
-        <widget class="QWidget" name="layoutWidget">
-         <property name="geometry">
-          <rect>
-           <x>30</x>
-           <y>30</y>
-           <width>296</width>
-           <height>38</height>
-          </rect>
-         </property>
-         <layout class="QFormLayout" name="formLayout_2">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_19">
-            <property name="text">
-             <string>Путь к тестам</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_7">
-            <item>
-             <widget class="QLineEdit" name="settingsTestsPathLineEdit"/>
-            </item>
-            <item>
-             <widget class="QPushButton" name="settingsTestsPathPushButton">
-              <property name="text">
-               <string>Выбрать</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_10">
+         <item>
+          <layout class="QFormLayout" name="formLayout_2">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_19">
+             <property name="text">
+              <string>Путь к тестам</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <layout class="QHBoxLayout" name="horizontalLayout_7">
+             <item>
+              <widget class="QLineEdit" name="settingsTestsPathLineEdit"/>
+             </item>
+             <item>
+              <widget class="QPushButton" name="settingsTestsPathPushButton">
+               <property name="text">
+                <string>Выбрать</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="1" column="1">
+            <layout class="QHBoxLayout" name="horizontalLayout_9">
+             <item>
+              <widget class="QLineEdit" name="settingsTriggersPathLineEdit"/>
+             </item>
+             <item>
+              <widget class="QPushButton" name="settingsTriggersPathPushButton">
+               <property name="text">
+                <string>Выбрать</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_20">
+             <property name="text">
+              <string>Путь к триггерам</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
        </widget>
       </widget>
      </widget>

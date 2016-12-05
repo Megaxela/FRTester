@@ -122,12 +122,17 @@ void UnitTestsController::setupConnections()
 
 void UnitTestsController::configureWidgets()
 {
+    int id = QFontDatabase::addApplicationFont(":/files/fonts/FiraCode-Regular.ttf");
+    QString family = QFontDatabase::applicationFontFamilies(id).at(0);
 
+    QFont font(family);
+
+    m_ui->unitTestsLogTextEdit->setFont(font);
 }
 
 void UnitTestsController::tabSelected()
 {
-
+    updateUnitTestsSet();
 }
 
 void UnitTestsController::updateUnitTestsSet()
@@ -177,12 +182,12 @@ void UnitTestsController::onTestingPausedResumedButtonPressed()
     if (m_testingExecutor->isPaused())
     {
         m_testingExecutor->resume();
-        m_ui->unitTestsPauseResumePushButton->setText("Приостановить");
+//        m_ui->unitTestsPauseResumePushButton->setText("Приостановить");
     }
     else
     {
         m_testingExecutor->pause();
-        m_ui->unitTestsPauseResumePushButton->setText("Продолжить");
+//        m_ui->unitTestsPauseResumePushButton->setText("Продолжить");
     }
 }
 
@@ -236,25 +241,27 @@ void UnitTestsController::onTestingFailed(QString reason)
 void UnitTestsController::addLogMessage(QString message,
                                         UnitTestsController::MessageType type)
 {
-#error Доделай тут экранирование текста при выводе в HTML
     QColor color;
 
     switch (type)
     {
         case MessageType::Log:
-            color = QColor(255, 255, 255);
+            color = QColor(0xff, 0xff, 0xff);
+            break;
+        case MessageType::TestMessage:
+            color = QColor(0xff, 0xcc, 0x00);
             break;
         case MessageType::Error:
-            color = QColor(170, 0, 0);
+            color = QColor(0xaa, 0, 0);
             break;
         case MessageType::Good:
-            color = QColor(0, 170, 0);
+            color = QColor(0, 0xaa, 0);
             break;
         case MessageType::Bad:
-            color = QColor(170, 0, 0);
+            color = QColor(0xaa, 0, 0);
             break;
         case MessageType::Critical:
-            color = QColor(250, 0, 0);
+            color = QColor(0xfa, 0, 0);
             break;
     }
 
@@ -266,7 +273,7 @@ void UnitTestsController::addLogMessage(QString message,
     m_ui->unitTestsLogTextEdit->insertHtml(
         "<span style=\" color:" +
         color.name() +
-        ";\">" + message + "</span><br>"
+        ";\">" + htmlScreening(message) + "</span><br>"
     );
 }
 
@@ -343,5 +350,48 @@ void UnitTestsController::onTestingErrorAcquired(QString log)
 
 void UnitTestsController::onTestLoggerWaiterLogAcquired(QString log)
 {
-    addLogMessage("[ТЕСТ]-> " + log);
+    addLogMessage("[ТЕСТ]-> " + log, MessageType::TestMessage);
+}
+
+QString UnitTestsController::htmlScreening(QString source)
+{
+    QString result;
+
+    for (auto ch : source)
+    {
+        if (ch == QChar('<'))
+        {
+            result.append("&lt;");
+        }
+        else if (ch == QChar('>'))
+        {
+            result.append("&gt;");
+        }
+        else if (ch == QChar('"'))
+        {
+            result.append("&quot;");
+        }
+        else if (ch == QChar(' '))
+        {
+            result.append("&nbsp;");
+        }
+        else if (ch == QChar('\''))
+        {
+            result.append("&#39;");
+        }
+        else if (ch == QChar('\n'))
+        {
+            result.append("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+        }
+        else if (ch == QChar('&'))
+        {
+            result.append("&amp;");
+        }
+        else
+        {
+            result.append(ch);
+        }
+    }
+
+    return result;
 }

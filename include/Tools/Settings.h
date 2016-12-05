@@ -17,6 +17,8 @@
 class Settings
 {
 public:
+    const static std::string settingsFilename;
+
     /**
      * @brief Деструктор.
      */
@@ -45,13 +47,6 @@ public:
     void setValue(const std::string &name, const std::string &value);
 
     /**
-     * @brief Метод для установки местоположения файла
-     * с настройками.
-     * @param name
-     */
-    void setFilename(const std::string &name);
-
-    /**
      * @brief Метод для загрузки настроек из указанного файла.
      */
     bool load();
@@ -66,8 +61,6 @@ private:
      * @brief Приватный конструктор, ибо Singleton.
      */
     Settings();
-
-    std::string m_filename;
 
     std::map<std::string, std::string> m_data;
 };
