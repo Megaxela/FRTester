@@ -97,6 +97,10 @@ private:
      */
     TestCore();
 
+    void init();
+
+    void deinit();
+
     std::vector<TriggerTestPtr> m_triggers;
 
     std::vector<TestPtr> m_tests;

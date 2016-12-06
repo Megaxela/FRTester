@@ -147,7 +147,7 @@ void Logger::mainThread()
 
             if (m_outEnabled)
             {
-                if (m_minErrorClass >= m_messages.front().errorClass)
+                if (m_minErrorClass <= m_messages.front().errorClass)
                 {
                     switch (m_messages.front().errorClass)
                     {

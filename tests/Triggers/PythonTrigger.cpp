@@ -173,7 +173,7 @@ TriggerTestPtr PythonTrigger::loadTrigger(TestEnvironment *environment, const st
 {
     auto pModuleName = PyString_FromString(moduleName.c_str());
 
-    PySys_SetPath((char*) modulePath.c_str());
+//    PySys_SetPath((char*) modulePath.c_str());
 
     if (pModuleName == nullptr)
     {

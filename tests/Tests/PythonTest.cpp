@@ -105,8 +105,9 @@ bool PythonTest::loadModule(const std::string &modulePath, const std::string &mo
 {
     auto pModuleName = PyString_FromString(moduleName.c_str());
 
+    char* m = (char*) modulePath.c_str();
     m_testPath = modulePath;
-    PySys_SetPath((char*) modulePath.c_str());
+//    PySys_SetPath((char*) modulePath.c_str());
 
     if (pModuleName == nullptr)
     {

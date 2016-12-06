@@ -49,7 +49,7 @@ std::vector<std::string> SystemTools::getAllFilesInDir(const std::string &path)
 
 std::string SystemTools::Path::join(const std::string &l, const std::string &r)
 {
-    if (l[l.length()] != PATH_SEPARATOR)
+    if (l[l.length() - 1] != PATH_SEPARATOR)
     {
         return (l + PATH_SEPARATOR + r);
     }

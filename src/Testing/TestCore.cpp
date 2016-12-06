@@ -14,15 +14,16 @@
 #include <include/Testing/TestLogger.h>
 #include <include/TestDriverHolder.h>
 
+#define PY_LIST_DELIM ':'
+
 TestCore::TestCore()
 {
     m_environment = new TestEnvironment(
             &TestDriverHolder::driver(),
             &TestLogger::instance()
     );
-    Py_Initialize();
-    initfrdriver();
-    Py_SetPythonHome("python2/");
+
+    init();
 }
 
 TestCore::~TestCore()
@@ -51,9 +52,9 @@ void TestCore::updateDatabase()
     if (Py_IsInitialized())
     {
         Log("Переинициализация интерпретатора.");
-        Py_Finalize();
-        Py_Initialize();
-        initfrdriver();
+
+        deinit();
+        init();
     }
 
     std::string testsPath = Settings::instance().getValue(
@@ -217,4 +218,45 @@ std::vector<TriggerTestPtr> TestCore::getFailedTriggers()
 void TestCore::clearFailedTriggers()
 {
     m_failedTriggers.clear();
+}
+
+void TestCore::init()
+{
+    Py_Initialize();
+    initfrdriver();
+    Py_SetPythonHome("python2/");
+
+    PyObject* sysModule = PyImport_ImportModule("sys");
+    if (sysModule == nullptr)
+    {
+        Critical("Can't import sys.");
+        return;
+    }
+
+
+    PyObject* pathObject = PyObject_GetAttrString(sysModule, "path");
+    if (pathObject == nullptr)
+    {
+        Critical("Can't find path property in `sys` module.");
+        return;
+    }
+
+    PyList_Append(pathObject, PyString_FromString(
+            SystemTools::Path::join(Settings::instance().getValue(
+                    SETTINGS_NAMES_TRIGGERSPATH,
+                    "./triggers/"
+            ), "python").c_str()
+    ));
+
+    PyList_Append(pathObject, PyString_FromString(
+            SystemTools::Path::join(Settings::instance().getValue(
+                    SETTINGS_NAMES_TESTSPATH,
+                    "./tests/"
+            ), "python").c_str()
+    ));
+}
+
+void TestCore::deinit()
+{
+    Py_Finalize();
 }
