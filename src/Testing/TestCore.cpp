@@ -22,7 +22,7 @@ TestCore::TestCore()
     );
     Py_Initialize();
     initfrdriver();
-//    Py_SetPythonHome("/home/megaxela/Development/Projects/C++/FRTester_executable/python/");
+    Py_SetPythonHome("python2/");
 }
 
 TestCore::~TestCore()

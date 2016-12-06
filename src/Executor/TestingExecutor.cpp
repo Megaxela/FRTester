@@ -3,6 +3,7 @@
 //
 
 #include <include/Testing/TestCore.h>
+#include <include/Tools/Time.h>
 #include "include/Executor/TestingExecutor.h"
 
 TestingExecutor::TestingExecutor() :
@@ -85,6 +86,12 @@ void TestingExecutor::run()
 
         emit testingLogAcquired("Выполнение теста №" + QString::number(index + 1) + " " + QString::fromStdString(tests[index]->name()));
 
+        // Для того, чтобы весь предшествующий лог
+        // был выведен до теста
+        Time::sleep<std::chrono::milliseconds>(
+                100
+        );
+
         try
         {
             // Запускаем тест
@@ -95,6 +102,12 @@ void TestingExecutor::run()
             lastTestResult = false;
             emit testingErrorAcquired("Во время выполнения теста было вызвано исключение: " + QString(e.what()));
         }
+
+        // Для того, чтобы весь вывод теста был успешно
+        // выведен в лог
+        Time::sleep<std::chrono::milliseconds>(
+                100
+        );
 
         emit testResultAcquired(tests[index], lastTestResult);
 
