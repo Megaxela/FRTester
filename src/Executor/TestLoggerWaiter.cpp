@@ -3,6 +3,7 @@
 //
 
 #include <include/Testing/TestLogger.h>
+#include <include/Tools/Time.h>
 #include "include/Executor/TestLoggerWaiter.h"
 
 TestLoggerWaiter::TestLoggerWaiter()
@@ -30,7 +31,27 @@ void TestLoggerWaiter::run()
 
     while (true)
     {
-        TestLogger::instance().waitForData();
+        bool hasData = false;
+
+        {
+            std::unique_lock<std::mutex> lock(m_mutex);
+
+            while (!hasData && m_running)
+            {
+                lock.unlock();
+                if (TestLogger::instance().hasData())
+                {
+                    hasData = true;
+                }
+
+                Time::sleep<std::chrono::milliseconds>(
+                        100
+                );
+                lock.lock();
+            }
+        }
+
+//        TestLogger::instance().waitForData();
 
         while (TestLogger::instance().hasData())
         {

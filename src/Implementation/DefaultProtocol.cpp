@@ -255,6 +255,8 @@ void DefaultProtocol::prepareDeviceToWrite(InterfacePtr physicalInterface)
 
 bool DefaultProtocol::checkConnection(InterfacePtr physicalInterface)
 {
+    prepareDeviceToWrite(physicalInterface);
+
     ByteArray enqArr(1);
     enqArr.append<uint8_t>(ENQ);
 
