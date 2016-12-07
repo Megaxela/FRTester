@@ -47,6 +47,7 @@ void StateCommandsTabController::configureWidgets()
 void StateCommandsTabController::onFullRequest()
 {
     Log("Выполняем полный запрос состояния.");
+    Log("Ан нет, сорян. Еще не реализовал.");
 }
 
 void StateCommandsTabController::onShortRequest()

@@ -62,10 +62,15 @@ protected:
      */
     void configureWidgets() override;
 
-private:
-    void addTabController(AbstractTabController* el);
+private slots:
+    void onCurrentTabChanged(int);
 
-    QVector<AbstractTabController*> m_tabControllers;
+private:
+    void addTabController(QWidget* widget, AbstractTabController* el);
+
+    QMap<QWidget*, AbstractTabController*> m_tabControllers;
+
+    QWidget* m_previousTab;
 
     Ui::MainWindow* m_ui;
 

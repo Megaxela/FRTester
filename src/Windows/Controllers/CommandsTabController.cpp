@@ -9,6 +9,7 @@
 #include <DriverHolder.h>
 #include <Windows/Controllers/CommandsControllers/ReportsCommandsTabController.h>
 #include <Windows/Controllers/CommandsControllers/RegisterCommandsTabController.h>
+#include <include/Windows/Controllers/CommandsControllers/PrintCommandsTabController.h>
 #include "Windows/Controllers/CommandsControllers/StateCommandsTabController.h"
 #include "Windows/Controllers/CommandsTabController.h"
 #include "ui_mainwindow.h"
@@ -16,21 +17,31 @@
 CommandsTabController::CommandsTabController(Ui::MainWindow *ptr, QWidget* parent) :
         AbstractTabController(),
         m_ui(ptr),
-        m_parent(parent)
+        m_parent(parent),
+        m_previousTab(nullptr)
 {
-    addTabController(new StateCommandsTabController(ptr, parent, this));
-    addTabController(new ReportsCommandsTabController(ptr, parent, this));
-    addTabController(new RegisterCommandsTabController(ptr, parent, this));
+    addTabController(m_ui->commandsStatesTab, new StateCommandsTabController(ptr, parent, this));
+    addTabController(m_ui->commandsReportsTab, new ReportsCommandsTabController(ptr, parent, this));
+    addTabController(m_ui->commandsRegistrationTab, new RegisterCommandsTabController(ptr, parent, this));
+    addTabController(m_ui->commandsPrintTab, new PrintCommandsTabController(ptr, parent, this));
 }
 
 CommandsTabController::~CommandsTabController()
 {
+    for (auto el : m_tabControllers)
+    {
+        delete el;
+    }
 
+    m_tabControllers.clear();
 }
 
 void CommandsTabController::setupConnections()
 {
-
+    connect(m_ui->commandsTabWidget,
+            &QTabWidget::currentChanged,
+            this,
+            &CommandsTabController::onCurrentTabChanged);
 }
 
 void CommandsTabController::configureWidgets()
@@ -38,9 +49,9 @@ void CommandsTabController::configureWidgets()
 
 }
 
-void CommandsTabController::addTabController(AbstractTabController *el)
+void CommandsTabController::addTabController(QWidget* widget, AbstractTabController *el)
 {
-    m_tabControllers.push_back(el);
+    m_tabControllers[widget] = el;
     el->init();
 }
 
@@ -75,4 +86,24 @@ void CommandsTabController::setLastStatus()
                     FRDriver::Converters::errorToString(DriverHolder::driver().getLastError())
             )
     );
+}
+
+void CommandsTabController::onCurrentTabChanged(int)
+{
+    QWidget* currentTab = m_ui->commandsTabWidget->currentWidget();
+
+    if (m_previousTab != nullptr)
+    {
+        if (m_tabControllers.contains(m_previousTab))
+        {
+            m_tabControllers[m_previousTab]->tabLeaved();
+        }
+    }
+
+    if (m_tabControllers.contains(currentTab))
+    {
+        m_tabControllers[currentTab]->tabSelected();
+    }
+
+    m_previousTab = currentTab;
 }

@@ -40,6 +40,7 @@ void ReportsCommandsTabController::configureWidgets()
 
 void ReportsCommandsTabController::onZReportPressed()
 {
+    // todo: Перенести все проверки в отдельный модуль
     Log("Формируем Z отчет. (Ответ с гашением)");
 
     ExcessLog("Проверка наличия соединения");

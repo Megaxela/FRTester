@@ -122,7 +122,7 @@ set(SOURCE_FILES main.cpp
         include/TestDriverHolder.h
         src/Windows/Controllers/SettingsController.cpp
         include/Windows/Controllers/SettingsController.h
-    )
+        src/Windows/Controllers/CommandsControllers/PrintCommandsTabController.cpp include/Windows/Controllers/CommandsControllers/PrintCommandsTabController.h src/Windows/Controllers/CommandsControllers/PrintTextCommandsTabController.cpp include/Windows/Controllers/CommandsControllers/PrintTextCommandsTabController.h src/Windows/Controllers/CommandsControllers/PrintTextOperationsCommandsTabController.cpp include/Windows/Controllers/CommandsControllers/PrintTextOperationsCommandsTabController.h)
 
 add_executable(FRTester
         ${SOURCE_FILES}
