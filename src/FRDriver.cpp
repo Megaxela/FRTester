@@ -84,6 +84,16 @@ ByteArray FRDriver::sendRaw(const ByteArray &data)
     if (receivedData.empty())
     {
         Error("От ФР не было получено данных.");
+        return receivedData;
+    }
+
+    receivedData = m_protocol->proceedReceivedData(receivedData);
+
+    if (m_protocol->needResponseAfterReceivedData())
+    {
+        m_interface->write(
+                m_protocol->responseAfterReceivedData()
+        );
     }
 
     return receivedData;
@@ -103,15 +113,6 @@ ByteArray FRDriver::sendCommand(const FRDriver::Command &c, const ByteArray &arg
     packedCommand.append(arguments);
 
     auto response = sendRaw(packedCommand);
-
-    response = m_protocol->proceedReceivedData(response);
-
-    if (m_protocol->needResponseAfterReceivedData())
-    {
-        m_interface->write(
-                m_protocol->responseAfterReceivedData()
-        );
-    }
 
     return response;
 }
