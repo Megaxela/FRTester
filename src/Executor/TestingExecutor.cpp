@@ -49,6 +49,15 @@ void TestingExecutor::run()
     auto tests = TestCore::instance().getTests();
     auto triggers = TestCore::instance().getTriggers();
 
+    if (tests.empty())
+    {
+        emit testingFailed("Нечего выполнять. Тесты отсутствуют.");
+        std::unique_lock<std::mutex> lock(m_mutex);
+        m_running = false;
+        m_paused = false;
+        return;
+    }
+
     int index = 0;
 
     bool lastTestResult;

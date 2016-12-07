@@ -9,6 +9,7 @@
 #include <include/Executor/TestingExecutor.h>
 #include <QtWidgets/QFileDialog>
 #include "Executor/TestLoggerWaiter.h"
+#include <QTextBrowser>
 
 UnitTestsController::UnitTestsController(Ui::MainWindow *ptr, QWidget *parent) :
     m_ui(ptr),
@@ -128,6 +129,9 @@ void UnitTestsController::configureWidgets()
     QFont font(family);
 
     m_ui->unitTestsLogTextEdit->setFont(font);
+    m_ui->unitTestsLogTextEdit->setContextMenuPolicy(Qt::NoContextMenu);
+    m_ui->unitTestsLogTextEdit->setUndoRedoEnabled(false);
+    m_ui->unitTestsLogTextEdit->setReadOnly(true);
 }
 
 void UnitTestsController::tabSelected()
@@ -267,13 +271,14 @@ void UnitTestsController::addLogMessage(QString message,
 
     Log("TEST: " + message.toStdString());
 
-//    auto textCursor = m_ui->unitTestsLogTextEdit->textCursor();
+    auto textCursor = m_ui->unitTestsLogTextEdit->textCursor();
+
     m_ui->unitTestsLogTextEdit->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
 
-    m_ui->unitTestsLogTextEdit->insertHtml(
+    m_ui->unitTestsLogTextEdit->append(
         "<span style=\" color:" +
         color.name() +
-        ";\">" + htmlScreening(message) + "</span><br>"
+        ";\">" + htmlScreening(message) + "</span>"
     );
 }
 
@@ -308,6 +313,7 @@ void UnitTestsController::onTestingResumed()
 
 void UnitTestsController::onTestingStarted()
 {
+    onClearLogButtonPressed();
     addLogMessage("Тестирование начато");
     m_ui->unitTestsStartStopPushButton->setText("Закончить");
 }

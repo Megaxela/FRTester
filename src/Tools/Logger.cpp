@@ -125,10 +125,12 @@ void Logger::mainThread()
 {
     while (m_working)
     {
-        std::unique_lock<std::mutex> lock(m_messagesMutex);
+        {
+            std::unique_lock<std::mutex> lock(m_messagesMutex);
 
-        while (m_messages.empty() && m_working)
-            m_cond.wait(lock);
+            while (m_messages.empty() && m_working)
+                m_cond.wait(lock);
+        }
 
         if (!m_logFilename.empty())
         {
@@ -156,50 +158,63 @@ void Logger::mainThread()
             }
         }
 
-        while (!m_messages.empty())
-        {
-            std::string result = formString(
-                    m_messages.front().file,
-                    m_messages.front().line,
-                    m_messages.front().time,
-                    m_messages.front().function,
-                    m_messages.front().msg,
-                    m_messages.front().prefix
-            );
+        Message front;
 
-            if (m_outEnabled)
+        {
+
+            std::unique_lock<std::mutex> lock(m_messagesMutex);
+            while (!m_messages.empty())
             {
-                if (m_minErrorClass <= m_messages.front().errorClass)
                 {
-                    switch (m_messages.front().errorClass)
+                    front = m_messages.front();
+                    m_messages.pop();
+                }
+
+                lock.unlock();
+
+                std::string result = formString(
+                        front.file,
+                        front.line,
+                        front.time,
+                        front.function,
+                        front.msg,
+                        front.prefix
+                );
+
+                if (m_outEnabled)
+                {
+                    if (m_minErrorClass <= front.errorClass)
                     {
-                        case ErrorClass::Info:
-                            std::cout << result << std::endl;
-                            break;
-                        case ErrorClass::Warning:
-                            std::cerr << result << std::endl;
-                            break;
-                        case ErrorClass::Error:
-                            std::cerr << result << std::endl;
-                            break;
-                        case ErrorClass::Critical:
-                            std::cerr << result << std::endl;
-                            break;
-                        case ErrorClass::None:
-                            // What?
-                            break;
-                        case ErrorClass::Excess:
-                            break;
+                        switch (front.errorClass)
+                        {
+                            case ErrorClass::Info:
+                                std::cout << result << std::endl;
+                                break;
+                            case ErrorClass::Warning:
+                                std::cerr << result << std::endl;
+                                break;
+                            case ErrorClass::Error:
+                                std::cerr << result << std::endl;
+                                break;
+                            case ErrorClass::Critical:
+                                std::cerr << result << std::endl;
+                                break;
+                            case ErrorClass::None:
+                                // What?
+                                break;
+                            case ErrorClass::Excess:
+                                break;
+                        }
                     }
                 }
-            }
 
-            if (m_file.is_open())
-            {
-                m_file << result << '\n';
-            }
+                if (m_file.is_open())
+                {
+                    m_file << result << '\n';
+                }
 
-            m_messages.pop();
+                lock.lock();
+            }
         }
 
         if (m_file.is_open())
@@ -213,6 +228,7 @@ void Logger::mainThread()
 
 void Logger::setLogFile(const std::string &file)
 {
+    std::unique_lock<std::mutex> lock(m_messagesMutex);
     if (!m_outEnabled && file.empty())
     {
         Error("Can't disable logging with empty log file and turned off console output.");
@@ -224,6 +240,7 @@ void Logger::setLogFile(const std::string &file)
 
 void Logger::setConsoleOutputEnabled(bool enabled)
 {
+    std::unique_lock<std::mutex> lock(m_messagesMutex);
     if (m_logFilename.empty() && !enabled)
     {
         Error("Can't disable logging with empty log file and turned off console output.");
@@ -235,6 +252,7 @@ void Logger::setConsoleOutputEnabled(bool enabled)
 
 void Logger::setLogLevel(Logger::ErrorClass errorClass)
 {
+    std::unique_lock<std::mutex> lock(m_messagesMutex);
     m_minErrorClass = errorClass;
 }
 
