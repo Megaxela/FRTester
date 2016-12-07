@@ -7,6 +7,8 @@
 
 #ifdef OS_LINUX
     #include <dirent.h>
+    #include <sys/stat.h>
+
 #endif
 #ifdef OS_WINDOWS
     #include "libraries/dirent/dirent.h"
@@ -57,4 +59,16 @@ std::string SystemTools::Path::join(const std::string &l, const std::string &r)
     {
         return (l + r);
     }
+}
+
+bool SystemTools::Path::fileExists(const std::string &p)
+{
+#ifdef OS_LINUX
+    struct stat buffer;
+    return (stat(p.c_str(), &buffer) == 0);
+#endif
+
+#ifdef OS_WINDOWS
+    #error Написать реализацию функции, ибо иначе не будет работать логгирование
+#endif
 }

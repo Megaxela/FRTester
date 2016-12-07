@@ -6,6 +6,7 @@
 #include <iostream>
 #include <sstream>
 #include <ctime>
+#include <include/Tools/SystemTools.h>
 
 Logger::Logger() :
     m_file(),
@@ -14,7 +15,7 @@ Logger::Logger() :
     m_messagesMutex(),
     m_mainThread(), // Will be run in constructor
     m_cond(),
-    m_logFilename("log.txt"),
+    m_logFilename("logs/log.txt"),
     m_outEnabled(true),
     m_minErrorClass(ErrorClass::Info)
 {
@@ -131,7 +132,28 @@ void Logger::mainThread()
 
         if (!m_logFilename.empty())
         {
-            m_file.open("log.txt", std::ios_base::out | std::ios_base::app);
+            m_file.open(m_logFilename, std::ios_base::out | std::ios_base::app);
+        }
+
+        if (m_file.is_open())
+        {
+            // Checking file size
+            uint32_t len = static_cast<uint32_t>(m_file.tellp());
+            if (len > 128 * 1024 * 1024)
+            {
+                m_file.close();
+                int i;
+                for (i = 0;
+                     i < 1024 && SystemTools::Path::fileExists(m_logFilename + "." + std::to_string(i));
+                     ++i)
+                {
+
+                }
+
+                std::rename(m_logFilename.c_str(), (m_logFilename + "." + std::to_string(i)).c_str());
+
+                m_file.open(m_logFilename, std::ios_base::out | std::ios_base::app);
+            }
         }
 
         while (!m_messages.empty())

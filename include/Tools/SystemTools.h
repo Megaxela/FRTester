@@ -72,7 +72,20 @@ namespace SystemTools
 
     namespace Path
     {
-        std::string join(const std::string& l, const std::string &r);
+        /**
+         * @brief Метод для соединения 2 путей.
+         * @param l Левая часть пути.
+         * @param r Правая часть пути.
+         * @return Результат конкатенирования.
+         */
+        std::string join(const std::string &l, const std::string &r);
+
+        /**
+         * @brief Метод для проверки наличия файла.
+         * @param p Путь к файлу.
+         * @return Есть ли файл?
+         */
+        bool fileExists(const std::string &p);
     }
 
 };
