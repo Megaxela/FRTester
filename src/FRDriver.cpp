@@ -303,7 +303,7 @@ bool FRDriver::resumePrinting(uint32_t password)
 {
     ByteArray arguments;
 
-    arguments.append(password);
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
 
     ByteArray data = sendCommand(Command::ContinuePrint,
                                  arguments);
