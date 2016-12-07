@@ -4,8 +4,8 @@
 
 #include <include/Windows/Controllers/CommandsControllers/PrintTextOperationsCommandsTabController.h>
 #include "include/Windows/Controllers/CommandsControllers/PrintTextCommandsTabController.h"
-
 #include "include/Windows/Controllers/CommandsTabController.h"
+#include "ui_mainwindow.h"
 #include <QTabWidget>
 
 PrintTextCommandsTabController::PrintTextCommandsTabController(Ui::MainWindow *ptr, QWidget *parent,
@@ -63,4 +63,9 @@ void PrintTextCommandsTabController::addTabController(QWidget *widget, AbstractT
 {
     m_tabControllers[widget] = el;
     el->init();
+}
+
+void PrintTextCommandsTabController::configureWidgets()
+{
+
 }

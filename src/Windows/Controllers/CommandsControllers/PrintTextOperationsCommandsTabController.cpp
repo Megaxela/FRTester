@@ -4,10 +4,11 @@
 
 #include "include/Windows/Controllers/CommandsControllers/PrintTextOperationsCommandsTabController.h"
 #include "include/Windows/Controllers/CommandsTabController.h"
-#include <QPushButton>
 #include <include/Tools/Logger.h>
 #include <include/DriverHolder.h>
-#include <QtWidgets/QMessageBox>
+#include "ui_mainwindow.h"
+#include <QMessageBox>
+#include <QPushButton>
 
 PrintTextOperationsCommandsTabController::PrintTextOperationsCommandsTabController(Ui::MainWindow *ptr, QWidget *parent,
                                                                                    AbstractTabController *parentController) :

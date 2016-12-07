@@ -48,7 +48,7 @@ void PrintCommandsTabController::addTabController(QWidget *widget, AbstractTabCo
 
 void PrintCommandsTabController::onCurrentTabChanged(int)
 {
-    QWidget* currentTab = m_ui->commnadsPrintTabWidget->currentWidget();
+    QWidget* currentTab = m_ui->commandsPrintTabWidget->currentWidget();
 
     if (m_previousTab != nullptr)
     {

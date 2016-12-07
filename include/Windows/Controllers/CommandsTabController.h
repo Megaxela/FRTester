@@ -6,7 +6,7 @@
 #define FRTESTER_COMMANDSTABCONTROLLER_H
 
 
-#include <QtCore/QVector>
+#include <QMap>
 #include "AbstractTabController.h"
 #include "FRDriver.h"
 

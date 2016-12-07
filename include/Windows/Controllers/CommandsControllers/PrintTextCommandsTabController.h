@@ -37,6 +37,8 @@ public:
 protected:
     void setupConnections() override;
 
+    void configureWidgets() override;
+
 private slots:
     void onCurrentTabChanged(int);
 

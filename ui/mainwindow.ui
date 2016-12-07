@@ -572,9 +572,9 @@
              <number>3</number>
             </property>
             <item>
-             <widget class="QTabWidget" name="commnadsPrintTabWidget">
+             <widget class="QTabWidget" name="commandsPrintTabWidget">
               <property name="currentIndex">
-               <number>0</number>
+               <number>1</number>
               </property>
               <widget class="QWidget" name="commandsPrintTextTab">
                <attribute name="title">
