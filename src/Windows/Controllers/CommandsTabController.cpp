@@ -83,7 +83,9 @@ void CommandsTabController::setLastStatus()
     setStatus(
             DriverHolder::driver().getLastError(),
             QString::fromStdString(
-                    FRDriver::Converters::errorToString(DriverHolder::driver().getLastError())
+                    FRDriver::Converters::errorToString(
+                            (int) DriverHolder::driver().getLastError()
+                    )
             )
     );
 }

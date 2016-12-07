@@ -602,7 +602,7 @@ std::string FRDriver::Converters::posModeToString(uint8_t mode)
     return "Неизвестный режим: " + std::to_string((int) mode);
 }
 
-std::string FRDriver::Converters::errorToString(FRDriver::ErrorCode error)
+std::string FRDriver::Converters::errorToString(int error)
 {
     auto pos = errorString.end();
     if ((pos = errorString.find((int) error)) != errorString.end())

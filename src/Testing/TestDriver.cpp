@@ -48,7 +48,7 @@ ByteArray TestDriver::sendCommand(const FRDriver::Command &c, const ByteArray &a
         Log("Команда выполнилась с ошибкой №" +
             std::to_string((int) getLastError()) +
             " - " +
-            FRDriver::Converters::errorToString(getLastError()))
+            FRDriver::Converters::errorToString((int) getLastError()))
     }
 
     for (auto trigger : m_currentTriggers)

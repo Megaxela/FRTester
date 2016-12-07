@@ -47,6 +47,20 @@ cdef extern from "../include/FRDriver.h":
     cdef cppclass InterfacePtr:
         PhysicalInterface* get()
 
+cdef extern from "../include/FRDriver.h" namespace "FRDriver":
+    cdef cppclass Converters:
+        @staticmethod
+        string posModeToString(uint8_t mode)
+
+        @staticmethod
+        string errorToString(int error)
+
+        @staticmethod
+        string posSubModeToString(uint8_t subMode)
+
+        @staticmethod
+        string lastPrintResultToString(uint8_t result)
+
 cdef extern from "../include/FRDriver.h":
     cdef cppclass FRDriver:
         FRDriver()

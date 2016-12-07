@@ -108,7 +108,7 @@ public:
          * @param error Код ошибки.
          * @return Строковое представление ошибки.
          */
-        static std::string errorToString(ErrorCode error);
+        static std::string errorToString(int error);
 
         /**
          * @brief Функция для преобразования подрежима в строку.

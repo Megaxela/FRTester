@@ -1,4 +1,23 @@
+cdef class PyConverters:
 
+    def __init__(self):
+        raise TypeError("You cant create this object.")
+
+    @staticmethod
+    def pos_mode_to_string(mode):
+        return FRDriver.Converters.posModeToString(mode)
+
+    @staticmethod
+    def error_to_string(error):
+        return FRDriver.Converters.errorToString(error)
+
+    @staticmethod
+    def pos_sub_mode_to_string(subMode):
+        return FRDriver.Converters.posSubModeToString(subMode)
+
+    @staticmethod
+    def last_print_result_to_string(result):
+        return FRDriver.Converters.lastPrintResultToString(result)
 
 cdef class PyFRDriver:
 
