@@ -331,22 +331,20 @@ public:
     /**
      * @brief Короткий запрос состояния.
      * @param password Пароль кассира.
-     * @return Результат. Верет, только если
-     * последняя ошибка равна ErrorCode::NoError.
+     * @return Результат.
      */
     ShortState shortStateRequest(uint32_t password);
 
     /**
      * @brief Полный запрос состояния.
      * @param password Пароль кассира.
-     * @return Результат. Верен, только если
-     * последняя ошибка равна ErrorCode::NoError
+     * @return Результат.
      */
     FullState fullStateRequest(uint32_t password);
 
     /**
      * @brief Метод для проверки наличия соединения.
-     * @return
+     * @return Есть ли соединение.
      */
     bool checkConnection();
 
@@ -399,8 +397,7 @@ public:
      * @param table Таблица
      * @param row Ряд (строка)
      * @param field Поле (столбец)
-     * @return
-     * @todo Разобраться, что должен этот метод возвращать.
+     * @return Строковое значение таблицы
      */
     std::string readTable(uint32_t password,
                           uint8_t table,
