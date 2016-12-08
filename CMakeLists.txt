@@ -3,7 +3,7 @@ project(FRTester)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/../${CMAKE_PROJECT_NAME}_executable")
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS "-pthread -D_hypot=hypot")
+set(CMAKE_CXX_FLAGS "-pthread -D_hypot=hypot -pg")
 
 include_directories(${CMAKE_INCLUDE_PATH})
 link_directories(${CMAKE_LIBRARY_PATH})
@@ -72,8 +72,8 @@ set(SOURCE_FILES main.cpp
         include/Windows/MainWindow.h
         src/DriverHolder.cpp
         include/DriverHolder.h
-        src/Windows/Controllers/ConnectTabController.cpp
-        include/Windows/Controllers/ConnectTabController.h
+        src/Windows/ConnectControllers/ConnectCOMTabController.cpp
+        include/Windows/Controllers/ConnectControllers/ConnectCOMTabController.h
         src/Windows/Controllers/AbstractTabController.cpp
         include/Windows/Controllers/AbstractTabController.h
         src/Windows/Controllers/CommandsTabController.cpp
@@ -122,7 +122,7 @@ set(SOURCE_FILES main.cpp
         include/TestDriverHolder.h
         src/Windows/Controllers/SettingsController.cpp
         include/Windows/Controllers/SettingsController.h
-        src/Windows/Controllers/CommandsControllers/PrintCommandsTabController.cpp include/Windows/Controllers/CommandsControllers/PrintCommandsTabController.h src/Windows/Controllers/CommandsControllers/PrintTextCommandsTabController.cpp include/Windows/Controllers/CommandsControllers/PrintTextCommandsTabController.h src/Windows/Controllers/CommandsControllers/PrintTextOperationsCommandsTabController.cpp include/Windows/Controllers/CommandsControllers/PrintTextOperationsCommandsTabController.h)
+        src/Windows/Controllers/CommandsControllers/PrintCommandsTabController.cpp include/Windows/Controllers/CommandsControllers/PrintCommandsTabController.h src/Windows/Controllers/CommandsControllers/PrintTextCommandsTabController.cpp include/Windows/Controllers/CommandsControllers/PrintTextCommandsTabController.h src/Windows/Controllers/CommandsControllers/PrintTextOperationsCommandsTabController.cpp include/Windows/Controllers/CommandsControllers/PrintTextOperationsCommandsTabController.h src/Implementation/TCPInterface.cpp include/Implementation/TCPInterface.h src/Tools/NetworkTools.cpp include/Tools/NetworkTools.h src/Tools/IPv4Address.cpp include/Tools/IPv4Address.h src/Windows/ConnectTabController.cpp include/Windows/Controllers/ConnectTabController.h src/Windows/RootController.cpp include/Windows/Controllers/RootController.h)
 
 add_executable(FRTester
         ${SOURCE_FILES}

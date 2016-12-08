@@ -28,13 +28,18 @@ public:
      * @param parentController Указатель на родительский контроллер.
      */
     PrintTextOperationsCommandsTabController(Ui::MainWindow* ptr,
-                                             QWidget* parent,
-                                             AbstractTabController* parentController);
+                                             QWidget* parent);
 
     /**
      * @brief Деструктор.
      */
     ~PrintTextOperationsCommandsTabController();
+
+    /**
+     * @brief Метод для получения родителя - контроллера команд.
+     * @return Указатель на контроллер.
+     */
+    CommandsTabController* commandsTabControllerParent() const;
 
 protected:
     /**
@@ -53,13 +58,6 @@ private slots:
      * печати.
      */
     void onContinuePrintPressed();
-
-private:
-    Ui::MainWindow* m_ui;
-
-    QWidget* m_parent;
-
-    CommandsTabController* m_parentController;
 };
 
 

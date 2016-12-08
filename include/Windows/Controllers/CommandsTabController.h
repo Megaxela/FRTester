@@ -26,7 +26,9 @@ public:
      * @param ptr Указатель на UI.
      * @param parent Указатель на родительский объект.
      */
-    CommandsTabController(Ui::MainWindow* ptr, QWidget* parent);
+    CommandsTabController(Ui::MainWindow* ptr,
+                          QWidget* parent,
+                          QTabWidget* tabWidget);
 
     /**
      * @brief Деструктор.
@@ -62,19 +64,6 @@ protected:
      */
     void configureWidgets() override;
 
-private slots:
-    void onCurrentTabChanged(int);
-
-private:
-    void addTabController(QWidget* widget, AbstractTabController* el);
-
-    QMap<QWidget*, AbstractTabController*> m_tabControllers;
-
-    QWidget* m_previousTab;
-
-    Ui::MainWindow* m_ui;
-
-    QWidget* m_parent;
 };
 
 

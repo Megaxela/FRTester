@@ -10,12 +10,9 @@
 #include <QMessageBox>
 #include <QPushButton>
 
-PrintTextOperationsCommandsTabController::PrintTextOperationsCommandsTabController(Ui::MainWindow *ptr, QWidget *parent,
-                                                                                   AbstractTabController *parentController) :
-    AbstractTabController(),
-    m_ui(ptr),
-    m_parent(parent),
-    m_parentController(dynamic_cast<CommandsTabController*>(parentController))
+PrintTextOperationsCommandsTabController::PrintTextOperationsCommandsTabController(Ui::MainWindow *ptr,
+                                                                                   QWidget *parent) :
+    AbstractTabController(ptr, parent)
 {
 
 }
@@ -28,7 +25,7 @@ PrintTextOperationsCommandsTabController::~PrintTextOperationsCommandsTabControl
 void PrintTextOperationsCommandsTabController::setupConnections()
 {
     // Кнопка продолжения печати
-    connect(m_ui->commandsPrintTextOperationsContinuePrintPushButton,
+    connect(ui()->commandsPrintTextOperationsContinuePrintPushButton,
             &QPushButton::clicked,
             this,
             &PrintTextOperationsCommandsTabController::onContinuePrintPressed);
@@ -48,16 +45,21 @@ void PrintTextOperationsCommandsTabController::onContinuePrintPressed()
     if (!DriverHolder::driver().checkConnection())
     {
         Error("Соединение с ФР отсутствует.");
-        QMessageBox::critical(m_parent, "Ошибка", "Соединение с ФР отсутствует.");
+        QMessageBox::critical(parentWidget(), "Ошибка", "Соединение с ФР отсутствует.");
         return;
     }
 
     ExcessLog("Запрос на ФР.");
 
-    if (!DriverHolder::driver().resumePrinting(m_parentController->password()))
+    if (!DriverHolder::driver().resumePrinting(commandsTabControllerParent()->password()))
     {
         Error("Не удалось продолжить печать.");
     }
 
-    m_parentController->setLastStatus();
+    commandsTabControllerParent()->setLastStatus();
+}
+
+CommandsTabController *PrintTextOperationsCommandsTabController::commandsTabControllerParent() const
+{
+    return (CommandsTabController*) parentController()->parentController()->parentController();
 }

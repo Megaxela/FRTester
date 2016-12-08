@@ -2,7 +2,7 @@
 // Created by megaxela on 17.11.16.
 //
 
-#include "Windows/Controllers/ConnectTabController.h"
+#include "include/Windows/Controllers/ConnectControllers/ConnectCOMTabController.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
 #include <iostream>
@@ -12,7 +12,7 @@
 #include <Implementation/DefaultProtocol.h>
 #include <include/TestDriverHolder.h>
 
-ConnectTabController::ConnectTabController(Ui::MainWindow *ptr, QWidget* parent) :
+ConnectCOMTabController::ConnectCOMTabController(Ui::MainWindow *ptr, QWidget* parent) :
     AbstractTabController(),
     m_comInterface(std::make_shared<COMInterface>()),
     m_parent(parent)
@@ -31,18 +31,18 @@ ConnectTabController::ConnectTabController(Ui::MainWindow *ptr, QWidget* parent)
     m_comInterface->setByteSendTime(0);
 }
 
-ConnectTabController::~ConnectTabController()
+ConnectCOMTabController::~ConnectCOMTabController()
 {
 
 }
 
-void ConnectTabController::setupConnections()
+void ConnectCOMTabController::setupConnections()
 {
     // Кнопка "Соединиться"
-    connect(m_ui->connectionConnectPushButton, &QPushButton::clicked, this, &ConnectTabController::onConnecting);
+    connect(m_ui->connectionConnectPushButton, &QPushButton::clicked, this, &ConnectCOMTabController::onConnecting);
 }
 
-void ConnectTabController::configureWidgets()
+void ConnectCOMTabController::configureWidgets()
 {
     // Добавление элементов в скорости
     {
@@ -80,7 +80,7 @@ void ConnectTabController::configureWidgets()
     }
 }
 
-void ConnectTabController::onConnecting()
+void ConnectCOMTabController::onConnecting()
 {
     QString name = m_ui->connectionTabWidget->currentWidget()->objectName();
 
@@ -90,7 +90,7 @@ void ConnectTabController::onConnecting()
     }
 }
 
-void ConnectTabController::connectCOM()
+void ConnectCOMTabController::connectCOM()
 {
     QString deviceName = m_ui->connectionCOMDeviceLineEdit->text();
     QString baudRate = m_ui->connectionCOMBaudRateComboBox->currentText();

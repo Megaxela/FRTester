@@ -33,16 +33,11 @@ public:
      */
     ~MainWindow();
 
-private slots:
-    void onCurrentTabChanged(int index);
-
 private:
-    void addTabController(QWidget* tabWidget, AbstractTabController* controller);
-
-    QMap<QWidget*, AbstractTabController*> m_tabControllers;
-    QWidget* m_previousTab;
 
     Ui::MainWindow* m_ui;
+
+    RootController* m_rootController;
 };
 
 

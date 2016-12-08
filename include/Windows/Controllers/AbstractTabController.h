@@ -5,7 +5,14 @@
 #ifndef FRTESTER_ABSTRACTTABCONTROLLER_H
 #define FRTESTER_ABSTRACTTABCONTROLLER_H
 
-#include <QtCore/QObject>
+#include <QObject>
+#include <QMap>
+#include <QTabWidget>
+
+namespace Ui
+{
+    class MainWindow;
+}
 
 /**
  * @brief Класс, контроллирующий вкладку
@@ -20,7 +27,9 @@ public:
     /**
      * @brief Конструктор.
      */
-    AbstractTabController();
+    explicit AbstractTabController(Ui::MainWindow* ptr,
+                                   QWidget* parent,
+                                   QTabWidget* tabWidget=nullptr) ;
 
     /**
      * @brief Виртуальный деструктор.
@@ -44,7 +53,34 @@ public:
      */
     virtual void init();
 
+    /**
+     * @brief Метод для получения родительского контроллера.
+     * @return Указатель на родительский контроллер.
+     */
+    AbstractTabController* parentController() const;
+
+    /**
+     * @brief Метод для получения UI.
+     * @return Указатель на пользовательский интерфейс.
+     */
+    Ui::MainWindow* ui() const;
+
+    /**
+     * @brief Метод для получения родительского виджета.
+     * @return Родительский виджет.
+     */
+    QWidget* parentWidget() const;
+
+    /**
+     * @brief Метод для получения подконтрольного виджета.
+     * @return
+     */
+    QTabWidget* tabWidget() const;
+
 protected:
+
+    void addTabController(QWidget* widget, AbstractTabController *controller);
+
     /**
      * @brief Метод для настройки соединений сигналов со слотами.
      */
@@ -54,6 +90,33 @@ protected:
      * @brief Метод для настройки виджетов.
      */
     virtual void configureWidgets() = 0;
+
+private slots:
+    void onCurrentTabChanged(int);
+
+private:
+    /**
+     * @brief Метод для настройки локальных соединений.
+     */
+    void setupLocalConnections();
+
+    /**
+     * @brief Метод для установки родительского контроллера.
+     * @param controller Родительский контроллер.
+     */
+    void setParentController(AbstractTabController* controller);
+
+    QMap<QWidget*, AbstractTabController*> m_tabControllers;
+
+    QWidget* m_previousTab;
+
+    Ui::MainWindow* m_ui;
+
+    QWidget* m_parent;
+
+    QTabWidget* m_tabWidget;
+
+    AbstractTabController* m_controllerParent;
 };
 
 

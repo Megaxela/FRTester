@@ -27,7 +27,9 @@ public:
      * @param parent Указатель на родительский виджет.
      * @param parentController Указатель на родительский контроллер.
      */
-    PrintTextCommandsTabController(Ui::MainWindow* ptr, QWidget* parent, AbstractTabController* parentController);
+    PrintTextCommandsTabController(Ui::MainWindow* ptr,
+                                   QWidget* parent,
+                                   QTabWidget* parentController);
 
     /**
      * @brief Деструктор.
@@ -39,21 +41,6 @@ protected:
 
     void configureWidgets() override;
 
-private slots:
-    void onCurrentTabChanged(int);
-
-private:
-    void addTabController(QWidget* widget, AbstractTabController* el);
-
-    Ui::MainWindow* m_ui;
-
-    QWidget* m_parent;
-
-    CommandsTabController* m_parentController;
-
-    QMap<QWidget*, AbstractTabController*> m_tabControllers;
-
-    QWidget* m_previousTab;
 };
 
 

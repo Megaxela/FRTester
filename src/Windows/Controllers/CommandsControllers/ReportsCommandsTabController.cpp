@@ -8,12 +8,8 @@
 #include "include/Windows/Controllers/CommandsControllers/ReportsCommandsTabController.h"
 
 ReportsCommandsTabController::ReportsCommandsTabController(Ui::MainWindow *ptr,
-                                                           QWidget *parent,
-                                                           AbstractTabController *parentController) :
-    AbstractTabController(),
-    m_ui(ptr),
-    m_parent(parent),
-    m_parentController(dynamic_cast<CommandsTabController*>(parentController))
+                                                           QWidget *parent) :
+    AbstractTabController(ptr, parent)
 {
 
 }
@@ -21,13 +17,13 @@ ReportsCommandsTabController::ReportsCommandsTabController(Ui::MainWindow *ptr,
 void ReportsCommandsTabController::setupConnections()
 {
     // Кнопка Z отчета
-    connect(m_ui->commandsReportsZReportPushButton,
+    connect(ui()->commandsReportsZReportPushButton,
             &QPushButton::clicked,
             this,
             &ReportsCommandsTabController::onZReportPressed);
 
     // Отрытие смены
-    connect(m_ui->commandsReportsOpenChangePushButton,
+    connect(ui()->commandsReportsOpenChangePushButton,
             &QPushButton::clicked,
             this,
             &ReportsCommandsTabController::onChangeOpenPressed);
@@ -47,19 +43,19 @@ void ReportsCommandsTabController::onZReportPressed()
     if (!DriverHolder::driver().checkConnection())
     {
         Error("Соединение с ФР отсутствует.");
-        QMessageBox::critical(m_parent, "Ошибка", "Соединение с ФР отсутствует.");
+        QMessageBox::critical(parentWidget(), "Ошибка", "Соединение с ФР отсутствует.");
         return;
     }
 
     ExcessLog("Запрос на ФР.");
     if (!DriverHolder::driver().shiftCloseReport(
-            m_parentController->password()
+            commandsTabControllerParent()->password()
     ))
     {
         Error("Не удалось сформировать Z отчет.");
     }
 
-    m_parentController->setLastStatus();
+    commandsTabControllerParent()->setLastStatus();
 }
 
 void ReportsCommandsTabController::onChangeOpenPressed()
@@ -75,10 +71,15 @@ void ReportsCommandsTabController::onChangeOpenPressed()
     }
 
     ExcessLog("Запрос на ФР.");
-    if (!DriverHolder::driver().openShift(m_parentController->password()))
+    if (!DriverHolder::driver().openShift(commandsTabControllerParent()->password()))
     {
         Error("Не удалось открыть смену.");
     }
 
-    m_parentController->setLastStatus();
+    commandsTabControllerParent()->setLastStatus();
+}
+
+CommandsTabController *ReportsCommandsTabController::commandsTabControllerParent() const
+{
+    return (CommandsTabController*) parentController();
 }

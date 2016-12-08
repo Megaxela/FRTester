@@ -14,26 +14,45 @@
 #include "Windows/Controllers/CommandsTabController.h"
 #include "ui_mainwindow.h"
 
-CommandsTabController::CommandsTabController(Ui::MainWindow *ptr, QWidget* parent) :
-        AbstractTabController(),
-        m_ui(ptr),
-        m_parent(parent),
-        m_previousTab(nullptr)
+CommandsTabController::CommandsTabController(Ui::MainWindow *ptr,
+                                             QWidget* parent,
+                                             QTabWidget* tabWidget) :
+        AbstractTabController(ptr, parent, tabWidget)
 {
-    addTabController(m_ui->commandsStatesTab, new StateCommandsTabController(ptr, parent, this));
-    addTabController(m_ui->commandsReportsTab, new ReportsCommandsTabController(ptr, parent, this));
-    addTabController(m_ui->commandsRegistrationTab, new RegisterCommandsTabController(ptr, parent, this));
-    addTabController(m_ui->commandsPrintTab, new PrintCommandsTabController(ptr, parent, this));
+    addTabController(
+            ui()->commandsStatesTab,
+            new StateCommandsTabController(
+                    ptr,
+                    parent
+            )
+    );
+    addTabController(
+            ui()->commandsReportsTab,
+            new ReportsCommandsTabController(
+                    ptr,
+                    parent
+            )
+    );
+    addTabController(
+            ui()->commandsRegistrationTab,
+            new RegisterCommandsTabController(
+                    ptr,
+                    parent
+            )
+    );
+    addTabController(
+            ui()->commandsPrintTab,
+            new PrintCommandsTabController(
+                    ptr,
+                    parent,
+                    ui()->commandsPrintTabWidget
+            )
+    );
 }
 
 CommandsTabController::~CommandsTabController()
 {
-    for (auto el : m_tabControllers)
-    {
-        delete el;
-    }
 
-    m_tabControllers.clear();
 }
 
 void CommandsTabController::setupConnections()
@@ -47,12 +66,6 @@ void CommandsTabController::setupConnections()
 void CommandsTabController::configureWidgets()
 {
 
-}
-
-void CommandsTabController::addTabController(QWidget* widget, AbstractTabController *el)
-{
-    m_tabControllers[widget] = el;
-    el->init();
 }
 
 uint32_t CommandsTabController::password() const

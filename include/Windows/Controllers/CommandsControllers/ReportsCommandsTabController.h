@@ -13,8 +13,9 @@ class ReportsCommandsTabController : public AbstractTabController
 {
 public:
     ReportsCommandsTabController(Ui::MainWindow* ptr,
-                                 QWidget* parent,
-                                 AbstractTabController* parentController);
+                                 QWidget* parent);
+
+    CommandsTabController* commandsTabControllerParent() const;
 
 protected:
     void setupConnections() override;
@@ -25,13 +26,6 @@ private slots:
     void onZReportPressed();
 
     void onChangeOpenPressed();
-
-private:
-    Ui::MainWindow* m_ui;
-
-    QWidget* m_parent;
-
-    CommandsTabController* m_parentController;
 };
 
 

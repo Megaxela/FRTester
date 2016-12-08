@@ -30,7 +30,7 @@ public:
      */
     PrintCommandsTabController(Ui::MainWindow* ptr,
                                QWidget* parent,
-                               AbstractTabController* parentController=nullptr);
+                               QTabWidget* tabWidget);
 
     /**
      * @brief Деструктор.
@@ -59,14 +59,6 @@ private:
     void addTabController(QWidget* widget, AbstractTabController* el);
 
     Ui::MainWindow* m_ui;
-
-    QWidget* m_parent;
-
-    CommandsTabController* m_parentController;
-
-    QMap<QWidget*, AbstractTabController*> m_tabControllers;
-
-    QWidget* m_previousTab;
 };
 
 
