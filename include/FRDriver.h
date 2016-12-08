@@ -15,6 +15,9 @@
  * @brief Класс, описывающий драйвер для работы с
  * Фискальным Регистратором напрямую через указанный
  * интерфейс с использованием указанного протокола.
+ * Если команда возвращает некие данные (не успешность
+ * своего выполнения) - тогда данные считаются валидными
+ * только в случае, если последняя ошибка == 0x00.
  */
 class FRDriver
 {
@@ -166,6 +169,52 @@ public:
         uint8_t numberOfReRegistration;             //< Количество перерегистраций
         uint8_t inn[6];                             //< ИНН
         uint16_t factoryNumberUpper;                //< Старшее слово заводского номера
+    };
+
+    /**
+     * @brief Результат запроса параметров обмена.
+     */
+    struct ExchangeConfiguration
+    {
+        union{
+            uint8_t baudRateCode;  //< Код скорости обмена
+            uint8_t tcpPortNumber; //< Номер TCP порта
+        };
+
+        uint8_t byteTimeout;       //< Таймаут приема байта
+    };
+
+    /**
+     * @brief Результат запроса параметров шрифта.
+     */
+    struct FontConfiguration
+    {
+        uint16_t printAreaWidthPixels;      //< Ширина области печати в точках
+        uint8_t symbolWidthWithInterval;    //< Ширина символа с учетом межсимвольного интервала в точках
+        uint8_t symbolHeightWithInterval;   //< Высота символа с учетом межстрочного интервала в точках
+        uint8_t numberOfFonts;              //< Количество шрифтов в ККТ
+    };
+
+    /**
+     * @brief Результат запроса структуры таблицы.
+     */
+    struct TableStructure
+    {
+        std::string name;       //< Название таблицы
+        uint16_t numberOfRows;  //< Количество рядов
+        uint8_t numberOfCols;   //< Количество полей
+    };
+
+    /**
+     * @brief Результат запроса структуры поля.
+     */
+    struct FieldStructure
+    {
+        std::string name;
+        uint8_t fieldType;
+        uint8_t numberOfBytes;
+        std::string maxValue;
+        std::string minValue;
     };
 
     /**
@@ -365,6 +414,287 @@ public:
      */
     bool cancelCheck(uint32_t password);
 
+    /**
+     * @brief Метод для чтения параметров обмена
+     * @param sysAdmPassword Пароль системного администратора.
+     * @param portNumber Номер порта.
+     * @return Структура с параметрами обмена
+     */
+    FRDriver::ExchangeConfiguration readExchangeConfiguration(uint32_t sysAdmPassword,
+                                                              uint8_t portNumber);
+
+    /**
+     * @brief Метод для произведения технологического обнуления.
+     * @return Успешность выполнения команды.
+     */
+    bool technologicalReset();
+
+    /**
+     * @brief Метод для печати стандартной строки.
+     * @param password Пароль кассира.
+     * @param flags Флаги.<br>
+     * 0 бит - операционный журнал.<br>
+     * 1 бит - чековая лента.<br>
+     * 2 бит - подкладной документ.<br>
+     * 3 бит - слип-чек.<br>
+     * 4 бит - ничего.
+     * 5 бит - ничего.
+     * 6 бит - перенос строк.<br>
+     * 7 бит - отложенная печать.
+     * @param print Строка, длиной от 0 до 200 байт.
+     * @return Успешность выполнения команды.
+     */
+    bool standardStringPrint(uint32_t password,
+                             uint8_t flags,
+                             const std::string &print);
+
+    /**
+     * @brief Метод для печати заголовка документа.
+     * @param password Пароль кассира.
+     * @param document Наименование документа.
+     * @param documentNumber Номер документа.
+     * @return Сквозной номер документа.
+     */
+    uint16_t documentHeaderPrint(uint32_t password,
+                                 const std::string &document,
+                                 uint16_t documentNumber);
+
+    /**
+     * @brief Метод для запроса денежного Ф регистра.
+     * @param password Пароль кассира.
+     * @param registerNumber Номер регистра.
+     * @return 6 байт с содержимым регистра.
+     */
+    uint64_t currencyRegisterRequest(uint32_t password, uint8_t registerNumber);
+
+    /**
+     * @brief Метод для записи таблицы.
+     * @param sysPassword Пароль системного администратора.
+     * @param tableNumber Таблица
+     * @param row Ряд
+     * @param field Поле
+     * @param value Значение до 40 или до 246 байт
+     * @return Успешность выполнения команды.
+     */
+    bool writeTable(uint32_t sysPassword,
+                    uint8_t tableNumber,
+                    uint16_t row,
+                    uint8_t field,
+                    const std::string &value);
+
+    /**
+     * @brief Метод для программирования времени.
+     * @param sysPassword Пароль системного администратора.
+     * @param h Часы.
+     * @param m Минуты.
+     * @param s Секунды.
+     * @return Успешность выполнения команды.
+     */
+    bool timeProgramming(uint32_t sysPassword,
+                         uint8_t h,
+                         uint8_t m,
+                         uint8_t s);
+
+    /**
+     * @brief Метод для программироавния даты.
+     * @param sysPassword Пароль системного администратора.
+     * @param day День.
+     * @param month Месяц.
+     * @param year Год.
+     * @return Успешность выполнения команды.
+     */
+    bool dateProgramming(uint32_t sysPassword,
+                         uint8_t day,
+                         uint8_t month,
+                         uint8_t year);
+
+    /**
+     * @brief Метод для подтверждения даты.
+     * @param sysPassword Пароль системного администратора.
+     * @param day День.
+     * @param month Месяц.
+     * @param year Год.
+     * @return Успешность выполнения команды.
+     */
+    bool dateConfirm(uint32_t sysPassword,
+                     uint8_t day,
+                     uint8_t month,
+                     uint8_t year);
+
+    /**
+     * @brief Метод для инициализации таблиц начальными
+     * значениями.
+     * @param sysPassword Пароль системного администратора.
+     * @return Успешность выполнения команды.
+     */
+    bool tableValuesInit(uint32_t sysPassword);
+
+    /**
+     * @brief Метод для отрезки чека.
+     * @param sysPassword Пароль кассира.
+     * @param cutType Тип отрезки. <br>
+     * 0 - полная.<br>
+     * 1 - неполная.<br>
+     * @return Успешность выполнения команды.
+     */
+    bool cutCheck(uint32_t sysPassword, uint8_t cutType);
+
+    /**
+     * @brief Метод для прочтения параметров шрифта.
+     * @param sysPassword Пароль системного администратора.
+     * @param fontNumber Номер шрифта.
+     * @return Конфигурация шрифта.
+     */
+    FontConfiguration readFontConfiguration(uint32_t sysPassword,
+                                            uint8_t fontNumber);
+
+    /**
+     * @brief Метод для выполнения общего гашения.
+     * @param sysPassword Пароль системного администратора.
+     * @return Успешность выполнения команды.
+     */
+    bool totalExtinction(uint32_t sysPassword);
+
+    /**
+     * @brief Метод для выполнения протяжки (прокрутки)
+     * @param password Пароль кассира.
+     * @param flags Флаги.<br>
+     * 0 бит - операционный журнал.<br>
+     * 1 бит - чековая лента.<br>
+     * 2 бит - прикладной документ.
+     * @param numberOfLines
+     * @return Успешность выполнения команды.
+     */
+    bool scrolling(uint32_t password,
+                   uint8_t flags,
+                   uint8_t numberOfLines);
+
+    /**
+     * @brief Метод для запрашивания структуры таблицы.
+     * @param sysPassword Проль системного администратора.
+     * @param tableNumber Номер таблицы.
+     * @return Структура таблицы.
+     */
+    TableStructure tableStructureRequest(uint32_t sysPassword,
+                                         uint8_t tableNumber);
+
+    /**
+     * @brief Метод для запрашивания структуры поля.
+     * @param sysPassword Пароль системного администратора.
+     * @param table Номер таблицы.
+     * @param field Номер поля.
+     * @return Структура поля.
+     */
+    FieldStructure fieldStructureRequest(uint32_t sysPassword,
+                                         uint8_t table,
+                                         uint8_t field);
+
+    /**
+     * @brief Метод для печати страки с заданными шрифтом.
+     * @param password Пароль кассира.
+     * @param flags Флаги.<br>
+     * 0 бит - операционный журнал.<br>
+     * 1 бит - чековая лента.<br>
+     * 2 бит - подкладной документ.<br>
+     * 3 бит - слип-чек.<br>
+     * 4 бит - ничего.
+     * 5 бит - ничего.
+     * 6 бит - перенос строк.<br>
+     * 7 бит - отложенная печать.
+     * @param fontNumber Номер шрифта.
+     * @param string Печатаемые символы.
+     * @return Успешность выполнения команды.
+     */
+    bool fontStringPrint(uint32_t password,
+                         uint8_t flags,
+                         uint8_t fontNumber,
+                         const std::string &string);
+
+    /**
+     * @brief Метод для суточного отчета без гашения.
+     * @param password Пароль администратора, системного
+     * администратора или старшего кассира.
+     * @return Успешность выполнения команды.
+     */
+    bool shiftReportWithoutExtinction(uint32_t password);
+
+    /**
+     * @brief Метод для отчета по секциям.
+     * @param password Пароль администратора, системного
+     * администратора или старшего кассира.
+     * @return Успешность выполнения команды.
+     */
+    bool sectionsReport(uint32_t password);
+
+    /**
+     * @brief Метод для отчета по налогами.
+     * @param password Пароль администратора, системного
+     * администратора или старшего кассира.
+     * @return Успешность выполнения команды.
+     */
+    bool taxesReport(uint32_t password);
+
+    /**
+     * @brief Метод для отчета по кассирам.
+     * @param password Пароль администратора, системного
+     * администратора или старшего кассира.
+     * @return Успешность выполнения команды.
+     */
+    bool cashierReport(uint32_t password);
+
+    /**
+     * @brief Метод для внесения.
+     * @param password Пароль кассира.
+     * @param sum Сумма (5 байт).
+     * @return Сквозной номер документа.
+     */
+    uint16_t payin(uint32_t password, uint64_t sum);
+
+    /**
+     * @brief Метод для выплаты.
+     * @param password Пароль кассира.
+     * @param sum Сумма (5 байт).
+     * @return Сквозной номер документа.
+     */
+    uint16_t payout(uint32_t password, uint64_t sum);
+
+    /**
+     * @brief Метод для печати клише.
+     * @param password Пароль кассира.
+     * @return Успешность выполнения команды.
+     */
+    bool printCliches(uint32_t password);
+
+    /**
+     * @brief Метод для печати конца документа.
+     * @param password Пароль кассира.
+     * @param printAds Печатать ли рекламный текст. (0 - нет, 1 - да).
+     * @return Успешность выполнения операции.
+     */
+    bool printDocumentEnd(uint32_t password, uint8_t printAds);
+
+    /**
+     * @brief Метод для печати рекламного текста.
+     * @param password Пароль кассира.
+     * @return Успешность выполнения операции.
+     */
+    bool printAds(uint32_t password);
+
+    /**
+     * @brief Метод для ввода заводского номера с любым паролем.
+     * @param password Пароль. Предполагается использование пароля 0.
+     * @param factoryNumber Заводской номер.
+     * @return Успешность выполнения операции.
+     */
+    bool enterFactoryNumber(uint32_t password, uint32_t factoryNumber);
+
+    /**
+     * @brief Метод для ввода заводского номера с паролем 0.
+     * @param factoryNumber Заводской номер.
+     * @return Успешность выполнения операции.
+     */
+    bool enterFactoryNumber(uint32_t factoryNumber);
+
 
 protected:
     /**
@@ -372,18 +702,44 @@ protected:
      */
     enum class Command
     {
-          Beep = 0x13                       //< Сигнал
-        , Sell = 0x80                       //< Продажа
-        , ShortStateRequest = 0x10          //< Короткий запрос состояния
+        ShortStateRequest = 0x10          //< Короткий запрос состояния
         , FullStateRequest = 0x11           //< Полный запрос состояния
-        , OpenShift = 0xE0                  //< Открытие смены
-        , ShiftCloseReport = 0x41           //< Отчет о закрытии смены
-        , ContinuePrint = 0xB0              //< Продолжить печать
-        , NullifyCheck = 0x88               //< Аннулирование чека
-        , CloseCheck = 0x85                 //< Обычное закрытие чека
+        , Beep = 0x13                       //< Сигнал
+        , ReadExchangeConfiguration = 0x15  //< Чтение параметров обмена
+        , TechReset = 0x16                  //< Технологическое обнуление
+        , StandardStringPrint = 0x17        //< Печать стандартной строки
+        , DocumentHeaderPrint = 0x18        //< Печать заголовка документа
+        , CurrencyRegisterRequest = 0x1A    //< Запрос денежного регистра
         , OperatingRegisterRequest = 0x1B   //< Запрос операционного регистра
-        , CancelCheck = 0x88                //< Аннулирование чека
+        , WriteTable = 0x1E                 //< Запись таблицы
         , ReadTable = 0x1F                  //< Чтение таблицы
+        , TimeProgramming = 0x21            //< Программирование времени
+        , DateProgramming = 0x22            //< Программирование даты
+        , DateConfirm = 0x23                //< Подтверждение программирования даты
+        , TableValuesInit = 0x24            //< Инициализация таблиц начальными значениями
+        , CutCheck = 0x25                   //< Отрезка чека
+        , ReadFontConfiguration = 0x26      //< Чтение параметров шрифта
+        , TotalExtinction = 0x27            //< Полное гашение
+        , Scrolling = 0x28                  //< Протяжка
+        , TableStructureRequest = 0x2D      //< Запрос структуры таблицы
+        , ShiftReportNoExtinction = 0x40    //< Суточный отчет без гашения
+        , ShiftCloseReport = 0x41           //< Отчет о закрытии смены
+        , Sell = 0x80                       //< Продажа
+        , CloseCheck = 0x85                 //< Обычное закрытие чека
+        , CancelCheck = 0x88                //< Аннулирование чека
+        , ContinuePrint = 0xB0              //< Продолжить печать
+        , OpenShift = 0xE0                  //< Открытие смены
+        , FieldStructureRequest = 0x2E      //< Запрос структуры поля
+        , FontStringPrint = 0x40            //< Печать строки данным шрифтом
+        , SectionsReport = 0x42             //< Отчет по секциям
+        , TaxesReport = 0x43                //< Отчет по налогам
+        , CashierReport = 0x44              //< Отчет по кассирам
+        , PayIn = 0x50                      //< Внесение
+        , PayOut = 0x51                     //< Выплата
+        , PrintCliches = 0x52               //< Печать клише
+        , DocumentEndPrint = 0x53           //< Конец Документа (печать)
+        , PrintAds = 0x54                   //< Печать рекламного текста
+        , EnterFactoryNumber = 0x55         //< Ввод заводского номера
     };
 
     /**

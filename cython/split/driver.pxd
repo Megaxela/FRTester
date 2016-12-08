@@ -4,6 +4,7 @@ ctypedef unsigned char uint8_t
 ctypedef unsigned short uint16_t
 ctypedef unsigned int uint32_t
 ctypedef unsigned long long uint64_t
+ctypedef bint bool
 
 cdef extern from "../include/Abstract/PhysicalInterface.h":
     cdef cppclass PhysicalInterface:
@@ -82,6 +83,34 @@ cdef extern from "../include/FRDriver.h":
         uint16_t operatingRegisterRequest(uint32_t password, uint8_t registerNumber)
         string readTable(uint32_t password, uint8_t table, uint16_t row, uint8_t field)
         bint cancelCheck(uint32_t password)
+        ExchangeConfiguration readExchangeConfiguration(uint32_t sysAdmPassword, uint8_t portNumber)
+        bool technologicalReset()
+        bool standardStringPrint(uint32_t password, uint8_t flags, const string &p)
+        uint16_t documentHeaderPrint(uint32_t password, const string &document, uint16_t documentNumber)
+        uint64_t currencyRegisterRequest(uint32_t password, uint8_t registerNumber)
+        bool writeTable(uint32_t sysPassword, uint8_t tableNumber, uint16_t row, uint8_t field, const string &value);
+        bool timeProgramming(uint32_t sysPassword, uint8_t h, uint8_t m, uint8_t s);
+        bool dateProgramming(uint32_t sysPassword, uint8_t day, uint8_t month, uint8_t year);
+        bool dateConfirm(uint32_t sysPassword, uint8_t day, uint8_t month, uint8_t year);
+        bool tableValuesInit(uint32_t sysPassword);
+        bool cutCheck(uint32_t sysPassword, uint8_t cutType);
+        FontConfiguration readFontConfiguration(uint32_t sysPassword, uint8_t fontNumber);
+        bool totalExtinction(uint32_t sysPassword);
+        bool scrolling(uint32_t password, uint8_t flags, uint8_t numberOfLines);
+        TableStructure tableStructureRequest(uint32_t sysPassword, uint8_t tableNumber);
+        FieldStructure fieldStructureRequest(uint32_t sysPassword, uint8_t table, uint8_t field);
+        bool fontStringPrint(uint32_t password, uint8_t flags, uint8_t fontNumber, const string &string);
+        bool shiftReportWithoutExtinction(uint32_t password);
+        bool sectionsReport(uint32_t password);
+        bool taxesReport(uint32_t password);
+        bool cashierReport(uint32_t password);
+        uint16_t payin(uint32_t password, uint64_t sum);
+        uint16_t payout(uint32_t password, uint64_t sum);
+        bool printCliches(uint32_t password);
+        bool printDocumentEnd(uint32_t password, uint8_t printAds);
+        bool printAds(uint32_t password);
+        bool enterFactoryNumber(uint32_t password, uint32_t factoryNumber);
+        bool enterFactoryNumber(uint32_t factoryNumber);
 
 cdef extern from "../include/FRDriver.h" namespace "FRDriver":
     cdef enum ErrorCode:
@@ -180,5 +209,28 @@ cdef extern from "../include/FRDriver.h" namespace "FRDriver":
     cdef struct CheckResult:
         uint64_t change
         string url
+
+    cdef struct ExchangeConfiguration:
+        uint8_t baudRateCode;
+        uint8_t tcpPortNumber;
+        uint8_t byteTimeout;
+
+    cdef struct FontConfiguration:
+        uint16_t printAreaWidthPixels
+        uint8_t symbolWidthWithInterval
+        uint8_t symbolHeightWithInterval
+        uint8_t numberOfFonts
+
+    cdef struct TableStructure:
+        string name
+        uint16_t numberOfRows
+        uint8_t numberOfCols
+
+    cdef struct FieldStructure:
+        string name
+        uint8_t fieldType
+        uint8_t numberOfBytes
+        string maxValue
+        string minValue
 
 

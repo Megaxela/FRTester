@@ -119,9 +119,9 @@ ByteArray FRDriver::sendCommand(const FRDriver::Command &c, const ByteArray &arg
 
 void FRDriver::proceedResponse(const ByteArray &data, bool cashier)
 {
-    if (data.length() == 0)
+    if (data.length() < (cashier ? 3 : 2))
     {
-        Error("Попытка обработать ответ нулевой длины. Меняю последнюю ошибку на Unknown.");
+        Error("Попытка обработать ответ неверной длины. Меняю последнюю ошибку на Unknown.");
         m_lastErrorCode = ErrorCode::Unknown;
         return;
     }
@@ -412,6 +412,495 @@ std::string FRDriver::readTable(uint32_t password, uint8_t table, uint16_t row, 
     return std::string((const char*) (data.data() + 2), data.length() - 2);
 }
 
+FRDriver::ExchangeConfiguration FRDriver::readExchangeConfiguration(uint32_t sysAdmPassword, uint8_t portNumber)
+{
+    ByteArray arguments;
+
+    arguments.append(sysAdmPassword, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(portNumber,     ByteArray::ByteOrder_LittleEndian);
+
+    ByteArray data = sendCommand(Command::ReadExchangeConfiguration, arguments);
+
+    proceedResponse(data, false);
+
+    ExchangeConfiguration configuration;
+
+    configuration.baudRateCode = data.read<uint8_t>(2);
+    configuration.byteTimeout = data.read<uint8_t>(3);
+
+    return configuration;
+}
+
+bool FRDriver::technologicalReset()
+{
+    ByteArray data = sendCommand(Command::TechReset);
+
+    proceedResponse(data, false);
+
+    return getLastError() == ErrorCode::NoError;
+}
+
+bool FRDriver::standardStringPrint(uint32_t password,
+                                   uint8_t flags,
+                                   const std::string &print)
+{
+    ByteArray arguments;
+
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(flags);
+    arguments.append((uint8_t*) print.c_str(),
+                     (uint32_t) print.length());
+
+    if (print.length() < 40)
+    {
+        arguments.appendMultiple<uint8_t>(0x00, (uint32_t) (40 - print.length()));
+    }
+
+    auto data = sendCommand(Command::StandardStringPrint, arguments);
+
+    proceedResponse(data, true);
+
+    return getLastError() == ErrorCode::NoError;
+}
+
+uint16_t FRDriver::documentHeaderPrint(uint32_t password,
+                                       const std::string &document,
+                                       uint16_t documentNumber)
+{
+    ByteArray arguments;
+
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+    arguments.append((uint8_t*) document.c_str(),
+                     (uint32_t) document.length());
+
+    if (document.length() < 30)
+    {
+        arguments.appendMultiple<uint8_t>(0x00, (uint32_t) (30 - document.length()));
+    }
+
+    arguments.append(documentNumber, ByteArray::ByteOrder_LittleEndian);
+
+    auto data = sendCommand(Command::DocumentHeaderPrint, arguments);
+
+    proceedResponse(data, true);
+
+    if (data.length() != 5)
+    {
+        return 0;
+    }
+
+    return data.read<uint16_t>(3, ByteArray::ByteOrder_LittleEndian);
+}
+
+uint64_t FRDriver::currencyRegisterRequest(uint32_t password, uint8_t registerNumber)
+{
+    ByteArray arguments;
+
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(registerNumber);
+
+    auto data = sendCommand(Command::CurrencyRegisterRequest, arguments);
+
+    proceedResponse(data, true);
+
+    if (data.length() != 9)
+    {
+        return 0;
+    }
+
+    return data.readPart(3, 6, ByteArray::ByteOrder_LittleEndian);
+}
+
+bool FRDriver::writeTable(uint32_t sysPassword,
+                          uint8_t tableNumber,
+                          uint16_t row,
+                          uint8_t field,
+                          const std::string &value)
+{
+    ByteArray arguments;
+
+    arguments.append(sysPassword, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(tableNumber);
+    arguments.append(row);
+    arguments.append(field);
+    arguments.append((uint8_t*) value.c_str(),
+                     (uint32_t) value.length());
+
+    if (value.length() < 40)
+    {
+        arguments.appendMultiple<uint8_t>(0x00, (uint32_t) (40 - value.length()));
+    }
+
+    auto data = sendCommand(Command::WriteTable, arguments);
+
+    proceedResponse(data, false);
+
+    return getLastError() == ErrorCode::NoError;
+}
+
+bool FRDriver::timeProgramming(uint32_t sysPassword,
+                               uint8_t h,
+                               uint8_t m,
+                               uint8_t s)
+{
+    ByteArray arguments;
+    arguments.append(sysPassword, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(h);
+    arguments.append(m);
+    arguments.append(s);
+
+    auto data = sendCommand(Command::TimeProgramming, arguments);
+
+    proceedResponse(data, false);
+
+    return getLastError() == ErrorCode::NoError;
+}
+
+bool FRDriver::dateProgramming(uint32_t sysPassword,
+                               uint8_t day,
+                               uint8_t month,
+                               uint8_t year)
+{
+    ByteArray arguments;
+    arguments.append(sysPassword, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(day);
+    arguments.append(month);
+    arguments.append(year);
+
+    auto data = sendCommand(Command::DateProgramming, arguments);
+
+    proceedResponse(data, false);
+
+    return getLastError() == ErrorCode::NoError;
+}
+
+bool FRDriver::dateConfirm(uint32_t sysPassword,
+                           uint8_t day,
+                           uint8_t month,
+                           uint8_t year)
+{
+    ByteArray arguments;
+    arguments.append(sysPassword, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(day);
+    arguments.append(month);
+    arguments.append(year);
+
+    auto data = sendCommand(Command::DateConfirm, arguments);
+
+    proceedResponse(data, false);
+
+    return getLastError() == ErrorCode::NoError;
+}
+
+bool FRDriver::tableValuesInit(uint32_t sysPassword)
+{
+    ByteArray arguments;
+
+    arguments.append(sysPassword, ByteArray::ByteOrder_LittleEndian);
+
+    auto data = sendCommand(Command::TableValuesInit, arguments);
+
+    proceedResponse(data, false);
+
+    return getLastError() == ErrorCode::NoError;
+}
+
+bool FRDriver::cutCheck(uint32_t sysPassword, uint8_t cutType)
+{
+    ByteArray arguments;
+
+    arguments.append(sysPassword, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(cutType);
+
+    auto data = sendCommand(Command::CutCheck, arguments);
+
+    proceedResponse(data, false);
+
+    return getLastError() == ErrorCode::NoError;
+}
+
+FRDriver::FontConfiguration FRDriver::readFontConfiguration(uint32_t sysPassword,
+                                                            uint8_t fontNumber)
+{
+    ByteArray arguments;
+
+    arguments.append(sysPassword, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(fontNumber);
+
+    auto data = sendCommand(Command::ReadFontConfiguration, arguments);
+
+    proceedResponse(data, false);
+
+    FontConfiguration configuration;
+
+    if (data.length() != 7)
+    {
+        return configuration;
+    }
+
+    configuration.printAreaWidthPixels = data.read<uint16_t>(2, ByteArray::ByteOrder_LittleEndian);
+    configuration.symbolWidthWithInterval = data.read<uint8_t>(4);
+    configuration.symbolHeightWithInterval = data.read<uint8_t>(5);
+    configuration.numberOfFonts = data.read<uint8_t>(6);
+
+    return configuration;
+}
+
+bool FRDriver::totalExtinction(uint32_t sysPassword)
+{
+    ByteArray arguments;
+
+    arguments.append(sysPassword, ByteArray::ByteOrder_LittleEndian);
+
+    auto data = sendCommand(Command::TotalExtinction, arguments);
+
+    proceedResponse(data, false);
+
+    return getLastError() == ErrorCode::NoError;
+}
+
+bool FRDriver::scrolling(uint32_t password, uint8_t flags, uint8_t numberOfLines)
+{
+    ByteArray arguments;
+
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(flags);
+    arguments.append(numberOfLines);
+
+    auto data = sendCommand(Command::Scrolling, arguments);
+
+    proceedResponse(data, true);
+
+    return getLastError() == ErrorCode::NoError;
+}
+
+FRDriver::TableStructure FRDriver::tableStructureRequest(uint32_t sysPassword,
+                                                         uint8_t tableNumber)
+{
+    ByteArray arguments;
+
+    arguments.append(sysPassword, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(tableNumber);
+
+    auto data = sendCommand(Command::TableStructureRequest, arguments);
+
+    proceedResponse(data, false);
+
+    TableStructure structure = FRDriver::TableStructure();
+
+    if (data.length() != 45)
+    {
+        return structure;
+    }
+
+    structure.name = std::string((const char*) data.data() + 2, 40);
+    structure.numberOfRows = data.read<uint16_t>(3, ByteArray::ByteOrder_LittleEndian);
+    structure.numberOfCols = data.read<uint8_t>(5);
+
+    return structure;
+}
+
+FRDriver::FieldStructure FRDriver::fieldStructureRequest(uint32_t sysPassword, uint8_t table, uint8_t field)
+{
+    ByteArray arguments;
+
+    arguments.append(sysPassword, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(table);
+    arguments.append(field);
+
+    auto data = sendCommand(Command::FieldStructureRequest, arguments);
+
+    proceedResponse(data, false);
+
+    FieldStructure structure = FRDriver::FieldStructure();
+
+    if (data.length() < 44)
+    {
+        return structure;
+    }
+
+    structure.name = std::string((const char*) data.data() + 2, 40);
+    structure.fieldType = data.read<uint8_t>(42);
+    structure.numberOfBytes = data.read<uint8_t>(43);
+    structure.minValue = std::string((const char*) data.data() + 44, structure.numberOfBytes);
+    structure.minValue = std::string((const char*) data.data() + 44 + structure.numberOfBytes, structure.numberOfBytes);
+    // todo: Удостовериться в правильности типа данных
+    return structure;
+}
+
+bool FRDriver::fontStringPrint(uint32_t password,
+                               uint8_t flags,
+                               uint8_t fontNumber,
+                               const std::string &string)
+{
+    ByteArray arguments;
+
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(flags);
+    arguments.append(fontNumber);
+    arguments.append((uint8_t*) string.c_str(),
+                     (uint32_t) string.length());
+
+    if (string.length() < 40)
+    {
+        arguments.appendMultiple<uint8_t>(0x00, (uint32_t) (40 - string.length()));
+    }
+
+    auto data = sendCommand(Command::FontStringPrint, arguments);
+
+    proceedResponse(data, true);
+
+    return getLastError() == ErrorCode::NoError;
+}
+
+bool FRDriver::shiftReportWithoutExtinction(uint32_t password)
+{
+    ByteArray arguments;
+
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+
+    auto data = sendCommand(Command::ShiftReportNoExtinction, arguments);
+
+    proceedResponse(data, true);
+
+    return getLastError() == ErrorCode::NoError;
+}
+
+bool FRDriver::sectionsReport(uint32_t password)
+{
+    ByteArray arguments;
+
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+
+    auto data = sendCommand(Command::SectionsReport, arguments);
+
+    proceedResponse(data, true);
+
+    return getLastError() == ErrorCode::NoError;
+}
+
+bool FRDriver::taxesReport(uint32_t password)
+{
+    ByteArray arguments;
+
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+
+    auto data = sendCommand(Command::TaxesReport, arguments);
+
+    proceedResponse(data, true);
+
+    return getLastError() == ErrorCode::NoError;
+}
+
+bool FRDriver::cashierReport(uint32_t password)
+{
+    ByteArray arguments;
+
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+
+    auto data = sendCommand(Command::CashierReport, arguments);
+
+    proceedResponse(data, true);
+
+    return getLastError() == ErrorCode::NoError;
+}
+
+uint16_t FRDriver::payin(uint32_t password, uint64_t sum)
+{
+    ByteArray arguments;
+
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(sum, 5, ByteArray::ByteOrder_LittleEndian);
+
+    auto data = sendCommand(Command::PayIn, arguments);
+
+    proceedResponse(data, true);
+
+    if (data.length() != 5)
+    {
+        return 0;
+    }
+
+    return data.read<uint16_t>(3, ByteArray::ByteOrder_LittleEndian);
+}
+
+uint16_t FRDriver::payout(uint32_t password, uint64_t sum)
+{
+    ByteArray arguments;
+
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(sum, 5, ByteArray::ByteOrder_LittleEndian);
+
+    auto data = sendCommand(Command::PayOut, arguments);
+
+    proceedResponse(data, true);
+
+    if (data.length() != 5)
+    {
+        return 0;
+    }
+
+    return data.read<uint16_t>(3, ByteArray::ByteOrder_LittleEndian);
+}
+
+bool FRDriver::printCliches(uint32_t password)
+{
+    ByteArray arguments;
+
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+
+    auto data = sendCommand(Command::PrintCliches, arguments);
+
+    proceedResponse(data, true);
+
+    return getLastError() == ErrorCode::NoError;
+}
+
+bool FRDriver::printDocumentEnd(uint32_t password, uint8_t printAds)
+{
+    ByteArray arguments;
+
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(printAds);
+
+    auto data = sendCommand(Command::DocumentEndPrint, arguments);
+
+    proceedResponse(data, true);
+
+    return getLastError() == ErrorCode::NoError;
+}
+
+bool FRDriver::printAds(uint32_t password)
+{
+    ByteArray arguments;
+
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+
+    auto data = sendCommand(Command::PrintAds, arguments);
+
+    proceedResponse(data, true);
+
+    return getLastError() == ErrorCode::NoError;
+}
+
+bool FRDriver::enterFactoryNumber(uint32_t password, uint32_t factoryNumber)
+{
+    ByteArray arguments;
+
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(factoryNumber, ByteArray::ByteOrder_LittleEndian);
+
+    auto data = sendCommand(Command::EnterFactoryNumber, arguments);
+
+    proceedResponse(data, false);
+
+    return getLastError() != ErrorCode::NoError;
+}
+
+bool FRDriver::enterFactoryNumber(uint32_t factoryNumber)
+{
+    return enterFactoryNumber(0, factoryNumber);
+}
 
 
 static std::map<int, std::string> errorString = {

@@ -75,7 +75,7 @@ std::string TestDriver::getCommandTag(const FRDriver::Command &c)
             {Command::OpenShift, "open_shift"},
             {Command::ShiftCloseReport, "z_report"},
             {Command::ContinuePrint, "continue_print"},
-            {Command::NullifyCheck, "cancel_check"},
+            {Command::CancelCheck, "cancel_check"},
             {Command::CloseCheck, "close_check"},
             {Command::OperatingRegisterRequest, ""}
     };
