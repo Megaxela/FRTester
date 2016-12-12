@@ -10,11 +10,8 @@
 
 #include "ui_mainwindow.h"
 
-StateCommandsTabController::StateCommandsTabController(Ui::MainWindow *ptr, QWidget* parent, AbstractTabController* parentController) :
-        AbstractTabController(),
-        m_ui(ptr),
-        m_parent(parent),
-        m_parentController(dynamic_cast<CommandsTabController*>(parentController))
+StateCommandsTabController::StateCommandsTabController(Ui::MainWindow *ptr, QWidget* parent) :
+        AbstractTabController(ptr, parent, nullptr)
 {
 
 }
@@ -27,13 +24,13 @@ StateCommandsTabController::~StateCommandsTabController()
 void StateCommandsTabController::setupConnections()
 {
     // Кнопка запроса короткого состояния
-    connect(m_ui->commandsShortStateRequestPushButton,
+    connect(ui()->commandsShortStateRequestPushButton,
             &QPushButton::clicked,
             this,
             &StateCommandsTabController::onShortRequest);
 
     // Кнопка запроса полного состояния
-    connect(m_ui->commandsFullStateRequestPushButton,
+    connect(ui()->commandsFullStateRequestPushButton,
             &QPushButton::clicked,
             this,
             &StateCommandsTabController::onFullRequest);
@@ -41,7 +38,12 @@ void StateCommandsTabController::setupConnections()
 
 void StateCommandsTabController::configureWidgets()
 {
+    int id = QFontDatabase::addApplicationFont(":/files/fonts/FiraCode-Regular.ttf");
+    QString family = QFontDatabase::applicationFontFamilies(id).at(0);
 
+    QFont font(family);
+
+    ui()->commandsStatePlainTextEdit->setFont(font);
 }
 
 void StateCommandsTabController::onFullRequest()
@@ -57,15 +59,21 @@ void StateCommandsTabController::onShortRequest()
     if (!DriverHolder::driver().checkConnection())
     {
         Error("Соединение с ФР отстуствует.");
-        QMessageBox::critical(m_parent, "Ошибка", "Соединение с ФР отсутствует.");
+        QMessageBox::critical(
+                parentWidget(),
+                "Ошибка",
+                "Соединение с ФР отсутствует."
+        );
         return;
     }
 
     ExcessLog("Запрос на ФР.");
-    auto requestResult = DriverHolder::driver().shortStateRequest(m_parentController->password());
+    auto requestResult = DriverHolder::driver().shortStateRequest(
+            commandsTabController()->password()
+    );
 
     ExcessLog("Установка статуса.");
-    m_parentController->setLastStatus();
+    commandsTabController()->setLastStatus();
 
     ExcessLog("Проверка на успешность выполнения команды.");
     if (DriverHolder::driver().getLastError() != FRDriver::ErrorCode::NoError)
@@ -121,5 +129,10 @@ void StateCommandsTabController::onShortRequest()
 
     stringBuilder += divider + "\n";
 
-    m_ui->commandsStatePlainTextEdit->setPlainText(stringBuilder);
+    ui()->commandsStatePlainTextEdit->setPlainText(stringBuilder);
+}
+
+CommandsTabController *StateCommandsTabController::commandsTabController() const
+{
+    return (CommandsTabController *) parentController();
 }

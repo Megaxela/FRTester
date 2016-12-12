@@ -9,18 +9,30 @@ ctypedef bint bool
 cdef extern from "../include/Abstract/PhysicalInterface.h":
     cdef cppclass PhysicalInterface:
         int type()
-
-cdef extern from "../include/Implementation/COMInterface.h":
-    cdef cppclass COMInterface:
         bint openConnection()
         bint closeConnection()
         unsigned int write(const ByteArray& data)
         ByteArray read(const unsigned int &n, unsigned int timeout)
+
+cdef extern from "../include/Implementation/COMInterface.h":
+    cdef cppclass COMInterface:
         void setDevice(const string &name)
         string device()
         void setBaudRate(int rate)
         int baudRate()
         void setByteSendTime(long long time);
+
+cdef extern from "../include/Implementation/TCPInterface.h":
+    cdef cppclass TCPInterface:
+        void setDevice(const string &name)
+        void setAddress(const IPv4Address &address, uint16_t port)
+        IPv4Address address()
+        uint16_t port()
+
+cdef extern from "../include/Tools/IPv4Address.h":
+    cdef cppclass IPv4Address:
+        bool setFromString(const string &s)
+        string toString()
 
 cdef extern from "../include/Implementation/DefaultProtocol.h":
     cdef cppclass DefaultProtocol:

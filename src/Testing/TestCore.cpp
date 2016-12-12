@@ -167,25 +167,30 @@ void TestCore::getTriggers(const std::string &tag,
 
 bool TestCore::restoreFRState()
 {
-//    auto state = DriverHolder::driver().fullStateRequest(30);
-//    if (state.posMode == 8) // Открытый документ
-//    {
-//        // Отменяем документ
-//        if (!DriverHolder::driver().cancelCheck(30))
-//        {
-//            Error("Не удалось отменить открытый чек.");
-//            return false;
-//        }
-//    }
-//    else if (state.posMode == 2) // Открытая смена
-//    {
-//        // Закрываем смену
-//        if (!DriverHolder::driver().shiftCloseReport(30))
-//        {
-//            Error("Не удалось закрыть смену.");
-//            return false;
-//        }
-//    }
+    if (!DriverHolder::driver().checkConnection())
+    {
+        return false;
+    }
+
+    auto state = DriverHolder::driver().fullStateRequest(30);
+    if (state.posMode == 8) // Открытый документ
+    {
+        // Отменяем документ
+        if (!DriverHolder::driver().cancelCheck(30))
+        {
+            Error("Не удалось отменить открытый чек.");
+            return false;
+        }
+    }
+    else if (state.posMode == 2) // Открытая смена
+    {
+        // Закрываем смену
+        if (!DriverHolder::driver().shiftCloseReport(30))
+        {
+            Error("Не удалось закрыть смену.");
+            return false;
+        }
+    }
 
     return true;
 }

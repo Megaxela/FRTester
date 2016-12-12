@@ -8,7 +8,10 @@
 #include "Tools/Logger.h"
 #include "Tools/Time.h"
 
-FRDriver::FRDriver() //todo: Добавить инициализации
+FRDriver::FRDriver() :
+    m_commandsDelay(0),
+    m_lastErrorCode(ErrorCode::NoError),
+    m_lastReceivedCahsierNumber(0)
 {
 
 }

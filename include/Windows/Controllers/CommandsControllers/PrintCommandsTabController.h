@@ -48,17 +48,6 @@ protected:
      */
     void configureWidgets() override;
 
-private slots:
-
-    /**
-     * @brief Слот, вызываемый при смене вкладки.
-     */
-    void onCurrentTabChanged(int);
-
-private:
-    void addTabController(QWidget* widget, AbstractTabController* el);
-
-    Ui::MainWindow* m_ui;
 };
 
 

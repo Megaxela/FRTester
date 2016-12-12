@@ -23,6 +23,8 @@
 
 #endif
 
+const int TCPInterface::Type = 3;
+
 TCPInterface::TCPInterface() :
         PhysicalInterface(TCPInterface::Type),
         m_connectionSocket(NetworkTools::createTCPSocket())
@@ -151,7 +153,11 @@ ByteArray TCPInterface::read(const PhysicalInterface::size_t &size, uint32_t tim
         }
     }
 
-    return ByteArray(response, static_cast<uint32_t>(dataRead));
+    auto ba = ByteArray(response, static_cast<uint32_t>(dataRead));
+
+    ExcessLog(" READ: " + ba.toHex());
+
+    return ba;
 }
 
 void TCPInterface::setAddress(const IPv4Address &address, uint16_t port)

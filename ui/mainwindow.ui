@@ -33,11 +33,11 @@
           <x>6</x>
           <y>6</y>
           <width>299</width>
-          <height>120</height>
+          <height>160</height>
          </rect>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="connectionCOMTab">
          <attribute name="title">
@@ -70,28 +70,66 @@
             <item row="1" column="1">
              <widget class="QComboBox" name="connectionCOMBaudRateComboBox"/>
             </item>
+            <item row="2" column="1">
+             <widget class="QPushButton" name="connectionCOMConnectPushButton">
+              <property name="text">
+               <string>Соединиться</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="tab_5">
+        <widget class="QWidget" name="connectionTCPTab">
          <attribute name="title">
-          <string>Tab 2</string>
+          <string>TCP (RNDIS)</string>
          </attribute>
+         <layout class="QHBoxLayout" name="horizontalLayout_11">
+          <item>
+           <layout class="QFormLayout" name="formLayout_3">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_21">
+              <property name="text">
+               <string>IP</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="connectionTCPIPLineEdit">
+              <property name="inputMask">
+               <string/>
+              </property>
+              <property name="placeholderText">
+               <string>192.168.137.31</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_22">
+              <property name="text">
+               <string>Порт</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="connectionTCPPortLineEdit">
+              <property name="inputMask">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QPushButton" name="connectionTCPConnectPushButton">
+              <property name="text">
+               <string>Соединиться</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </widget>
-       </widget>
-       <widget class="QPushButton" name="connectionConnectPushButton">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>130</y>
-          <width>100</width>
-          <height>34</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Соединиться</string>
-        </property>
        </widget>
       </widget>
       <widget class="QWidget" name="commandsTab">
@@ -550,6 +588,58 @@
              <string>Открыть смену</string>
             </property>
            </widget>
+           <widget class="QPushButton" name="commandsReportsXReportPushButton">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>110</y>
+              <width>151</width>
+              <height>34</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>X Отчет</string>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="commandsReportsDepartmentReportPushButton">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>150</y>
+              <width>151</width>
+              <height>34</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Отчет по отделам</string>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="commandsReportsTaxReportPushButton_4">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>190</y>
+              <width>151</width>
+              <height>34</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Отчет по налогам</string>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="commandsReportsCashierReportPushButton_5">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>230</y>
+              <width>151</width>
+              <height>34</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Отчет по кассирам</string>
+            </property>
+           </widget>
           </widget>
           <widget class="QWidget" name="commandsPrintTab">
            <attribute name="title">
@@ -574,7 +664,7 @@
             <item>
              <widget class="QTabWidget" name="commandsPrintTabWidget">
               <property name="currentIndex">
-               <number>1</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="commandsPrintTextTab">
                <attribute name="title">
@@ -599,7 +689,7 @@
                 <item>
                  <widget class="QTabWidget" name="commandsPrintTextTabWidget">
                   <property name="currentIndex">
-                   <number>2</number>
+                   <number>0</number>
                   </property>
                   <widget class="QWidget" name="commandsPrintTextTextTabWidget">
                    <attribute name="title">
@@ -638,7 +728,7 @@
                         </widget>
                        </item>
                        <item row="0" column="1">
-                        <widget class="QComboBox" name="comboBox">
+                        <widget class="QComboBox" name="commandsPrintTextOperationsCutTypeComboBox">
                          <item>
                           <property name="text">
                            <string>Полный</string>
@@ -652,7 +742,7 @@
                         </widget>
                        </item>
                        <item row="0" column="2">
-                        <widget class="QPushButton" name="pushButton_9">
+                        <widget class="QPushButton" name="commandsPrintTextOperationsCutPushButton">
                          <property name="text">
                           <string>Отрезать</string>
                          </property>
@@ -694,7 +784,7 @@
                       <string>Количество строк:</string>
                      </property>
                     </widget>
-                    <widget class="QSpinBox" name="spinBox">
+                    <widget class="QSpinBox" name="commandsPrintTextOperationsScrollLinesSpinBox">
                      <property name="geometry">
                       <rect>
                        <x>140</x>
@@ -704,7 +794,7 @@
                       </rect>
                      </property>
                     </widget>
-                    <widget class="QPushButton" name="pushButton_11">
+                    <widget class="QPushButton" name="commandsPrintTextOperationsScrollPaperPushButton">
                      <property name="geometry">
                       <rect>
                        <x>200</x>

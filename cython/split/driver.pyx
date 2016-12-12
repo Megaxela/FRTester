@@ -230,14 +230,14 @@ cdef class PyFRDriver:
             """
             return self.driver.cancelCheck(password)
 
-        def read_exchange_configuration(self, sysAdmPassword, pornNumber):
+        def read_exchange_configuration(self, sysAdmPassword, portNumber):
             """
             @brief Метод для чтения параметров обмена
             @param sysAdmPassword Пароль системного администратора.
             @param portNumber Номер порта.
             @return Структура с параметрами обмена
             """
-            return self.driver.readExchangeConfiguration(sysAdmPassword, pornNumber)
+            return self.driver.readExchangeConfiguration(sysAdmPassword, portNumber)
 
         def technological_reset(self):
             """
@@ -504,9 +504,8 @@ cdef class PyFRDriver:
             """
             return self.driver.enterFactoryNumber(password, factory_number)
 
-cdef class PyCOMInterface:
-
-        cdef COMInterface *thisptr
+cdef class AbstractInterface:
+        cdef PhysicalInterface* abstractptr;
 
         def __init__(self):
             pass
@@ -517,7 +516,7 @@ cdef class PyCOMInterface:
         def close_connection(self):
             return self.thisptr.closeConnection()
 
-        cpdef int write(self, data):
+        def write(self, data):
             if not isinstance(data, list):
                 print "Data to write is not list"
 
@@ -533,16 +532,47 @@ cdef class PyCOMInterface:
 
                 arr.append[uint8_t](i, ByteOrder_BigEndian)
 
-            self.thisptr.write(arr)
+            return self.abstractptr.write(arr)
 
-        cpdef read(self, size, timeout):
-            cdef ByteArray data = self.thisptr.read(size, timeout)
+        def read(self, size, timeout):
+            cdef ByteArray data = self.abstractptr.read(size, timeout)
 
             result = []
             for index in xrange(data.length()):
                 result.append(data[index])
 
             return result
+
+cdef class PyTCPInterface(AbstractInterface):
+        cdef TCPInterface* thisptr;
+
+        def __init__(self):
+            pass
+
+        def set_address(self, addr, port):
+            """
+            @brief Метод для установки адреса для соединения
+            с устройством.
+            @param address Строка с IPv4 адресом.
+            @param port Порт.
+            """
+            # cdef IPv4Address address
+            # address.setFromString(addr)
+            #
+            # return self.thisptr.setAddress(address, port)
+            return None
+
+        cpdef address(self):
+            return self.thisptr.address().toString()
+
+        def port(self):
+            return self.thisptr.port()
+
+cdef class PyCOMInterface(AbstractInterface):
+        cdef COMInterface* thisptr
+
+        def __init__(self):
+            pass
 
         def set_device(self, name):
             self.thisptr.setDevice(name)
@@ -564,15 +594,28 @@ cdef public createDriver(FRDriver* s):
     v.driver = s
     return v
 
+cdef createCOMInterface(COMInterface* interface):
+    v = PyCOMInterface()
+    v.thisptr = interface
+    v.abstractptr = <PhysicalInterface*> interface
+    return v
+
+cdef createTCPInterface(TCPInterface* interface):
+    v = PyTCPInterface()
+    v.thisptr = interface
+    v.abstractptr = <PhysicalInterface*> interface
+    return v
+
+
 cdef public createPhysicalInterface(PhysicalInterface* interface):
     t = interface.type()
     if t == 0: # Abstract
         print "Can't inst. Abstract type."
         return None
     elif t == 1:
-        v = PyCOMInterface()
-        v.thisptr = <COMInterface*> interface
-        return v
+        return createCOMInterface(<COMInterface*> interface)
+    elif t == 3:
+        return createTCPInterface(<TCPInterface*> interface)
     else:
         print "Unknown interface type."
         return None

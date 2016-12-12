@@ -33,13 +33,6 @@ public:
     std::string toString() const;
 
     /**
-     * @brief Method for creating network address from string implementation.
-     * @param s IPv4 address string implementation.
-     * @return IPv4AddressPtr instance.
-     */
-    IPv4Address fromString(const std::string &s);
-
-    /**
      * @brief Method to get address value.
      */
     in_addr_t data() const;
@@ -48,7 +41,7 @@ public:
      * @brief Method for setting address value from string.
      * @param s
      */
-    void setFromString(const std::string &s);
+    bool setFromString(const std::string &s);
 
     /**
      * @brief Method for setting address value from c value.

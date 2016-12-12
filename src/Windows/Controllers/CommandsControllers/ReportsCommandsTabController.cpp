@@ -36,14 +36,10 @@ void ReportsCommandsTabController::configureWidgets()
 
 void ReportsCommandsTabController::onZReportPressed()
 {
-    // todo: Перенести все проверки в отдельный модуль
     Log("Формируем Z отчет. (Ответ с гашением)");
-
-    ExcessLog("Проверка наличия соединения");
-    if (!DriverHolder::driver().checkConnection())
+    if (!commandsTabControllerParent()->checkConnectionWithDevice())
     {
         Error("Соединение с ФР отсутствует.");
-        QMessageBox::critical(parentWidget(), "Ошибка", "Соединение с ФР отсутствует.");
         return;
     }
 
@@ -62,11 +58,9 @@ void ReportsCommandsTabController::onChangeOpenPressed()
 {
     Log("Открываем смену.");
 
-    ExcessLog("Проверка наличия соединения");
-    if (!DriverHolder::driver().checkConnection())
+    if (!commandsTabControllerParent()->checkConnectionWithDevice())
     {
-        Error("Соединение отсутствует.");
-        QMessageBox::critical(m_parent, "Ошибка", "Соединение с ФР отсутствует.");
+        Error("Соединение с ФР отсутствует.");
         return;
     }
 

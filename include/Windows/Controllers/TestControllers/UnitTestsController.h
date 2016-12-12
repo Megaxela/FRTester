@@ -115,12 +115,7 @@ private:
 
     QString htmlScreening(QString source);
 
-    Ui::MainWindow* m_ui;
-
-    QWidget* m_parent;
-
     TestingExecutor* m_testingExecutor;
-
     TestLoggerWaiter* m_testLoggerWaiter;
 };
 

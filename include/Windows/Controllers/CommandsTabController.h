@@ -53,6 +53,13 @@ public:
      */
     void setLastStatus();
 
+    /**
+     * @brief Метод для проверки наличия соединения. Если
+     * соединения не будет - то будет отображено модальное окно.
+     * @return Наличие соединения.
+     */
+    bool checkConnectionWithDevice();
+
 protected:
     /**
      * @brief Метод, настройки коннектов.

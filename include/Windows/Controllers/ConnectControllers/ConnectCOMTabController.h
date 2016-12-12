@@ -2,8 +2,8 @@
 // Created by megaxela on 17.11.16.
 //
 
-#ifndef FRTESTER_CONNECTTABCONTROLLER_H
-#define FRTESTER_CONNECTTABCONTROLLER_H
+#ifndef FRTESTER_CONNECTCOMTABCONTROLLER_H
+#define FRTESTER_CONNECTCOMTABCONTROLLER_H
 
 
 #include <Implementation/COMInterface.h>
@@ -37,21 +37,15 @@ public:
 private slots:
     void onConnecting();
 
-private:
-    void setupConnections() override;
-
 protected:
     void configureWidgets() override;
 
+    void setupConnections() override;
+
 private:
 
-    void connectCOM();
-
     std::shared_ptr<COMInterface> m_comInterface;
-
-    Ui::MainWindow* m_ui;
-    QWidget* m_parent;
 };
 
 
-#endif //FRTESTER_CONNECTTABCONTROLLER_H
+#endif //FRTESTER_CONNECTCOMTABCONTROLLER_H

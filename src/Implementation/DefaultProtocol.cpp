@@ -183,73 +183,85 @@ void DefaultProtocol::prepareDeviceToWrite(InterfacePtr physicalInterface)
 
     ByteArray data = physicalInterface->read(1, 1000 * 50);
 
-    if (data.empty())
+    while (true)
     {
-        Error("Не удалось получить ответ на ENQ.");
-        return;
-    }
-
-    // ФР Готов принимать данные
-    if (data[0] == NAK)
-    {
-        return;
-    }
-    // От ФР остались неподтвержденные данные
-    // При чем ACK куда-то потерялся
-    else if (data[0] == STX)
-    {
-        // Считываем данные и подтверждаем их
-        ByteArray length = physicalInterface->read(1, 1000 * 50);
-
-        if (length.empty())
+        if (data.empty())
         {
-            Error("Ошибка при считывании длины оставшихся неподтвержденных данных.");
+            Error("Не удалось получить ответ на ENQ.");
             return;
         }
 
-        ByteArray response = physicalInterface->read(length[0], 1000 * 50);
-
-        if (response.empty())
+        // ФР Готов принимать данные
+        if (data[0] == NAK)
         {
-            Error("Ошибка при считывании оставшихся неподтвержденных данных.");
             return;
         }
-
-        ByteArray checkSum = physicalInterface->read(1, 1000 * 50);
-
-        if (response.empty())
+            // От ФР остались неподтвержденные данные
+            // При чем ACK куда-то потерялся
+        else if (data[0] == STX)
         {
-            Error("Ошибка при считывании контрольной суммы.");
+            // Считываем данные и подтверждаем их
+            ByteArray length = physicalInterface->read(1, 1000 * 50);
+
+            if (length.empty())
+            {
+                Error("Ошибка при считывании длины оставшихся неподтвержденных данных.");
+                return;
+            }
+
+            ByteArray response = physicalInterface->read(length[0], 1000 * 50);
+
+            if (response.empty())
+            {
+                Error("Ошибка при считывании оставшихся неподтвержденных данных.");
+                return;
+            }
+
+            ByteArray checkSum = physicalInterface->read(1, 1000 * 50);
+
+            if (response.empty())
+            {
+                Error("Ошибка при считывании контрольной суммы.");
+                return;
+            }
+
+            physicalInterface->write(ackArray);
+
+            // После этого ФР должен быть готов к работе
             return;
         }
-
-        physicalInterface->write(ackArray);
-
-        // После этого ФР должен быть готов к работе
-        return;
-    }
-    //
-    else if (data[0] == ACK)
-    {
-        ByteArray stxExp = physicalInterface->read(1, 1000 * 50);
-
-        if (stxExp[0] != STX)
+            //
+        else if (data[0] == ACK)
         {
-            Critical("Какая-то ахинея исходит от ФР.");
+            ByteArray stxExp = physicalInterface->read(1, 1000 * 50);
+
+            if (stxExp[0] != STX)
+            {
+                Critical("Какая-то ахинея исходит от ФР.");
+                return;
+            }
+
+            // Считываем данные и подтверждаем их
+            ByteArray length = physicalInterface->read(1, 1000 * 50);
+
+            ByteArray response = physicalInterface->read(length[0], 1000 * 50);
+
+            ByteArray checkSum = physicalInterface->read(1, 1000 * 50);
+
+            physicalInterface->write(ackArray);
+
+            // После этого ФР должен быть готов к работе
             return;
         }
-
-        // Считываем данные и подтверждаем их
-        ByteArray length = physicalInterface->read(1, 1000 * 50);
-
-        ByteArray response = physicalInterface->read(length[0], 1000 * 50);
-
-        ByteArray checkSum = physicalInterface->read(1, 1000 * 50);
-
-        physicalInterface->write(ackArray);
-
-        // После этого ФР должен быть готов к работе
-        return;
+        else if (data[0] == 0xff) // todo: Странное поведение
+        {
+            data = physicalInterface->read(1, 1000 * 50);
+        }
+        else
+        {
+            Critical("Не известное поведение.");
+            return;
+        }
     }
 }
 
@@ -266,10 +278,5 @@ bool DefaultProtocol::checkConnection(InterfacePtr physicalInterface)
     // Ожидаем 15
     ByteArray result = physicalInterface->read(1, 1000 * 50);
 
-    if (result.empty())
-    {
-        return false;
-    }
-
-    return result[0] == NAK;
+    return !result.empty();
 }

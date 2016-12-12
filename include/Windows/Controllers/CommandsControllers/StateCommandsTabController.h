@@ -27,13 +27,18 @@ public:
      * @param parent Указатель на родительский виджет.
      */
     StateCommandsTabController(Ui::MainWindow *ptr,
-                               QWidget* parent,
-                               AbstractTabController* parentController=nullptr);
+                               QWidget* parent);
 
     /**
      * @brief Деструктор.
      */
     ~StateCommandsTabController() override;
+
+    /**
+     * @brief Метод для получения родителя - контроллера команд.
+     * @return Указатель на контроллер.
+     */
+    CommandsTabController* commandsTabController() const;
 
 protected:
     /**
@@ -56,13 +61,6 @@ private slots:
      * @brief Слот, вызываемый при запроса краткого
      */
     void onShortRequest();
-
-private:
-    Ui::MainWindow* m_ui;
-
-    QWidget* m_parent;
-
-    CommandsTabController* m_parentController;
 };
 
 

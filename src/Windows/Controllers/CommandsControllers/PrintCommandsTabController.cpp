@@ -10,10 +10,10 @@
 PrintCommandsTabController::PrintCommandsTabController(Ui::MainWindow *ptr,
                                                        QWidget *parent,
                                                        QTabWidget* tabWidget) :
-    AbstractTabController(ptr, parent, tabWidget),
+    AbstractTabController(ptr, parent, tabWidget)
 {
     addTabController(
-            m_ui->commandsPrintTextTab,
+            ui()->commandsPrintTextTab,
             new PrintTextCommandsTabController(
                     ptr,
                     parent,

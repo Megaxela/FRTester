@@ -29,7 +29,13 @@ std::string IPv4Address::toString() const
     return ss.str();
 }
 
-IPv4Address IPv4Address::fromString(const std::string &s)
+
+in_addr_t IPv4Address::data() const
+{
+    return m_data;
+}
+
+bool IPv4Address::setFromString(const std::string &s)
 {
     in_addr_t type = 0x00000000;
 
@@ -52,7 +58,7 @@ IPv4Address IPv4Address::fromString(const std::string &s)
             if (inc > 25 || (inc == 25 && ch > '5'))
             {
                 Error("Can't parse '" + s + "'. Wrong format.");
-                return nullptr;
+                return false;
             }
 
             inc = inc * static_cast<uint8_t>(10) + (ch - '0');
@@ -60,7 +66,7 @@ IPv4Address IPv4Address::fromString(const std::string &s)
         else
         {
             Error("Can't parse '" + s + "'. Wrong format.");
-            return nullptr;
+            return false;
         }
     }
 
@@ -69,17 +75,15 @@ IPv4Address IPv4Address::fromString(const std::string &s)
     if (byteN != 4)
     {
         Error("Can't parse '" + s + "'. Wrong format.");
-        return nullptr;
+        return false;
     }
 
-    IPv4Address ptr;
+    m_data = type;
 
-    ptr.m_data = type;
-
-    return ptr;
+    return true;
 }
 
-in_addr_t IPv4Address::data() const
+void IPv4Address::setData(const in_addr_t &value)
 {
-    return m_data;
+    m_data = value;
 }

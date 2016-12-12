@@ -9,7 +9,6 @@
 AbstractTabController::AbstractTabController(Ui::MainWindow* ptr,
                                              QWidget* parent,
                                              QTabWidget* tabWidget) :
-    m_tabWidget(nullptr),
     m_ui(ptr),
     m_parent(parent),
     m_previousTab(nullptr),

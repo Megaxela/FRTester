@@ -68,10 +68,6 @@ private slots:
      */
     void onTriggersPathPushButtonPressed();
 
-private:
-    Ui::MainWindow* m_ui;
-
-    QWidget* m_parent;
 };
 
 

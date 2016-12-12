@@ -17,7 +17,6 @@ namespace Ui
 /**
  * @brief Класс, контроллирующий вкладку
  * меню.
- * @todo Перенести на этот класс всю работу с активацией дочерних контроллеров.
  */
 class AbstractTabController : public QObject
 {

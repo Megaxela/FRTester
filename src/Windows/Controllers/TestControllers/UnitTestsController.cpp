@@ -2,18 +2,14 @@
 // Created by megaxela on 22.11.16.
 //
 
-#include <include/Testing/TestCore.h>
+#include <Testing/TestCore.h>
 #include <Tools/Logger.h>
-#include "include/Windows/Controllers/TestControllers/UnitTestsController.h"
-#include <QPushButton>
-#include <include/Executor/TestingExecutor.h>
-#include <QtWidgets/QFileDialog>
+#include "Windows/Controllers/TestControllers/UnitTestsController.h"
 #include "Executor/TestLoggerWaiter.h"
-#include <QTextBrowser>
+#include <QFileDialog>
 
 UnitTestsController::UnitTestsController(Ui::MainWindow *ptr, QWidget *parent) :
-    m_ui(ptr),
-    m_parent(parent)
+    AbstractTabController(ptr, parent, nullptr)
 {
     m_testingExecutor = new TestingExecutor();
     m_testLoggerWaiter = new TestLoggerWaiter();
@@ -28,31 +24,31 @@ UnitTestsController::~UnitTestsController()
 void UnitTestsController::setupConnections()
 {
     // Кнопка обновления набора юнит тестов
-    connect(m_ui->unitTestsUpdateTestsPushButton,
+    connect(ui()->unitTestsUpdateTestsPushButton,
             &QPushButton::clicked,
             this,
             &UnitTestsController::onUnitTestUpdateButtonPressed);
 
     // Кнопка запуска/остановки обработки тестов
-    connect(m_ui->unitTestsStartStopPushButton,
+    connect(ui()->unitTestsStartStopPushButton,
             &QPushButton::clicked,
             this,
             &UnitTestsController::onTestingStartedStoppedButtonPressed);
 
     // Кнопка паузы/продолжения обработки тестов
-    connect(m_ui->unitTestsPauseResumePushButton,
+    connect(ui()->unitTestsPauseResumePushButton,
             &QPushButton::clicked,
             this,
             &UnitTestsController::onTestingPausedResumedButtonPressed);
 
     // Кнопка сохранения лога
-    connect(m_ui->unitTestsSaveLogPushButton,
+    connect(ui()->unitTestsSaveLogPushButton,
             &QPushButton::clicked,
             this,
             &UnitTestsController::onSavingLogButtonPressed);
 
     // Кнопка очистки лога
-    connect(m_ui->unitTestsClearLogPushButton,
+    connect(ui()->unitTestsClearLogPushButton,
             &QPushButton::clicked,
             this,
             &UnitTestsController::onClearLogButtonPressed);
@@ -128,10 +124,10 @@ void UnitTestsController::configureWidgets()
 
     QFont font(family);
 
-    m_ui->unitTestsLogTextEdit->setFont(font);
-    m_ui->unitTestsLogTextEdit->setContextMenuPolicy(Qt::NoContextMenu);
-    m_ui->unitTestsLogTextEdit->setUndoRedoEnabled(false);
-    m_ui->unitTestsLogTextEdit->setReadOnly(true);
+    ui()->unitTestsLogTextEdit->setFont(font);
+    ui()->unitTestsLogTextEdit->setContextMenuPolicy(Qt::NoContextMenu);
+    ui()->unitTestsLogTextEdit->setUndoRedoEnabled(false);
+    ui()->unitTestsLogTextEdit->setReadOnly(true);
 }
 
 void UnitTestsController::tabSelected()
@@ -142,20 +138,20 @@ void UnitTestsController::tabSelected()
 void UnitTestsController::updateUnitTestsSet()
 {
     Log("Обновление набора тестов.")
-    m_ui->unitTestsTreeWidget->clearTests();
+    ui()->unitTestsTreeWidget->clearTests();
 
     TestCore::instance().updateDatabase();
 
     auto tests = TestCore::instance().getTests();
     for (auto test : tests)
     {
-        m_ui->unitTestsTreeWidget->addTest(test);
+        ui()->unitTestsTreeWidget->addTest(test);
     }
 
     auto triggers = TestCore::instance().getTriggers();
     for (auto trigger : triggers)
     {
-        m_ui->unitTestsTreeWidget->addTrigger(trigger);
+        ui()->unitTestsTreeWidget->addTrigger(trigger);
     }
 }
 
@@ -169,16 +165,16 @@ void UnitTestsController::onTestingStartedStoppedButtonPressed()
     if (m_testingExecutor->isTestingRunning())
     {
         m_testingExecutor->stop();
-        m_ui->unitTestsStartStopPushButton->setText("Начать");
-        m_ui->unitTestsPauseResumePushButton->setEnabled(false);
+        ui()->unitTestsStartStopPushButton->setText("Начать");
+        ui()->unitTestsPauseResumePushButton->setEnabled(false);
     }
     else
     {
         m_testingExecutor->start();
-        m_ui->unitTestsStartStopPushButton->setText("Закончить");
-        m_ui->unitTestsPauseResumePushButton->setEnabled(true);
+        ui()->unitTestsStartStopPushButton->setText("Закончить");
+        ui()->unitTestsPauseResumePushButton->setEnabled(true);
     }
-    m_ui->unitTestsPauseResumePushButton->setText("Приостановить");
+    ui()->unitTestsPauseResumePushButton->setText("Приостановить");
 }
 
 void UnitTestsController::onTestingPausedResumedButtonPressed()
@@ -186,18 +182,23 @@ void UnitTestsController::onTestingPausedResumedButtonPressed()
     if (m_testingExecutor->isPaused())
     {
         m_testingExecutor->resume();
-//        m_ui->unitTestsPauseResumePushButton->setText("Приостановить");
+//        ui()->unitTestsPauseResumePushButton->setText("Приостановить");
     }
     else
     {
         m_testingExecutor->pause();
-//        m_ui->unitTestsPauseResumePushButton->setText("Продолжить");
+//        ui()->unitTestsPauseResumePushButton->setText("Продолжить");
     }
 }
 
 void UnitTestsController::onSavingLogButtonPressed()
 {
-    QString path = QFileDialog::getSaveFileName(m_parent, "Сохранить", "", "Text (*.txt, *.html)");
+    QString path = QFileDialog::getSaveFileName(
+            parentWidget(), 
+            "Сохранить", 
+            "", 
+            "Text (*.txt, *.html)"
+    );
 
     if (path.isEmpty())
     {
@@ -216,11 +217,11 @@ void UnitTestsController::onSavingLogButtonPressed()
 
     if (path.endsWith(".html"))
     {
-        logContent = m_ui->unitTestsLogTextEdit->toHtml();
+        logContent = ui()->unitTestsLogTextEdit->toHtml();
     }
     else
     {
-        logContent = m_ui->unitTestsLogTextEdit->toPlainText();
+        logContent = ui()->unitTestsLogTextEdit->toPlainText();
     }
 
     file.write(logContent.toUtf8());
@@ -230,7 +231,7 @@ void UnitTestsController::onSavingLogButtonPressed()
 
 void UnitTestsController::onClearLogButtonPressed()
 {
-    m_ui->unitTestsLogTextEdit->clear();
+    ui()->unitTestsLogTextEdit->clear();
 }
 
 void UnitTestsController::onTestingFailed(QString reason)
@@ -271,11 +272,11 @@ void UnitTestsController::addLogMessage(QString message,
 
     Log("TEST: " + message.toStdString());
 
-    auto textCursor = m_ui->unitTestsLogTextEdit->textCursor();
+    auto textCursor = ui()->unitTestsLogTextEdit->textCursor();
 
-    m_ui->unitTestsLogTextEdit->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
+    ui()->unitTestsLogTextEdit->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
 
-    m_ui->unitTestsLogTextEdit->append(
+    ui()->unitTestsLogTextEdit->append(
         "<span style=\" color:" +
         color.name() +
         ";\">" + htmlScreening(message) + "</span>"
@@ -285,29 +286,29 @@ void UnitTestsController::addLogMessage(QString message,
 void UnitTestsController::onTestingStopped()
 {
     addLogMessage("Тестирование было остановлено.");
-    m_ui->unitTestsStartStopPushButton->setText("Начать");
-    m_ui->unitTestsPauseResumePushButton->setText("Приостановить");
-    m_ui->unitTestsPauseResumePushButton->setEnabled(false);
+    ui()->unitTestsStartStopPushButton->setText("Начать");
+    ui()->unitTestsPauseResumePushButton->setText("Приостановить");
+    ui()->unitTestsPauseResumePushButton->setEnabled(false);
 }
 
 void UnitTestsController::onTestingFinished()
 {
     addLogMessage("Тестирование было завершено.");
-    m_ui->unitTestsStartStopPushButton->setText("Начать");
-    m_ui->unitTestsPauseResumePushButton->setText("Приостановить");
-    m_ui->unitTestsPauseResumePushButton->setEnabled(false);
+    ui()->unitTestsStartStopPushButton->setText("Начать");
+    ui()->unitTestsPauseResumePushButton->setText("Приостановить");
+    ui()->unitTestsPauseResumePushButton->setEnabled(false);
 }
 
 void UnitTestsController::onTestingPaused()
 {
     addLogMessage("Тестирование приостановлено.");
-    m_ui->unitTestsPauseResumePushButton->setText("Продолжить");
+    ui()->unitTestsPauseResumePushButton->setText("Продолжить");
 }
 
 void UnitTestsController::onTestingResumed()
 {
     addLogMessage("Тестирование возобнавлено.");
-    m_ui->unitTestsPauseResumePushButton->setText("Приостановить");
+    ui()->unitTestsPauseResumePushButton->setText("Приостановить");
 
 }
 
@@ -315,7 +316,7 @@ void UnitTestsController::onTestingStarted()
 {
     onClearLogButtonPressed();
     addLogMessage("Тестирование начато");
-    m_ui->unitTestsStartStopPushButton->setText("Закончить");
+    ui()->unitTestsStartStopPushButton->setText("Закончить");
 }
 
 void UnitTestsController::onTestingTestResultAcquired(TestPtr test, bool result)

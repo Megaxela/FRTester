@@ -57,10 +57,7 @@ CommandsTabController::~CommandsTabController()
 
 void CommandsTabController::setupConnections()
 {
-    connect(m_ui->commandsTabWidget,
-            &QTabWidget::currentChanged,
-            this,
-            &CommandsTabController::onCurrentTabChanged);
+
 }
 
 void CommandsTabController::configureWidgets()
@@ -71,11 +68,11 @@ void CommandsTabController::configureWidgets()
 uint32_t CommandsTabController::password() const
 {
     bool ok = false;
-    uint32_t result = m_ui->commandsPasswordLineEdit->text().toUInt(&ok);
+    uint32_t result = ui()->commandsPasswordLineEdit->text().toUInt(&ok);
 
     if (!ok)
     {
-        QMessageBox::critical(m_parent, "Ошибка", "Неверное значение пароля заданного в поле \"пароль\". Использован пароль 30.");
+        QMessageBox::critical(parentWidget(), "Ошибка", "Неверное значение пароля заданного в поле \"пароль\". Использован пароль 30.");
         Log("Был указан неверный пароль. Используется пароль 30.");
         return 30;
     }
@@ -87,7 +84,7 @@ uint32_t CommandsTabController::password() const
 void CommandsTabController::setStatus(FRDriver::ErrorCode code, const QString &status)
 {
     QString text = "#" + QString::number((int) code) + " " + status;
-    m_ui->commandsResultLineEdit->setText(text);
+    ui()->commandsResultLineEdit->setText(text);
     Log("Результат: " + text.toStdString());
 }
 
@@ -103,22 +100,15 @@ void CommandsTabController::setLastStatus()
     );
 }
 
-void CommandsTabController::onCurrentTabChanged(int)
+bool CommandsTabController::checkConnectionWithDevice()
 {
-    QWidget* currentTab = m_ui->commandsTabWidget->currentWidget();
-
-    if (m_previousTab != nullptr)
+    ExcessLog("Проверка наличия соединения");
+    if (!DriverHolder::driver().checkConnection())
     {
-        if (m_tabControllers.contains(m_previousTab))
-        {
-            m_tabControllers[m_previousTab]->tabLeaved();
-        }
+        Error("Соединение с ФР отсутствует.");
+        QMessageBox::critical(parentWidget(), "Ошибка", "Соединение с ФР отсутствует.");
+        return false;
     }
 
-    if (m_tabControllers.contains(currentTab))
-    {
-        m_tabControllers[currentTab]->tabSelected();
-    }
-
-    m_previousTab = currentTab;
+    return true;
 }

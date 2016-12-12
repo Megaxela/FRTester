@@ -38,14 +38,10 @@ void PrintTextOperationsCommandsTabController::configureWidgets()
 
 void PrintTextOperationsCommandsTabController::onContinuePrintPressed()
 {
-    // todo: Перенести все проверки в отдельный модуль
     Log("Продолжаем печать.");
-
-    ExcessLog("Проверка наличия соединения");
-    if (!DriverHolder::driver().checkConnection())
+    if (!commandsTabControllerParent()->checkConnectionWithDevice())
     {
         Error("Соединение с ФР отсутствует.");
-        QMessageBox::critical(parentWidget(), "Ошибка", "Соединение с ФР отсутствует.");
         return;
     }
 
