@@ -93,7 +93,7 @@ public:
         , WaitingForCommandToContinuePrinting = 0x58
 
         /* ... todo: Добавить остальные коды ошибок */
-        , Unknown
+        , Unknown = 0xFF
     };
 
     class Converters

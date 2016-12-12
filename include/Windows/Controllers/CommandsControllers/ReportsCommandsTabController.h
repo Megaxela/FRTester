@@ -9,12 +9,25 @@
 #include <ui_mainwindow.h>
 #include <include/Windows/Controllers/CommandsTabController.h>
 
+/**
+ * @brief Контроллер, управляющий вкладкой с очетами.
+ */
 class ReportsCommandsTabController : public AbstractTabController
 {
 public:
+    /**
+     * @brief Конструктор.
+     * @param ptr Указатель на графический интерфейс.
+     * @param parent Указатель на родительский виджет
+     */
     ReportsCommandsTabController(Ui::MainWindow* ptr,
                                  QWidget* parent);
 
+    /**
+     * @brief Метод для получения родительского контроллера
+     * вкладки с коммандами.
+     * @return Родительский контроллер с коммандами.
+     */
     CommandsTabController* commandsTabControllerParent() const;
 
 protected:
@@ -26,6 +39,14 @@ private slots:
     void onZReportPressed();
 
     void onChangeOpenPressed();
+
+    void onXReportPressed();
+
+    void onDepartmentReportPressed();
+
+    void onTaxesReportPressed();
+
+    void onCashiersReportPressed();
 };
 
 

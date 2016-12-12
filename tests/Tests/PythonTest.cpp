@@ -53,11 +53,11 @@ bool PythonTest::execute()
 
         PyErr_Fetch(&pExceptionType, &pValue, &pTraceback);
 
-        char* pStrErrorMessage = PyString_AsString(pValue);
+        char* pStrErrorMessage = PyString_AsString(PyObject_Str(pValue));
 
+        Critical("Не удалось создать объект теста. Ошибка: " + std::string(pStrErrorMessage));
         Py_DECREF(pArguments);
         Py_DECREF(pEnvironment);
-        Critical("Не удалось создать объект теста. Ошибка: " + std::string(pStrErrorMessage));
         throw std::runtime_error("Не удалось создать объект теста. Ошибка: " + std::string(pStrErrorMessage));
     }
 
@@ -71,23 +71,25 @@ bool PythonTest::execute()
 
         PyErr_Fetch(&pExceptionType, &pValue, &pTraceback);
 
-        char* pStrErrorMessage = PyString_AsString(pValue);
+        char* pStrErrorMessage = PyString_AsString(PyObject_Str(pValue));
+
+        Critical("Не удалось выполнить метод execute теста. Ошибка: " + std::string(pStrErrorMessage));
 
         Py_DECREF(pCreatedObject);
         Py_DECREF(pArguments);
         Py_DECREF(pEnvironment);
-        Critical("Не удалось выполнить метод execute теста. Ошибка: " + std::string(pStrErrorMessage));
 
         throw std::runtime_error("Не удалось выполнить метод execute теста. Ошибка: " + std::string(pStrErrorMessage));
     }
 
     if (!PyBool_Check(pAnswerResult))
     {
+        Critical("Результат выполнения теста должен быть bool.");
+
         Py_DECREF(pAnswerResult);
         Py_DECREF(pCreatedObject);
         Py_DECREF(pArguments);
         Py_DECREF(pEnvironment);
-        Critical("Результат выполнения теста должен быть bool.");
         throw std::runtime_error("Результат выполнения теста должен быть bool.");
     }
 
@@ -107,7 +109,6 @@ bool PythonTest::loadModule(const std::string &modulePath, const std::string &mo
 
     char* m = (char*) modulePath.c_str();
     m_testPath = modulePath;
-//    PySys_SetPath((char*) modulePath.c_str());
 
     if (pModuleName == nullptr)
     {
@@ -133,7 +134,19 @@ bool PythonTest::loadModule(const std::string &modulePath, const std::string &mo
             str = std::string(pStrErrorMessage);
         }
 
-        Critical("Не удалось загрузить модуль" + moduleName + ", ошибка: " + str);
+        char* pStrExceptionType = PyString_AsString(PyObject_Repr(pExceptionType));
+        if (pStrExceptionType)
+        {
+            str += " " + std::string(pStrExceptionType);
+        }
+
+        char* pStrStack = PyString_AsString(PyObject_Repr(pTraceback));
+        if (pStrStack)
+        {
+            str += " " + std::string(pStrStack);
+        }
+
+        Critical("Не удалось загрузить модуль " + moduleName + ", ошибка: " + str);
 
         Py_DECREF(pModuleName);
         return false;

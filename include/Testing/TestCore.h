@@ -90,6 +90,18 @@ public:
      */
     bool restoreFRState();
 
+    /**
+     * @brief Метод для прерывания тестирования.
+     */
+    void interruptTesting();
+
+    /**
+     * @brief
+     * @param test
+     * @param enabled
+     */
+    void setTestEnabled(TestPtr test, bool enabled);
+
 private:
 
     /**
@@ -101,6 +113,8 @@ private:
 
     void deinit();
 
+    std::vector<TestPtr> m_disabledTests;
+
     std::vector<TriggerTestPtr> m_triggers;
 
     std::vector<TestPtr> m_tests;
@@ -108,6 +122,8 @@ private:
     TestEnvironment* m_environment;
 
     std::vector<TriggerTestPtr> m_failedTriggers;
+
+    uint32_t m_sysAdmPassword;
 };
 
 

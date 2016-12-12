@@ -27,6 +27,30 @@ void ReportsCommandsTabController::setupConnections()
             &QPushButton::clicked,
             this,
             &ReportsCommandsTabController::onChangeOpenPressed);
+
+    // Кнопка X отчета
+    connect(ui()->commandsReportsXReportPushButton,
+            &QPushButton::clicked,
+            this,
+            &ReportsCommandsTabController::onXReportPressed);
+
+    // Кнопка отчета по отделам
+    connect(ui()->commandsReportsDepartmentReportPushButton,
+            &QPushButton::clicked,
+            this,
+            &ReportsCommandsTabController::onDepartmentReportPressed);
+
+    // Кнопка отчета по налогам
+    connect(ui()->commandsReportsTaxReportPushButton,
+            &QPushButton::clicked,
+            this,
+            &ReportsCommandsTabController::onTaxesReportPressed);
+
+    // Кнопка отчета по кассирам
+    connect(ui()->commandsReportsCashierReportPushButton,
+            &QPushButton::clicked,
+            this,
+            &ReportsCommandsTabController::onCashiersReportPressed);
 }
 
 void ReportsCommandsTabController::configureWidgets()
@@ -76,4 +100,80 @@ void ReportsCommandsTabController::onChangeOpenPressed()
 CommandsTabController *ReportsCommandsTabController::commandsTabControllerParent() const
 {
     return (CommandsTabController*) parentController();
+}
+
+void ReportsCommandsTabController::onXReportPressed()
+{
+    Log("Печатаем отчет без гашения.");
+
+    if (!commandsTabControllerParent()->checkConnectionWithDevice())
+    {
+        Error("Соединение с ФР отсутствует.");
+        return;
+    }
+
+    ExcessLog("Запрос на ФР.");
+    if (!DriverHolder::driver().shiftReportWithoutExtinction(commandsTabControllerParent()->password()))
+    {
+        Error("Не удалось снять отчет без гашения.");
+    }
+
+    commandsTabControllerParent()->setLastStatus();
+}
+
+void ReportsCommandsTabController::onDepartmentReportPressed()
+{
+    Log("Печатаем отчет по отделам.");
+
+    if (!commandsTabControllerParent()->checkConnectionWithDevice())
+    {
+        Error("Соединение с ФР отсутствует.");
+        return;
+    }
+
+    ExcessLog("Запрос на ФР.");
+    if (!DriverHolder::driver().sectionsReport(commandsTabControllerParent()->password()))
+    {
+        Error("Не удалось снять отчет по отделам.");
+    }
+
+    commandsTabControllerParent()->setLastStatus();
+}
+
+void ReportsCommandsTabController::onTaxesReportPressed()
+{
+    Log("Печатаем отчет по налогам.");
+
+    if (!commandsTabControllerParent()->checkConnectionWithDevice())
+    {
+        Error("Соединение с ФР отсутствует.");
+        return;
+    }
+
+    ExcessLog("Запрос на ФР.");
+    if (!DriverHolder::driver().taxesReport(commandsTabControllerParent()->password()))
+    {
+        Error("Не удалось снять отчет по налогам.");
+    }
+
+    commandsTabControllerParent()->setLastStatus();
+}
+
+void ReportsCommandsTabController::onCashiersReportPressed()
+{
+    Log("Печатаем отчет по кассирам.");
+
+    if (!commandsTabControllerParent()->checkConnectionWithDevice())
+    {
+        Error("Соединение с ФР отсутствует.");
+        return;
+    }
+
+    ExcessLog("Запрос на ФР.");
+    if (!DriverHolder::driver().cashierReport(commandsTabControllerParent()->password()))
+    {
+        Error("Не удалось снять отчет по кассирам.");
+    }
+
+    commandsTabControllerParent()->setLastStatus();
 }

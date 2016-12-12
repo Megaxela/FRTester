@@ -1,5 +1,5 @@
 # coding=utf-8
-cdef class PyConverters:
+cdef class converters:
 
     def __init__(self):
         raise TypeError("You cant create this object.")

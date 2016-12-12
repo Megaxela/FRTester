@@ -13,10 +13,12 @@
 #include <tests/Triggers/PythonTrigger.h>
 #include <include/Testing/TestLogger.h>
 #include <include/TestDriverHolder.h>
+#include <include/Tools/Time.h>
 
 #define PY_LIST_DELIM ':'
 
-TestCore::TestCore()
+TestCore::TestCore() :
+    m_sysAdmPassword(30)
 {
     m_environment = new TestEnvironment(
             &TestDriverHolder::driver(),
@@ -172,22 +174,100 @@ bool TestCore::restoreFRState()
         return false;
     }
 
-    auto state = DriverHolder::driver().fullStateRequest(30);
-    if (state.posMode == 8) // Открытый документ
+    auto state = DriverHolder::driver().fullStateRequest(m_sysAdmPassword);
+
+    if (DriverHolder::driver().getLastError() != FRDriver::ErrorCode::NoError)
     {
-        // Отменяем документ
-        if (!DriverHolder::driver().cancelCheck(30))
+        Error("Не удалось получить полное состояние устройства. Прерываем тестирование.");
+        return false;
+    }
+
+    while (state.posSubMode != 0)
+    {
+        if (state.posSubMode == 3) // После активного отсутствия бумаги.
         {
-            Error("Не удалось отменить открытый чек.");
+            if (!DriverHolder::driver().resumePrinting(m_sysAdmPassword))
+            {
+                Error("Не удалось продолжить печать при 3 состоянии.");
+                return false;
+            }
+        }
+        else if (state.posSubMode == 5) // Печать
+        {
+            for (auto i = 0; i < 5 && state.posSubMode == 5; ++i)
+            {
+                state = DriverHolder::driver().fullStateRequest(m_sysAdmPassword);
+
+                Time::sleep<std::chrono::seconds>(1);
+            }
+
+            if (state.posSubMode == 5)
+            {
+                Error("Печать продолжается более 5 секунд. Останавливаем тестирование.");
+                return false;
+            }
+        }
+        else
+        {
+            Error("Необрабатываемый подрежим: " + std::to_string(state.posSubMode));
+            return false;
+        }
+
+        state = DriverHolder::driver().fullStateRequest(m_sysAdmPassword);
+
+        if (DriverHolder::driver().getLastError() != FRDriver::ErrorCode::NoError)
+        {
+            Error("Не удалось получить полное состояние устройства. Прерываем тестирование.");
             return false;
         }
     }
-    else if (state.posMode == 2) // Открытая смена
+
+    while (state.posMode != 4)
     {
-        // Закрываем смену
-        if (!DriverHolder::driver().shiftCloseReport(30))
+        if (state.posMode == 8) // Открытый документ
         {
-            Error("Не удалось закрыть смену.");
+            // Отменяем документ
+            if (!DriverHolder::driver().cancelCheck(m_sysAdmPassword))
+            {
+                Error("Не удалось отменить открытый чек.");
+                return false;
+            }
+        }
+        else if (state.posMode == 2 || state.posMode == 3) // Открытая смена
+        {
+            // Закрываем смену
+            if (!DriverHolder::driver().shiftCloseReport(m_sysAdmPassword))
+            {
+                if (DriverHolder::driver().getLastError() != FRDriver::ErrorCode::PreviousCommandPrintingIsActive)
+                {
+                    Error("Не удалось закрыть смену.");
+                    return false;
+                }
+            }
+
+            Time::sleep<std::chrono::milliseconds>(200);
+        }
+        else if (state.posMode == 9) // Ошибка ОЗУ
+        {
+            Critical("Ошибка ОЗУ. Прерываем тестирование.");
+            return false;
+        }
+        else if (state.posMode == 6) // Ожидание подтверждения даты
+        {
+            Critical("Ожидание подтверждения даты. Прерываем тестирование.");
+            return false;
+        }
+        else
+        {
+            Critical("Неопознаное состояние " + std::to_string(state.posMode) + ". Прерываем тестирование.");
+            return false;
+        }
+
+        state = DriverHolder::driver().fullStateRequest(m_sysAdmPassword);
+
+        if (DriverHolder::driver().getLastError() != FRDriver::ErrorCode::NoError)
+        {
+            Error("Не удалось получить полное состояние устройства. Прерываем тестирование.");
             return false;
         }
     }
@@ -264,4 +344,9 @@ void TestCore::init()
 void TestCore::deinit()
 {
     Py_Finalize();
+}
+
+void TestCore::interruptTesting()
+{
+    PyErr_SetInterrupt();
 }

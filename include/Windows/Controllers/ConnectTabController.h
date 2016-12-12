@@ -39,6 +39,9 @@ protected:
     void setupConnections() override;
 
     void configureWidgets() override;
+
+public:
+    void tabSelected() override;
 };
 
 

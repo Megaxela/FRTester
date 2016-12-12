@@ -146,7 +146,7 @@
            <enum>QTabWidget::Triangular</enum>
           </property>
           <property name="currentIndex">
-           <number>3</number>
+           <number>2</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -163,7 +163,11 @@
            </attribute>
            <layout class="QHBoxLayout" name="horizontalLayout_6">
             <item>
-             <widget class="QPlainTextEdit" name="commandsStatePlainTextEdit"/>
+             <widget class="QPlainTextEdit" name="commandsStatePlainTextEdit">
+              <property name="lineWrapMode">
+               <enum>QPlainTextEdit::NoWrap</enum>
+              </property>
+             </widget>
             </item>
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -614,7 +618,7 @@
              <string>Отчет по отделам</string>
             </property>
            </widget>
-           <widget class="QPushButton" name="commandsReportsTaxReportPushButton_4">
+           <widget class="QPushButton" name="commandsReportsTaxReportPushButton">
             <property name="geometry">
              <rect>
               <x>10</x>
@@ -627,7 +631,7 @@
              <string>Отчет по налогам</string>
             </property>
            </widget>
-           <widget class="QPushButton" name="commandsReportsCashierReportPushButton_5">
+           <widget class="QPushButton" name="commandsReportsCashierReportPushButton">
             <property name="geometry">
              <rect>
               <x>10</x>

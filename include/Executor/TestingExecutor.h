@@ -142,6 +142,8 @@ private:
     bool m_passthroughTesting;
 
     std::condition_variable m_notifier;
+
+    uint32_t m_timeToWaitForLog;
 };
 
 

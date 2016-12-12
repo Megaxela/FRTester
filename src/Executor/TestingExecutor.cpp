@@ -4,11 +4,13 @@
 
 #include <include/Testing/TestCore.h>
 #include <include/Tools/Time.h>
+#include <include/DriverHolder.h>
 #include "include/Executor/TestingExecutor.h"
 
 TestingExecutor::TestingExecutor() :
     m_paused(false),
-    m_running(false)
+    m_running(false),
+    m_timeToWaitForLog(500)
 {
     qRegisterMetaType<TestPtr>("TestPtr");
 }
@@ -28,6 +30,7 @@ void TestingExecutor::stop()
 {
     std::unique_lock<std::mutex> lock(m_mutex);
     m_running = false;
+    TestCore::instance().interruptTesting();
 }
 
 void TestingExecutor::resume()
@@ -87,9 +90,23 @@ void TestingExecutor::run()
             }
         }
 
+        if (!DriverHolder::driver().checkConnection())
+        {
+            // Ждем для того, чтобы вывод логгера был успешно выведен
+            Time::sleep<std::chrono::milliseconds>(m_timeToWaitForLog);
+            emit testingFailed("Соединение с устройством отсутствует.");
+            break;
+        }
+
+        emit testingLogAcquired("Восстанавливаем состояние FR.");
+
         if (!TestCore::instance().restoreFRState())
         {
-            emit testingFailed("Не удалось восстановить начальный режим устройства.");
+            emit testingFailed(
+                    "Не удалось восстановить начальный режим устройства. Последняя ошибка: " +
+                    QString::fromStdString(FRDriver::Converters::errorToString((int) DriverHolder::driver().getLastError()))
+            );
+            emit testingLogAcquired("Сотояние восстановить не удалось.");
             break;
         }
 
@@ -97,9 +114,7 @@ void TestingExecutor::run()
 
         // Для того, чтобы весь предшествующий лог
         // был выведен до теста
-        Time::sleep<std::chrono::milliseconds>(
-                100
-        );
+        Time::sleep<std::chrono::milliseconds>(100);
 
         try
         {
@@ -108,15 +123,15 @@ void TestingExecutor::run()
         }
         catch (const std::exception &e)
         {
+            // Ждем для того, чтобы вывод логгера был успешно выведен
+            Time::sleep<std::chrono::milliseconds>(m_timeToWaitForLog);
             lastTestResult = false;
             emit testingErrorAcquired("Во время выполнения теста было вызвано исключение: " + QString(e.what()));
         }
 
         // Для того, чтобы весь вывод теста был успешно
         // выведен в лог
-        Time::sleep<std::chrono::milliseconds>(
-                100
-        );
+        Time::sleep<std::chrono::milliseconds>(100);
 
         emit testResultAcquired(tests[index], lastTestResult);
 
@@ -154,6 +169,7 @@ void TestingExecutor::run()
             std::unique_lock<std::mutex> lock(m_mutex);
             if (!lastTestResult && !m_passthroughTesting)
             {
+                Time::sleep<std::chrono::milliseconds>(m_timeToWaitForLog);
                 emit testingStopped();
             }
         }
@@ -163,6 +179,7 @@ void TestingExecutor::run()
             std::unique_lock<std::mutex> lock(m_mutex);
             if (!m_running)
             {
+                Time::sleep<std::chrono::milliseconds>(m_timeToWaitForLog);
                 emit testingStopped();
                 break;
             }
@@ -171,6 +188,7 @@ void TestingExecutor::run()
         ++index;
         if (index >= tests.size())
         {
+            Time::sleep<std::chrono::milliseconds>(m_timeToWaitForLog);
             emit testingFinished();
             break;
         }

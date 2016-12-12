@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_ui->setupUi(this);
 
     m_rootController = new RootController(m_ui, this, m_ui->mainTabWidget);
+    m_rootController->init();
 }
 
 MainWindow::~MainWindow()

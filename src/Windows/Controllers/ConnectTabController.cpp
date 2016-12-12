@@ -8,6 +8,7 @@
 #include <include/TestDriverHolder.h>
 #include <include/Implementation/DefaultProtocol.h>
 #include <include/DriverHolder.h>
+#include <include/Tools/Logger.h>
 #include "ui_mainwindow.h"
 
 ConnectTabController::ConnectTabController(Ui::MainWindow *ptr, QWidget *parent, QTabWidget *tabWidget)
@@ -48,4 +49,9 @@ void ConnectTabController::setupConnections()
 void ConnectTabController::configureWidgets()
 {
 
+}
+
+void ConnectTabController::tabSelected()
+{
+    Log("Connection tab selected");
 }

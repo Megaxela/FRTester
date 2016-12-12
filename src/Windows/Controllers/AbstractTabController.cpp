@@ -5,6 +5,7 @@
 #include "Windows/Controllers/AbstractTabController.h"
 #include <QDebug>
 #include <iostream>
+#include <include/Tools/Logger.h>
 
 AbstractTabController::AbstractTabController(Ui::MainWindow* ptr,
                                              QWidget* parent,

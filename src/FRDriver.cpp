@@ -122,7 +122,8 @@ ByteArray FRDriver::sendCommand(const FRDriver::Command &c, const ByteArray &arg
 
 void FRDriver::proceedResponse(const ByteArray &data, bool cashier)
 {
-    if (data.length() < (cashier ? 3 : 2))
+    ExcessLog("Обработка " + data.toHex());
+    if (data.length() < 2)
     {
         Error("Попытка обработать ответ неверной длины. Меняю последнюю ошибку на Unknown.");
         m_lastErrorCode = ErrorCode::Unknown;
@@ -133,7 +134,14 @@ void FRDriver::proceedResponse(const ByteArray &data, bool cashier)
 
     if (cashier)
     {
-        m_lastReceivedCahsierNumber = data.read<uint8_t>(2);
+        if (data.length() > 2)
+        {
+            m_lastReceivedCahsierNumber = data.read<uint8_t>(2);
+        }
+        else
+        {
+            Error("Не удалось получить номер касира, поскольку программа выполнилась с ошибкой.");
+        }
     }
 }
 
@@ -321,7 +329,7 @@ FRDriver::FullState FRDriver::fullStateRequest(uint32_t password)
 {
     ByteArray arguments;
 
-    arguments.append(password);
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
 
     ByteArray data = sendCommand(Command::FullStateRequest, arguments);
 
@@ -382,7 +390,17 @@ bool FRDriver::cancelCheck(uint32_t password)
 
 bool FRDriver::checkConnection()
 {
-    return m_protocol->checkConnection(m_interface);
+    if (m_protocol == nullptr || m_interface == nullptr)
+    {
+        Error("Протокол или интерфейс на определены.");
+        return false;
+    }
+
+    bool result = m_protocol->checkConnection(m_interface);
+
+    m_lastErrorCode = ErrorCode::NoError;
+
+    return result;
 }
 
 uint16_t FRDriver::operatingRegisterRequest(uint32_t password, uint8_t registerNumber)
@@ -1046,7 +1064,8 @@ static std::map<int, std::string> errorString = {
         {0xE1, "ККТ Купюроприемник занят"},
         {0xE2, "ККТ Итог чека не соответствует итогу купюроприемника"},
         {0xE3, "ККТ Ошибка купюроприемника"},
-        {0xE4, "ККТ Итог купюроприемника не нулевой"}
+        {0xE4, "ККТ Итог купюроприемника не нулевой"},
+        {0xFF, "Неизвестная ошибка"}
 };
 
 std::map<int, std::string> posModeString = {
