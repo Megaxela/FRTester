@@ -346,7 +346,20 @@ void TestCore::deinit()
     Py_Finalize();
 }
 
+int quit(void*)
+{
+    Py_Exit(0);
+}
+
 void TestCore::interruptTesting()
 {
-    PyErr_SetInterrupt();
+//    PyErr_SetInterrupt();
+//    PyGILState_STATE state = PyGILState_Ensure();
+//    Py_AddPendingCall(&quit, NULL);
+//    PyGILState_Release(state);
+    PyErr_SetString(PyExc_KeyboardInterrupt, "...");
+    if (DriverHolder::driver().physicalInterface() != nullptr)
+    {
+        DriverHolder::driver().physicalInterface()->closeConnection();
+    }
 }

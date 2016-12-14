@@ -70,6 +70,32 @@ namespace SystemTools
      */
     std::vector<std::string> getAllFilesInDir(const std::string &path);
 
+    /**
+     * @brief Возвращает количество полезных бит в числе.
+     * @tparam T Тип числа.
+     * @param number Число.
+     * @return Количество бит.
+     */
+    template< typename T >
+    uint16_t getNumberSize(T number)
+    {
+        uint16_t r = 0;
+        T mask = shl((T) 1, sizeof(T) * 8 - 1);
+
+        while (mask)
+        {
+            if (number & mask)
+            {
+                return (sizeof(T) * 8) - r;
+            }
+
+            ++r;
+            mask >>= 1;
+        }
+
+        return (sizeof(T) * 8)- r;
+    }
+
     namespace Path
     {
         /**

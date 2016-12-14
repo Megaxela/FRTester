@@ -201,8 +201,8 @@ public:
     struct TableStructure
     {
         std::string name;       //< Название таблицы
-        uint16_t numberOfRows;  //< Количество рядов
-        uint8_t numberOfCols;   //< Количество полей
+        uint8_t numberOfFields;  //< Количество рядов
+        uint16_t numberOfLines;   //< Количество полей
     };
 
     /**
@@ -213,8 +213,8 @@ public:
         std::string name;
         uint8_t fieldType;
         uint8_t numberOfBytes;
-        std::string maxValue;
-        std::string minValue;
+        uint64_t maxValue;
+        uint64_t minValue;
     };
 
     /**
@@ -224,6 +224,27 @@ public:
     {
         uint64_t change; //< Сдача
         std::string url; //< Веб ссылка
+    };
+
+    /**
+     * @brief Статус информационного обмена
+     */
+    struct InformExchangeStatus
+    {
+        uint8_t status;               //< Статус информационного обмена (битовое поле)
+        uint8_t readStatus;           //< Состояние чтения сообщения
+        uint16_t messagesForOfd;      //< Количество сообщений для ОФД.
+        uint32_t firstDocumentNumber; //< Номер первого в очереди документа на отправку.
+        struct {
+            uint8_t hour;
+            uint8_t min;
+        } time; //< Дата первого в очереди документа для ОФД
+
+        struct {
+            uint8_t day;
+            uint8_t month;
+            uint8_t year;
+        } date; //< Время первого в очереди документа для ОФД
     };
 
     /**
@@ -392,14 +413,27 @@ public:
                                       uint8_t registerNumber);
 
     /**
-     * @brief Метод для считывания значения
+     * @brief Метод для считывания строкового значения из таблицы.
      * @param password Пароль системного администратора
      * @param table Таблица
      * @param row Ряд (строка)
      * @param field Поле (столбец)
      * @return Строковое значение таблицы
      */
-    std::string readTable(uint32_t password,
+    std::string readTableStr(uint32_t password,
+                             uint8_t table,
+                             uint16_t row,
+                             uint8_t field);
+
+    /**
+     * @brief Метод для считывания числового значения из таблицы.
+     * @param password Пароль системного администратора
+     * @param table Таблица
+     * @param row Ряд
+     * @param field Поле
+     * @return Числовое значение таблицы
+     */
+    uint64_t readTableBin(uint32_t password,
                           uint8_t table,
                           uint16_t row,
                           uint8_t field);
@@ -465,7 +499,7 @@ public:
     uint64_t currencyRegisterRequest(uint32_t password, uint8_t registerNumber);
 
     /**
-     * @brief Метод для записи таблицы.
+     * @brief Метод для записи в таблицу строкового значения.
      * @param sysPassword Пароль системного администратора.
      * @param tableNumber Таблица
      * @param row Ряд
@@ -478,6 +512,23 @@ public:
                     uint16_t row,
                     uint8_t field,
                     const std::string &value);
+
+    /**
+     * @brief Метод для записи в таблицу числового значения.
+     * @param sysPassword Пароль системного администратора.
+     * @param tableNumber Таблица
+     * @param row Ряд
+     * @param field Поле
+     * @param value Значение
+     * @param valSize Размер значения.
+     * @return Успешность выполнения команды.
+     */
+    bool writeTable(uint32_t sysPassword,
+                    uint8_t tableNumber,
+                    uint16_t row,
+                    uint8_t field,
+                    uint64_t value,
+                    uint8_t valSize);
 
     /**
      * @brief Метод для программирования времени.
@@ -692,6 +743,12 @@ public:
      */
     bool enterFactoryNumber(uint32_t factoryNumber);
 
+    /**
+     * @brief Метод для получения статуса информационного обмена.
+     * @param sysAdmPassword Пароль системного администратора.
+     * @return Статус информационного обмена.
+     */
+    InformExchangeStatus getInformationExchangeStatus(uint32_t sysAdmPassword);
 
 protected:
     /**
@@ -699,44 +756,45 @@ protected:
      */
     enum class Command
     {
-        ShortStateRequest = 0x10          //< Короткий запрос состояния
-        , FullStateRequest = 0x11           //< Полный запрос состояния
-        , Beep = 0x13                       //< Сигнал
-        , ReadExchangeConfiguration = 0x15  //< Чтение параметров обмена
-        , TechReset = 0x16                  //< Технологическое обнуление
-        , StandardStringPrint = 0x17        //< Печать стандартной строки
-        , DocumentHeaderPrint = 0x18        //< Печать заголовка документа
-        , CurrencyRegisterRequest = 0x1A    //< Запрос денежного регистра
-        , OperatingRegisterRequest = 0x1B   //< Запрос операционного регистра
-        , WriteTable = 0x1E                 //< Запись таблицы
-        , ReadTable = 0x1F                  //< Чтение таблицы
-        , TimeProgramming = 0x21            //< Программирование времени
-        , DateProgramming = 0x22            //< Программирование даты
-        , DateConfirm = 0x23                //< Подтверждение программирования даты
-        , TableValuesInit = 0x24            //< Инициализация таблиц начальными значениями
-        , CutCheck = 0x25                   //< Отрезка чека
-        , ReadFontConfiguration = 0x26      //< Чтение параметров шрифта
-        , TotalExtinction = 0x27            //< Полное гашение
-        , Scrolling = 0x28                  //< Протяжка
-        , TableStructureRequest = 0x2D      //< Запрос структуры таблицы
-        , ShiftReportNoExtinction = 0x40    //< Суточный отчет без гашения
-        , ShiftCloseReport = 0x41           //< Отчет о закрытии смены
-        , Sell = 0x80                       //< Продажа
-        , CloseCheck = 0x85                 //< Обычное закрытие чека
-        , CancelCheck = 0x88                //< Аннулирование чека
-        , ContinuePrint = 0xB0              //< Продолжить печать
-        , OpenShift = 0xE0                  //< Открытие смены
-        , FieldStructureRequest = 0x2E      //< Запрос структуры поля
-        , FontStringPrint = 0x40            //< Печать строки данным шрифтом
-        , SectionsReport = 0x42             //< Отчет по секциям
-        , TaxesReport = 0x43                //< Отчет по налогам
-        , CashierReport = 0x44              //< Отчет по кассирам
-        , PayIn = 0x50                      //< Внесение
-        , PayOut = 0x51                     //< Выплата
-        , PrintCliches = 0x52               //< Печать клише
-        , DocumentEndPrint = 0x53           //< Конец Документа (печать)
-        , PrintAds = 0x54                   //< Печать рекламного текста
-        , EnterFactoryNumber = 0x55         //< Ввод заводского номера
+        ShortStateRequest = 0x10                //< Короткий запрос состояния
+        , FullStateRequest = 0x11               //< Полный запрос состояния
+        , Beep = 0x13                           //< Сигнал
+        , ReadExchangeConfiguration = 0x15      //< Чтение параметров обмена
+        , TechReset = 0x16                      //< Технологическое обнуление
+        , StandardStringPrint = 0x17            //< Печать стандартной строки
+        , DocumentHeaderPrint = 0x18            //< Печать заголовка документа
+        , CurrencyRegisterRequest = 0x1A        //< Запрос денежного регистра
+        , OperatingRegisterRequest = 0x1B       //< Запрос операционного регистра
+        , WriteTable = 0x1E                     //< Запись таблицы
+        , ReadTable = 0x1F                      //< Чтение таблицы
+        , TimeProgramming = 0x21                //< Программирование времени
+        , DateProgramming = 0x22                //< Программирование даты
+        , DateConfirm = 0x23                    //< Подтверждение программирования даты
+        , TableValuesInit = 0x24                //< Инициализация таблиц начальными значениями
+        , CutCheck = 0x25                       //< Отрезка чека
+        , ReadFontConfiguration = 0x26          //< Чтение параметров шрифта
+        , TotalExtinction = 0x27                //< Полное гашение
+        , Scrolling = 0x28                      //< Протяжка
+        , TableStructureRequest = 0x2D          //< Запрос структуры таблицы
+        , ShiftReportNoExtinction = 0x40        //< Суточный отчет без гашения
+        , ShiftCloseReport = 0x41               //< Отчет о закрытии смены
+        , Sell = 0x80                           //< Продажа
+        , CloseCheck = 0x85                     //< Обычное закрытие чека
+        , CancelCheck = 0x88                    //< Аннулирование чека
+        , ContinuePrint = 0xB0                  //< Продолжить печать
+        , OpenShift = 0xE0                      //< Открытие смены
+        , FieldStructureRequest = 0x2E          //< Запрос структуры поля
+        , FontStringPrint = 0x40                //< Печать строки данным шрифтом
+        , SectionsReport = 0x42                 //< Отчет по секциям
+        , TaxesReport = 0x43                    //< Отчет по налогам
+        , CashierReport = 0x44                  //< Отчет по кассирам
+        , PayIn = 0x50                          //< Внесение
+        , PayOut = 0x51                         //< Выплата
+        , PrintCliches = 0x52                   //< Печать клише
+        , DocumentEndPrint = 0x53               //< Конец Документа (печать)
+        , PrintAds = 0x54                       //< Печать рекламного текста
+        , EnterFactoryNumber = 0x55             //< Ввод заводского номера
+        , GetInformationExchangeStatus = 0xFF39 //< Получить статус информационного обмена
     };
 
     /**

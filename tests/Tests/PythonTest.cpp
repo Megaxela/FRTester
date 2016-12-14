@@ -47,39 +47,26 @@ bool PythonTest::execute()
 
     if (pCreatedObject == nullptr)
     {
-        PyObject* pExceptionType;
-        PyObject* pValue;
-        PyObject* pTraceback;
+        std::string error = getPythonError();
 
-        PyErr_Fetch(&pExceptionType, &pValue, &pTraceback);
-
-        char* pStrErrorMessage = PyString_AsString(PyObject_Str(pValue));
-
-        Critical("Не удалось создать объект теста. Ошибка: " + std::string(pStrErrorMessage));
+        Critical("Не удалось создать объект теста. Ошибка: " + error);
         Py_DECREF(pArguments);
         Py_DECREF(pEnvironment);
-        throw std::runtime_error("Не удалось создать объект теста. Ошибка: " + std::string(pStrErrorMessage));
+        throw std::runtime_error("Не удалось создать объект теста. Ошибка: " + error);
     }
 
     auto pAnswerResult = PyObject_CallMethod(pCreatedObject, "execute", NULL);
 
     if (pAnswerResult == nullptr)
     {
-        PyObject* pExceptionType;
-        PyObject* pValue;
-        PyObject* pTraceback;
-
-        PyErr_Fetch(&pExceptionType, &pValue, &pTraceback);
-
-        char* pStrErrorMessage = PyString_AsString(PyObject_Str(pValue));
-
-        Critical("Не удалось выполнить метод execute теста. Ошибка: " + std::string(pStrErrorMessage));
+        std::string error = getPythonError();
+        Critical("Не удалось выполнить метод execute теста. Ошибка: " + error);
 
         Py_DECREF(pCreatedObject);
         Py_DECREF(pArguments);
         Py_DECREF(pEnvironment);
 
-        throw std::runtime_error("Не удалось выполнить метод execute теста. Ошибка: " + std::string(pStrErrorMessage));
+        throw std::runtime_error("Не удалось выполнить метод execute теста. Ошибка: " + error);
     }
 
     if (!PyBool_Check(pAnswerResult))
@@ -120,33 +107,7 @@ bool PythonTest::loadModule(const std::string &modulePath, const std::string &mo
 
     if (pModule == nullptr)
     {
-        PyObject* pExceptionType;
-        PyObject* pValue;
-        PyObject* pTraceback;
-
-        PyErr_Fetch(&pExceptionType, &pValue, &pTraceback);
-
-        char* pStrErrorMessage = PyString_AsString(pValue);
-
-        std::string str = "None";
-        if (pStrErrorMessage)
-        {
-            str = std::string(pStrErrorMessage);
-        }
-
-        char* pStrExceptionType = PyString_AsString(PyObject_Repr(pExceptionType));
-        if (pStrExceptionType)
-        {
-            str += " " + std::string(pStrExceptionType);
-        }
-
-        char* pStrStack = PyString_AsString(PyObject_Repr(pTraceback));
-        if (pStrStack)
-        {
-            str += " " + std::string(pStrStack);
-        }
-
-        Critical("Не удалось загрузить модуль " + moduleName + ", ошибка: " + str);
+        Critical("Не удалось загрузить модуль " + moduleName + ", ошибка: " + getPythonError());
 
         Py_DECREF(pModuleName);
         return false;
@@ -156,15 +117,7 @@ bool PythonTest::loadModule(const std::string &modulePath, const std::string &mo
 
     if (pDict == nullptr)
     {
-        PyObject* pExceptionType;
-        PyObject* pValue;
-        PyObject* pTraceback;
-
-        PyErr_Fetch(&pExceptionType, &pValue, &pTraceback);
-
-        char* pStrErrorMessage = PyString_AsString(pValue);
-
-        Critical("Не удалось загрузить словарь из модуля " + moduleName + ", ошибка: " + std::string(pStrErrorMessage));
+        Critical("Не удалось загрузить словарь из модуля " + moduleName + ", ошибка: " + getPythonError());
 
         Py_DECREF(pModuleName);
         Py_DECREF(pModule);
@@ -224,4 +177,32 @@ TestPtr PythonTest::loadTest(TestEnvironment *environment, const std::string &mo
     }
 
     return test;
+}
+
+std::string PythonTest::getPythonError()
+{
+    std::string result;
+
+    PyObject* pExceptionType;
+    PyObject* pValue;
+    PyObject* pTraceback;
+
+    PyErr_Fetch(&pExceptionType, &pValue, &pTraceback);
+
+    if (pValue == nullptr && pExceptionType == nullptr && pTraceback == nullptr)
+    {
+        return "Unknown error";
+    }
+
+    if (pValue != nullptr)
+    {
+        char* pValueStr = PyString_AsString(pValue);
+
+        if (pValueStr)
+        {
+            result += "Exception: " + std::string(pValueStr);
+        }
+    }
+
+    return result;
 }

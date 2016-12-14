@@ -3,6 +3,7 @@
 //
 
 #include <map>
+#include <include/Tools/ByteArrayReader.h>
 #include "FRDriver.h"
 #include "Abstract/PhysicalInterface.h"
 #include "Tools/Logger.h"
@@ -112,7 +113,19 @@ ByteArray FRDriver::sendCommand(const FRDriver::Command &c, const ByteArray &arg
 {
     ByteArray packedCommand;
 
-    packedCommand.append<uint8_t>(static_cast<uint8_t>(c));
+    // Вычисление размера команды в битах.
+    uint16_t commandSize = SystemTools::getNumberSize<int>((int) c);
+
+    // В зависимост от размера команды добавляем ее в массив байт.
+    if (commandSize > 8)
+    {
+        packedCommand.append<uint16_t>(static_cast<uint16_t>(c), ByteArray::ByteOrder_BigEndian);
+    }
+    else
+    {
+        packedCommand.append<uint8_t>(static_cast<uint8_t>(c));
+    }
+
     packedCommand.append(arguments);
 
     auto response = sendRaw(packedCommand);
@@ -122,21 +135,30 @@ ByteArray FRDriver::sendCommand(const FRDriver::Command &c, const ByteArray &arg
 
 void FRDriver::proceedResponse(const ByteArray &data, bool cashier)
 {
-    ExcessLog("Обработка " + data.toHex());
-    if (data.length() < 2)
+    if (data.length() == 0)
     {
         Error("Попытка обработать ответ неверной длины. Меняю последнюю ошибку на Unknown.");
         m_lastErrorCode = ErrorCode::Unknown;
         return;
     }
 
-    m_lastErrorCode = static_cast<ErrorCode>(data[1]);
+    uint8_t commandSize = (uint8_t) (data[0] == 0xFF ? 2 : 1);
+    if (data.length() < commandSize + 1)
+    {
+        Error("Попытка обработать ответ неверной длины. Меняю последнюю ошибку на Unknown.");
+        m_lastErrorCode = ErrorCode::Unknown;
+        return;
+    }
+
+    m_lastErrorCode = static_cast<ErrorCode>(data[commandSize]);
+
+    Log("Получена ошибка: #" + std::to_string(data[commandSize]) + " из ответа " + data.toHex());
 
     if (cashier)
     {
         if (data.length() > 2)
         {
-            m_lastReceivedCahsierNumber = data.read<uint8_t>(2);
+            m_lastReceivedCahsierNumber = data.read<uint8_t>(commandSize + 1);
         }
         else
         {
@@ -342,6 +364,7 @@ FRDriver::FullState FRDriver::fullStateRequest(uint32_t password)
         return state;
     }
 
+    // todo: Заменить на ByteArrayReader
     state.firmwareVersion[0]                = data.read<uint8_t> (3 , ByteArray::ByteOrder_LittleEndian);
     state.firmwareVersion[1]                = data.read<uint8_t> (4 , ByteArray::ByteOrder_LittleEndian);
     state.firmwareBuild                     = data.read<uint16_t>(5 , ByteArray::ByteOrder_LittleEndian);
@@ -415,22 +438,6 @@ uint16_t FRDriver::operatingRegisterRequest(uint32_t password, uint8_t registerN
     proceedResponse(data, true);
 
     return data.read<uint16_t>(3, ByteArray::ByteOrder_LittleEndian);
-}
-
-std::string FRDriver::readTable(uint32_t password, uint8_t table, uint16_t row, uint8_t field)
-{
-    ByteArray arguments;
-
-    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
-    arguments.append(table,    ByteArray::ByteOrder_LittleEndian);
-    arguments.append(row,      ByteArray::ByteOrder_LittleEndian);
-    arguments.append(field,    ByteArray::ByteOrder_LittleEndian);
-
-    ByteArray data = sendCommand(Command::ReadTable, arguments);
-
-    proceedResponse(data, true);
-
-    return std::string((const char*) (data.data() + 2), data.length() - 2);
 }
 
 FRDriver::ExchangeConfiguration FRDriver::readExchangeConfiguration(uint32_t sysAdmPassword, uint8_t portNumber)
@@ -659,10 +666,11 @@ FRDriver::FontConfiguration FRDriver::readFontConfiguration(uint32_t sysPassword
         return configuration;
     }
 
-    configuration.printAreaWidthPixels = data.read<uint16_t>(2, ByteArray::ByteOrder_LittleEndian);
-    configuration.symbolWidthWithInterval = data.read<uint8_t>(4);
-    configuration.symbolHeightWithInterval = data.read<uint8_t>(5);
-    configuration.numberOfFonts = data.read<uint8_t>(6);
+    // todo: Заменить на ByteArrayReader
+    configuration.printAreaWidthPixels      = data.read<uint16_t>(2, ByteArray::ByteOrder_LittleEndian);
+    configuration.symbolWidthWithInterval   = data.read<uint8_t>(4);
+    configuration.symbolHeightWithInterval  = data.read<uint8_t>(5);
+    configuration.numberOfFonts             = data.read<uint8_t>(6);
 
     return configuration;
 }
@@ -714,9 +722,12 @@ FRDriver::TableStructure FRDriver::tableStructureRequest(uint32_t sysPassword,
         return structure;
     }
 
-    structure.name = std::string((const char*) data.data() + 2, 40);
-    structure.numberOfRows = data.read<uint16_t>(3, ByteArray::ByteOrder_LittleEndian);
-    structure.numberOfCols = data.read<uint8_t>(5);
+    ByteArrayReader reader(data);
+    reader.move(2);
+
+    structure.name            = reader.readString(40);
+    structure.numberOfLines   = reader.read<uint16_t>(ByteArray::ByteOrder_LittleEndian);
+    structure.numberOfFields  = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
 
     return structure;
 }
@@ -740,11 +751,23 @@ FRDriver::FieldStructure FRDriver::fieldStructureRequest(uint32_t sysPassword, u
         return structure;
     }
 
-    structure.name = std::string((const char*) data.data() + 2, 40);
-    structure.fieldType = data.read<uint8_t>(42);
+    // todo: Заменить на ByteArrayReader
+    structure.name          = std::string((const char*) data.data() + 2, 40);
+    structure.fieldType     = data.read<uint8_t>(42);
     structure.numberOfBytes = data.read<uint8_t>(43);
-    structure.minValue = std::string((const char*) data.data() + 44, structure.numberOfBytes);
-    structure.minValue = std::string((const char*) data.data() + 44 + structure.numberOfBytes, structure.numberOfBytes);
+//    structure.minValue      = std::string((const char*) data.data() + 44, structure.numberOfBytes);
+//    structure.minValue      = std::string((const char*) data.data() + 44 + structure.numberOfBytes, structure.numberOfBytes);
+
+    structure.minValue      = data.readPart(
+            44,
+            structure.numberOfBytes,
+            ByteArray::ByteOrder_LittleEndian
+    );
+    structure.minValue      = data.readPart(
+            44 + structure.numberOfBytes,
+            structure.numberOfBytes,
+            ByteArray::ByteOrder_LittleEndian
+    );
     // todo: Удостовериться в правильности типа данных
     return structure;
 }
@@ -921,6 +944,101 @@ bool FRDriver::enterFactoryNumber(uint32_t password, uint32_t factoryNumber)
 bool FRDriver::enterFactoryNumber(uint32_t factoryNumber)
 {
     return enterFactoryNumber(0, factoryNumber);
+}
+
+FRDriver::InformExchangeStatus FRDriver::getInformationExchangeStatus(uint32_t sysAdmPassword)
+{
+    ByteArray arguments;
+
+    arguments.append(sysAdmPassword, ByteArray::ByteOrder_LittleEndian);
+
+    auto data = sendCommand(Command::GetInformationExchangeStatus, arguments);
+
+    proceedResponse(data, false);
+
+    InformExchangeStatus status = InformExchangeStatus();
+
+    Log("Data: " + data.toHex());
+
+    if (data.length() != 16)
+    {
+        return status;
+    }
+
+    ByteArrayReader reader(data);
+    reader.move(3);
+
+    status.status               = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    status.readStatus           = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    status.messagesForOfd       = reader.read<uint16_t>(ByteArray::ByteOrder_LittleEndian);
+    status.firstDocumentNumber  = reader.read<uint32_t>(ByteArray::ByteOrder_LittleEndian);
+    status.date.year            = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    status.date.month           = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    status.date.day             = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    status.time.hour            = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    status.time.min             = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+
+    return status;
+}
+
+std::string FRDriver::readTableStr(uint32_t password,
+                                   uint8_t table,
+                                   uint16_t row,
+                                   uint8_t field)
+{
+    ByteArray arguments;
+
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(table,    ByteArray::ByteOrder_LittleEndian);
+    arguments.append(row,      ByteArray::ByteOrder_LittleEndian);
+    arguments.append(field,    ByteArray::ByteOrder_LittleEndian);
+
+    ByteArray data = sendCommand(Command::ReadTable, arguments);
+
+    proceedResponse(data, true);
+
+    return std::string((const char*) (data.data() + 2), data.length() - 2);
+}
+
+uint64_t FRDriver::readTableBin(uint32_t password,
+                                uint8_t table,
+                                uint16_t row,
+                                uint8_t field)
+{
+    ByteArray arguments;
+
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(table,    ByteArray::ByteOrder_LittleEndian);
+    arguments.append(row,      ByteArray::ByteOrder_LittleEndian);
+    arguments.append(field,    ByteArray::ByteOrder_LittleEndian);
+
+    ByteArray data = sendCommand(Command::ReadTable, arguments);
+
+    proceedResponse(data, true);
+
+    return data.readPart(2, (uint8_t) (data.length() - 2), ByteArray::ByteOrder_LittleEndian );
+}
+
+bool FRDriver::writeTable(uint32_t sysPassword,
+                          uint8_t tableNumber,
+                          uint16_t row,
+                          uint8_t field,
+                          uint64_t value,
+                          uint8_t valSize)
+{
+    ByteArray arguments;
+
+    arguments.append(sysPassword,        ByteArray::ByteOrder_LittleEndian);
+    arguments.append(tableNumber,        ByteArray::ByteOrder_LittleEndian);
+    arguments.append(row,                ByteArray::ByteOrder_LittleEndian);
+    arguments.append(field,              ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(value, valSize, ByteArray::ByteOrder_LittleEndian);
+
+    auto data = sendCommand(Command::WriteTable, arguments);
+
+    proceedResponse(data, false);
+
+    return getLastError() == ErrorCode::NoError;
 }
 
 

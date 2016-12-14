@@ -27,7 +27,7 @@ const int TCPInterface::Type = 3;
 
 TCPInterface::TCPInterface() :
         PhysicalInterface(TCPInterface::Type),
-        m_connectionSocket(NetworkTools::createTCPSocket())
+        m_connectionSocket(NetworkTools::invalidSocket)
 {
 
 }
@@ -42,7 +42,10 @@ TCPInterface::~TCPInterface()
 
 bool TCPInterface::openConnection()
 {
-    if (m_connectionSocket == INVALID_SOCKET)
+    closeConnection();
+
+    m_connectionSocket = NetworkTools::createTCPSocket();
+    if (m_connectionSocket == NetworkTools::invalidSocket)
     {
         Error("Соединение не может быть установлено. Сокет не был создан.");
         return false;
@@ -64,9 +67,10 @@ bool TCPInterface::openConnection()
 
 bool TCPInterface::closeConnection()
 {
-    if (m_connectionSocket != INVALID_SOCKET)
+    if (m_connectionSocket != NetworkTools::invalidSocket)
     {
         NetworkTools::closeSocket(m_connectionSocket);
+        m_connectionSocket = NetworkTools::invalidSocket;
     }
 
     return true;
@@ -104,6 +108,7 @@ ByteArray TCPInterface::read(const PhysicalInterface::size_t &size, uint32_t tim
     FD_ZERO(&except_fds); // Очищаем набор
 
     FD_SET(m_connectionSocket, &read_fds);
+    FD_SET(m_connectionSocket, &except_fds);
 
     byte response[size];
     memset(response, 0, size * sizeof(byte));

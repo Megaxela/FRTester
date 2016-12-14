@@ -76,9 +76,9 @@ void AbstractTabController::onCurrentTabChanged(int)
     m_previousTab = currentTab;
 }
 
-void AbstractTabController::addTabController(QWidget *widget, AbstractTabController *controller)
+void AbstractTabController::addTabController(QWidget *tab, AbstractTabController *controller)
 {
-    m_tabControllers[widget] = controller;
+    m_tabControllers[tab] = controller;
     controller->setParentController(this);
     controller->init();
 }

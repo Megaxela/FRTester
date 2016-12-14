@@ -47,6 +47,8 @@ public:
     bool execute() override;
 
 private:
+    std::string getPythonError();
+
     std::string m_testPath;
 
     PyObject* m_pTest;

@@ -10,6 +10,7 @@
 #include <Windows/Controllers/CommandsControllers/ReportsCommandsTabController.h>
 #include <Windows/Controllers/CommandsControllers/RegisterCommandsTabController.h>
 #include <include/Windows/Controllers/CommandsControllers/PrintCommandsTabController.h>
+#include <include/Windows/Controllers/CommandsControllers/FNCommandsTabController.h>
 #include "Windows/Controllers/CommandsControllers/StateCommandsTabController.h"
 #include "Windows/Controllers/CommandsTabController.h"
 #include "ui_mainwindow.h"
@@ -46,6 +47,14 @@ CommandsTabController::CommandsTabController(Ui::MainWindow *ptr,
                     ptr,
                     parent,
                     ui()->commandsPrintTabWidget
+            )
+    );
+    addTabController(
+            ui()->commandsFNTab,
+            new FNCommandsTabController(
+                    ptr,
+                    parent,
+                    ui()->commandsFNTabWidget
             )
     );
 }

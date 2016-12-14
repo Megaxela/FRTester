@@ -56,14 +56,8 @@ void StateCommandsTabController::onShortRequest()
 {
     Log("Выполняем короткий запрос состояния");
     ExcessLog("Проверка наличия соединения");
-    if (!DriverHolder::driver().checkConnection())
+    if (!commandsTabController()->checkConnectionWithDevice())
     {
-        Error("Соединение с ФР отстуствует.");
-        QMessageBox::critical(
-                parentWidget(),
-                "Ошибка",
-                "Соединение с ФР отсутствует."
-        );
         return;
     }
 
@@ -82,7 +76,7 @@ void StateCommandsTabController::onShortRequest()
     }
 
     QString stringBuilder;
-    QString divider = "=================================";
+    QString divider = "==================================================================";
 
     stringBuilder += divider + "\n";
 

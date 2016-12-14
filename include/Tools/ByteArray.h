@@ -319,18 +319,18 @@ public:
         {
             if (order == ByteOrder_LittleEndian)
             {
-                value |= SystemTools::shl(m_d[position + i], i * 8);
+                value |= SystemTools::shl<T>(m_d[position + i], i * 8);
             }
             else
             {
-                value |= SystemTools::shl(m_d[position + sizeof(T) - i - 1], i * 8);
+                value |= SystemTools::shl<T>(m_d[position + sizeof(T) - i - 1], i * 8);
             }
         }
 
         return value;
     }
 
-    uint64_t readPart(uint32_t position, uint8_t size, ByteOrder order = ByteOrder_BigEndian)
+    uint64_t readPart(uint32_t position, uint8_t size, ByteOrder order = ByteOrder_BigEndian) const
     {
         assert(order == ByteOrder_LittleEndian || order == ByteOrder_BigEndian);
         assert((position + size) <= length());

@@ -78,7 +78,7 @@ public:
 
 protected:
 
-    void addTabController(QWidget* widget, AbstractTabController *controller);
+    void addTabController(QWidget *tab, AbstractTabController *controller);
 
     /**
      * @brief Метод для настройки соединений сигналов со слотами.

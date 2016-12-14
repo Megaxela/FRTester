@@ -93,7 +93,8 @@ cdef extern from "../include/FRDriver.h":
         CheckResult closeCheck(uint32_t password, uint64_t cashPaySum, uint64_t type2PaySum, uint64_t type3PaySum, uint64_t type4PaySum, uint16_t discount, uint8_t tax1, uint8_t tax2, uint8_t tax3, uint8_t tax4, const string &textToPrint);
         bint resumePrinting(uint32_t password)
         uint16_t operatingRegisterRequest(uint32_t password, uint8_t registerNumber)
-        string readTable(uint32_t password, uint8_t table, uint16_t row, uint8_t field)
+        string readTableStr(uint32_t password, uint8_t table, uint16_t row, uint8_t field)
+        uint64_t readTableBin(uint32_t password, uint8_t table, uint16_t row, uint8_t field)
         bint cancelCheck(uint32_t password)
         ExchangeConfiguration readExchangeConfiguration(uint32_t sysAdmPassword, uint8_t portNumber)
         bool technologicalReset()
@@ -101,6 +102,7 @@ cdef extern from "../include/FRDriver.h":
         uint16_t documentHeaderPrint(uint32_t password, const string &document, uint16_t documentNumber)
         uint64_t currencyRegisterRequest(uint32_t password, uint8_t registerNumber)
         bool writeTable(uint32_t sysPassword, uint8_t tableNumber, uint16_t row, uint8_t field, const string &value);
+        bool writeTable(uint32_t sysPassword, uint8_t tableNumber, uint16_t row, uint8_t field, uint64_t value, uint8_t valSize);
         bool timeProgramming(uint32_t sysPassword, uint8_t h, uint8_t m, uint8_t s);
         bool dateProgramming(uint32_t sysPassword, uint8_t day, uint8_t month, uint8_t year);
         bool dateConfirm(uint32_t sysPassword, uint8_t day, uint8_t month, uint8_t year);
@@ -235,14 +237,14 @@ cdef extern from "../include/FRDriver.h" namespace "FRDriver":
 
     cdef struct TableStructure:
         string name
-        uint16_t numberOfRows
-        uint8_t numberOfCols
+        uint16_t numberOfLines
+        uint8_t numberOfFields
 
     cdef struct FieldStructure:
         string name
         uint8_t fieldType
         uint8_t numberOfBytes
-        string maxValue
-        string minValue
+        uint64_t maxValue
+        uint64_t minValue
 
 

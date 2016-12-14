@@ -140,7 +140,17 @@ set(SOURCE_FILES main.cpp
         include/Windows/Controllers/RootController.h
         src/Windows/Controllers/ConnectControllers/ConnectTCPTabController.cpp
         include/Windows/Controllers/ConnectControllers/ConnectTCPTabController.h
-    )
+        src/Tools/ByteArrayReader.cpp
+        include/Tools/ByteArrayReader.h
+        src/Windows/Controllers/CommandsControllers/FNCommandsTabController.cpp
+        include/Windows/Controllers/CommandsControllers/FNCommandsTabController.h
+        src/Windows/Controllers/CommandsControllers/FNOFDCommandsTabController.cpp
+        include/Windows/Controllers/CommandsControllers/FNOFDCommandsTabController.h
+        src/Windows/Controllers/TablesTabController.cpp
+        include/Windows/Controllers/TablesTabController.h
+        src/Tools/Codecs.cpp
+        include/Tools/Codecs.h
+        )
 
 add_executable(FRTester
         ${SOURCE_FILES}

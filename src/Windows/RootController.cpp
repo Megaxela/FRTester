@@ -7,6 +7,7 @@
 #include <include/Windows/Controllers/CommandsTabController.h>
 #include <include/Windows/Controllers/ConnectControllers/ConnectCOMTabController.h>
 #include <include/Windows/Controllers/ConnectTabController.h>
+#include <include/Windows/Controllers/TablesTabController.h>
 #include "include/Windows/Controllers/RootController.h"
 
 RootController::RootController(Ui::MainWindow *ptr,
@@ -20,6 +21,13 @@ RootController::RootController(Ui::MainWindow *ptr,
                     ui(),
                     parentWidget(),
                     ui()->connectionTabWidget
+            )
+    );
+    addTabController(
+            ui()->tablesTab,
+            new TablesTabController(
+                    ui(),
+                    parentWidget()
             )
     );
     addTabController(

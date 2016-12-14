@@ -1,4 +1,5 @@
 # coding=utf-8
+
 cdef class converters:
 
     def __init__(self):
@@ -211,7 +212,7 @@ cdef class PyFRDriver:
             """
             return self.driver.operatingRegisterRequest(password, registerNumber)
 
-        def read_table(self, password, table, row, field):
+        def read_table_str(self, password, table, row, field):
             """
             @brief Метод для считывания значения
             @param password Пароль системного администратора
@@ -220,7 +221,10 @@ cdef class PyFRDriver:
             @param field Поле (столбец)
             @return Строковое значение таблицы
             """
-            return self.driver.readTable(password, table, row, field)
+            return self.driver.readTableStr(password, table, row, field)
+
+        def read_table_bin(self, password, table, row, field):
+            return self.driver.readTableBin(password, table, row, field)
 
         def cancel_check(self, password):
             """
@@ -283,7 +287,7 @@ cdef class PyFRDriver:
             """
             return self.driver.currencyRegisterRequest(password, registerNumber)
 
-        def write_table(self, sysPassword, tableNumber, row, field, value):
+        def write_table_str(self, sysPassword, tableNumber, row, field, value):
             """
             @brief Метод для записи таблицы.
             @param sysPassword Пароль системного администратора.
@@ -294,6 +298,9 @@ cdef class PyFRDriver:
             @return Успешность выполнения команды.
             """
             return self.driver.writeTable(sysPassword, tableNumber, row, field, value)
+
+        def write_table_bin(self, sysPassword, tableNumber, row, field, value, valSize):
+            return self.driver.writeTable(sysPassword, tableNumber, row, field, value, valSize)
 
         def time_programming(self, sysPassword, h, m, s):
             """
