@@ -39,6 +39,7 @@ void TablesTabController::configureWidgets()
 
 void TablesTabController::onTablesUpdate()
 {
+    Log("Обновление таблиц.");
     if (!checkEverything())
     {
         return;
@@ -57,10 +58,11 @@ void TablesTabController::onTablesUpdate()
 
         m_tableStructures[i] = structure;
 
+        auto qStr = Codecs::instance().convert("CP1251", QByteArray(structure.name.c_str()));
 
-        ui()->tablesFieldsListWidget->addItem(
-                Codecs::instance().convert("CP1251", QByteArray(structure.name.c_str()))
-        );
+        Log("Найдена таблица #" + std::to_string(m_tables[i]) + " \"" + qStr.toStdString() + "\".");
+
+        ui()->tablesFieldsListWidget->addItem(qStr);
     }
 }
 
@@ -87,7 +89,7 @@ uint32_t TablesTabController::getPassword() const
 {
     QString s = ui()->tablesPasswordLineEdit->text();
 
-    return s.toUInt();;
+    return s.toUInt();
 }
 
 bool TablesTabController::checkEverything() const
@@ -102,12 +104,7 @@ bool TablesTabController::checkEverything() const
         return false;
     }
 
-    if (!checkPassword())
-    {
-        return false;
-    }
-
-    return true;
+    return checkPassword();
 }
 
 void TablesTabController::onCurrentTableChanged(int index)
@@ -124,67 +121,87 @@ void TablesTabController::onCurrentTableChanged(int index)
     ui()->tablesFieldsTableWidget->setColumnCount(2);
     ui()->tablesFieldsTableWidget->setRowCount(m_tableStructures[index].numberOfFields);
 
+    m_currentTableFieldsStructures.clear();
+
     for (int i = 0; i < m_tableStructures[index].numberOfFields; ++i)
     {
-//        // Запрос структуры поля
-//        auto field = DriverHolder::driver().fieldStructureRequest(
-//                password,
-//                (uint8_t) m_tables[index],
-//                (uint8_t) (i + 1)
-//        );
-//
-//        if (DriverHolder::driver().getLastError() != FRDriver::ErrorCode::NoError)
-//        {
-//            Critical("Ошибка получения структуры поля.");
-//            break;
-//        }
-//
-//        auto table = DriverHolder::driver().readTable(
-//                password,
-//                (uint8_t) m_tables[index],
-//                1,
-//                (uint8_t) (i + 1)
-//        );
-//
-//        if (DriverHolder::driver().getLastError() != FRDriver::ErrorCode::NoError)
-//        {
-//            Critical("Ошибка получения значения поля. Ошибка: " +
-//                     FRDriver::Converters::errorToString((int) DriverHolder::driver().getLastError()));
-//            break;
-//        }
-//
-//        ui()->tablesFieldsTableWidget->setItem(
-//                i,
-//                0,
-//                new QTableWidgetItem(
-//                        Codecs::instance().convert(
-//                                "CP1251", QByteArray(field.name.c_str(), 40)
-//                        )
-//                )
-//        );
-//
-//        if (field.fieldType) // If STRING
-//        {
-//            ui()->tablesFieldsTableWidget->setItem(
-//                    i,
-//                    1,
-//                    new QTableWidgetItem(
-//                            Codecs::instance().convert(
-//                                    "CP1251", QByteArray(table.strValue.c_str(), (int) table.strValue.length())
-//                            )
-//                    )
-//            );
-//        }
-//        else
-//        {
-//            ui()->tablesFieldsTableWidget->setItem(
-//                    i,
-//                    1,
-//                    new QTableWidgetItem(
-//                            QString::number(table.binValue)
-//                    )
-//            );
-//        }
-        // todo: Добавить реализацию
+        // Запрос структуры поля
+        auto field = DriverHolder::driver().fieldStructureRequest(
+                password,
+                (uint8_t) m_tables[index],
+                (uint8_t) (i + 1)
+        );
+
+        if (DriverHolder::driver().getLastError() != FRDriver::ErrorCode::NoError)
+        {
+            Critical("Ошибка получения структуры поля.");
+            break;
+        }
+
+        ui()->tablesFieldsTableWidget->setItem(
+                i,
+                0,
+                new QTableWidgetItem(
+                        Codecs::instance().convert(
+                                "CP1251", QByteArray(field.name.c_str(), 40)
+                        )
+                )
+        );
+
+        m_currentTableFieldsStructures.push_back(field);
+
+        if (field.fieldType == FRDriver::FieldStructure::Bin)
+        {
+            auto table = DriverHolder::driver().readTableBin(
+                    password,
+                    (uint8_t) m_tables[index],
+                    1,
+                    (uint8_t) (i + 1)
+            );
+
+            if (DriverHolder::driver().getLastError() != FRDriver::ErrorCode::NoError)
+            {
+                Critical("Ошибка получения значения поля. Ошибка: " +
+                         FRDriver::Converters::errorToString((int) DriverHolder::driver().getLastError()));
+                break;
+            }
+
+            ui()->tablesFieldsTableWidget->setItem(
+                    i,
+                    1,
+                    new QTableWidgetItem(
+                            QString::number(table)
+                    )
+            );
+        }
+        else // String
+        {
+            auto table = DriverHolder::driver().readTableStr(
+                    password,
+                    (uint8_t) m_tables[index],
+                    1,
+                    (uint8_t) (i + 1)
+            );
+
+            if (DriverHolder::driver().getLastError() != FRDriver::ErrorCode::NoError)
+            {
+                Critical("Ошибка получения значения поля. Ошибка: " +
+                         FRDriver::Converters::errorToString((int) DriverHolder::driver().getLastError()));
+                break;
+            }
+
+            ui()->tablesFieldsTableWidget->setItem(
+                    i,
+                    1,
+                    new QTableWidgetItem(
+                            Codecs::instance().convert(
+                                    "CP1251", QByteArray(
+                                            table.c_str(),
+                                            (int) table.length()
+                                    )
+                            )
+                    )
+            );
+        }
     }
 }

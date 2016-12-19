@@ -54,6 +54,7 @@ private:
 
     std::array<uint8_t, 24> m_tables;
     std::array<FRDriver::TableStructure, 24> m_tableStructures;
+    std::vector<FRDriver::FieldStructure> m_currentTableFieldsStructures;
 };
 
 

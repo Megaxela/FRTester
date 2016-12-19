@@ -58,6 +58,16 @@ private slots:
      * печати.
      */
     void onContinuePrintPressed();
+
+    /**
+     * @brief Слот, вызываемый при нажатии на кнопку обрезки ленты.
+     */
+    void onCutPressed();
+
+    /**
+     * @brief Слот, вызываемый при нажатии на кнопку прокрутки ленты.
+     */
+    void onScrollPressed();
 };
 
 

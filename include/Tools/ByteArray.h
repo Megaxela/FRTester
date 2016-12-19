@@ -162,7 +162,7 @@ public:
             if (order == ByteOrder_LittleEndian)
             {
                 m_d[m_n + i] = static_cast<uint8_t>(
-                        SystemTools::shr(
+                        SystemTools::shr<T>(
                                 number & SystemTools::shl<T>(
                                         0xFF,
                                         i * 8
@@ -174,7 +174,7 @@ public:
             else
             {
                 m_d[m_n + sizeof(T) - i - 1] = static_cast<uint8_t>(
-                        SystemTools::shr(
+                        SystemTools::shr<T>(
                                 number & SystemTools::shl<T>(
                                         0xFF,
                                         i * 8

@@ -11,12 +11,6 @@
     #include <termios.h>
     #include <unistd.h>
     #include <fcntl.h>
-    #include <zconf.h>
-    #include <sys/select.h>
-    #include <stdio.h>
-    #include <sys/types.h>
-    #include <sys/stat.h>
-    #include <sys/time.h>
 
 #endif
 
@@ -24,6 +18,8 @@
 #include "Tools/Logger.h"
 #include "Tools/byte.h"
 #include "Tools/Time.h"
+#include "Tools/StdExtend.h"
+
 //
 //#ifndef DebugLog
 //    #define DebugLog(x)
@@ -67,8 +63,13 @@ bool TTY::isInitialized() const
 int TTY::connect(const std::string &port, int baudrate)
 {
     disconnect();
+
 #ifdef OS_WINDOWS
-    //todo: Добавить проверку формата входных данных
+    if (!stdex::begins(port, baudrate))
+    {
+        return 7;
+    }
+
     DebugLog("Подключаемся к порту \"" + port + "\".");
     m_Handle = CreateFileA(
             ("\\\\.\\" + port).c_str(),

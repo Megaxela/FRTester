@@ -29,11 +29,28 @@ void PrintTextOperationsCommandsTabController::setupConnections()
             &QPushButton::clicked,
             this,
             &PrintTextOperationsCommandsTabController::onContinuePrintPressed);
+
+    // Кнопка отрезки
+    connect(ui()->commandsPrintTextOperationsCutPushButton,
+            &QPushButton::clicked,
+            this,
+            &PrintTextOperationsCommandsTabController::onCutPressed);
+
+    // Кнопка прокрутки
+    connect(ui()->commandsPrintTextOperationsScrollPaperPushButton,
+            &QPushButton::clicked,
+            this,
+            &PrintTextOperationsCommandsTabController::onScrollPressed);
 }
 
 void PrintTextOperationsCommandsTabController::configureWidgets()
 {
 
+}
+
+CommandsTabController *PrintTextOperationsCommandsTabController::commandsTabControllerParent() const
+{
+    return (CommandsTabController*) parentController()->parentController()->parentController();
 }
 
 void PrintTextOperationsCommandsTabController::onContinuePrintPressed()
@@ -55,7 +72,47 @@ void PrintTextOperationsCommandsTabController::onContinuePrintPressed()
     commandsTabControllerParent()->setLastStatus();
 }
 
-CommandsTabController *PrintTextOperationsCommandsTabController::commandsTabControllerParent() const
+void PrintTextOperationsCommandsTabController::onCutPressed()
 {
-    return (CommandsTabController*) parentController()->parentController()->parentController();
+    Log("Отрезаем ленту.");
+    if (!commandsTabControllerParent()->checkConnectionWithDevice())
+    {
+        Error("Соединение с ФР отсутствует.");
+        return;
+    }
+
+    ExcessLog("Запрос на ФР.");
+
+    if (!DriverHolder::driver().cutCheck(
+            commandsTabControllerParent()->password(),
+            (uint8_t) ui()->commandsPrintTextOperationsCutTypeComboBox->currentIndex()
+    ))
+    {
+        Error("Не удалось отрезать ленту.");
+    }
+
+    commandsTabControllerParent()->setLastStatus();
+}
+
+void PrintTextOperationsCommandsTabController::onScrollPressed()
+{
+    Log("Проскролливаем ленту.");
+    if (!commandsTabControllerParent()->checkConnectionWithDevice())
+    {
+        Error("Соединение с ФР отсутствует.");
+        return;
+    }
+
+    ExcessLog("Запрос на ФР.");
+
+    if (!DriverHolder::driver().scrolling(
+            commandsTabControllerParent()->password(),
+            0b111,
+            (uint8_t) ui()->commandsPrintTextOperationsScrollLinesSpinBox->value()
+    ))
+    {
+        Error("Не удалось прокрутить ленту.");
+    }
+
+    commandsTabControllerParent()->setLastStatus();
 }

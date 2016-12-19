@@ -150,7 +150,7 @@ set(SOURCE_FILES main.cpp
         include/Windows/Controllers/TablesTabController.h
         src/Tools/Codecs.cpp
         include/Tools/Codecs.h
-        )
+        src/Tools/StdExtend.cpp include/Tools/StdExtend.h)
 
 add_executable(FRTester
         ${SOURCE_FILES}

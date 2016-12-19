@@ -119,11 +119,16 @@ ByteArray FRDriver::sendCommand(const FRDriver::Command &c, const ByteArray &arg
     // В зависимост от размера команды добавляем ее в массив байт.
     if (commandSize > 8)
     {
-        packedCommand.append<uint16_t>(static_cast<uint16_t>(c), ByteArray::ByteOrder_BigEndian);
+        packedCommand.append<uint16_t>(
+                static_cast<uint16_t>(c),
+                ByteArray::ByteOrder_BigEndian
+        );
     }
     else
     {
-        packedCommand.append<uint8_t>(static_cast<uint8_t>(c));
+        packedCommand.append<uint8_t>(
+                static_cast<uint8_t>(c)
+        );
     }
 
     packedCommand.append(arguments);
@@ -219,6 +224,115 @@ bool FRDriver::sell(uint32_t password,
 
     return m_lastErrorCode == ErrorCode::NoError;
 }
+
+
+
+bool FRDriver::returnSell(uint32_t password,
+                          uint64_t count,
+                          uint64_t price,
+                          uint8_t department,
+                          uint8_t firstTax,
+                          uint8_t secondTax,
+                          uint8_t thirdTax,
+                          uint8_t fourthTax,
+                          const std::string &good)
+{
+    ByteArray arguments;
+
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(count, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(price, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(department);
+    arguments.append(firstTax);
+    arguments.append(secondTax);
+    arguments.append(thirdTax);
+    arguments.append(fourthTax);
+    arguments.append((uint8_t*) good.c_str(),
+                     good.length());
+
+    if (good.length() < 40)
+    {
+        arguments.appendMultiple<uint8_t>(0x00, 40 - good.length());
+    }
+
+    ByteArray data = sendCommand(Command::ReturnSell, arguments);
+
+    proceedResponse(data);
+
+    return m_lastErrorCode == ErrorCode::NoError;
+}
+
+bool FRDriver::returnBuy(uint32_t password,
+                         uint64_t count,
+                         uint64_t price,
+                         uint8_t department,
+                         uint8_t firstTax,
+                         uint8_t secondTax,
+                         uint8_t thirdTax,
+                         uint8_t fourthTax,
+                         const std::string &good)
+{
+    ByteArray arguments;
+
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(count, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(price, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(department);
+    arguments.append(firstTax);
+    arguments.append(secondTax);
+    arguments.append(thirdTax);
+    arguments.append(fourthTax);
+    arguments.append((uint8_t*) good.c_str(),
+                     good.length());
+
+    if (good.length() < 40)
+    {
+        arguments.appendMultiple<uint8_t>(0x00, 40 - good.length());
+    }
+
+    ByteArray data = sendCommand(Command::ReturnBuy, arguments);
+
+    proceedResponse(data);
+
+    return m_lastErrorCode == ErrorCode::NoError;
+}
+
+bool FRDriver::buy(uint32_t password,
+                   uint64_t count,
+                   uint64_t price,
+                   uint8_t department,
+                   uint8_t firstTax,
+                   uint8_t secondTax,
+                   uint8_t thirdTax,
+                   uint8_t fourthTax,
+                   const std::string &good)
+{
+    ByteArray arguments;
+
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(count, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(price, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(department);
+    arguments.append(firstTax);
+    arguments.append(secondTax);
+    arguments.append(thirdTax);
+    arguments.append(fourthTax);
+    arguments.append((uint8_t*) good.c_str(),
+                     good.length());
+
+    if (good.length() < 40)
+    {
+        arguments.appendMultiple<uint8_t>(0x00, 40 - good.length());
+    }
+
+    ByteArray data = sendCommand(Command::Buy, arguments);
+
+    proceedResponse(data);
+
+    return m_lastErrorCode == ErrorCode::NoError;
+}
+
+
 
 bool FRDriver::openShift(uint32_t password)
 {
@@ -364,36 +478,37 @@ FRDriver::FullState FRDriver::fullStateRequest(uint32_t password)
         return state;
     }
 
-    // todo: Заменить на ByteArrayReader
-    state.firmwareVersion[0]                = data.read<uint8_t> (3 , ByteArray::ByteOrder_LittleEndian);
-    state.firmwareVersion[1]                = data.read<uint8_t> (4 , ByteArray::ByteOrder_LittleEndian);
-    state.firmwareBuild                     = data.read<uint16_t>(5 , ByteArray::ByteOrder_LittleEndian);
-    state.firmwareDate[0]                   = data.read<uint8_t> (7 , ByteArray::ByteOrder_LittleEndian);
-    state.firmwareDate[1]                   = data.read<uint8_t> (8 , ByteArray::ByteOrder_LittleEndian);
-    state.firmwareDate[2]                   = data.read<uint8_t> (9 , ByteArray::ByteOrder_LittleEndian);
-    state.numberInHall                      = data.read<uint8_t> (10, ByteArray::ByteOrder_LittleEndian);
-    state.currentDocumentPassthrougNumber   = data.read<uint16_t>(12, ByteArray::ByteOrder_LittleEndian);
-    state.posFlags                          = data.read<uint16_t>(13, ByteArray::ByteOrder_LittleEndian);
-    state.posMode                           = data.read<uint8_t> (15, ByteArray::ByteOrder_LittleEndian);
-    state.posSubMode                        = data.read<uint8_t> (16, ByteArray::ByteOrder_LittleEndian);
-    state.posPort                           = data.read<uint8_t> (17, ByteArray::ByteOrder_LittleEndian);
-    state.date[0]                           = data.read<uint8_t> (18, ByteArray::ByteOrder_LittleEndian);
-    state.date[1]                           = data.read<uint8_t> (19, ByteArray::ByteOrder_LittleEndian);
-    state.date[2]                           = data.read<uint8_t> (20, ByteArray::ByteOrder_LittleEndian);
-    state.time[0]                           = data.read<uint8_t> (21, ByteArray::ByteOrder_LittleEndian);
-    state.time[1]                           = data.read<uint8_t> (22, ByteArray::ByteOrder_LittleEndian);
-    state.time[2]                           = data.read<uint8_t> (23, ByteArray::ByteOrder_LittleEndian);
-    state.time[3]                           = data.read<uint8_t> (24, ByteArray::ByteOrder_LittleEndian);
-    state.factoryNumberLower                = data.read<uint32_t>(25, ByteArray::ByteOrder_LittleEndian);
-    state.lastClosedShiftNumber             = data.read<uint16_t>(29, ByteArray::ByteOrder_LittleEndian);
-    state.numberOfReRegistration            = data.read<uint8_t> (31, ByteArray::ByteOrder_LittleEndian);
-    state.inn[0]                            = data.read<uint8_t> (32, ByteArray::ByteOrder_LittleEndian);
-    state.inn[1]                            = data.read<uint8_t> (33, ByteArray::ByteOrder_LittleEndian);
-    state.inn[2]                            = data.read<uint8_t> (34, ByteArray::ByteOrder_LittleEndian);
-    state.inn[3]                            = data.read<uint8_t> (35, ByteArray::ByteOrder_LittleEndian);
-    state.inn[4]                            = data.read<uint8_t> (36, ByteArray::ByteOrder_LittleEndian);
-    state.inn[5]                            = data.read<uint8_t> (37, ByteArray::ByteOrder_LittleEndian);
-    state.factoryNumberUpper                = data.read<uint16_t>(38, ByteArray::ByteOrder_LittleEndian);
+    ByteArrayReader reader(data);
+    reader.seek(3);
+
+    state.firmwareVersion.major             = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    state.firmwareVersion.minor             = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    state.firmwareBuild                     = reader.read<uint16_t>(ByteArray::ByteOrder_LittleEndian);
+    state.firmwareDate.day                  = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    state.firmwareDate.month                = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    state.firmwareDate.year                 = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    state.numberInHall                      = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    state.currentDocumentPassthrougNumber   = reader.read<uint16_t>(ByteArray::ByteOrder_LittleEndian);
+    state.posFlags                          = reader.read<uint16_t>(ByteArray::ByteOrder_LittleEndian);
+    state.posMode                           = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    state.posSubMode                        = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    state.posPort                           = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    state.date.day                          = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    state.date.month                        = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    state.date.year                         = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    state.time.hour                         = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    state.time.minute                       = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    state.time.second                       = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    state.factoryNumberLower                = reader.read<uint32_t>(ByteArray::ByteOrder_LittleEndian);
+    state.lastClosedShiftNumber             = reader.read<uint16_t>(ByteArray::ByteOrder_LittleEndian);
+    state.numberOfReRegistration            = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    state.inn[0]                            = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    state.inn[1]                            = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    state.inn[2]                            = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    state.inn[3]                            = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    state.inn[4]                            = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    state.inn[5]                            = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    state.factoryNumberUpper                = reader.read<uint16_t>(ByteArray::ByteOrder_LittleEndian);
 
     return state;
 }
@@ -413,7 +528,7 @@ bool FRDriver::cancelCheck(uint32_t password)
 
 bool FRDriver::checkConnection()
 {
-    if (m_protocol == nullptr || m_interface == nullptr)
+    if (!isAdaptorsReady())
     {
         Error("Протокол или интерфейс на определены.");
         return false;
@@ -1041,6 +1156,33 @@ bool FRDriver::writeTable(uint32_t sysPassword,
     return getLastError() == ErrorCode::NoError;
 }
 
+FRDriver::NonZeroSums FRDriver::getNonZeroSums()
+{
+    ByteArray arguments;
+
+    arguments.append((const uint8_t*) "\xF4\x00\x00\x00\x00", 5);
+
+    auto data = sendCommand(Command::NonZeroSums, arguments);
+
+    proceedResponse(data, false);
+
+    NonZeroSums sums = FRDriver::NonZeroSums();
+
+    if (data.length() != 34)
+    {
+        return sums;
+    }
+
+    ByteArrayReader reader(data);
+    reader.seek(2);
+
+    sums.values[0] = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
+    sums.values[1] = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
+    sums.values[2] = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
+    sums.values[3] = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
+
+    return sums;
+}
 
 static std::map<int, std::string> errorString = {
         {0x00, "ФН Успешное выполнение команды"},

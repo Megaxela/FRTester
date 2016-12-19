@@ -202,18 +202,45 @@ cdef extern from "../include/FRDriver.h" namespace "FRDriver":
         uint8_t checkNumberOfActionsHigher
         uint8_t lastPrintResult
 
+    cdef struct DataStructure:
+        uint8_t day
+        uint8_t month
+        uint8_t year
+
+    cdef struct TimeStructure:
+        uint8_t hour
+        uint8_t minute
+        uint8_t second
+
+    cdef struct FirmwareVersion:
+        char major
+        char minor
+
+    cdef struct DateStructure:
+        uint8_t day
+        uint8_t month
+        uint8_t year
+
+    cdef struct TimeStructure:
+        uint8_t hour
+        uint8_t minute
+        uint8_t second
+
+    cdef struct NonZeroSums:
+        uint64_t values[4]
+
     cdef struct FullState:
-        char firmwareVersion[2]
+        FirmwareVersion firmwareVersion
         uint16_t firmwareBuild
-        uint8_t firmwareDate[3]
+        DateStructure firmwareDate
         uint8_t numberInHall
         uint16_t currentDocumentPassthrougNumber
         uint16_t posFlags
         uint8_t posMode
         uint8_t posSubMode
         uint8_t posPort
-        uint8_t date[3]
-        uint8_t time[3]
+        DateStructure date
+        TimeStructure time
         uint32_t factoryNumberLower
         uint16_t lastClosedShiftNumber
         uint8_t numberOfReRegistration

@@ -83,7 +83,7 @@ void RegisterCommandsTabController::onSellButtonPressed()
     ExcessLog("Запрос на ФР.");
     if (!DriverHolder::driver().sell(
             commandsTabControllerParent()->password(),
-            static_cast<uint32_t>(ui()->commandsRegistrationCountDoubleSpinBox->value() * 100),
+            static_cast<uint32_t>(ui()->commandsRegistrationCountDoubleSpinBox->value() * 1000),
             static_cast<uint32_t>(ui()->commandsRegistrationPriceDoubleSpinBox->value() * 100),
             static_cast<uint8_t>(changeShort),
             static_cast<uint8_t>(ui()->commandsRegistration1TaxSpinBox->value()),
@@ -145,7 +145,7 @@ void RegisterCommandsTabController::onBuyButtonPressed()
 
 
     ExcessLog("Запрос на ФР.");
-    if (!DriverHolder::driver().sell(
+    if (!DriverHolder::driver().buy(
             commandsTabControllerParent()->password(),
             count,
             price,

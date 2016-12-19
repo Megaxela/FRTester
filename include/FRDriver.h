@@ -149,21 +149,51 @@ public:
     };
 
     /**
+     * @brief Структура с версией прошивки
+     */
+    struct FirmwareVersion
+    {
+        char major;
+        char minor;
+    };
+
+    /**
+     * @brief Структура с датой
+     */
+    struct DateStructure
+    {
+        uint8_t day;
+        uint8_t month;
+        uint8_t year;
+    };
+
+    /**
+     * @brief Структура со временем
+     */
+    struct TimeStructure
+    {
+        uint8_t hour;
+        uint8_t minute;
+        uint8_t second;
+    };
+
+    /**
      * @brief Результат полного запроса состояния.
+     * @todo Исправить орфографию
      */
     struct FullState
     {
-        char firmwareVersion[2];                   //< Версия ПО ККТ
+        FirmwareVersion firmwareVersion;            //< Версия ПО ККТ
         uint16_t firmwareBuild;                     //< Сборка ПО ККТ
-        uint8_t firmwareDate[3];                    //< Дата ПО ККТ [ДД-ММ-ГГ]
+        DateStructure firmwareDate;                 //< Дата ПО ККТ [ДД-ММ-ГГ]
         uint8_t numberInHall;                       //< Номер в зале
         uint16_t currentDocumentPassthrougNumber;   //< Сквозной номер текущего документа
         uint16_t posFlags;                          //< Флаги ККТ
         uint8_t posMode;                            //< Режим ККТ
         uint8_t posSubMode;                         //< Подрежим ККТ
         uint8_t posPort;                            //< Порт ККТ
-        uint8_t date[3];                            //< Дата [ДД-ММ-ГГ]
-        uint8_t time[3];                            //< Время [ЧЧ-ММ-СС]
+        DateStructure date;                         //< Дата [ДД-ММ-ГГ]
+        TimeStructure time;                         //< Время [ЧЧ-ММ-СС]
         uint32_t factoryNumberLower;                //< Младшее слово заводского номера
         uint16_t lastClosedShiftNumber;             //< Номер последней закрытой смены
         uint8_t numberOfReRegistration;             //< Количество перерегистраций
@@ -210,6 +240,12 @@ public:
      */
     struct FieldStructure
     {
+        enum FieldType
+        {
+            Bin = 0,
+            String = 1
+        };
+
         std::string name;
         uint8_t fieldType;
         uint8_t numberOfBytes;
@@ -224,6 +260,14 @@ public:
     {
         uint64_t change; //< Сдача
         std::string url; //< Веб ссылка
+    };
+
+    /**
+     * @brief Результат запроса необнуляемой сумма
+     */
+    struct NonZeroSums
+    {
+        uint64_t values[4];
     };
 
     /**
@@ -348,6 +392,78 @@ public:
               uint8_t thirdTax,
               uint8_t fourthTax,
               const std::string &good);
+
+    /**
+     * @brief Покупка. (Расход)
+     * @param password Пароль кассира
+     * @param count Количество (будет обрезано до 5 байт)
+     * @param price Цена (будет обрезана до 5 байт)
+     * @param department Номер отдела. 0..16 режим свободной продажи.
+     * 255 - режим продажи по коду товара.
+     * @param firstTax Первая налоговая группа.
+     * @param secondTax Вторая налоговая группа.
+     * @param thirdTax Третья налоговая группа.
+     * @param fourthTax Четвертая налоговая группа.
+     * @param good Название товара.
+     * @return Успешность выполнения операции.
+     */
+    bool buy(uint32_t password,
+             uint64_t count,
+             uint64_t price,
+             uint8_t department,
+             uint8_t firstTax,
+             uint8_t secondTax,
+             uint8_t thirdTax,
+             uint8_t fourthTax,
+             const std::string &good);
+
+    /**
+     * @brief Возврат продажи. (Возврат прихода)
+     * @param password Пароль кассира
+     * @param count Количество (будет обрезано до 5 байт)
+     * @param price Цена (будет обрезана до 5 байт)
+     * @param department Номер отдела. 0..16 режим свободной продажи.
+     * 255 - режим продажи по коду товара.
+     * @param firstTax Первая налоговая группа.
+     * @param secondTax Вторая налоговая группа.
+     * @param thirdTax Третья налоговая группа.
+     * @param fourthTax Четвертая налоговая группа.
+     * @param good Название товара.
+     * @return Успешность выполнения операции.
+     */
+    bool returnSell(uint32_t password,
+                    uint64_t count,
+                    uint64_t price,
+                    uint8_t department,
+                    uint8_t firstTax,
+                    uint8_t secondTax,
+                    uint8_t thirdTax,
+                    uint8_t fourthTax,
+                    const std::string &good);
+
+    /**
+     * @brief Возврат покупки. (Возврат расхода)
+     * @param password Пароль кассира
+     * @param count Количество (будет обрезано до 5 байт)
+     * @param price Цена (будет обрезана до 5 байт)
+     * @param department Номер отдела. 0..16 режим свободной продажи.
+     * 255 - режим продажи по коду товара.
+     * @param firstTax Первая налоговая группа.
+     * @param secondTax Вторая налоговая группа.
+     * @param thirdTax Третья налоговая группа.
+     * @param fourthTax Четвертая налоговая группа.
+     * @param good Название товара.
+     * @return Успешность выполнения операции.
+     */
+    bool returnBuy(uint32_t password,
+                   uint64_t count,
+                   uint64_t price,
+                   uint8_t department,
+                   uint8_t firstTax,
+                   uint8_t secondTax,
+                   uint8_t thirdTax,
+                   uint8_t fourthTax,
+                   const std::string &good);
 
     /**
      * @brief Короткий запрос состояния.
@@ -750,13 +866,19 @@ public:
      */
     InformExchangeStatus getInformationExchangeStatus(uint32_t sysAdmPassword);
 
+    /**
+     * @brief Метод для получения нобнуляемых сумм.
+     * @return Структура со всеми необнуляемыми суммами.
+     */
+    NonZeroSums getNonZeroSums();
+
 protected:
     /**
      * @brief Перечисляемый тип с кодами команд.
      */
     enum class Command
     {
-        ShortStateRequest = 0x10                //< Короткий запрос состояния
+          ShortStateRequest = 0x10              //< Короткий запрос состояния
         , FullStateRequest = 0x11               //< Полный запрос состояния
         , Beep = 0x13                           //< Сигнал
         , ReadExchangeConfiguration = 0x15      //< Чтение параметров обмена
@@ -774,11 +896,14 @@ protected:
         , CutCheck = 0x25                       //< Отрезка чека
         , ReadFontConfiguration = 0x26          //< Чтение параметров шрифта
         , TotalExtinction = 0x27                //< Полное гашение
-        , Scrolling = 0x28                      //< Протяжка
+        , Scrolling = 0x29                      //< Протяжка
         , TableStructureRequest = 0x2D          //< Запрос структуры таблицы
         , ShiftReportNoExtinction = 0x40        //< Суточный отчет без гашения
         , ShiftCloseReport = 0x41               //< Отчет о закрытии смены
         , Sell = 0x80                           //< Продажа
+        , Buy = 0x81                            //< Покупка
+        , ReturnSell = 0x82                     //< Возврат продажи
+        , ReturnBuy = 0x83                      //< Возврат покупки
         , CloseCheck = 0x85                     //< Обычное закрытие чека
         , CancelCheck = 0x88                    //< Аннулирование чека
         , ContinuePrint = 0xB0                  //< Продолжить печать
@@ -794,6 +919,7 @@ protected:
         , DocumentEndPrint = 0x53               //< Конец Документа (печать)
         , PrintAds = 0x54                       //< Печать рекламного текста
         , EnterFactoryNumber = 0x55             //< Ввод заводского номера
+        , NonZeroSums = 0xFE                    //< Получение необнуляемых сумм
         , GetInformationExchangeStatus = 0xFF39 //< Получить статус информационного обмена
     };
 

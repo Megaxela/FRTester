@@ -276,7 +276,7 @@ bool DefaultProtocol::checkConnection(InterfacePtr physicalInterface)
     physicalInterface->write(enqArr);
 
     // Ожидаем 15
-    ByteArray result = physicalInterface->read(1, 1000 * 50);
+    ByteArray result = physicalInterface->read(1, 50 * 1000);
 
     return !result.empty();
 }

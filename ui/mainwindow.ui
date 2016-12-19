@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="mainTabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <property name="movable">
        <bool>true</bool>
@@ -211,7 +211,7 @@
            <enum>QTabWidget::Triangular</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>3</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -254,6 +254,13 @@
                </widget>
               </item>
               <item>
+               <widget class="QPushButton" name="commandsNonZeroSumsRequestPushButton">
+                <property name="text">
+                 <string>Необн. суммы</string>
+                </property>
+               </widget>
+              </item>
+              <item>
                <spacer name="verticalSpacer">
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
@@ -274,12 +281,12 @@
            <attribute name="title">
             <string>Регистрация</string>
            </attribute>
-           <widget class="QWidget" name="">
+           <widget class="QWidget" name="layoutWidget">
             <property name="geometry">
              <rect>
               <x>10</x>
               <y>10</y>
-              <width>191</width>
+              <width>198</width>
               <height>292</height>
              </rect>
             </property>
@@ -292,7 +299,11 @@
               </widget>
              </item>
              <item row="0" column="1">
-              <widget class="QDoubleSpinBox" name="commandsRegistrationPriceDoubleSpinBox"/>
+              <widget class="QDoubleSpinBox" name="commandsRegistrationPriceDoubleSpinBox">
+               <property name="maximum">
+                <double>99999999.000000000000000</double>
+               </property>
+              </widget>
              </item>
              <item row="1" column="0">
               <widget class="QLabel" name="label_5">
@@ -302,7 +313,11 @@
               </widget>
              </item>
              <item row="1" column="1">
-              <widget class="QDoubleSpinBox" name="commandsRegistrationCountDoubleSpinBox"/>
+              <widget class="QDoubleSpinBox" name="commandsRegistrationCountDoubleSpinBox">
+               <property name="maximum">
+                <double>99999999.000000000000000</double>
+               </property>
+              </widget>
              </item>
              <item row="2" column="0">
               <widget class="QLabel" name="label_4">
@@ -312,7 +327,11 @@
               </widget>
              </item>
              <item row="2" column="1">
-              <widget class="QLineEdit" name="commandsRegistrationChangeLineEdit"/>
+              <widget class="QLineEdit" name="commandsRegistrationChangeLineEdit">
+               <property name="text">
+                <string>0</string>
+               </property>
+              </widget>
              </item>
              <item row="3" column="0">
               <widget class="QLabel" name="label_11">
@@ -372,7 +391,7 @@
              </item>
             </layout>
            </widget>
-           <widget class="QWidget" name="">
+           <widget class="QWidget" name="layoutWidget">
             <property name="geometry">
              <rect>
               <x>210</x>
@@ -440,7 +459,7 @@
              </item>
             </layout>
            </widget>
-           <widget class="QWidget" name="">
+           <widget class="QWidget" name="layoutWidget">
             <property name="geometry">
              <rect>
               <x>460</x>
@@ -499,7 +518,7 @@
            <attribute name="title">
             <string>Отчеты</string>
            </attribute>
-           <widget class="QWidget" name="">
+           <widget class="QWidget" name="layoutWidget">
             <property name="geometry">
              <rect>
               <x>10</x>
@@ -602,7 +621,7 @@
                 <item>
                  <widget class="QTabWidget" name="commandsPrintTextTabWidget">
                   <property name="currentIndex">
-                   <number>0</number>
+                   <number>2</number>
                   </property>
                   <widget class="QWidget" name="commandsPrintTextTextTabWidget">
                    <attribute name="title">

@@ -61,6 +61,26 @@ private slots:
      * @brief Слот, вызываемый при запроса краткого
      */
     void onShortRequest();
+
+    /**
+     * @brief Слот, вызываемый при запросе необнуляемых сумм.
+     */
+    void onZeroSumsRequest();
+
+private:
+    /**
+     * @brief Метод для преобразования даты в строку.
+     * @param date Объект даты.
+     * @return Строковое представление даты.
+     */
+    QString stateDateToString(const FRDriver::DateStructure& date);
+
+    /**
+     * @brief Метод для преобразования времени в строку.
+     * @param time Объект времени.
+     * @return Строковое представление времени.
+     */
+    QString stateTimeToString(const FRDriver::TimeStructure& time);
 };
 
 
