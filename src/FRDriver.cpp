@@ -12,7 +12,7 @@
 FRDriver::FRDriver() :
     m_commandsDelay(0),
     m_lastErrorCode(ErrorCode::NoError),
-    m_lastReceivedCahsierNumber(0)
+    m_lastReceivedCashierNumber(0)
 {
 
 }
@@ -163,7 +163,7 @@ void FRDriver::proceedResponse(const ByteArray &data, bool cashier)
     {
         if (data.length() > 2)
         {
-            m_lastReceivedCahsierNumber = data.read<uint8_t>(commandSize + 1);
+            m_lastReceivedCashierNumber = data.read<uint8_t>(commandSize + 1);
         }
         else
         {
@@ -390,7 +390,7 @@ bool FRDriver::shiftCloseReport(uint32_t password)
 
 uint8_t FRDriver::getLastReceivedCashierNumber() const
 {
-    return m_lastReceivedCahsierNumber;
+    return m_lastReceivedCashierNumber;
 }
 
 FRDriver::CheckResult
@@ -493,22 +493,26 @@ FRDriver::FullState FRDriver::fullStateRequest(uint32_t password)
     state.posMode                           = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
     state.posSubMode                        = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
     state.posPort                           = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    reader.move(7); // Зарезервировано
     state.date.day                          = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
     state.date.month                        = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
     state.date.year                         = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
     state.time.hour                         = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
     state.time.minute                       = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
     state.time.second                       = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    reader.move(1); // Зарезервировано
     state.factoryNumberLower                = reader.read<uint32_t>(ByteArray::ByteOrder_LittleEndian);
     state.lastClosedShiftNumber             = reader.read<uint16_t>(ByteArray::ByteOrder_LittleEndian);
+    reader.move(2); // Зарезервировано
     state.numberOfReRegistration            = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
-    state.inn[0]                            = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
-    state.inn[1]                            = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
-    state.inn[2]                            = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
-    state.inn[3]                            = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
-    state.inn[4]                            = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
-    state.inn[5]                            = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
-    state.factoryNumberUpper                = reader.read<uint16_t>(ByteArray::ByteOrder_LittleEndian);
+//    state.inn[0]                            = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+//    state.inn[1]                            = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+//    state.inn[2]                            = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+//    state.inn[3]                            = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+//    state.inn[4]                            = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+//    state.inn[5]                            = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+//    reader.move(2);
+//    state.factoryNumberUpper                = reader.read<uint16_t>(ByteArray::ByteOrder_LittleEndian);
 
     return state;
 }
@@ -873,17 +877,20 @@ FRDriver::FieldStructure FRDriver::fieldStructureRequest(uint32_t sysPassword, u
 //    structure.minValue      = std::string((const char*) data.data() + 44, structure.numberOfBytes);
 //    structure.minValue      = std::string((const char*) data.data() + 44 + structure.numberOfBytes, structure.numberOfBytes);
 
-    structure.minValue      = data.readPart(
-            44,
-            structure.numberOfBytes,
-            ByteArray::ByteOrder_LittleEndian
-    );
-    structure.minValue      = data.readPart(
-            44 + structure.numberOfBytes,
-            structure.numberOfBytes,
-            ByteArray::ByteOrder_LittleEndian
-    );
-    // todo: Удостовериться в правильности типа данных
+    if (structure.fieldType == FieldStructure::FieldType::Bin)
+    {
+        structure.minValue      = data.readPart(
+                44,
+                structure.numberOfBytes,
+                ByteArray::ByteOrder_LittleEndian
+        );
+        structure.minValue      = data.readPart(
+                44 + structure.numberOfBytes,
+                structure.numberOfBytes,
+                ByteArray::ByteOrder_LittleEndian
+        );
+    }
+//     todo: Удостовериться в правильности типа данных
     return structure;
 }
 
@@ -1091,7 +1098,7 @@ FRDriver::InformExchangeStatus FRDriver::getInformationExchangeStatus(uint32_t s
     status.date.month           = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
     status.date.day             = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
     status.time.hour            = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
-    status.time.min             = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    status.time.minute          = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
 
     return status;
 }
@@ -1176,10 +1183,10 @@ FRDriver::NonZeroSums FRDriver::getNonZeroSums()
     ByteArrayReader reader(data);
     reader.seek(2);
 
-    sums.values[0] = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
-    sums.values[1] = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
-    sums.values[2] = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
-    sums.values[3] = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
+    sums.firstSum  = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
+    sums.secondSum = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
+    sums.thirdSum  = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
+    sums.fourthSum = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
 
     return sums;
 }

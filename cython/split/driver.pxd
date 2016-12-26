@@ -125,6 +125,8 @@ cdef extern from "../include/FRDriver.h":
         bool printAds(uint32_t password);
         bool enterFactoryNumber(uint32_t password, uint32_t factoryNumber);
         bool enterFactoryNumber(uint32_t factoryNumber);
+        InformExchangeStatus getInformationExchangeStatus(uint32_t sysAdmPassword);
+        NonZeroSums getNonZeroSums();
 
 cdef extern from "../include/FRDriver.h" namespace "FRDriver":
     cdef enum ErrorCode:
@@ -226,9 +228,6 @@ cdef extern from "../include/FRDriver.h" namespace "FRDriver":
         uint8_t minute
         uint8_t second
 
-    cdef struct NonZeroSums:
-        uint64_t values[4]
-
     cdef struct FullState:
         FirmwareVersion firmwareVersion
         uint16_t firmwareBuild
@@ -274,4 +273,16 @@ cdef extern from "../include/FRDriver.h" namespace "FRDriver":
         uint64_t maxValue
         uint64_t minValue
 
+    cdef struct NonZeroSums:
+        uint64_t firstSum;
+        uint64_t secondSum;
+        uint64_t thirdSum;
+        uint64_t fourthSum;
 
+    cdef struct InformExchangeStatus:
+        uint8_t status
+        uint8_t readStatus
+        uint16_t messagesForOfd
+        uint32_t firstDocumentNumber
+        TimeStructure time
+        DateStructure date

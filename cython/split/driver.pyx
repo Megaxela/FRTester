@@ -511,6 +511,13 @@ cdef class PyFRDriver:
             """
             return self.driver.enterFactoryNumber(password, factory_number)
 
+        def get_non_zero_sums(self):
+            """
+            @brief Метод для получения необнуляемых сумм.
+            @return Словарь с необнуляемыми суммами.
+            """
+            return self.driver.getNonZeroSums()
+
 cdef class AbstractInterface:
         cdef PhysicalInterface* abstractptr;
 

@@ -49,6 +49,13 @@ public:
      */
     void setData(const in_addr_t &value);
 
+    /**
+     * @brief Method for creating address value from string.
+     * @param s String representation.
+     * @return Address instance.
+     */
+    static IPv4Address fromString(const std::string &s);
+
 private:
     in_addr_t m_data;
 };

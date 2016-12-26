@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="mainTabWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <property name="movable">
        <bool>true</bool>
@@ -37,7 +37,7 @@
          </rect>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="connectionCOMTab">
          <attribute name="title">
@@ -621,12 +621,41 @@
                 <item>
                  <widget class="QTabWidget" name="commandsPrintTextTabWidget">
                   <property name="currentIndex">
-                   <number>2</number>
+                   <number>0</number>
                   </property>
-                  <widget class="QWidget" name="commandsPrintTextTextTabWidget">
+                  <widget class="QWidget" name="commandsPrintTextPlainTextTabWidget">
                    <attribute name="title">
                     <string>Просто текст</string>
                    </attribute>
+                   <layout class="QVBoxLayout" name="verticalLayout_9">
+                    <item>
+                     <widget class="QPlainTextEdit" name="commandsPrintTextPlainTextPlainTextEdit"/>
+                    </item>
+                    <item>
+                     <layout class="QHBoxLayout" name="horizontalLayout_16">
+                      <item>
+                       <spacer name="horizontalSpacer_4">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                         <size>
+                          <width>40</width>
+                          <height>20</height>
+                         </size>
+                        </property>
+                       </spacer>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="commandsPrintTextPlainTextPrintPushButton">
+                        <property name="text">
+                         <string>Печать</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                   </layout>
                   </widget>
                   <widget class="QWidget" name="commandsPrintTextHeaderTabWidget">
                    <attribute name="title">

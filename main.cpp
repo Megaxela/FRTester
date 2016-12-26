@@ -1,7 +1,6 @@
 #include <iostream>
 #include <include/Windows/MainWindow.h>
 #include <QtWidgets/QApplication>
-#include <csignal>
 #include <Tools/Logger.h>
 #include <include/Tools/StableController.h>
 

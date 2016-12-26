@@ -113,6 +113,8 @@ void TablesTabController::onCurrentTableChanged(int index)
     {
         return;
     }
+    
+    disconnectEditor();
 
     auto password = getPassword();
 
@@ -204,4 +206,145 @@ void TablesTabController::onCurrentTableChanged(int index)
             );
         }
     }
+
+    connectEditor();
+}
+
+
+
+void TablesTabController::onItemEdited(int row, int column)
+{
+    // Проверка значения
+    auto value = ui()->tablesFieldsTableWidget->item(row, column)->text();
+
+    auto fieldStructure = m_currentTableFieldsStructures[row];
+    if (fieldStructure.fieldType == FRDriver::FieldStructure::Bin)
+    {
+        bool ok;
+        auto actualValue = value.toULongLong(&ok);
+
+        if (!ok)
+        {
+            Error("Значение " + value.toStdString() + " не является числом.");
+            disconnectEditor();
+            ui()->tablesFieldsTableWidget->item(row, column)->setText(m_cellBackup);
+            connectEditor();
+            return;
+        }
+
+        if (fieldStructure.minValue > actualValue || fieldStructure.maxValue < actualValue)
+        {
+            auto errorString = "Значение " +
+                               value.toStdString() +
+                               " не попадает в промежуток [" +
+                               std::to_string(fieldStructure.minValue) + ", " +
+                               std::to_string(fieldStructure.maxValue) + "].";
+            Error(errorString);
+
+            QMessageBox::critical(
+                    parentWidget(),
+                    "Ошибка",
+                    QString::fromStdString(errorString)
+            );
+            disconnectEditor();
+            ui()->tablesFieldsTableWidget->item(row, column)->setText(m_cellBackup);
+            connectEditor();
+            return;
+        }
+
+        if (!DriverHolder::driver().writeTable(
+                getPassword(),
+                static_cast<uint8_t>(ui()->tablesFieldsListWidget->currentRow()),
+                0,
+                static_cast<uint8_t>(row),
+                actualValue,
+                fieldStructure.numberOfBytes
+        ))
+        {
+            auto errorString = "Запись не удалась. Ошибка №" +
+                               std::to_string((int) DriverHolder::driver().getLastError()) +
+                               " - " +
+                               FRDriver::Converters::errorToString((int) DriverHolder::driver().getLastError());
+
+            Error(errorString);
+
+            QMessageBox::critical(
+                    parentWidget(),
+                    "Ошибка",
+                    QString::fromStdString(errorString)
+            );
+            disconnectEditor();
+            ui()->tablesFieldsTableWidget->item(row, column)->setText(m_cellBackup);
+            connectEditor();
+            return;
+        }
+    }
+    else // String
+    {
+        if (value.size() > 40)
+        {
+            QMessageBox::critical(
+                    parentWidget(),
+                    "Ошибка",
+                    "Не удалось записать значение. Строка более 40 символов."
+            );
+            disconnectEditor();
+            ui()->tablesFieldsTableWidget->item(row, column)->setText(m_cellBackup);
+            connectEditor();
+            return;
+        }
+
+        QByteArray converted = Codecs::instance().convert("UTF-8", "CP1251", value.toUtf8());
+
+        if (!DriverHolder::driver().writeTable(
+                getPassword(),
+                static_cast<uint8_t>(ui()->tablesFieldsListWidget->currentRow()),
+                0,
+                static_cast<uint8_t>(row),
+                converted.toStdString()
+        ))
+        {
+            auto errorString = "Запись не удалась. Ошибка №" +
+                               std::to_string((int) DriverHolder::driver().getLastError()) +
+                               " - " +
+                               FRDriver::Converters::errorToString((int) DriverHolder::driver().getLastError());
+
+            Error(errorString);
+
+            QMessageBox::critical(
+                    parentWidget(),
+                    "Ошибка",
+                    QString::fromStdString(errorString)
+            );
+            disconnectEditor();
+            ui()->tablesFieldsTableWidget->item(row, column)->setText(m_cellBackup);
+            connectEditor();
+            return;
+        }
+    }
+
+
+}
+
+void TablesTabController::onItemDoubleClicked(QTableWidgetItem *tableWidgetItem)
+{
+    m_cellBackup = tableWidgetItem->text();
+}
+
+void TablesTabController::connectEditor()
+{
+    // Изменение значения элемента таблицы
+    connect(ui()->tablesFieldsTableWidget,
+            &QTableWidget::cellChanged,
+            this,
+            &TablesTabController::onItemEdited);
+}
+
+void TablesTabController::disconnectEditor()
+{
+    // Изменение значения элемента таблицы
+    disconnect(ui()->tablesFieldsTableWidget,
+               &QTableWidget::cellChanged,
+               this,
+               &TablesTabController::onItemEdited);
 }

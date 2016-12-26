@@ -343,11 +343,11 @@ public:
         {
             if (order == ByteOrder_LittleEndian)
             {
-                value |= SystemTools::shl(m_d[position + i], i * 8);
+                value |= SystemTools::shl<uint64_t>(m_d[position + i], i * 8);
             }
             else
             {
-                value |= SystemTools::shl(m_d[position + size - i - 1], i * 8);
+                value |= SystemTools::shl<uint64_t>(m_d[position + size - i - 1], i * 8);
             }
         }
 

@@ -77,7 +77,7 @@ void FNOFDCommandsTabController::onGetExchangeStatus()
                                           requestResult.date.month,
                                           requestResult.date.year,
                                           requestResult.time.hour,
-                                          requestResult.time.min
+                                          requestResult.time.minute
                                  ) + '\n');
 
     stringBuilder.append(divider);

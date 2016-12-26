@@ -87,3 +87,12 @@ void IPv4Address::setData(const in_addr_t &value)
 {
     m_data = value;
 }
+
+IPv4Address IPv4Address::fromString(const std::string &s)
+{
+    IPv4Address address;
+
+    address.setFromString(s);
+
+    return address;
+}

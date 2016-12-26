@@ -99,13 +99,13 @@ void StateCommandsTabController::onFullRequest()
     stringBuilder.append("Текущий подрежим          : " + QString::number(requestResult.posSubMode) +
                          " - " +
                          QString::fromStdString(FRDriver::Converters::posSubModeToString(requestResult.posSubMode)) + "\n");
-    stringBuilder.append("Номер ККТ в зале: " + QString::number(requestResult.numberInHall));
-    stringBuilder.append("Номер документа:  " + QString::number(requestResult.currentDocumentPassthrougNumber));
-    stringBuilder.append("Номер порта:      " + QString::number(requestResult.posPort));
-    stringBuilder.append("Последняя закрытая смена: " + QString::number(requestResult.lastClosedShiftNumber));
-    stringBuilder.append("Дата:  " + stateDateToString(requestResult.date));
-    stringBuilder.append("Время: " + stateTimeToString(requestResult.time));
-//    stringBuilder.append("Серийный номер: " + QString::number(requestResult.factoryNumberUpper))
+    stringBuilder.append("Номер ККТ в зале: " + QString::number(requestResult.numberInHall) + '\n');
+    stringBuilder.append("Номер документа:  " + QString::number(requestResult.currentDocumentPassthrougNumber) + '\n');
+    stringBuilder.append("Номер порта:      " + QString::number(requestResult.posPort) + '\n');
+    stringBuilder.append("Последняя закрытая смена: " + QString::number(requestResult.lastClosedShiftNumber) + '\n');
+    stringBuilder.append("Дата:  " + stateDateToString(requestResult.date) + '\n');
+    stringBuilder.append("Время: " + stateTimeToString(requestResult.time) + '\n');
+//    stringBuilder.append("Серийный номер: " + QString::number(requestResult.factoryNumberUpper) + '\n')
     stringBuilder.append(divider + "\n");
     stringBuilder.append("Флаги ФР: 0b" + QString::number(requestResult.posFlags, 2) + "\n");
 
@@ -243,14 +243,29 @@ void StateCommandsTabController::onZeroSumsRequest()
     stringBuilder.append("Необнуляемые суммы\n");
     stringBuilder.append(divider + '\n');
 
-    for (uint32_t i = 0; i < 4; ++i)
-    {
-        stringBuilder.append("Сумма №" +
-                             QString::number(i + 1) +
-                             ": " +
-                             QString::number(requestResult.values[i] / 100.0, 'f') +
-                             '\n');
-    }
+    stringBuilder.append("Сумма №" +
+                         QString::number(1) +
+                         ": " +
+                         QString::number(requestResult.firstSum / 100.0, 'f') +
+                         '\n');
+
+    stringBuilder.append("Сумма №" +
+                         QString::number(2) +
+                         ": " +
+                         QString::number(requestResult.secondSum / 100.0, 'f') +
+                         '\n');
+
+    stringBuilder.append("Сумма №" +
+                         QString::number(3) +
+                         ": " +
+                         QString::number(requestResult.thirdSum / 100.0, 'f') +
+                         '\n');
+
+    stringBuilder.append("Сумма №" +
+                         QString::number(4) +
+                         ": " +
+                         QString::number(requestResult.fourthSum / 100.0, 'f') +
+                         '\n');
 
     stringBuilder.append(divider + '\n');
 
@@ -275,9 +290,9 @@ QString StateCommandsTabController::stateTimeToString(const FRDriver::TimeStruct
     QString string;
 
     string.append(QString::number(time.hour));
-    string.append('.');
+    string.append(':');
     string.append(QString::number(time.minute));
-    string.append('.');
+    string.append(':');
     string.append(QString::number(time.second));
 
     return string;

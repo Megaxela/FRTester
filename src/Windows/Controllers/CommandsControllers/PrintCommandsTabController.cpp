@@ -3,6 +3,7 @@
 //
 
 #include <include/Windows/Controllers/CommandsControllers/PrintTextCommandsTabController.h>
+#include <include/Windows/Controllers/CommandsControllers/PrintTextPlainTextCommandsTabController.h>
 #include "include/Windows/Controllers/CommandsControllers/PrintCommandsTabController.h"
 #include "ui_mainwindow.h"
 #include "include/Windows/Controllers/CommandsTabController.h"
@@ -12,6 +13,14 @@ PrintCommandsTabController::PrintCommandsTabController(Ui::MainWindow *ptr,
                                                        QTabWidget* tabWidget) :
     AbstractTabController(ptr, parent, tabWidget)
 {
+    addTabController(
+            ui()->commandsPrintTextPlainTextTabWidget,
+            new PrintTextPlainTextCommandsTabController(
+                    ptr,
+                    parent
+            )
+    );
+
     addTabController(
             ui()->commandsPrintTextTab,
             new PrintTextCommandsTabController(

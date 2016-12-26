@@ -40,6 +40,8 @@ public:
 
     QString convert(std::string from, QByteArray data);
 
+    QByteArray convertTo(std::string to, QString data);
+
 private:
     /**
      * @brief Приватный конструктор.

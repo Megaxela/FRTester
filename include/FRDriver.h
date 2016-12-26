@@ -267,7 +267,10 @@ public:
      */
     struct NonZeroSums
     {
-        uint64_t values[4];
+        uint64_t firstSum;
+        uint64_t secondSum;
+        uint64_t thirdSum;
+        uint64_t fourthSum;
     };
 
     /**
@@ -279,16 +282,8 @@ public:
         uint8_t readStatus;           //< Состояние чтения сообщения
         uint16_t messagesForOfd;      //< Количество сообщений для ОФД.
         uint32_t firstDocumentNumber; //< Номер первого в очереди документа на отправку.
-        struct {
-            uint8_t hour;
-            uint8_t min;
-        } time; //< Дата первого в очереди документа для ОФД
-
-        struct {
-            uint8_t day;
-            uint8_t month;
-            uint8_t year;
-        } date; //< Время первого в очереди документа для ОФД
+        TimeStructure time; //< Дата первого в очереди документа для ОФД
+        DateStructure date; //< Время первого в очереди документа для ОФД
     };
 
     /**
@@ -982,7 +977,7 @@ private:
     /**
      * Последний полученный номер кассира.
      */
-    uint8_t m_lastReceivedCahsierNumber;
+    uint8_t m_lastReceivedCashierNumber;
 };
 
 /**
