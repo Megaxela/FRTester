@@ -115,6 +115,11 @@ void UnitTestsController::setupConnections()
             &TestLoggerWaiter::logReceived,
             this,
             &UnitTestsController::onTestLoggerWaiterLogAcquired);
+
+    connect(ui()->unitTestsTreeWidget,
+            &QTestsTreeWidget::selectedTestsExecuted,
+            this,
+            &UnitTestsController::onSelectedTestsExecuted);
 }
 
 void UnitTestsController::configureWidgets()
@@ -401,4 +406,9 @@ QString UnitTestsController::htmlScreening(QString source)
     }
 
     return result;
+}
+
+void UnitTestsController::onSelectedTestsExecuted(QVector<TestPtr> tests)
+{
+    m_testingExecutor->setTestsToRun(tests.toStdVector());
 }

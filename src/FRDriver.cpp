@@ -109,7 +109,7 @@ bool FRDriver::isAdaptorsReady() const
             m_protocol != nullptr;
 }
 
-ByteArray FRDriver::sendCommand(const FRDriver::Command &c, const ByteArray &arguments)
+ByteArray FRDriver::sendCommand(const FRDriver::Command &c, const ByteArray &arguments, bool responseHasCashier)
 {
     ByteArray packedCommand;
 
@@ -134,6 +134,8 @@ ByteArray FRDriver::sendCommand(const FRDriver::Command &c, const ByteArray &arg
     packedCommand.append(arguments);
 
     auto response = sendRaw(packedCommand);
+
+    proceedResponse(response, responseHasCashier);
 
     return response;
 }
@@ -183,9 +185,7 @@ bool FRDriver::beep(uint32_t password)
 
     arguments.append<uint32_t>(password, ByteArray::ByteOrder_LittleEndian);
 
-    ByteArray data = sendCommand(Command::Beep, arguments);
-
-    proceedResponse(data);
+    ByteArray data = sendCommand(Command::Beep, arguments, false);
 
     return m_lastErrorCode == ErrorCode::NoError;
 }
@@ -218,9 +218,7 @@ bool FRDriver::sell(uint32_t password,
         arguments.appendMultiple<uint8_t>(0x00, 40 - good.length());
     }
 
-    ByteArray data = sendCommand(Command::Sell, arguments);
-
-    proceedResponse(data);
+    ByteArray data = sendCommand(Command::Sell, arguments, false);
 
     return m_lastErrorCode == ErrorCode::NoError;
 }
@@ -255,9 +253,7 @@ bool FRDriver::returnSell(uint32_t password,
         arguments.appendMultiple<uint8_t>(0x00, 40 - good.length());
     }
 
-    ByteArray data = sendCommand(Command::ReturnSell, arguments);
-
-    proceedResponse(data);
+    ByteArray data = sendCommand(Command::ReturnSell, arguments, false);
 
     return m_lastErrorCode == ErrorCode::NoError;
 }
@@ -290,9 +286,7 @@ bool FRDriver::returnBuy(uint32_t password,
         arguments.appendMultiple<uint8_t>(0x00, 40 - good.length());
     }
 
-    ByteArray data = sendCommand(Command::ReturnBuy, arguments);
-
-    proceedResponse(data);
+    ByteArray data = sendCommand(Command::ReturnBuy, arguments, false);
 
     return m_lastErrorCode == ErrorCode::NoError;
 }
@@ -309,25 +303,23 @@ bool FRDriver::buy(uint32_t password,
 {
     ByteArray arguments;
 
-    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+    arguments.append    (password, ByteArray::ByteOrder_LittleEndian);
     arguments.appendPart(count, 5, ByteArray::ByteOrder_LittleEndian);
     arguments.appendPart(price, 5, ByteArray::ByteOrder_LittleEndian);
-    arguments.append(department);
-    arguments.append(firstTax);
-    arguments.append(secondTax);
-    arguments.append(thirdTax);
-    arguments.append(fourthTax);
-    arguments.append((uint8_t*) good.c_str(),
-                     good.length());
+    arguments.append    (department);
+    arguments.append    (firstTax);
+    arguments.append    (secondTax);
+    arguments.append    (thirdTax);
+    arguments.append    (fourthTax);
+    arguments.append    ((uint8_t*) good.c_str(),
+                         good.length());
 
     if (good.length() < 40)
     {
         arguments.appendMultiple<uint8_t>(0x00, 40 - good.length());
     }
 
-    ByteArray data = sendCommand(Command::Buy, arguments);
-
-    proceedResponse(data);
+    ByteArray data = sendCommand(Command::Buy, arguments, false);
 
     return m_lastErrorCode == ErrorCode::NoError;
 }
@@ -340,9 +332,7 @@ bool FRDriver::openShift(uint32_t password)
 
     arguments.append(password, ByteArray::ByteOrder_LittleEndian);
 
-    ByteArray data = sendCommand(Command::OpenShift, arguments);
-
-    proceedResponse(data);
+    ByteArray data = sendCommand(Command::OpenShift, arguments, false);
 
     return m_lastErrorCode == ErrorCode::NoError;
 }
@@ -353,9 +343,7 @@ FRDriver::ShortState FRDriver::shortStateRequest(uint32_t password)
 
     arguments.append(password, ByteArray::ByteOrder_LittleEndian);
 
-    ByteArray data = sendCommand(Command::ShortStateRequest, arguments);
-
-    proceedResponse(data);
+    ByteArray data = sendCommand(Command::ShortStateRequest, arguments, false);
 
     ShortState result = FRDriver::ShortState();
 
@@ -381,9 +369,7 @@ bool FRDriver::shiftCloseReport(uint32_t password)
 
     arguments.append(password, ByteArray::ByteOrder_LittleEndian);
 
-    ByteArray data = sendCommand(Command::ShiftCloseReport, arguments);
-
-    proceedResponse(data);
+    ByteArray data = sendCommand(Command::ShiftCloseReport, arguments, false);
 
     return m_lastErrorCode == ErrorCode::NoError;
 }
@@ -426,9 +412,7 @@ FRDriver::closeCheck(uint32_t password,
         arguments.appendMultiple<uint8_t>(0x00, 40 - textToPrint.length());
     }
 
-    ByteArray data = sendCommand(Command::CloseCheck, arguments);
-
-    proceedResponse(data);
+    ByteArray data = sendCommand(Command::CloseCheck, arguments, false);
 
     CheckResult result = CheckResult();
 
@@ -453,10 +437,7 @@ bool FRDriver::resumePrinting(uint32_t password)
 
     arguments.append(password, ByteArray::ByteOrder_LittleEndian);
 
-    ByteArray data = sendCommand(Command::ContinuePrint,
-                                 arguments);
-
-    proceedResponse(data);
+    ByteArray data = sendCommand(Command::ContinuePrint, arguments, false);
 
     return m_lastErrorCode == ErrorCode::NoError;
 }
@@ -467,9 +448,7 @@ FRDriver::FullState FRDriver::fullStateRequest(uint32_t password)
 
     arguments.append(password, ByteArray::ByteOrder_LittleEndian);
 
-    ByteArray data = sendCommand(Command::FullStateRequest, arguments);
-
-    proceedResponse(data);
+    ByteArray data = sendCommand(Command::FullStateRequest, arguments, false);
 
     FullState state = FRDriver::FullState();
 
@@ -523,9 +502,7 @@ bool FRDriver::cancelCheck(uint32_t password)
 
     arguments.append(password, ByteArray::ByteOrder_LittleEndian);
 
-    ByteArray data = sendCommand(Command::CancelCheck, arguments);
-
-    proceedResponse(data);
+    ByteArray data = sendCommand(Command::CancelCheck, arguments, false);
 
     return m_lastErrorCode == ErrorCode::NoError;
 }
@@ -552,9 +529,7 @@ uint16_t FRDriver::operatingRegisterRequest(uint32_t password, uint8_t registerN
     arguments.append(password, ByteArray::ByteOrder_LittleEndian);
     arguments.append(registerNumber, ByteArray::ByteOrder_LittleEndian);
 
-    ByteArray data = sendCommand(Command::OperatingRegisterRequest, arguments);
-
-    proceedResponse(data, true);
+    ByteArray data = sendCommand(Command::OperatingRegisterRequest, arguments, false);
 
     return data.read<uint16_t>(3, ByteArray::ByteOrder_LittleEndian);
 }
@@ -566,9 +541,7 @@ FRDriver::ExchangeConfiguration FRDriver::readExchangeConfiguration(uint32_t sys
     arguments.append(sysAdmPassword, ByteArray::ByteOrder_LittleEndian);
     arguments.append(portNumber,     ByteArray::ByteOrder_LittleEndian);
 
-    ByteArray data = sendCommand(Command::ReadExchangeConfiguration, arguments);
-
-    proceedResponse(data, false);
+    ByteArray data = sendCommand(Command::ReadExchangeConfiguration, arguments, false);
 
     ExchangeConfiguration configuration;
 
@@ -580,9 +553,7 @@ FRDriver::ExchangeConfiguration FRDriver::readExchangeConfiguration(uint32_t sys
 
 bool FRDriver::technologicalReset()
 {
-    ByteArray data = sendCommand(Command::TechReset);
-
-    proceedResponse(data, false);
+    ByteArray data = sendCommand(Command::TechReset, ByteArray(), false);
 
     return getLastError() == ErrorCode::NoError;
 }
@@ -603,9 +574,7 @@ bool FRDriver::standardStringPrint(uint32_t password,
         arguments.appendMultiple<uint8_t>(0x00, (uint32_t) (40 - print.length()));
     }
 
-    auto data = sendCommand(Command::StandardStringPrint, arguments);
-
-    proceedResponse(data, true);
+    auto data = sendCommand(Command::StandardStringPrint, arguments, true);
 
     return getLastError() == ErrorCode::NoError;
 }
@@ -627,9 +596,7 @@ uint16_t FRDriver::documentHeaderPrint(uint32_t password,
 
     arguments.append(documentNumber, ByteArray::ByteOrder_LittleEndian);
 
-    auto data = sendCommand(Command::DocumentHeaderPrint, arguments);
-
-    proceedResponse(data, true);
+    auto data = sendCommand(Command::DocumentHeaderPrint, arguments, true);
 
     if (data.length() != 5)
     {
@@ -646,9 +613,7 @@ uint64_t FRDriver::currencyRegisterRequest(uint32_t password, uint8_t registerNu
     arguments.append(password, ByteArray::ByteOrder_LittleEndian);
     arguments.append(registerNumber);
 
-    auto data = sendCommand(Command::CurrencyRegisterRequest, arguments);
-
-    proceedResponse(data, true);
+    auto data = sendCommand(Command::CurrencyRegisterRequest, arguments, true);
 
     if (data.length() != 9)
     {
@@ -678,9 +643,7 @@ bool FRDriver::writeTable(uint32_t sysPassword,
         arguments.appendMultiple<uint8_t>(0x00, (uint32_t) (40 - value.length()));
     }
 
-    auto data = sendCommand(Command::WriteTable, arguments);
-
-    proceedResponse(data, false);
+    auto data = sendCommand(Command::WriteTable, arguments, false);
 
     return getLastError() == ErrorCode::NoError;
 }
@@ -696,9 +659,7 @@ bool FRDriver::timeProgramming(uint32_t sysPassword,
     arguments.append(m);
     arguments.append(s);
 
-    auto data = sendCommand(Command::TimeProgramming, arguments);
-
-    proceedResponse(data, false);
+    auto data = sendCommand(Command::TimeProgramming, arguments, false);
 
     return getLastError() == ErrorCode::NoError;
 }
@@ -714,9 +675,7 @@ bool FRDriver::dateProgramming(uint32_t sysPassword,
     arguments.append(month);
     arguments.append(year);
 
-    auto data = sendCommand(Command::DateProgramming, arguments);
-
-    proceedResponse(data, false);
+    auto data = sendCommand(Command::DateProgramming, arguments, false);
 
     return getLastError() == ErrorCode::NoError;
 }
@@ -732,9 +691,7 @@ bool FRDriver::dateConfirm(uint32_t sysPassword,
     arguments.append(month);
     arguments.append(year);
 
-    auto data = sendCommand(Command::DateConfirm, arguments);
-
-    proceedResponse(data, false);
+    auto data = sendCommand(Command::DateConfirm, arguments, false);
 
     return getLastError() == ErrorCode::NoError;
 }
@@ -745,9 +702,7 @@ bool FRDriver::tableValuesInit(uint32_t sysPassword)
 
     arguments.append(sysPassword, ByteArray::ByteOrder_LittleEndian);
 
-    auto data = sendCommand(Command::TableValuesInit, arguments);
-
-    proceedResponse(data, false);
+    auto data = sendCommand(Command::TableValuesInit, arguments, false);
 
     return getLastError() == ErrorCode::NoError;
 }
@@ -759,9 +714,7 @@ bool FRDriver::cutCheck(uint32_t sysPassword, uint8_t cutType)
     arguments.append(sysPassword, ByteArray::ByteOrder_LittleEndian);
     arguments.append(cutType);
 
-    auto data = sendCommand(Command::CutCheck, arguments);
-
-    proceedResponse(data, false);
+    auto data = sendCommand(Command::CutCheck, arguments, false);
 
     return getLastError() == ErrorCode::NoError;
 }
@@ -774,9 +727,7 @@ FRDriver::FontConfiguration FRDriver::readFontConfiguration(uint32_t sysPassword
     arguments.append(sysPassword, ByteArray::ByteOrder_LittleEndian);
     arguments.append(fontNumber);
 
-    auto data = sendCommand(Command::ReadFontConfiguration, arguments);
-
-    proceedResponse(data, false);
+    auto data = sendCommand(Command::ReadFontConfiguration, arguments, false);
 
     FontConfiguration configuration;
 
@@ -800,9 +751,7 @@ bool FRDriver::totalExtinction(uint32_t sysPassword)
 
     arguments.append(sysPassword, ByteArray::ByteOrder_LittleEndian);
 
-    auto data = sendCommand(Command::TotalExtinction, arguments);
-
-    proceedResponse(data, false);
+    auto data = sendCommand(Command::TotalExtinction, arguments, false);
 
     return getLastError() == ErrorCode::NoError;
 }
@@ -815,9 +764,7 @@ bool FRDriver::scrolling(uint32_t password, uint8_t flags, uint8_t numberOfLines
     arguments.append(flags);
     arguments.append(numberOfLines);
 
-    auto data = sendCommand(Command::Scrolling, arguments);
-
-    proceedResponse(data, true);
+    auto data = sendCommand(Command::Scrolling, arguments, true);
 
     return getLastError() == ErrorCode::NoError;
 }
@@ -830,9 +777,7 @@ FRDriver::TableStructure FRDriver::tableStructureRequest(uint32_t sysPassword,
     arguments.append(sysPassword, ByteArray::ByteOrder_LittleEndian);
     arguments.append(tableNumber);
 
-    auto data = sendCommand(Command::TableStructureRequest, arguments);
-
-    proceedResponse(data, false);
+    auto data = sendCommand(Command::TableStructureRequest, arguments, false);
 
     TableStructure structure = FRDriver::TableStructure();
 
@@ -859,9 +804,7 @@ FRDriver::FieldStructure FRDriver::fieldStructureRequest(uint32_t sysPassword, u
     arguments.append(table);
     arguments.append(field);
 
-    auto data = sendCommand(Command::FieldStructureRequest, arguments);
-
-    proceedResponse(data, false);
+    auto data = sendCommand(Command::FieldStructureRequest, arguments, false);
 
     FieldStructure structure = FRDriver::FieldStructure();
 
@@ -912,9 +855,7 @@ bool FRDriver::fontStringPrint(uint32_t password,
         arguments.appendMultiple<uint8_t>(0x00, (uint32_t) (40 - string.length()));
     }
 
-    auto data = sendCommand(Command::FontStringPrint, arguments);
-
-    proceedResponse(data, true);
+    auto data = sendCommand(Command::FontStringPrint, arguments, true);
 
     return getLastError() == ErrorCode::NoError;
 }
@@ -925,9 +866,7 @@ bool FRDriver::shiftReportWithoutExtinction(uint32_t password)
 
     arguments.append(password, ByteArray::ByteOrder_LittleEndian);
 
-    auto data = sendCommand(Command::ShiftReportNoExtinction, arguments);
-
-    proceedResponse(data, true);
+    auto data = sendCommand(Command::ShiftReportNoExtinction, arguments, true);
 
     return getLastError() == ErrorCode::NoError;
 }
@@ -938,9 +877,7 @@ bool FRDriver::sectionsReport(uint32_t password)
 
     arguments.append(password, ByteArray::ByteOrder_LittleEndian);
 
-    auto data = sendCommand(Command::SectionsReport, arguments);
-
-    proceedResponse(data, true);
+    auto data = sendCommand(Command::SectionsReport, arguments, true);
 
     return getLastError() == ErrorCode::NoError;
 }
@@ -951,9 +888,7 @@ bool FRDriver::taxesReport(uint32_t password)
 
     arguments.append(password, ByteArray::ByteOrder_LittleEndian);
 
-    auto data = sendCommand(Command::TaxesReport, arguments);
-
-    proceedResponse(data, true);
+    auto data = sendCommand(Command::TaxesReport, arguments, true);
 
     return getLastError() == ErrorCode::NoError;
 }
@@ -964,9 +899,7 @@ bool FRDriver::cashierReport(uint32_t password)
 
     arguments.append(password, ByteArray::ByteOrder_LittleEndian);
 
-    auto data = sendCommand(Command::CashierReport, arguments);
-
-    proceedResponse(data, true);
+    auto data = sendCommand(Command::CashierReport, arguments, true);
 
     return getLastError() == ErrorCode::NoError;
 }
@@ -978,9 +911,7 @@ uint16_t FRDriver::payin(uint32_t password, uint64_t sum)
     arguments.append(password, ByteArray::ByteOrder_LittleEndian);
     arguments.appendPart(sum, 5, ByteArray::ByteOrder_LittleEndian);
 
-    auto data = sendCommand(Command::PayIn, arguments);
-
-    proceedResponse(data, true);
+    auto data = sendCommand(Command::PayIn, arguments, true);
 
     if (data.length() != 5)
     {
@@ -997,9 +928,7 @@ uint16_t FRDriver::payout(uint32_t password, uint64_t sum)
     arguments.append(password, ByteArray::ByteOrder_LittleEndian);
     arguments.appendPart(sum, 5, ByteArray::ByteOrder_LittleEndian);
 
-    auto data = sendCommand(Command::PayOut, arguments);
-
-    proceedResponse(data, true);
+    auto data = sendCommand(Command::PayOut, arguments, true);
 
     if (data.length() != 5)
     {
@@ -1015,9 +944,7 @@ bool FRDriver::printCliches(uint32_t password)
 
     arguments.append(password, ByteArray::ByteOrder_LittleEndian);
 
-    auto data = sendCommand(Command::PrintCliches, arguments);
-
-    proceedResponse(data, true);
+    auto data = sendCommand(Command::PrintCliches, arguments, true);
 
     return getLastError() == ErrorCode::NoError;
 }
@@ -1029,9 +956,7 @@ bool FRDriver::printDocumentEnd(uint32_t password, uint8_t printAds)
     arguments.append(password, ByteArray::ByteOrder_LittleEndian);
     arguments.append(printAds);
 
-    auto data = sendCommand(Command::DocumentEndPrint, arguments);
-
-    proceedResponse(data, true);
+    auto data = sendCommand(Command::DocumentEndPrint, arguments, true);
 
     return getLastError() == ErrorCode::NoError;
 }
@@ -1042,9 +967,7 @@ bool FRDriver::printAds(uint32_t password)
 
     arguments.append(password, ByteArray::ByteOrder_LittleEndian);
 
-    auto data = sendCommand(Command::PrintAds, arguments);
-
-    proceedResponse(data, true);
+    auto data = sendCommand(Command::PrintAds, arguments, true);
 
     return getLastError() == ErrorCode::NoError;
 }
@@ -1056,9 +979,7 @@ bool FRDriver::enterFactoryNumber(uint32_t password, uint32_t factoryNumber)
     arguments.append(password, ByteArray::ByteOrder_LittleEndian);
     arguments.append(factoryNumber, ByteArray::ByteOrder_LittleEndian);
 
-    auto data = sendCommand(Command::EnterFactoryNumber, arguments);
-
-    proceedResponse(data, false);
+    auto data = sendCommand(Command::EnterFactoryNumber, arguments, false);
 
     return getLastError() != ErrorCode::NoError;
 }
@@ -1074,13 +995,9 @@ FRDriver::InformExchangeStatus FRDriver::getInformationExchangeStatus(uint32_t s
 
     arguments.append(sysAdmPassword, ByteArray::ByteOrder_LittleEndian);
 
-    auto data = sendCommand(Command::GetInformationExchangeStatus, arguments);
-
-    proceedResponse(data, false);
+    auto data = sendCommand(Command::GetInformationExchangeStatus, arguments, false);
 
     InformExchangeStatus status = InformExchangeStatus();
-
-    Log("Data: " + data.toHex());
 
     if (data.length() != 16)
     {
@@ -1115,9 +1032,7 @@ std::string FRDriver::readTableStr(uint32_t password,
     arguments.append(row,      ByteArray::ByteOrder_LittleEndian);
     arguments.append(field,    ByteArray::ByteOrder_LittleEndian);
 
-    ByteArray data = sendCommand(Command::ReadTable, arguments);
-
-    proceedResponse(data, true);
+    ByteArray data = sendCommand(Command::ReadTable, arguments, true);
 
     return std::string((const char*) (data.data() + 2), data.length() - 2);
 }
@@ -1134,9 +1049,7 @@ uint64_t FRDriver::readTableBin(uint32_t password,
     arguments.append(row,      ByteArray::ByteOrder_LittleEndian);
     arguments.append(field,    ByteArray::ByteOrder_LittleEndian);
 
-    ByteArray data = sendCommand(Command::ReadTable, arguments);
-
-    proceedResponse(data, true);
+    ByteArray data = sendCommand(Command::ReadTable, arguments, true);
 
     return data.readPart(2, (uint8_t) (data.length() - 2), ByteArray::ByteOrder_LittleEndian );
 }
@@ -1156,9 +1069,7 @@ bool FRDriver::writeTable(uint32_t sysPassword,
     arguments.append(field,              ByteArray::ByteOrder_LittleEndian);
     arguments.appendPart(value, valSize, ByteArray::ByteOrder_LittleEndian);
 
-    auto data = sendCommand(Command::WriteTable, arguments);
-
-    proceedResponse(data, false);
+    auto data = sendCommand(Command::WriteTable, arguments, false);
 
     return getLastError() == ErrorCode::NoError;
 }
@@ -1169,9 +1080,7 @@ FRDriver::NonZeroSums FRDriver::getNonZeroSums()
 
     arguments.append((const uint8_t*) "\xF4\x00\x00\x00\x00", 5);
 
-    auto data = sendCommand(Command::NonZeroSums, arguments);
-
-    proceedResponse(data, false);
+    auto data = sendCommand(Command::NonZeroSums, arguments, false);
 
     NonZeroSums sums = FRDriver::NonZeroSums();
 
@@ -1189,6 +1098,32 @@ FRDriver::NonZeroSums FRDriver::getNonZeroSums()
     sums.fourthSum = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
 
     return sums;
+}
+
+FRDriver::PingResult FRDriver::ping(const std::string &uri)
+{
+    ByteArray arguments;
+
+    arguments.append((const uint8_t*) uri.c_str(), (uint32_t) uri.size());
+
+    auto data = sendCommand(Command::Ping, arguments, false);
+
+    PingResult result;
+
+    Log("Ping result: " + data.toHex());
+
+    return result;
+}
+
+bool FRDriver::reboot()
+{
+    ByteArray arguments;
+
+    arguments.append((const uint8_t*) "\x00\x00", 2);
+
+    auto data = sendCommand(Command::Reboot, arguments, false);
+
+    return true; // todo: IDK
 }
 
 static std::map<int, std::string> errorString = {

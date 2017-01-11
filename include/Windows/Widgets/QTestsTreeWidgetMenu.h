@@ -40,6 +40,12 @@ signals:
      */
     void selectionEnabledChanged(bool enabled);
 
+    /**
+     * @brief Сигнал, вызываемый при запуске
+     * конкретного теста.
+     */
+    void selectionExecuted();
+
 private:
     bool m_multipleMode;
 };

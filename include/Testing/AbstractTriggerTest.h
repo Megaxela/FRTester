@@ -6,6 +6,7 @@
 #define FRTESTER_TRIGGERTEST_H
 
 #include <memory>
+#include "Tools/ByteArray.h"
 
 class TestEnvironment;
 class AbstractTriggerTest;
@@ -29,13 +30,13 @@ public:
     /**
      * @brief Деструктор.
      */
-    ~AbstractTriggerTest();
+    virtual ~AbstractTriggerTest();
 
     /**
      * @brief Метод, вызываемый перед выполнением
      * команды на который данный триггер повешен.
      */
-    virtual void onPreExecute(const std::string &realTag) = 0;
+    virtual void onPreExecute(const std::string &realTag, const ByteArray &arguments) = 0;
 
     /**
      * @brief Метод, вызываемый после выполнения

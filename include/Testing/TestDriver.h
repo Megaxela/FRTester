@@ -43,7 +43,7 @@ protected:
      * @param arguments Аргументы команды.
      * @return Результат вызова команды.
      */
-    ByteArray sendCommand(const Command &c, const ByteArray &arguments) override;
+    ByteArray sendCommand(const FRDriver::Command &c, const ByteArray &arguments, bool responseHasCashier) override;
 
     /**
      * @brief Метод для получения тега команды.
@@ -52,9 +52,6 @@ protected:
      */
     std::string getCommandTag(const Command& c);
 
-private:
-
-    std::vector<TriggerTestPtr> m_currentTriggers;
 };
 
 

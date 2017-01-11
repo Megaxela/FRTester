@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="mainTabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="movable">
        <bool>true</bool>
@@ -211,7 +211,7 @@
            <enum>QTabWidget::Triangular</enum>
           </property>
           <property name="currentIndex">
-           <number>3</number>
+           <number>5</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -408,31 +408,10 @@
                </property>
               </widget>
              </item>
-             <item row="0" column="1">
-              <widget class="QLineEdit" name="commandsRegistration1MoneyLineEdit">
-               <property name="text">
-                <string>0</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QLineEdit" name="commandsRegistration2MoneyLineEdit">
-               <property name="text">
-                <string>0</string>
-               </property>
-              </widget>
-             </item>
              <item row="2" column="0">
               <widget class="QLabel" name="label_18">
                <property name="text">
                 <string>Оплата 3</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QLineEdit" name="commandsRegistration3MoneyLineEdit">
-               <property name="text">
-                <string>0</string>
                </property>
               </widget>
              </item>
@@ -443,17 +422,38 @@
                </property>
               </widget>
              </item>
-             <item row="3" column="1">
-              <widget class="QLineEdit" name="commandsRegistration4MoneyLineEdit">
-               <property name="text">
-                <string>0</string>
-               </property>
-              </widget>
-             </item>
              <item row="1" column="0">
               <widget class="QLabel" name="label_16">
                <property name="text">
                 <string>Оплата 2</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QDoubleSpinBox" name="commandsRegistration1MoneyDoubleSpinBox">
+               <property name="maximum">
+                <double>99999999.000000000000000</double>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QDoubleSpinBox" name="commandsRegistration2MoneyDoubleSpinBox">
+               <property name="maximum">
+                <double>99999999.000000000000000</double>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QDoubleSpinBox" name="commandsRegistration3MoneyDoubleSpinBox">
+               <property name="maximum">
+                <double>99999999.000000000000000</double>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QDoubleSpinBox" name="commandsRegistration4MoneyDoubleSpinBox">
+               <property name="maximum">
+                <double>99999999.000000000000000</double>
                </property>
               </widget>
              </item>
@@ -828,6 +828,140 @@
                <attribute name="title">
                 <string>Tab 2</string>
                </attribute>
+              </widget>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="commandsDeviceTab">
+           <attribute name="title">
+            <string>Устройство</string>
+           </attribute>
+           <layout class="QHBoxLayout" name="horizontalLayout_17">
+            <item>
+             <widget class="QTabWidget" name="commandsDeviceTabWidget">
+              <property name="currentIndex">
+               <number>2</number>
+              </property>
+              <widget class="QWidget" name="commandsDeviceMoneyTab">
+               <attribute name="title">
+                <string>Денежные регистры</string>
+               </attribute>
+               <layout class="QVBoxLayout" name="verticalLayout_10">
+                <item>
+                 <widget class="QPlainTextEdit" name="commandsDeviceMoneyPlainText"/>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_18">
+                  <item>
+                   <spacer name="horizontalSpacer_5">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="commandsDeviceMoneyReadPushButton">
+                    <property name="text">
+                     <string>Прочесть все</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="commandsDeviceOperationsTab">
+               <attribute name="title">
+                <string>Операционные регистры</string>
+               </attribute>
+               <layout class="QVBoxLayout" name="verticalLayout_11">
+                <item>
+                 <widget class="QPlainTextEdit" name="commandsDeviceOperationsPlainText"/>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_19">
+                  <item>
+                   <spacer name="horizontalSpacer_6">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="commandsDeviceOperationsReadPushButton">
+                    <property name="text">
+                     <string>Прочесть все</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="commandsDeviceActionsTab">
+               <attribute name="title">
+                <string>Действия</string>
+               </attribute>
+               <widget class="QGroupBox" name="groupBox_4">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>10</y>
+                  <width>243</width>
+                  <height>104</height>
+                 </rect>
+                </property>
+                <property name="title">
+                 <string>Пинг</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_12">
+                 <item>
+                  <layout class="QFormLayout" name="formLayout_6">
+                   <item row="0" column="0">
+                    <widget class="QLineEdit" name="commandsDeviceActionPingLineEdit"/>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QPushButton" name="commandsDeviceActionPingPushButton">
+                     <property name="text">
+                      <string>Пинг</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_20">
+                   <item>
+                    <widget class="QLabel" name="label_24">
+                     <property name="text">
+                      <string>Результат:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="commandsDeviceActionPingResutLabel">
+                     <property name="text">
+                      <string/>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
               </widget>
              </widget>
             </item>

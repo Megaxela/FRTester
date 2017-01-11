@@ -201,10 +201,10 @@ void RegisterCommandsTabController::onCheckClose()
         ExcessLog("Запрос на ФР.");
         DriverHolder::driver().closeCheck(
                 commandsTabControllerParent()->password(),
-                TypeConverters::toUint64(ui()->commandsRegistration1MoneyLineEdit->text()),
-                TypeConverters::toUint64(ui()->commandsRegistration2MoneyLineEdit->text()),
-                TypeConverters::toUint64(ui()->commandsRegistration3MoneyLineEdit->text()),
-                TypeConverters::toUint64(ui()->commandsRegistration4MoneyLineEdit->text()),
+                (uint64_t) ui()->commandsRegistration1MoneyDoubleSpinBox->value() * 100,
+                (uint64_t) ui()->commandsRegistration2MoneyDoubleSpinBox->value() * 100,
+                (uint64_t) ui()->commandsRegistration3MoneyDoubleSpinBox->value() * 100,
+                (uint64_t) ui()->commandsRegistration4MoneyDoubleSpinBox->value() * 100,
                 0,
                 ui()->commandsRegistration1TaxSpinBox->value(),
                 ui()->commandsRegistration2TaxSpinBox->value(),

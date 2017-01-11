@@ -43,6 +43,14 @@ public:
      */
     bool isPaused();
 
+    /**
+     * @brief Метод для передачи тестов для единовременного
+     * запуска. При следующем запуске будут использованы
+     * тесты из ядра.
+     * @param tests Набор тестов.
+     */
+    void setTestsToRun(const std::vector<TestPtr> &tests);
+
 public slots:
     /**
      * @brief Слот для временной остановки
@@ -133,6 +141,10 @@ signals:
     void testingErrorAcquired(QString log);
 
 private:
+    std::vector<TestPtr> getTests();
+
+    std::vector<TestPtr> m_tempTests;
+
     std::mutex m_mutex;
 
     bool m_running;

@@ -17,6 +17,8 @@ class TestLoggerWaiter;
  */
 class UnitTestsController : public AbstractTabController
 {
+    Q_OBJECT
+
 public:
     /**
      * @brief Конструктор.
@@ -97,6 +99,8 @@ private slots:
 
     // Слоты для TestLoggerWaiter
     void onTestLoggerWaiterLogAcquired(QString log);
+
+    void onSelectedTestsExecuted(QVector<TestPtr> tests);
 
 private:
     enum class MessageType

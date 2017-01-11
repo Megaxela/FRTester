@@ -41,7 +41,7 @@ PythonTrigger::~PythonTrigger()
     }
 }
 
-void PythonTrigger::onPreExecute(const std::string &realTag)
+void PythonTrigger::onPreExecute(const std::string &realTag, const ByteArray &arguments)
 {
     if (m_pTriggerName == nullptr)
     {
@@ -53,7 +53,17 @@ void PythonTrigger::onPreExecute(const std::string &realTag)
 
     auto pTagString = PyString_FromString(realTag.c_str());
 
-    auto pArguments = Py_BuildValue("(O,s)", m_pEnvironment, pTagString);
+    auto pArgumentsList = PyList_New(arguments.size());
+
+    for (uint32_t i = 0; i < arguments.size(); ++i)
+    {
+        PyList_SET_ITEM(pArgumentsList, i, PyInt_FromLong(arguments[i]));
+    }
+
+    auto pArguments = Py_BuildValue(
+            "(O,s,O)",
+            m_pEnvironment, pTagString, pArgumentsList
+    );
 
     if (pArguments == nullptr)
     {
@@ -78,8 +88,17 @@ void PythonTrigger::onPreExecute(const std::string &realTag)
         char* pStrErrorMessage = PyString_AsString(pValue);
 
         m_pEnvironment = nullptr;
-        Critical("Не удалось создать объект теста. Ошибка: " + std::string(pStrErrorMessage));
-        throw std::runtime_error("Не удалось создать объект теста. Ошибка: " + std::string(pStrErrorMessage));
+
+        if (pStrErrorMessage)
+        {
+            Critical("Не удалось создать объект теста. Ошибка: " + std::string(pStrErrorMessage));
+            throw std::runtime_error("Не удалось создать объект теста. Ошибка: " + std::string(pStrErrorMessage));
+        }
+        else
+        {
+            Critical("Не удалось создать объект теста. Ошибки нет.");
+            throw std::runtime_error("Не удалось создать объект теста. Ошибки нет.");
+        }
     }
 
     auto pPreResult = PyObject_CallMethod(m_object, "on_pre_execute", NULL);
@@ -97,9 +116,17 @@ void PythonTrigger::onPreExecute(const std::string &realTag)
         Py_DECREF(m_object);
         m_object = nullptr;
         m_pEnvironment = nullptr;
-        Critical("Не удалось выполнить метод on_post_execute теста. Ошибка: " + std::string(pStrErrorMessage));
 
-        throw std::runtime_error("Не удалось выполнить метод on_pre_execute теста. Ошибка: " + std::string(pStrErrorMessage));
+        if (pStrErrorMessage)
+        {
+            Critical("Не удалось выполнить метод on_post_execute теста. Ошибка: " + std::string(pStrErrorMessage));
+            throw std::runtime_error("Не удалось выполнить метод on_pre_execute теста. Ошибка: " + std::string(pStrErrorMessage));
+        }
+        else
+        {
+            Critical("Не удалось выполнить метод on_post_execute теста. Ошибкаи нет.");
+            throw std::runtime_error("Не удалось выполнить метод on_pre_execute теста. Ошибки нет");
+        }
     }
 }
 

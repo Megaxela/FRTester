@@ -145,10 +145,19 @@ ByteArray TCPInterface::read(const PhysicalInterface::size_t &size, uint32_t tim
         }
         else if (r == 1)
         {
-            dataRead += recv(m_connectionSocket,
-                             response + dataRead,
-                             size - dataRead,
-                             0);
+            ssize_t received = recv(m_connectionSocket,
+                                response + dataRead,
+                                size - dataRead,
+                                0);
+
+            if (received == -1)
+            {
+                DebugError("Соединение порвано.");
+                break;
+            }
+
+            dataRead += received;
+
             timePassed += (uint32_t) (Time::get<std::chrono::microseconds>() - beginReadTime);
         }
         else

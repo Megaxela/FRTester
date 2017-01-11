@@ -16,6 +16,11 @@ QTestsTreeWidgetMenu::QTestsTreeWidgetMenu(QWidget *parent) :
     {
         emit selectionEnabledChanged(false);
     });
+
+    addAction("Запустить", [=]()
+    {
+        emit selectionExecuted();
+    });
 }
 
 void QTestsTreeWidgetMenu::setMultipleMode(bool state)

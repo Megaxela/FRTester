@@ -49,8 +49,8 @@ void TestingExecutor::run()
 
     emit testingStarted();
 
-    auto tests = TestCore::instance().getTests();
-    auto triggers = TestCore::instance().getTriggers();
+    auto tests = getTests();
+    auto triggers = TestCore::instance().getActiveTriggers();
 
     if (tests.empty())
     {
@@ -214,6 +214,27 @@ bool TestingExecutor::isPaused()
     std::unique_lock<std::mutex> lock(m_mutex);
 
     return m_paused;
+}
+
+void TestingExecutor::setTestsToRun(const std::vector<TestPtr> &tests)
+{
+    m_tempTests = tests;
+    start();
+}
+
+std::vector<TestPtr> TestingExecutor::getTests()
+{
+    if (m_tempTests.size() > 0)
+    {
+        auto tmp = m_tempTests;
+        m_tempTests.clear();
+
+        return tmp;
+    }
+    else
+    {
+        return TestCore::instance().getActiveTests();
+    }
 }
 
 

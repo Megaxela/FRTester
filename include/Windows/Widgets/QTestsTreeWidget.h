@@ -17,6 +17,7 @@
  */
 class QTestsTreeWidget : public QTreeWidget
 {
+    Q_OBJECT
 public:
     /**
      * @brief Конструктор
@@ -45,9 +46,13 @@ public:
      * @param test
      */
     void addTest(TestPtr test);
+signals:
+    void selectedTestsExecuted(QVector<TestPtr> tests);
 
 public slots:
-    void OnContextEnableStateChanged(bool state);
+    void onContextEnableStateChanged(bool state);
+
+    void onCurrentTestExecuted();
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;

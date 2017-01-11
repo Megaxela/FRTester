@@ -102,16 +102,16 @@ set(SOURCE_FILES main.cpp
         include/Windows/Controllers/TestControllers/UnitTestsController.h
         src/Executor/TestingExecutor.cpp
         include/Executor/TestingExecutor.h
-        tests/Tests/PythonTest.cpp
-        tests/Tests/PythonTest.h
+#        tests/Tests/PythonTest.cpp
+#        tests/Tests/PythonTest.h
         src/Testing/TestEnvironment.cpp
         include/Testing/TestEnvironment.h
         src/Tools/Settings.cpp
         include/Tools/Settings.h
         src/Windows/Widgets/QTestsTreeWidget.cpp
         include/Windows/Widgets/QTestsTreeWidget.h
-        tests/Triggers/PythonTrigger.cpp
-        tests/Triggers/PythonTrigger.h
+#        tests/Triggers/PythonTrigger.cpp
+#        tests/Triggers/PythonTrigger.h
         src/Windows/Widgets/QTestsTreeWidgetMenu.cpp
         include/Windows/Widgets/QTestsTreeWidgetMenu.h
         src/Testing/TestLogger.cpp
@@ -150,13 +150,21 @@ set(SOURCE_FILES main.cpp
         include/Windows/Controllers/TablesTabController.h
         src/Tools/Codecs.cpp
         include/Tools/Codecs.h
-        src/Tools/StdExtend.cpp include/Tools/StdExtend.h src/Windows/Controllers/CommandsControllers/PrintTextPlainTextCommandsTabController.cpp include/Windows/Controllers/CommandsControllers/PrintTextPlainTextCommandsTabController.h)
+        src/Tools/StdExtend.cpp
+        include/Tools/StdExtend.h
+        src/Windows/Controllers/CommandsControllers/PrintTextPlainTextCommandsTabController.cpp
+        include/Windows/Controllers/CommandsControllers/PrintTextPlainTextCommandsTabController.h
+        tests/Tests/OperationTest.cpp
+        tests/Tests/OperationTest.h
+        tests/Triggers/OperationTrigger.cpp
+        tests/Triggers/OperationTrigger.h
+        tests/Triggers/CheckCloseTrigger.cpp tests/Triggers/CheckCloseTrigger.h src/Testing/FROperations.cpp include/Testing/FROperations.h include/Windows/Controllers/CommandsControllers/DeviceCommandsTabController.cpp include/Windows/Controllers/CommandsControllers/DeviceCommandsTabController.h include/Windows/Controllers/CommandsControllers/DeviceMoneyCommandsTabController.cpp include/Windows/Controllers/CommandsControllers/DeviceMoneyCommandsTabController.h tests/Tests/CheckLoaderTest.cpp tests/Tests/CheckLoaderTest.h)
 
 add_executable(FRTester
         ${SOURCE_FILES}
         ${DRIVER_FILES}
         ${UIS_HDRS}
-        ${CYTHON_FILES}
         ${RESOURCE_ADDED})
 qt5_use_modules(FRTester Core Widgets Gui)
-target_link_libraries(FRTester ${Qt5Widgets_LIBRARIES} -lpython2.7)
+# -lpython2.7
+target_link_libraries(FRTester ${Qt5Widgets_LIBRARIES} )

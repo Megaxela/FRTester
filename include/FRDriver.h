@@ -274,6 +274,15 @@ public:
     };
 
     /**
+     * @brief Результат пинга.
+     */
+    struct PingResult
+    {
+        bool success;
+        uint32_t time;
+    };
+
+    /**
      * @brief Статус информационного обмена
      */
     struct InformExchangeStatus
@@ -756,8 +765,8 @@ public:
      * 1 бит - чековая лента.<br>
      * 2 бит - подкладной документ.<br>
      * 3 бит - слип-чек.<br>
-     * 4 бит - ничего.
-     * 5 бит - ничего.
+     * 4 бит - ничего.<br>
+     * 5 бит - ничего.<br>
      * 6 бит - перенос строк.<br>
      * 7 бит - отложенная печать.
      * @param fontNumber Номер шрифта.
@@ -867,6 +876,19 @@ public:
      */
     NonZeroSums getNonZeroSums();
 
+    /**
+     * @brief Метод для пинга через фискальный регистратор.
+     * @param uri Ссылка, которая пингуется.
+     * @return Результат пинга.
+     */
+    PingResult ping(const std::string &uri);
+
+    /**
+     * @brief Метод для перезапуска фискального регистратора.
+     * @return Результат перезапуска.
+     */
+    bool reboot();
+
 protected:
     /**
      * @brief Перечисляемый тип с кодами команд.
@@ -915,6 +937,8 @@ protected:
         , PrintAds = 0x54                       //< Печать рекламного текста
         , EnterFactoryNumber = 0x55             //< Ввод заводского номера
         , NonZeroSums = 0xFE                    //< Получение необнуляемых сумм
+        , Ping = 0xFEF2                         //< Пинг
+        , Reboot = 0xFEF200                     //< Перезапуск
         , GetInformationExchangeStatus = 0xFF39 //< Получить статус информационного обмена
     };
 
@@ -924,7 +948,7 @@ protected:
      * @param arguments Аргументы для команды в виде набора байт.
      * @return Очищенный от служебных данных ответ от ФР.
      */
-    virtual ByteArray sendCommand(const Command& c, const ByteArray& arguments=ByteArray());
+    virtual ByteArray sendCommand(const FRDriver::Command &c, const ByteArray &arguments, bool responseHasCashier);
 
     /**
      * @brief Метод для обработки ответа от ФР.

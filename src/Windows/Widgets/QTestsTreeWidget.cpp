@@ -16,7 +16,13 @@ QTestsTreeWidget::QTestsTreeWidget(QWidget *parent) :
     connect(m_testsMenu,
             &QTestsTreeWidgetMenu::selectionEnabledChanged,
             this,
-            &QTestsTreeWidget::OnContextEnableStateChanged);
+            &QTestsTreeWidget::onContextEnableStateChanged);
+
+    connect(m_testsMenu,
+            &QTestsTreeWidgetMenu::selectionExecuted,
+            this,
+            &QTestsTreeWidget::onCurrentTestExecuted);
+
 
     m_testsRootItem = new QTreeWidgetItem(this);
     m_testsRootItem->setText(0, "Тесты");
@@ -113,7 +119,7 @@ void QTestsTreeWidget::mousePressEvent(QMouseEvent *event)
     QTreeWidget::mousePressEvent(event);
 }
 
-void QTestsTreeWidget::OnContextEnableStateChanged(bool state)
+void QTestsTreeWidget::onContextEnableStateChanged(bool state)
 {
     auto items = selectedItems();
 
@@ -145,4 +151,24 @@ void QTestsTreeWidget::OnContextEnableStateChanged(bool state)
             }
         }
     }
+}
+
+void QTestsTreeWidget::onCurrentTestExecuted()
+{
+    auto items = selectedItems();
+
+    QVector<TestPtr> tests;
+
+    for (auto el : items)
+    {
+        for (auto testData : m_tests)
+        {
+            if (el == testData.item)
+            {
+                tests.push_back(testData.test);
+            }
+        }
+    }
+
+    emit selectedTestsExecuted(tests);
 }

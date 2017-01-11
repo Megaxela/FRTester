@@ -11,6 +11,7 @@
 #include <Windows/Controllers/CommandsControllers/RegisterCommandsTabController.h>
 #include <include/Windows/Controllers/CommandsControllers/PrintCommandsTabController.h>
 #include <include/Windows/Controllers/CommandsControllers/FNCommandsTabController.h>
+#include <include/Windows/Controllers/CommandsControllers/DeviceCommandsTabController.h>
 #include "Windows/Controllers/CommandsControllers/StateCommandsTabController.h"
 #include "Windows/Controllers/CommandsTabController.h"
 #include "ui_mainwindow.h"
@@ -55,6 +56,14 @@ CommandsTabController::CommandsTabController(Ui::MainWindow *ptr,
                     ptr,
                     parent,
                     ui()->commandsFNTabWidget
+            )
+    );
+    addTabController(
+            ui()->commandsDeviceTab,
+            new DeviceCommandsTabController(
+                    ptr,
+                    parent,
+                    ui()->commandsDeviceTabWidget
             )
     );
 }

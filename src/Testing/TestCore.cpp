@@ -6,14 +6,14 @@
 #include <include/DriverHolder.h>
 #include <tests/Tests/CycleTest.h>
 #include <Tools/Logger.h>
-#include <Python.h>
 #include <include/Tools/Settings.h>
-#include <tests/Tests/PythonTest.h>
-#include <cython/frdriver.h>
-#include <tests/Triggers/PythonTrigger.h>
 #include <include/Testing/TestLogger.h>
 #include <include/TestDriverHolder.h>
 #include <include/Tools/Time.h>
+#include <tests/Tests/OperationTest.h>
+#include <tests/Triggers/OperationTrigger.h>
+#include <tests/Triggers/CheckCloseTrigger.h>
+#include <tests/Tests/CheckLoaderTest.h>
 
 #define PY_LIST_DELIM ':'
 
@@ -32,7 +32,7 @@ TestCore::~TestCore()
 {
     delete m_environment;
 
-    Py_Finalize();
+//    Py_Finalize();
 }
 
 TestCore &TestCore::instance()
@@ -50,109 +50,120 @@ void TestCore::updateDatabase()
 
     // Загрузка статических тестов
 //    m_tests.push_back(std::make_shared<CycleTest>(m_environment));
+    addTest(std::make_shared<OperationTest>(m_environment));
+    addTest(std::make_shared<CheckLoaderTest>(m_environment));
 
-    if (Py_IsInitialized())
-    {
-        Log("Переинициализация интерпретатора.");
+//    addTrigger(std::make_shared<OperationTrigger>(m_environment));
+//    addTrigger(std::make_shared<CheckCloseTrigger>(m_environment));
 
-        deinit();
-        init();
-    }
-
-    std::string testsPath = Settings::instance().getValue(
-            SETTINGS_NAMES_TESTSPATH, "tests"
-    );
-
-    // Загрузка Python тестов
-    std::string pythonTestsPath = SystemTools::Path::join(testsPath, "python");
-
-    if (!testsPath.empty())
-    {
-        // Получение всех файлов в директории
-        std::vector<std::string> testFiles = SystemTools::getAllFilesInDir(pythonTestsPath);
-        if (testFiles.empty())
-        {
-            Error("Папки с тестами не существует или тесты отсутствуют.");
-        }
-
-        for (auto filename : testFiles)
-        {
-            // Название файла слишком мало
-            if (filename.size() <= 3)
-            {
-                continue;
-            }
-
-            // Заканчивается ли файл на .py
-            if (filename.substr(filename.length() - 3, 3) != ".py")
-            {
-                continue;
-            }
-
-            auto loadedTest = PythonTest::loadTest(
-                    m_environment,
-                    filename.substr(0, filename.length() - 3),
-                    pythonTestsPath
-            );
-
-            if (loadedTest != nullptr)
-            {
-                m_tests.push_back(loadedTest);
-            }
-        }
-    }
-    else
-    {
-        Critical("Путь к тестам пуст.");
-    }
-
-    std::string triggersPath = Settings::instance().getValue(
-            SETTINGS_NAMES_TRIGGERSPATH, "triggers"
-    );
-
-    std::string pythonTriggersPath = SystemTools::Path::join(
-            triggersPath, "python"
-    );
-
-    if (!triggersPath.empty())
-    {
-        // Получение всех файлов в директории
-        std::vector<std::string> testFiles = SystemTools::getAllFilesInDir(pythonTriggersPath);
-        if (testFiles.empty())
-        {
-            Error("Папки с триггерами не существует или тесты отсутствуют.");
-        }
-
-        for (auto filename : testFiles)
-        {
-            // Название файла слишком мало
-            if (filename.size() <= 3)
-            {
-                continue;
-            }
-
-            // Заканчивается ли файл на .py
-            if (filename.substr(filename.length() - 3, 3) != ".py")
-            {
-                continue;
-            }
-
-            auto loadedTrigger = PythonTrigger::loadTrigger(
-                    m_environment,
-                    filename.substr(0, filename.length() - 3),
-                    pythonTriggersPath
-            );
-
-            if (loadedTrigger != nullptr)
-            {
-                m_triggers.push_back(loadedTrigger );
-            }
-        }
-    }
-    else
-    {
-        Error("Путь к триггерам пуст.");
-    }
+//    if (Py_IsInitialized())
+//    {
+//        Log("Переинициализация интерпретатора.");
+//
+//        deinit();
+//        init();
+//    }
+//
+//    std::string testsPath = Settings::instance().getValue(
+//            SETTINGS_NAMES_TESTSPATH, "tests"
+//    );
+//
+//    // Загрузка Python тестов
+//    std::string pythonTestsPath = SystemTools::Path::join(testsPath, "python");
+//
+//    if (!testsPath.empty())
+//    {
+//        // Получение всех файлов в директории
+//        std::vector<std::string> testFiles = SystemTools::getAllFilesInDir(pythonTestsPath);
+//        if (testFiles.empty())
+//        {
+//            Error("Папки с тестами не существует или тесты отсутствуют.");
+//        }
+//
+//        for (auto filename : testFiles)
+//        {
+//            // Название файла слишком мало
+//            if (filename.size() <= 3)
+//            {
+//                continue;
+//            }
+//
+//            // Заканчивается ли файл на .py
+//            if (filename.substr(filename.length() - 3, 3) != ".py")
+//            {
+//                continue;
+//            }
+//
+//            auto loadedTest = PythonTest::loadTest(
+//                    m_environment,
+//                    filename.substr(0, filename.length() - 3),
+//                    pythonTestsPath
+//            );
+//
+//            if (loadedTest != nullptr)
+//            {
+//                TestData data;
+//                data.enabled = true;
+//                data.test = loadedTest;
+//                m_tests.push_back(data);
+//            }
+//        }
+//    }
+//    else
+//    {
+//        Critical("Путь к тестам пуст.");
+//    }
+//
+//    std::string triggersPath = Settings::instance().getValue(
+//            SETTINGS_NAMES_TRIGGERSPATH, "triggers"
+//    );
+//
+//    std::string pythonTriggersPath = SystemTools::Path::join(
+//            triggersPath, "python"
+//    );
+//
+//    if (!triggersPath.empty())
+//    {
+//        // Получение всех файлов в директории
+//        std::vector<std::string> testFiles = SystemTools::getAllFilesInDir(pythonTriggersPath);
+//        if (testFiles.empty())
+//        {
+//            Error("Папки с триггерами не существует или тесты отсутствуют.");
+//        }
+//
+//        for (auto filename : testFiles)
+//        {
+//            // Название файла слишком мало
+//            if (filename.size() <= 3)
+//            {
+//                continue;
+//            }
+//
+//            // Заканчивается ли файл на .py
+//            if (filename.substr(filename.length() - 3, 3) != ".py")
+//            {
+//                continue;
+//            }
+//
+//            auto loadedTrigger = PythonTrigger::loadTrigger(
+//                    m_environment,
+//                    filename.substr(0, filename.length() - 3),
+//                    pythonTriggersPath
+//            );
+//
+//            if (loadedTrigger != nullptr)
+//            {
+//                TriggerData data;
+//                data.trigger = loadedTrigger;
+//                data.enabled = true;
+//                m_triggers.push_back(data);
+//            }
+//        }
+//    }
+//    else
+//    {
+//        Error("Путь к триггерам пуст.");
+//    }
 }
 
 void TestCore::getTriggers(const std::string &tag,
@@ -160,9 +171,9 @@ void TestCore::getTriggers(const std::string &tag,
 {
     for (auto trigger : m_triggers)
     {
-        if (trigger->containsTag(tag))
+        if (trigger.trigger->containsTag(tag))
         {
-            v.push_back(trigger);
+            v.push_back(trigger.trigger);
         }
     }
 }
@@ -282,12 +293,26 @@ void TestCore::triggerMistaken(TriggerTestPtr trigger)
 
 std::vector<TestPtr> TestCore::getTests()
 {
-    return m_tests;
+    std::vector<TestPtr> tests;
+
+    for (auto el : m_tests)
+    {
+        tests.push_back(el.test);
+    }
+
+    return tests;
 }
 
 std::vector<TriggerTestPtr> TestCore::getTriggers()
 {
-    return m_triggers;
+    std::vector<TriggerTestPtr> triggers;
+
+    for (auto el : m_triggers)
+    {
+        triggers.push_back(el.trigger);
+    }
+
+    return triggers;
 }
 
 bool TestCore::hasFailedTriggers()
@@ -307,48 +332,50 @@ void TestCore::clearFailedTriggers()
 
 void TestCore::init()
 {
-    Py_Initialize();
-    initfrdriver();
-    Py_SetPythonHome("python2/");
-
-    PyObject* sysModule = PyImport_ImportModule("sys");
-    if (sysModule == nullptr)
-    {
-        Critical("Can't import sys.");
-        return;
-    }
-
-
-    PyObject* pathObject = PyObject_GetAttrString(sysModule, "path");
-    if (pathObject == nullptr)
-    {
-        Critical("Can't find path property in `sys` module.");
-        return;
-    }
-
-    PyList_Append(pathObject, PyString_FromString(
-            SystemTools::Path::join(Settings::instance().getValue(
-                    SETTINGS_NAMES_TRIGGERSPATH,
-                    "./triggers/"
-            ), "python").c_str()
-    ));
-
-    PyList_Append(pathObject, PyString_FromString(
-            SystemTools::Path::join(Settings::instance().getValue(
-                    SETTINGS_NAMES_TESTSPATH,
-                    "./tests/"
-            ), "python").c_str()
-    ));
+//    Py_Initialize();
+//    initfrdriver();
+//    Py_SetPythonHome("python2/");
+//
+//    PyObject* sysModule = PyImport_ImportModule("sys");
+//    if (sysModule == nullptr)
+//    {
+//        Critical("Can't import sys.");
+//        return;
+//    }
+//
+//
+//    PyObject* pathObject = PyObject_GetAttrString(sysModule, "path");
+//    if (pathObject == nullptr)
+//    {
+//        Critical("Can't find path property in `sys` module.");
+//        return;
+//    }
+//
+//    PyList_Append(pathObject, PyString_FromString(
+//            SystemTools::Path::join(Settings::instance().getValue(
+//                    SETTINGS_NAMES_TRIGGERSPATH,
+//                    "./triggers/"
+//            ), "python").c_str()
+//    ));
+//
+//    PyList_Append(pathObject, PyString_FromString(
+//            SystemTools::Path::join(Settings::instance().getValue(
+//                    SETTINGS_NAMES_TESTSPATH,
+//                    "./tests/"
+//            ), "python").c_str()
+//    ));
 }
 
 void TestCore::deinit()
 {
-    Py_Finalize();
+//    Py_Finalize();
 }
 
 int quit(void*)
 {
-    Py_Exit(0);
+//    Py_Exit(0);
+
+    return 0;
 }
 
 void TestCore::interruptTesting()
@@ -357,9 +384,79 @@ void TestCore::interruptTesting()
 //    PyGILState_STATE state = PyGILState_Ensure();
 //    Py_AddPendingCall(&quit, NULL);
 //    PyGILState_Release(state);
-    PyErr_SetString(PyExc_KeyboardInterrupt, "...");
+//    PyErr_SetString(PyExc_KeyboardInterrupt, "...");
     if (DriverHolder::driver().physicalInterface() != nullptr)
     {
         DriverHolder::driver().physicalInterface()->closeConnection();
     }
+}
+
+void TestCore::setTestEnabled(TestPtr test, bool enabled)
+{
+    for (auto el : m_tests)
+    {
+        if (el.test == test)
+        {
+            el.enabled = enabled;
+        }
+    }
+}
+
+std::vector<TestPtr> TestCore::getActiveTests()
+{
+    std::vector<TestPtr> tests;
+
+    for (auto el : m_tests)
+    {
+        if (el.enabled)
+        {
+            tests.push_back(el.test);
+        }
+    }
+
+    return tests;
+}
+
+std::vector<TriggerTestPtr> TestCore::getActiveTriggers()
+{
+    std::vector<TriggerTestPtr> triggers;
+
+    for (auto el : m_triggers)
+    {
+        if (el.enabled)
+        {
+            triggers.push_back(el.trigger);
+        }
+    }
+
+    return triggers;
+}
+
+void TestCore::setTriggerEnabled(TriggerTestPtr trigger, bool enabled)
+{
+    for (auto el : m_triggers)
+    {
+        if (el.trigger == trigger)
+        {
+            el.enabled = enabled;
+        }
+    }
+}
+
+void TestCore::addTest(TestPtr test)
+{
+    TestData data;
+    data.test = test;
+    data.enabled = true;
+
+    m_tests.push_back(data);
+}
+
+void TestCore::addTrigger(TriggerTestPtr trigger)
+{
+    TriggerData data;
+    data.trigger = trigger;
+    data.enabled = true;
+
+    m_triggers.push_back(data);
 }

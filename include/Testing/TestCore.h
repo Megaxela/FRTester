@@ -81,6 +81,20 @@ public:
     std::vector<TriggerTestPtr> getTriggers();
 
     /**
+     * @brief Метод для получения набора активных
+     * тестов.
+     * @return Массив с тестами.
+     */
+    std::vector<TestPtr> getActiveTests();
+
+    /**
+     * @brief Метод для получения набора активных
+     * триггеров.
+     * @return Массив с триггерами.
+     */
+    std::vector<TriggerTestPtr> getActiveTriggers();
+
+    /**
      * @brief Метод для восстановления состояния
      * ФР. Начальное состояние ФР:
      * 4 режим.
@@ -96,28 +110,49 @@ public:
     void interruptTesting();
 
     /**
-     * @brief
-     * @param test
-     * @param enabled
+     * @brief Метод для установки состояния конкретного теста.
+     * @param test Тест.
+     * @param enabled Состояние.
      */
     void setTestEnabled(TestPtr test, bool enabled);
 
+    /**
+     * @brief Метод для установки состояния конкретного триггера.
+     * @param trigger Триггер.
+     * @param enabled Состояние.
+     */
+    void setTriggerEnabled(TriggerTestPtr trigger, bool enabled);
+
 private:
+
+    void addTest(TestPtr test);
+
+    void addTrigger(TriggerTestPtr trigger);
 
     /**
      * @brief Приватный конструктор.
      */
     TestCore();
 
+    struct TestData
+    {
+        TestPtr test;
+        bool enabled;
+    };
+
+    struct TriggerData
+    {
+        TriggerTestPtr trigger;
+        bool enabled;
+    };
+
     void init();
 
     void deinit();
 
-    std::vector<TestPtr> m_disabledTests;
+    std::vector<TriggerData> m_triggers;
 
-    std::vector<TriggerTestPtr> m_triggers;
-
-    std::vector<TestPtr> m_tests;
+    std::vector<TestData> m_tests;
 
     TestEnvironment* m_environment;
 

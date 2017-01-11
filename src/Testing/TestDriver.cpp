@@ -18,30 +18,39 @@ TestDriver::~TestDriver()
 
 }
 
-ByteArray TestDriver::sendCommand(const FRDriver::Command &c, const ByteArray &arguments)
+ByteArray TestDriver::sendCommand(const FRDriver::Command &c, const ByteArray &arguments, bool responseHasCashier)
 {
     auto tag = getCommandTag(c);
 
     if (tag.empty())
     {
-        return FRDriver::sendCommand(c, arguments);
+        return FRDriver::sendCommand(c, arguments, false);
     }
 
-    m_currentTriggers.clear();
-    TestCore::instance().getTriggers(tag, m_currentTriggers);
+    std::vector<TriggerTestPtr> currentTriggers;
+    TestCore::instance().getTriggers(tag, currentTriggers);
 
-    for (auto trigger : m_currentTriggers)
+    for (auto trigger : currentTriggers)
     {
-        trigger->onPreExecute(tag);
+        trigger->onPreExecute(tag, arguments);
     }
 
     Log("Вызываем команду " + std::to_string((int) c) + " с тэгом \"" + tag + "\"");
 
-    auto result = FRDriver::sendCommand(c, arguments);
+    auto result = FRDriver::sendCommand(c, arguments, false);
 
     if (getLastError() == FRDriver::ErrorCode::NoError)
     {
         Log("Команда выполнилась без ошибок.");
+
+        for (auto trigger : currentTriggers)
+        {
+            trigger->onPostExecute();
+            if (!trigger->succeed())
+            {
+                TestCore::instance().triggerMistaken(trigger);
+            }
+        }
     }
     else
     {
@@ -49,15 +58,6 @@ ByteArray TestDriver::sendCommand(const FRDriver::Command &c, const ByteArray &a
             std::to_string((int) getLastError()) +
             " - " +
             FRDriver::Converters::errorToString((int) getLastError()))
-    }
-
-    for (auto trigger : m_currentTriggers)
-    {
-        trigger->onPostExecute();
-        if (!trigger->succeed())
-        {
-            TestCore::instance().triggerMistaken(trigger);
-        }
     }
 
     return result;
@@ -68,16 +68,49 @@ ByteArray TestDriver::sendCommand(const FRDriver::Command &c, const ByteArray &a
 std::string TestDriver::getCommandTag(const FRDriver::Command &c)
 {
     static std::map<FRDriver::Command, std::string> commandTags = {
-            {Command::Beep, "beep"},
-            {Command::Sell, "sell"},
-            {Command::ShortStateRequest, "short_state_request"},
-            {Command::FullStateRequest, "full_state_request"},
-            {Command::OpenShift, "open_shift"},
-            {Command::ShiftCloseReport, "z_report"},
-            {Command::ContinuePrint, "continue_print"},
-            {Command::CancelCheck, "cancel_check"},
-            {Command::CloseCheck, "close_check"},
-            {Command::OperatingRegisterRequest, ""}
+            {Command::ShortStateRequest,            "short_state_request"},
+            {Command::FullStateRequest,             "full_state_request"},
+            {Command::Beep,                         "beep"},
+            {Command::ReadExchangeConfiguration,    "read_exchange_configuration"},
+            {Command::TechReset,                    "tech_reset"},
+            {Command::StandardStringPrint,          "standard_string_print"},
+            {Command::DocumentHeaderPrint,          "document_header_print"},
+            {Command::CurrencyRegisterRequest,      "currency_register_request"},
+            {Command::OperatingRegisterRequest,     "operating_register_request"},
+            {Command::WriteTable,                   "write_table"},
+            {Command::ReadTable,                    "read_table"},
+            {Command::TimeProgramming,              "time_programming"},
+            {Command::DateProgramming,              "date_programming"},
+            {Command::DateConfirm,                  "date_confirm"},
+            {Command::TableValuesInit,              "table_values_init"},
+            {Command::CutCheck,                     "cut_check"},
+            {Command::ReadFontConfiguration,        "read_font_configuration"},
+            {Command::TotalExtinction,              "total_extinction"},
+            {Command::Scrolling,                    "scrolling"},
+            {Command::TableStructureRequest,        "table_structure_request"},
+            {Command::ShiftReportNoExtinction,      "shift_report_no_extinction"},
+            {Command::ShiftCloseReport,             "shift_close_report"},
+            {Command::Sell,                         "sell"},
+            {Command::Buy,                          "buy"},
+            {Command::ReturnSell,                   "return_sell"},
+            {Command::ReturnBuy,                    "return_buy"},
+            {Command::CloseCheck,                   "close_check"},
+            {Command::CancelCheck,                  "cancel_check"},
+            {Command::ContinuePrint,                "continue_print"},
+            {Command::OpenShift,                    "open_shift"},
+            {Command::FieldStructureRequest,        "field_structure_request"},
+            {Command::FontStringPrint,              "font_string_print"},
+            {Command::SectionsReport,               "sections_report"},
+            {Command::TaxesReport,                  "taxes_report"},
+            {Command::CashierReport,                "cashier_report"},
+            {Command::PayIn,                        "pay_in"},
+            {Command::PayOut,                       "pay_out"},
+            {Command::PrintCliches,                 "print_cliches"},
+            {Command::DocumentEndPrint,             "document_end_print"},
+            {Command::PrintAds,                     "print_ads"},
+            {Command::EnterFactoryNumber,           "enter_factory_number"},
+            {Command::NonZeroSums,                  "non_zero_sums"},
+            {Command::GetInformationExchangeStatus, "get_information_exchange_status"},
     };
 
     auto pos = commandTags.end();

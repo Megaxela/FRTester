@@ -32,7 +32,7 @@ public:
             const std::string &modulePath
     );
 
-    void onPreExecute(const std::string &realTag) override;
+    void onPreExecute(const std::string &realTag, const ByteArray &arguments) override;
 
     void onPostExecute() override;
 

@@ -9,6 +9,13 @@
 #include "TestDriver.h"
 #include "TestEnvironment.h"
 
+#define CHECK_TRIGGERS \
+if (TestCore::instance().hasFailedTriggers()) \
+{ \
+    enviroment()->logger()->log("Найдены проваленные триггеры."); \
+    return false; \
+}
+
 class AbstractTest;
 
 typedef std::shared_ptr<AbstractTest> TestPtr;
