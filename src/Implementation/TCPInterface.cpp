@@ -153,7 +153,7 @@ ByteArray TCPInterface::read(const PhysicalInterface::size_t &size, uint32_t tim
             if (received == -1)
             {
                 DebugError("Соединение порвано.");
-                break;
+                return ByteArray();
             }
 
             dataRead += received;
@@ -163,7 +163,7 @@ ByteArray TCPInterface::read(const PhysicalInterface::size_t &size, uint32_t tim
         else
         {
             DebugError("Timeout чтения.");
-            break;
+            return ByteArray();
         }
     }
 

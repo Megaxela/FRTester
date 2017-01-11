@@ -230,7 +230,7 @@ void DefaultProtocol::prepareDeviceToWrite(InterfacePtr physicalInterface)
             // После этого ФР должен быть готов к работе
             return;
         }
-            //
+
         else if (data[0] == ACK)
         {
             ByteArray stxExp = physicalInterface->read(1, 1000 * 50);

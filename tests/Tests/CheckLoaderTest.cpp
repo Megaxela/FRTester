@@ -5,6 +5,7 @@
 #include <include/Testing/TestCore.h>
 #include <include/Testing/FROperations.h>
 #include <thread>
+#include <chrono>
 #include "CheckLoaderTest.h"
 #include "Testing/TestLogger.h"
 
@@ -38,8 +39,10 @@ bool CheckLoaderTest::execute()
             // Попытка произвести действие
             {
                 int tries = 10;
+                int realTries = 0;
                 do
                 {
+                    ++realTries;
                     bool result = enviroment()->driver()->sell(
                             m_pwd,
                             m_goodCount,
@@ -52,11 +55,30 @@ bool CheckLoaderTest::execute()
                             "TestGood"
                     );
 
-                    if ((int) enviroment()->driver()->getLastError() != 0 &&
-                        (int) enviroment()->driver()->getLastError() != 80)
+                    if (realTries == 500)
                     {
-                        --tries;
+                        enviroment()->logger()->log(
+                                "Печать предыдущей команды осуществляется слишком долго."
+                                " (более 500 попыток) Прерываем тест."
+                        );
+
+                        return false;
                     }
+
+                    if ((int) enviroment()->driver()->getLastError() != 0)
+                    {
+                        if ((int) enviroment()->driver()->getLastError() != 80)
+                        {
+                            --tries;
+                        }
+                        else
+                        {
+//                            std::this_thread::sleep_for(
+//                                    std::chrono::seconds(1)
+//                            );
+                        }
+                    }
+
                 }
                 while (enviroment()->driver()->getLastError() != FRDriver::ErrorCode::NoError &&
                        tries > 0);
