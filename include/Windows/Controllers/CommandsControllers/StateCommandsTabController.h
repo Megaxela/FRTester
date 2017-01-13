@@ -67,6 +67,11 @@ private slots:
      */
     void onZeroSumsRequest();
 
+    /**
+     * @brief Слот, вызываемый при запросе подытога чека.
+     */
+    void onCheckResultRequest();
+
 private:
     /**
      * @brief Метод для преобразования даты в строку.

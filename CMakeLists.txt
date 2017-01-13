@@ -158,7 +158,7 @@ set(SOURCE_FILES main.cpp
         tests/Tests/OperationTest.h
         tests/Triggers/OperationTrigger.cpp
         tests/Triggers/OperationTrigger.h
-        tests/Triggers/CheckCloseTrigger.cpp tests/Triggers/CheckCloseTrigger.h src/Testing/FROperations.cpp include/Testing/FROperations.h include/Windows/Controllers/CommandsControllers/DeviceCommandsTabController.cpp include/Windows/Controllers/CommandsControllers/DeviceCommandsTabController.h include/Windows/Controllers/CommandsControllers/DeviceMoneyCommandsTabController.cpp include/Windows/Controllers/CommandsControllers/DeviceMoneyCommandsTabController.h tests/Tests/CheckLoaderTest.cpp tests/Tests/CheckLoaderTest.h)
+        tests/Triggers/CheckCloseTrigger.cpp tests/Triggers/CheckCloseTrigger.h src/Testing/FROperations.cpp include/Testing/FROperations.h src/Windows/Controllers/CommandsControllers/DeviceCommandsTabController.cpp include/Windows/Controllers/CommandsControllers/DeviceCommandsTabController.h src/Windows/Controllers/CommandsControllers/DeviceMoneyCommandsTabController.cpp include/Windows/Controllers/CommandsControllers/DeviceMoneyCommandsTabController.h tests/Tests/CheckLoaderTest.cpp tests/Tests/CheckLoaderTest.h src/Windows/Controllers/CommandsControllers/DeviceActionsCommandsTabController.cpp include/Windows/Controllers/CommandsControllers/DeviceActionsCommandsTabController.h src/Windows/Controllers/CommandsControllers/DeviceOperationsCommandsTabController.cpp include/Windows/Controllers/CommandsControllers/DeviceOperationsCommandsTabController.h tests/Tests/WriteShitCashierNameTest.cpp tests/Tests/WriteShitCashierNameTest.h)
 
 add_executable(FRTester
         ${SOURCE_FILES}

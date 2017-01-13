@@ -14,7 +14,7 @@ CheckLoaderTest::CheckLoaderTest(TestEnvironment *environment) :
                  "Нагрузочный тест с операциями",
                  "Тест бьющий чеки по 500 позиций."),
     m_pwd(30),
-    m_numberOfChecks(50),
+    m_numberOfChecks(200),
     m_numberOfOperations(500),
     m_goodPrice(5000),
     m_goodCount(1000)
@@ -52,7 +52,7 @@ bool CheckLoaderTest::execute()
                             0,
                             0,
                             0,
-                            "TestGood"
+                            "Good #" + std::to_string(operationIndex + 1)
                     );
 
                     if (realTries == 500)
@@ -73,9 +73,9 @@ bool CheckLoaderTest::execute()
                         }
                         else
                         {
-//                            std::this_thread::sleep_for(
-//                                    std::chrono::seconds(1)
-//                            );
+                            std::this_thread::sleep_for(
+                                    std::chrono::milliseconds(200)
+                            );
                         }
                     }
 
@@ -100,7 +100,7 @@ bool CheckLoaderTest::execute()
                 CHECK_TRIGGERS;
             }
 
-            if (operationIndex % (m_numberOfOperations / 5) == 0)
+            if ((operationIndex + 1) % (m_numberOfOperations / 5) == 0)
             {
                 enviroment()->logger()->log(
                         "Пробито " +
@@ -112,11 +112,7 @@ bool CheckLoaderTest::execute()
         }
 
         enviroment()->logger()->log(
-                "Пробито " +
-                std::to_string(m_numberOfOperations) +
-                '/' +
-                std::to_string(m_numberOfOperations) +
-                ". Закрываем чек."
+                "Пробит весь чек. Закрываем его."
         );
 
         {

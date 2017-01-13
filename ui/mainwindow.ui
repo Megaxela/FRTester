@@ -211,7 +211,7 @@
            <enum>QTabWidget::Triangular</enum>
           </property>
           <property name="currentIndex">
-           <number>5</number>
+           <number>0</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -257,6 +257,13 @@
                <widget class="QPushButton" name="commandsNonZeroSumsRequestPushButton">
                 <property name="text">
                  <string>Необн. суммы</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="commandsCheckResultRequestPushButton">
+                <property name="text">
+                 <string>Подытог чека</string>
                 </property>
                </widget>
               </item>
@@ -841,7 +848,7 @@
             <item>
              <widget class="QTabWidget" name="commandsDeviceTabWidget">
               <property name="currentIndex">
-               <number>2</number>
+               <number>1</number>
               </property>
               <widget class="QWidget" name="commandsDeviceMoneyTab">
                <attribute name="title">
@@ -915,53 +922,123 @@
                <attribute name="title">
                 <string>Действия</string>
                </attribute>
-               <widget class="QGroupBox" name="groupBox_4">
-                <property name="geometry">
-                 <rect>
-                  <x>10</x>
-                  <y>10</y>
-                  <width>243</width>
-                  <height>104</height>
-                 </rect>
-                </property>
-                <property name="title">
-                 <string>Пинг</string>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_12">
-                 <item>
-                  <layout class="QFormLayout" name="formLayout_6">
-                   <item row="0" column="0">
-                    <widget class="QLineEdit" name="commandsDeviceActionPingLineEdit"/>
-                   </item>
-                   <item row="0" column="1">
-                    <widget class="QPushButton" name="commandsDeviceActionPingPushButton">
-                     <property name="text">
-                      <string>Пинг</string>
-                     </property>
-                    </widget>
+               <layout class="QVBoxLayout" name="verticalLayout_13">
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_22">
+                  <item>
+                   <widget class="QGroupBox" name="groupBox_4">
+                    <property name="title">
+                     <string>Пинг</string>
+                    </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_12">
+                     <item>
+                      <layout class="QFormLayout" name="formLayout_6">
+                       <item row="0" column="0">
+                        <widget class="QLineEdit" name="commandsDeviceActionPingLineEdit"/>
+                       </item>
+                       <item row="0" column="1">
+                        <widget class="QPushButton" name="commandsDeviceActionPingPushButton">
+                         <property name="text">
+                          <string>Пинг</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item>
+                      <layout class="QHBoxLayout" name="horizontalLayout_20">
+                       <item>
+                        <widget class="QLabel" name="label_24">
+                         <property name="text">
+                          <string>Результат:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="commandsDeviceActionPingResutLabel">
+                         <property name="text">
+                          <string/>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_7">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QGroupBox" name="groupBox_6">
+                  <property name="title">
+                   <string>Команда</string>
+                  </property>
+                  <layout class="QHBoxLayout" name="horizontalLayout_23">
+                   <item>
+                    <layout class="QFormLayout" name="formLayout_7">
+                     <item row="0" column="0">
+                      <widget class="QLabel" name="label_25">
+                       <property name="text">
+                        <string>Запрос</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <layout class="QHBoxLayout" name="horizontalLayout_21">
+                       <item>
+                        <widget class="QLineEdit" name="commandsDeviceActionRequestLineEdit"/>
+                       </item>
+                       <item>
+                        <widget class="QPushButton" name="commandsDeviceActionRequestPushButton">
+                         <property name="text">
+                          <string>Отправить</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item row="1" column="0">
+                      <widget class="QLabel" name="label_26">
+                       <property name="text">
+                        <string>Ответ</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="1">
+                      <widget class="QLineEdit" name="commandsDeviceActionResponseLineEdit"/>
+                     </item>
+                    </layout>
                    </item>
                   </layout>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_20">
-                   <item>
-                    <widget class="QLabel" name="label_24">
-                     <property name="text">
-                      <string>Результат:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="commandsDeviceActionPingResutLabel">
-                     <property name="text">
-                      <string/>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                </layout>
-               </widget>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_2">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>160</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
               </widget>
              </widget>
             </item>

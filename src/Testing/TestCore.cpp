@@ -14,6 +14,7 @@
 #include <tests/Triggers/OperationTrigger.h>
 #include <tests/Triggers/CheckCloseTrigger.h>
 #include <tests/Tests/CheckLoaderTest.h>
+#include <tests/Tests/WriteShitCashierNameTest.h>
 
 #define PY_LIST_DELIM ':'
 
@@ -52,6 +53,7 @@ void TestCore::updateDatabase()
 //    m_tests.push_back(std::make_shared<CycleTest>(m_environment));
     addTest(std::make_shared<OperationTest>(m_environment));
     addTest(std::make_shared<CheckLoaderTest>(m_environment));
+    addTest(std::make_shared<WriteShitCashierNameTest>(m_environment));
 
 //    addTrigger(std::make_shared<OperationTrigger>(m_environment));
 //    addTrigger(std::make_shared<CheckCloseTrigger>(m_environment));

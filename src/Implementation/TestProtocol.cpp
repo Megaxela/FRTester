@@ -23,7 +23,7 @@ TestProtocol::~TestProtocol()
 
 }
 
-ByteArray TestProtocol::proceedData(const ByteArray &b)
+ByteArray TestProtocol::wrapData(const ByteArray &b)
 {
     ByteArray newData(b.length() + 3);
 

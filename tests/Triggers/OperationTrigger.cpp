@@ -29,8 +29,6 @@ void OperationTrigger::onPreExecute(const std::string &realTag,
     parseArguments(arguments);
     m_tag = realTag;
 
-    environment()->logger()->log("Выполняется первая часть триггера операций.");
-
     uint8_t registerIndex = (uint8_t) ((m_dep - 1) * 4 + tagToIndex(realTag));
     // Получение накопления операции по отделам
     m_moneyRegistersOperationsByDepartment = environment()->driver()->currencyRegisterRequest(
@@ -43,12 +41,15 @@ void OperationTrigger::onPreExecute(const std::string &realTag,
             m_usingPwd,
             registerIndex
     );
+
+    // Попытка получения подытога
+    m_previousCheckResult = environment()->driver()->checkResult(
+            m_usingPwd
+    );
 }
 
 void OperationTrigger::onPostExecute()
 {
-    environment()->logger()->log("Выполняется вторая часть триггера операций.");
-
     uint8_t registerIndex = (uint8_t) ((m_dep - 1) * 4 + tagToIndex(m_tag));
     Log("Работа с " + std::to_string(registerIndex) + " регистрами.");
     auto currencyAfter = environment()->driver()->currencyRegisterRequest(
@@ -86,6 +87,22 @@ void OperationTrigger::onPostExecute()
                 std::to_string(operationsDifference) +
                 " != 1"
         );
+        return;
+    }
+
+    auto checkResultAfter = environment()->driver()->checkResult(m_usingPwd);
+
+    auto checkResultDifference = checkResultAfter - m_previousCheckResult;
+
+    if (checkResultDifference != calculatedDifference)
+    {
+        environment()->logger()->log(
+                "Расхождение в подытоге чека: " +
+                std::to_string(checkResultDifference) +
+                " != " +
+                std::to_string(calculatedDifference)
+        );
+
         return;
     }
 

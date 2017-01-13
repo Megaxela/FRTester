@@ -136,7 +136,16 @@ private:
                            time_t time,
                            const char *function,
                            const std::string &message,
-                           const std::string &prefix) const;
+                           const std::string &prefix);
+
+    /**
+     * @brief Method for expanding s string to expectedSize size with r char.
+     * @param s String to be expanded.
+     * @param expectedSize Size to expand.
+     * @param r Char.
+     * @return Expanded string.
+     */
+    std::string fixSize(const std::string &s, uint32_t expectedSize, char r=' ');
 
     std::ofstream m_file;
 
@@ -151,6 +160,10 @@ private:
     std::condition_variable m_cond;
 
     std::condition_variable m_clearVariable;
+
+    uint32_t m_maxFilenameSize;
+
+    uint32_t m_maxFunctionNameSize;
 
     std::string m_logFilename;
 

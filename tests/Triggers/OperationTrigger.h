@@ -39,6 +39,7 @@ private:
 
     uint64_t m_moneyRegistersOperationsByDepartment;
     uint32_t m_operatingRegisterOperations;
+    uint64_t m_previousCheckResult;
 
     bool m_success;
 };

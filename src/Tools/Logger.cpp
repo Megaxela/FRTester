@@ -15,6 +15,9 @@ Logger::Logger() :
     m_messagesMutex(),
     m_mainThread(), // Will be run in constructor
     m_cond(),
+    m_clearVariable(),
+    m_maxFilenameSize(0),
+    m_maxFunctionNameSize(0),
     m_logFilename("logs/log.txt"),
     m_outEnabled(true),
     m_minErrorClass(ErrorClass::Info)
@@ -85,7 +88,7 @@ std::string Logger::formString(const char *file,
                                time_t time,
                                const char *function,
                                const std::string &message,
-                               const std::string &prefix) const
+                               const std::string &prefix)
 {
     std::stringstream ss;
 
@@ -114,9 +117,44 @@ std::string Logger::formString(const char *file,
     ss.fill('0');
     ss <<  now->tm_sec;
 
-    ss << ' ' << file << ':' << line << ' ' << "\t[" << function << "]\t";
+    // Forming filename
+    std::string filename;
+    {
+        std::stringstream filenameSS;
 
-    ss << " " << prefix << ":\t\t" << message;
+        filenameSS << file
+                   << ':'
+                   << line;
+
+        uint32_t len = (uint32_t) filenameSS.str().length();
+        if (len > m_maxFilenameSize)
+        {
+            m_maxFilenameSize = len;
+        }
+
+        filename = fixSize(filenameSS.str(), m_maxFilenameSize);
+    }
+
+    std::string functionName;
+    {
+        std::stringstream functionNameSS;
+
+        functionNameSS << "["
+                       << function
+                       << "]";
+
+        uint32_t len = (uint32_t) functionNameSS.str().length();
+        if (len > m_maxFunctionNameSize)
+        {
+            m_maxFunctionNameSize = len;
+        }
+
+        functionName = fixSize(functionNameSS.str(), m_maxFunctionNameSize);
+    }
+
+    ss << ' ' << filename << ' ' << functionName << ' ';
+
+    ss << ' ' << fixSize(prefix + ": ", 11) << message;
 
     return ss.str();
 }
@@ -265,6 +303,23 @@ void Logger::waitForLogToBeWritten()
 
     while (!m_messages.empty())
         m_clearVariable.wait(lock);
+}
+
+std::string Logger::fixSize(const std::string &s, uint32_t expectedSize, char r)
+{
+    if (expectedSize < s.size())
+    {
+        return s;
+    }
+
+    std::string sCopy = s;
+
+    for (uint32_t i = (uint32_t) s.size(); i <= expectedSize; ++i)
+    {
+        sCopy += r;
+    }
+
+    return sCopy;
 }
 
 

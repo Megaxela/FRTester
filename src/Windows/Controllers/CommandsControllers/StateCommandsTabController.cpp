@@ -35,11 +35,17 @@ void StateCommandsTabController::setupConnections()
             this,
             &StateCommandsTabController::onFullRequest);
 
-    // Кнопка запросу необнуляемых сумм
+    // Кнопка запроса необнуляемых сумм
     connect(ui()->commandsNonZeroSumsRequestPushButton,
             &QPushButton::clicked,
             this,
             &StateCommandsTabController::onZeroSumsRequest);
+
+    // Кнопка запроса подытога чека
+    connect(ui()->commandsCheckResultRequestPushButton,
+            &QPushButton::clicked,
+            this,
+            &StateCommandsTabController::onCheckResultRequest);
 }
 
 void StateCommandsTabController::configureWidgets()
@@ -270,6 +276,35 @@ void StateCommandsTabController::onZeroSumsRequest()
     stringBuilder.append(divider + '\n');
 
     ui()->commandsStatePlainTextEdit->setPlainText(stringBuilder);
+}
+
+void StateCommandsTabController::onCheckResultRequest()
+{
+    Log("Выполняем запрос подытога чека.");
+
+    ExcessLog("Проверка наличия соединения");
+    if (!commandsTabController()->checkConnectionWithDevice())
+    {
+        return;
+    }
+
+    ExcessLog("Запрашиваем подытог.");
+
+    auto result = DriverHolder::driver().checkResult(
+            commandsTabController()->password()
+    );
+
+    commandsTabController()->setLastStatus();
+
+    if (DriverHolder::driver().getLastError() != FRDriver::ErrorCode::NoError)
+    {
+        return;
+    }
+
+    QString textResult = "Подытог чека: " +
+            QString::number(result * 0.01, 'f', 2);
+
+    ui()->commandsStatePlainTextEdit->setPlainText(textResult);
 }
 
 QString StateCommandsTabController::stateDateToString(const FRDriver::DateStructure &date)

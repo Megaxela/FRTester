@@ -889,6 +889,13 @@ public:
      */
     bool reboot();
 
+    /**
+     * @brief Метод для получения подытога чека.
+     * @param password Пароль кассира.
+     * @return Подытог.
+     */
+    uint64_t checkResult(uint32_t password);
+
 protected:
     /**
      * @brief Перечисляемый тип с кодами команд.
@@ -923,6 +930,7 @@ protected:
         , ReturnBuy = 0x83                      //< Возврат покупки
         , CloseCheck = 0x85                     //< Обычное закрытие чека
         , CancelCheck = 0x88                    //< Аннулирование чека
+        , CheckResult = 0x89                    //< Подытог чека
         , ContinuePrint = 0xB0                  //< Продолжить печать
         , OpenShift = 0xE0                      //< Открытие смены
         , FieldStructureRequest = 0x2E          //< Запрос структуры поля
@@ -938,7 +946,7 @@ protected:
         , EnterFactoryNumber = 0x55             //< Ввод заводского номера
         , NonZeroSums = 0xFE                    //< Получение необнуляемых сумм
         , Ping = 0xFEF2                         //< Пинг
-        , Reboot = 0xFEF200                     //< Перезапуск
+        , Reboot = 0xFEF3                       //< Перезапуск
         , GetInformationExchangeStatus = 0xFF39 //< Получить статус информационного обмена
     };
 

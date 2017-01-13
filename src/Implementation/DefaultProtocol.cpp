@@ -20,7 +20,7 @@ DefaultProtocol::~DefaultProtocol()
 
 }
 
-ByteArray DefaultProtocol::proceedData(const ByteArray &b)
+ByteArray DefaultProtocol::wrapData(const ByteArray &b)
 {
     ByteArray newData(b.length() + 3);
 
@@ -181,7 +181,7 @@ void DefaultProtocol::prepareDeviceToWrite(InterfacePtr physicalInterface)
 
     physicalInterface->write(enqArray);
 
-    ByteArray data = physicalInterface->read(1, 1000 * 50);
+    ByteArray data = physicalInterface->read(1, 1000 * 50 * 50);
 
     while (true)
     {

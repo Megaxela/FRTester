@@ -2,7 +2,7 @@
 // Created by megaxela on 10.01.17.
 //
 
-#include "DeviceMoneyCommandsTabController.h"
+#include "include/Windows/Controllers/CommandsControllers/DeviceMoneyCommandsTabController.h"
 #include <ui_mainwindow.h>
 #include <cinttypes>
 #include <include/DriverHolder.h>
@@ -297,6 +297,7 @@ void DeviceMoneyCommandsTabController::onReadButtonPressed()
         return;
     }
 
+    ui()->commandsDeviceMoneyPlainText->clear();
     for (uint32_t index = 0; index < 256; ++index)
     {
         // Считывание значение регистра

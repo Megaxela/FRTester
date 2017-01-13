@@ -29,7 +29,7 @@ public:
      * @param b Данные команды для отправки.
      * @return Обернутые данные, которые к передаче на устройство.
      */
-    ByteArray proceedData(const ByteArray &b) override;
+    ByteArray wrapData(const ByteArray &b) override;
 
     /**
      * @brief Метод для обработки входящих пакетов.

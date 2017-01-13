@@ -32,7 +32,7 @@ public:
     /**
      * @brief Метод для оборачивания пакета данными.
      */
-    virtual ByteArray proceedData(const ByteArray &b) = 0;
+    virtual ByteArray wrapData(const ByteArray &b) = 0;
 
     /**
      * @brief Метод для обработки пакета от устройства.

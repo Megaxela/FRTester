@@ -7,6 +7,7 @@
 #include <include/Testing/TestCore.h>
 #include <Tools/Logger.h>
 #include "include/Testing/TestDriver.h"
+#include <Testing/TestLogger.h>
 
 TestDriver::TestDriver()
 {
@@ -32,6 +33,11 @@ ByteArray TestDriver::sendCommand(const FRDriver::Command &c, const ByteArray &a
 
     for (auto trigger : currentTriggers)
     {
+        trigger->environment()->logger()->log(
+                "Активируется триггер \"" +
+                trigger->name() +
+                "\"..."
+        );
         trigger->onPreExecute(tag, arguments);
     }
 
@@ -111,6 +117,7 @@ std::string TestDriver::getCommandTag(const FRDriver::Command &c)
             {Command::EnterFactoryNumber,           "enter_factory_number"},
             {Command::NonZeroSums,                  "non_zero_sums"},
             {Command::GetInformationExchangeStatus, "get_information_exchange_status"},
+            {Command::CheckResult,                  "check_result"}
     };
 
     auto pos = commandTags.end();

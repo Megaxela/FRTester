@@ -50,10 +50,15 @@ ByteArray FRDriver::sendRaw(const ByteArray &data)
         throw DriverException("Адаптеры для драйвера не были установлены.");
     }
 
+//    if (!m_protocol->prepareDeviceToWrite(m_interface))
+//    {
+//        Error("Не удалось подготовить ФР к записи данных.");
+//        return ByteArray();
+//    }
     m_protocol->prepareDeviceToWrite(m_interface);
 
     // Оборачиваем данные
-    auto formedData = m_protocol->proceedData(data);
+    auto formedData = m_protocol->wrapData(data);
 
     // Отправляем на ФР
     auto sent = 0;
@@ -69,10 +74,9 @@ ByteArray FRDriver::sendRaw(const ByteArray &data)
 
     auto byteSendTimeMcs = sendTime / formedData.length();
 
-    if (byteSendTimeMcs == 0)
+    if (sendTime == 0)
     {
-        Warning("Вычисленное время отправки одного байта равно нулю. Во избежание ошибок меняем его на 2мс.");
-        byteSendTimeMcs = 2000;
+        Warning("Время отправки команды равно нулю.");
     }
 
     // Проверяем количество отправленных данных
@@ -1034,6 +1038,14 @@ std::string FRDriver::readTableStr(uint32_t password,
 
     ByteArray data = sendCommand(Command::ReadTable, arguments, true);
 
+    for (uint32_t byteIndex = 2; byteIndex < data.length(); ++byteIndex)
+    {
+        if (data[byteIndex] == 0x00)
+        {
+            return std::string((const char*) (data.data() + 2), byteIndex - 2);
+        }
+    }
+
     return std::string((const char*) (data.data() + 2), data.length() - 2);
 }
 
@@ -1108,9 +1120,24 @@ FRDriver::PingResult FRDriver::ping(const std::string &uri)
 
     auto data = sendCommand(Command::Ping, arguments, false);
 
-    PingResult result;
+    PingResult result = FRDriver::PingResult();
 
-    Log("Ping result: " + data.toHex());
+    if (getLastError() != ErrorCode::NoError)
+    {
+        return result;
+    }
+
+    ByteArrayReader reader(data);
+    reader.seek(2);
+
+    result.success = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian) == 0;
+
+    if (!result.success)
+    {
+        return result;
+    }
+
+    result.time = reader.read<uint32_t>(ByteArray::ByteOrder_LittleEndian);
 
     return result;
 }
@@ -1119,11 +1146,31 @@ bool FRDriver::reboot()
 {
     ByteArray arguments;
 
-    arguments.append((const uint8_t*) "\x00\x00", 2);
+    arguments.append((const uint8_t*) "\x00\x00\x00\x00", 2);
 
     auto data = sendCommand(Command::Reboot, arguments, false);
 
     return true; // todo: IDK
+}
+
+uint64_t FRDriver::checkResult(uint32_t password)
+{
+    ByteArray arguments;
+
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+
+    auto data = sendCommand(Command::CheckResult, arguments, true);
+
+    if (getLastError() != ErrorCode::NoError)
+    {
+        return 0;
+    }
+
+    ByteArrayReader reader(data);
+
+    reader.seek(3);
+
+    return reader.readPart(5, ByteArray::ByteOrder_LittleEndian);
 }
 
 static std::map<int, std::string> errorString = {

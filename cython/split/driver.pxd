@@ -36,7 +36,7 @@ cdef extern from "../include/Tools/IPv4Address.h":
 
 cdef extern from "../include/Implementation/DefaultProtocol.h":
     cdef cppclass DefaultProtocol:
-        ByteArray proceedData(const ByteArray &b)
+        ByteArray wrapData(const ByteArray &b)
         ByteArray proceedReceivedData(const ByteArray &raw)
         bint needResponseAfterReceivedData()
         ByteArray responseAfterReceivedData()

@@ -6,6 +6,7 @@
 #include <QMouseEvent>
 #include <QMenu>
 #include <include/Tools/Logger.h>
+#include <include/Testing/TestCore.h>
 
 QTestsTreeWidget::QTestsTreeWidget(QWidget *parent) :
         QTreeWidget(parent)
@@ -140,6 +141,7 @@ void QTestsTreeWidget::onContextEnableStateChanged(bool state)
             if (test.item == item)
             {
                 test.enabled = state;
+                TestCore::instance().setTestEnabled(test.test, state);
             }
         }
 
@@ -148,6 +150,7 @@ void QTestsTreeWidget::onContextEnableStateChanged(bool state)
             if (trigger.item == item)
             {
                 trigger.enabled = state;
+                TestCore::instance().setTriggerEnabled(trigger.trigger, state);
             }
         }
     }
