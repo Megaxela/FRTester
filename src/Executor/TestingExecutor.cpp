@@ -5,6 +5,7 @@
 #include <include/Testing/TestCore.h>
 #include <include/Tools/Time.h>
 #include <include/DriverHolder.h>
+#include <include/TestDriverHolder.h>
 #include "include/Executor/TestingExecutor.h"
 
 TestingExecutor::TestingExecutor() :
@@ -47,6 +48,14 @@ void TestingExecutor::run()
         m_paused = false;
     }
 
+    TestDriverHolder::driver().setCommandCallback(
+            [=](FRDriver::Command command)
+            {
+                auto tag = TestDriverHolder::driver().getCommandTag(command);
+
+                emit commandCalled(QString::fromStdString(tag));
+            }
+    );
     emit testingStarted();
 
     auto tests = getTests();
@@ -236,5 +245,6 @@ std::vector<TestPtr> TestingExecutor::getTests()
         return TestCore::instance().getActiveTests();
     }
 }
+
 
 

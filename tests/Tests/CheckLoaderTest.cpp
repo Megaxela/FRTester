@@ -12,28 +12,90 @@
 CheckLoaderTest::CheckLoaderTest(TestEnvironment *environment) :
     AbstractTest(environment,
                  "Нагрузочный тест с операциями",
-                 "Тест бьющий чеки по 500 позиций."),
-    m_pwd(30),
-    m_numberOfChecks(200),
-    m_numberOfOperations(500),
-    m_goodPrice(5000),
-    m_goodCount(1000)
+                 "Тест бьющий чеки.",
+                 {{"Password", (uint32_t) 30},
+                  {"Number Of Checks", (uint32_t) 50},
+                  {"Number Of Operations", (uint32_t) 100},
+                  {"Good Price", (uint64_t) 5000},
+                  {"Good Count", (uint64_t) 1000},
+                  {"Enable Print", true}})
 {
 
 }
 
 bool CheckLoaderTest::execute()
 {
-    enviroment()->driver()->openShift(m_pwd);
+    auto password = getValueUInt32("Password");
+    auto numberOfChecks = getValueUInt32("Number Of Checks");
+    auto numberOfOperations = getValueUInt32("Number Of Operations");
+    auto goodPrice = getValueUInt64("Good Price");
+    auto goodCount = getValueUInt64("Good Count");
+    auto printEnabled = getValueBoolean("Enable Print");
+
+    auto initialPrintValue = enviroment()->driver()->readTableBin(
+            password,
+            17,
+            1,
+            7
+    );
+
+    if (enviroment()->driver()->getLastError() != FRDriver::ErrorCode::NoError)
+    {
+        enviroment()->logger()->log("Не удалось получить текущее значение печати чека.");
+        return false;
+    }
+
+    bool needToRestore = false;
+
+    if ((initialPrintValue == 0 || initialPrintValue == 1) && !printEnabled)
+    {
+        enviroment()->logger()->log("Отключаем печать чеков.");
+        if (!enviroment()->driver()->writeTable(
+                password,
+                17,
+                1,
+                7,
+                2, // Значение
+                1  // Размер значения
+        ))
+        {
+            enviroment()->logger()->log("Не удалось отключить печать чеков. Пожалуй остановим тестирование.");
+            return false;
+        }
+
+
+
+        needToRestore = true;
+    }
+    else if (initialPrintValue == 2 && printEnabled)
+    {
+        enviroment()->logger()->log("Включаем печать чеков.");
+        if (enviroment()->driver()->writeTable(
+                password,
+                17,
+                1,
+                7,
+                0, // Значение
+                1  // Размер значения
+        ))
+        {
+            enviroment()->logger()->log("Не удалось включить печать чеков. Пожалуй остановим тестирование.");
+            return false;
+        }
+
+        needToRestore = true;
+    }
+
+    enviroment()->driver()->openShift(password);
 
     enviroment()->logger()->log("Начинаем пробивать чеки.");
 
     for (uint32_t checkIndex = 0;
-         checkIndex < m_numberOfChecks;
+         checkIndex < numberOfChecks;
          ++checkIndex)
     {
         for (uint32_t operationIndex = 0;
-             operationIndex < m_numberOfOperations;
+             operationIndex < numberOfOperations;
              ++operationIndex)
         {
             // Попытка произвести действие
@@ -44,9 +106,9 @@ bool CheckLoaderTest::execute()
                 {
                     ++realTries;
                     bool result = enviroment()->driver()->sell(
-                            m_pwd,
-                            m_goodCount,
-                            m_goodPrice,
+                            password,
+                            goodCount,
+                            goodPrice,
                             1,
                             0,
                             0,
@@ -100,14 +162,17 @@ bool CheckLoaderTest::execute()
                 CHECK_TRIGGERS;
             }
 
-            if ((operationIndex + 1) % (m_numberOfOperations / 5) == 0)
+            if (numberOfOperations / 5 > 0)
             {
-                enviroment()->logger()->log(
-                        "Пробито " +
-                        std::to_string(operationIndex + 1) +
-                        '/' +
-                        std::to_string(m_numberOfOperations)
-                );
+                if ((operationIndex + 1) % (numberOfOperations / 5) == 0)
+                {
+                    enviroment()->logger()->log(
+                            "Пробито " +
+                            std::to_string(operationIndex + 1) +
+                            '/' +
+                            std::to_string(numberOfOperations)
+                    );
+                }
             }
         }
 
@@ -121,10 +186,10 @@ bool CheckLoaderTest::execute()
             do
             {
                 enviroment()->driver()->closeCheck(
-                        m_pwd,
+                        password,
                         FROperations::smartRound(
-                                m_goodPrice * (m_goodCount * 0.001)
-                        ) * m_numberOfOperations,
+                                goodPrice * (goodCount * 0.001)
+                        ) * numberOfOperations,
                         0,
                         0,
                         0,
@@ -136,7 +201,7 @@ bool CheckLoaderTest::execute()
                         "Check #" +
                         std::to_string(checkIndex) +
                         '/' +
-                        std::to_string(m_numberOfChecks)
+                        std::to_string(numberOfChecks)
                 );
 
                 if ((int) enviroment()->driver()->getLastError() != 0 &&
@@ -154,7 +219,7 @@ bool CheckLoaderTest::execute()
                         "Ошибка на чеке " +
                         std::to_string(checkIndex) +
                         '/' +
-                        std::to_string(m_numberOfChecks)
+                        std::to_string(numberOfChecks)
                 );
 
                 enviroment()->logger()->log(
@@ -176,8 +241,25 @@ bool CheckLoaderTest::execute()
                 "Пробит чек " +
                 std::to_string(checkIndex + 1) +
                 '/' +
-                std::to_string(m_numberOfChecks)
+                std::to_string(numberOfChecks)
         );
+    }
+
+    if (needToRestore)
+    {
+        enviroment()->logger()->log("Восстанавливаем значение печати чека.");
+        if (!enviroment()->driver()->writeTable(
+                password,
+                17,
+                1,
+                7,
+                initialPrintValue, // Значение
+                1  // Размер значения
+        ))
+        {
+            enviroment()->logger()->log("Не удалось восстановить состояние печати.");
+            return false;
+        }
     }
 
     return true;

@@ -13,9 +13,9 @@ OperationTest::OperationTest(TestEnvironment *environment)
         : AbstractTest(
             environment,
             "Тест операций",
-            "Тест всех операций"
-        ),
-          m_pwd(30)
+            "Тест всех операций",
+            {{"Password", (uint32_t) 30}}
+        )
 
 {
 
@@ -23,7 +23,8 @@ OperationTest::OperationTest(TestEnvironment *environment)
 
 bool OperationTest::execute()
 {
-    enviroment()->driver()->openShift(m_pwd);
+    auto password = getValueUInt32("Password");
+    enviroment()->driver()->openShift(password);
 
     for (uint32_t operatingIndex = 0;
          operatingIndex < 4;
@@ -86,7 +87,7 @@ bool OperationTest::execute()
                 {
                 case 0: // Продажа
                     enviroment()->driver()->sell(
-                            m_pwd,
+                            password,
                             count, // Количество
                             money, // Цена
                             departmentIndex,    // Отдел
@@ -100,7 +101,7 @@ bool OperationTest::execute()
 
                 case 1: // Покупка
                     enviroment()->driver()->buy(
-                            m_pwd,
+                            password,
                             count, // Количество
                             money, // Цена
                             departmentIndex,    // Отдел
@@ -115,7 +116,7 @@ bool OperationTest::execute()
 
                 case 2: // Возврат покупки
                     enviroment()->driver()->returnBuy(
-                            m_pwd,
+                            password,
                             count, // Количество
                             money, // Цена
                             departmentIndex,    // Отдел
@@ -129,7 +130,7 @@ bool OperationTest::execute()
 
                 case 3: // Возврат продажи
                     enviroment()->driver()->returnBuy(
-                            m_pwd,
+                            password,
                             count, // Количество
                             money, // Цена
                             departmentIndex,    // Отдел
@@ -173,7 +174,7 @@ bool OperationTest::execute()
             do
             {
                 closeResult = enviroment()->driver()->closeCheck(
-                        m_pwd,
+                        password,
                         sum, // Оплата типом оплаты налом
                         0,
                         0,

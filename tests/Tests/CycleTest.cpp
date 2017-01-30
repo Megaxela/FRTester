@@ -11,7 +11,8 @@ CycleTest::CycleTest(TestEnvironment *enviroment) :
                 enviroment,
                 "Тест на зацикливание печати при закрытии чека.",
                 "При оплате чека с 1 товаром стоимостью 16 суммами "
-                "4/4/4/4 то ФР уходил в цикл."
+                "4/4/4/4 то ФР уходил в цикл.",
+                {{"Password", (uint32_t) 30}}
         )
 {
 
@@ -19,6 +20,8 @@ CycleTest::CycleTest(TestEnvironment *enviroment) :
 
 bool CycleTest::execute()
 {
+    auto pwd = getValueUInt32("Password");
+
     if (!enviroment()->driver()->openShift(30))
     {
         Error("Не удалось открыть смену.");
@@ -26,7 +29,7 @@ bool CycleTest::execute()
     }
 
     if (!enviroment()->driver()->sell(
-            30, // Пароль
+            pwd, // Пароль
             100, // 1 шт
             16 * 100, // 16р
             0, // 0 (1) отдел
@@ -42,7 +45,7 @@ bool CycleTest::execute()
     }
 
     auto result = enviroment()->driver()->closeCheck(
-            30, // Пароль
+            pwd, // Пароль
             4 * 100, // Кэш
             4 * 100, // Картой
             4 * 100, // Картой

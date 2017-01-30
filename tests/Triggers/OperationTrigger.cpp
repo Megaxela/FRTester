@@ -12,7 +12,7 @@
 OperationTrigger::OperationTrigger(TestEnvironment *environment) :
         AbstractTriggerTest(environment,
                             "Триггер операций",
-                            "Триггер, контроллирующий правильность выполнения"
+                            "Триггер, контроллирующий правильность выполнения "
                             "операций.",
                             true),
         m_tags({"sell", "buy", "return_sell", "return_buy"}),
@@ -51,7 +51,7 @@ void OperationTrigger::onPreExecute(const std::string &realTag,
 void OperationTrigger::onPostExecute()
 {
     uint8_t registerIndex = (uint8_t) ((m_dep - 1) * 4 + tagToIndex(m_tag));
-    Log("Работа с " + std::to_string(registerIndex) + " регистрами.");
+
     auto currencyAfter = environment()->driver()->currencyRegisterRequest(
             m_usingPwd,
             registerIndex
@@ -147,7 +147,7 @@ uint32_t OperationTrigger::tagToIndex(const std::string &tag)
     {
         return 2;
     }
-    else if (tag == "return _buy")
+    else if (tag == "return_buy")
     {
         return 3;
     }

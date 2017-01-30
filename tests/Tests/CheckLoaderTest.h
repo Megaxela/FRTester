@@ -14,14 +14,6 @@ public:
     CheckLoaderTest(TestEnvironment* environment);
 
     bool execute() override;
-
-private:
-    uint32_t m_pwd;
-    uint32_t m_numberOfChecks;
-    uint32_t m_numberOfOperations;
-
-    uint32_t m_goodPrice;
-    uint32_t m_goodCount;
 };
 
 

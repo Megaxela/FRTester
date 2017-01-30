@@ -19,7 +19,6 @@ public:
 private:
     uint32_t random(uint32_t begin, uint32_t end);
 
-    uint32_t m_pwd;
     std::default_random_engine m_generator;
 };
 

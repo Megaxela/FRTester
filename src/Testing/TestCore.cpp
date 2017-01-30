@@ -15,6 +15,8 @@
 #include <tests/Triggers/CheckCloseTrigger.h>
 #include <tests/Tests/CheckLoaderTest.h>
 #include <tests/Tests/WriteShitCashierNameTest.h>
+#include <tests/Tests/NonfiscalRequesting.h>
+#include <tests/Tests/TableFiscalStorageLinesTest.h>
 
 #define PY_LIST_DELIM ':'
 
@@ -54,9 +56,11 @@ void TestCore::updateDatabase()
     addTest(std::make_shared<OperationTest>(m_environment));
     addTest(std::make_shared<CheckLoaderTest>(m_environment));
     addTest(std::make_shared<WriteShitCashierNameTest>(m_environment));
+    addTest(std::make_shared<NonfiscalRequesting>(m_environment));
+    addTest(std::make_shared<TableFiscalStorageLinesTest>(m_environment));
 
-//    addTrigger(std::make_shared<OperationTrigger>(m_environment));
-//    addTrigger(std::make_shared<CheckCloseTrigger>(m_environment));
+    addTrigger(std::make_shared<OperationTrigger>(m_environment));
+    addTrigger(std::make_shared<CheckCloseTrigger>(m_environment));
 
 //    if (Py_IsInitialized())
 //    {
@@ -199,6 +203,7 @@ bool TestCore::restoreFRState()
     {
         if (state.posSubMode == 3) // После активного отсутствия бумаги.
         {
+            Log("Обнаружено 3 состояние (После активного отсутствия бумаги).");
             if (!DriverHolder::driver().resumePrinting(m_sysAdmPassword))
             {
                 Error("Не удалось продолжить печать при 3 состоянии.");
@@ -207,6 +212,7 @@ bool TestCore::restoreFRState()
         }
         else if (state.posSubMode == 5) // Печать
         {
+            Log("Сейчас идет печать.");
             for (auto i = 0; i < 5 && state.posSubMode == 5; ++i)
             {
                 state = DriverHolder::driver().fullStateRequest(m_sysAdmPassword);
@@ -259,6 +265,21 @@ bool TestCore::restoreFRState()
             }
 
             Time::sleep<std::chrono::milliseconds>(200);
+
+            Log("Ожидаем окончания печати Z отчета.");
+            state = DriverHolder::driver().fullStateRequest(m_sysAdmPassword);
+            for (auto i = 0; i < 5 && state.posSubMode == 5; ++i)
+            {
+                state = DriverHolder::driver().fullStateRequest(m_sysAdmPassword);
+
+                Time::sleep<std::chrono::seconds>(1);
+            }
+
+            if (state.posSubMode == 5)
+            {
+                Error("Печать продолжается более 5 секунд. Останавливаем тестирование.");
+                return false;
+            }
         }
         else if (state.posMode == 9) // Ошибка ОЗУ
         {

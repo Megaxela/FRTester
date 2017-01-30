@@ -9,7 +9,8 @@
 #include "include/Testing/TestDriver.h"
 #include <Testing/TestLogger.h>
 
-TestDriver::TestDriver()
+TestDriver::TestDriver() :
+    m_commandCallback()
 {
 
 }
@@ -44,6 +45,11 @@ ByteArray TestDriver::sendCommand(const FRDriver::Command &c, const ByteArray &a
     Log("Вызываем команду " + std::to_string((int) c) + " с тэгом \"" + tag + "\"");
 
     auto result = FRDriver::sendCommand(c, arguments, false);
+
+    if (m_commandCallback)
+    {
+        m_commandCallback(c);
+    }
 
     if (getLastError() == FRDriver::ErrorCode::NoError)
     {
@@ -132,4 +138,9 @@ std::string TestDriver::getCommandTag(const FRDriver::Command &c)
 FRDriver *TestDriver::pureDriver()
 {
     return &DriverHolder::driver();
+}
+
+void TestDriver::setCommandCallback(std::function<void(FRDriver::Command)> callback)
+{
+    m_commandCallback = callback;
 }

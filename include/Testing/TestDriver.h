@@ -36,7 +36,22 @@ public:
      */
     FRDriver* pureDriver();
 
+    /**
+     * @brief Метод для установки колбека из тестового
+     * драйвера.
+     * @param callback Колбек.
+     */
+    void setCommandCallback(std::function<void(FRDriver::Command)> callback);
+
+    /**
+     * @brief Метод для получения тега команды.
+     * @param c
+     * @return
+     */
+    std::string getCommandTag(const Command& c);
+
 protected:
+
     /**
      * @brief Метод для контроля вызова тестов - триггеров.
      * @param c Код вызываемой команды.
@@ -45,12 +60,8 @@ protected:
      */
     ByteArray sendCommand(const FRDriver::Command &c, const ByteArray &arguments, bool responseHasCashier) override;
 
-    /**
-     * @brief Метод для получения тега команды.
-     * @param c
-     * @return
-     */
-    std::string getCommandTag(const Command& c);
+private:
+    std::function<void(FRDriver::Command)> m_commandCallback;
 
 };
 

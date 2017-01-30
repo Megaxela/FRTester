@@ -47,6 +47,8 @@ private:
 
     uint64_t m_totalCashRegister241;
 
+    uint64_t m_nonZeroSum;
+
     std::vector<std::string> m_tags;
     bool m_success;
 

@@ -26,6 +26,11 @@ void DeviceActionsCommandsTabController::setupConnections()
             &QPushButton::clicked,
             this,
             &DeviceActionsCommandsTabController::onCommandRequestButtonPressed);
+
+    connect(ui()->commandsDeviceActionRebootPushButton,
+            &QPushButton::clicked,
+            this,
+            &DeviceActionsCommandsTabController::onRebootButtonPressed);
 }
 
 void DeviceActionsCommandsTabController::configureWidgets()
@@ -127,4 +132,18 @@ void DeviceActionsCommandsTabController::onCommandRequestButtonPressed()
 CommandsTabController *DeviceActionsCommandsTabController::commandsTabController()
 {
     return (CommandsTabController*) parentController()->parentController()->parentController();
+}
+
+void DeviceActionsCommandsTabController::onRebootButtonPressed()
+{
+    if (!commandsTabController()->checkConnectionWithDevice())
+    {
+        return;
+    }
+
+    Log("Перезапускаем устройство.");
+
+    DriverHolder::driver().reboot();
+
+    commandsTabController()->setLastStatus();
 }

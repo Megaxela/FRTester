@@ -11,6 +11,9 @@
 #include <include/Testing/AbstractTriggerTest.h>
 #include "QTestsTreeWidgetMenu.h"
 
+Q_DECLARE_METATYPE(TestPtr);
+Q_DECLARE_METATYPE(TriggerTestPtr);
+
 /**
  * @brief Класс, описывающий древовидное меню
  * выбора тестов.
@@ -48,6 +51,10 @@ public:
     void addTest(TestPtr test);
 signals:
     void selectedTestsExecuted(QVector<TestPtr> tests);
+
+    void testSelected(TestPtr test);
+
+    void triggerSelected(TriggerTestPtr test);
 
 public slots:
     void onContextEnableStateChanged(bool state);

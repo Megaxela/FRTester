@@ -23,6 +23,61 @@ class FRDriver
 {
 public:
     /**
+     * @brief Перечисляемый тип с кодами команд.
+     */
+    enum class Command
+    {
+        ShortStateRequest = 0x10              //< Короткий запрос состояния
+        , FullStateRequest = 0x11               //< Полный запрос состояния
+        , Beep = 0x13                           //< Сигнал
+        , ReadExchangeConfiguration = 0x15      //< Чтение параметров обмена
+        , TechReset = 0x16                      //< Технологическое обнуление
+        , StandardStringPrint = 0x17            //< Печать стандартной строки
+        , DocumentHeaderPrint = 0x18            //< Печать заголовка документа
+        , CurrencyRegisterRequest = 0x1A        //< Запрос денежного регистра
+        , OperatingRegisterRequest = 0x1B       //< Запрос операционного регистра
+        , WriteTable = 0x1E                     //< Запись таблицы
+        , ReadTable = 0x1F                      //< Чтение таблицы
+        , TimeProgramming = 0x21                //< Программирование времени
+        , DateProgramming = 0x22                //< Программирование даты
+        , DateConfirm = 0x23                    //< Подтверждение программирования даты
+        , TableValuesInit = 0x24                //< Инициализация таблиц начальными значениями
+        , CutCheck = 0x25                       //< Отрезка чека
+        , ReadFontConfiguration = 0x26          //< Чтение параметров шрифта
+        , TotalExtinction = 0x27                //< Полное гашение
+        , Scrolling = 0x29                      //< Протяжка
+        , TableStructureRequest = 0x2D          //< Запрос структуры таблицы
+        , ShiftReportNoExtinction = 0x40        //< Суточный отчет без гашения
+        , ShiftCloseReport = 0x41               //< Отчет о закрытии смены
+        , Sell = 0x80                           //< Продажа
+        , Buy = 0x81                            //< Покупка
+        , ReturnSell = 0x82                     //< Возврат продажи
+        , ReturnBuy = 0x83                      //< Возврат покупки
+        , CloseCheck = 0x85                     //< Обычное закрытие чека
+        , CancelCheck = 0x88                    //< Аннулирование чека
+        , CheckResult = 0x89                    //< Подытог чека
+        , ContinuePrint = 0xB0                  //< Продолжить печать
+        , OpenShift = 0xE0                      //< Открытие смены
+        , FieldStructureRequest = 0x2E          //< Запрос структуры поля
+        , FontStringPrint = 0x2F                //< Печать строки данным шрифтом
+        , SectionsReport = 0x42                 //< Отчет по секциям
+        , TaxesReport = 0x43                    //< Отчет по налогам
+        , CashierReport = 0x44                  //< Отчет по кассирам
+        , PayIn = 0x50                          //< Внесение
+        , PayOut = 0x51                         //< Выплата
+        , PrintCliches = 0x52                   //< Печать клише
+        , DocumentEndPrint = 0x53               //< Конец Документа (печать)
+        , PrintAds = 0x54                       //< Печать рекламного текста
+        , EnterFactoryNumber = 0x55             //< Ввод заводского номера
+        , OpenNonFiscalDocument = 0xE2          //< Открытие нефискального документа
+        , CloseNonFiscalDocument = 0xE3         //< Закрытие нефискального документа
+        , NonZeroSums = 0xFE                    //< Получение необнуляемых сумм
+        , Ping = 0xFEF2                         //< Пинг
+        , Reboot = 0xFEF3                       //< Перезапуск
+        , GetInformationExchangeStatus = 0xFF39 //< Получить статус информационного обмена
+    };
+
+    /**
      * @brief Коды ошибок. Для получения строкового представления
      * ошибок требуется воспользоваться FRDriver::Converters::errorToString
      */
@@ -896,59 +951,23 @@ public:
      */
     uint64_t checkResult(uint32_t password);
 
-protected:
     /**
-     * @brief Перечисляемый тип с кодами команд.
+     * @brief Метод для открытия нефискального документа.
+     * Не поддерживается в новых фискальных регистраторах.
+     * @param pwd Пароль системного администратора.
+     * @return Успешность открытия.
      */
-    enum class Command
-    {
-          ShortStateRequest = 0x10              //< Короткий запрос состояния
-        , FullStateRequest = 0x11               //< Полный запрос состояния
-        , Beep = 0x13                           //< Сигнал
-        , ReadExchangeConfiguration = 0x15      //< Чтение параметров обмена
-        , TechReset = 0x16                      //< Технологическое обнуление
-        , StandardStringPrint = 0x17            //< Печать стандартной строки
-        , DocumentHeaderPrint = 0x18            //< Печать заголовка документа
-        , CurrencyRegisterRequest = 0x1A        //< Запрос денежного регистра
-        , OperatingRegisterRequest = 0x1B       //< Запрос операционного регистра
-        , WriteTable = 0x1E                     //< Запись таблицы
-        , ReadTable = 0x1F                      //< Чтение таблицы
-        , TimeProgramming = 0x21                //< Программирование времени
-        , DateProgramming = 0x22                //< Программирование даты
-        , DateConfirm = 0x23                    //< Подтверждение программирования даты
-        , TableValuesInit = 0x24                //< Инициализация таблиц начальными значениями
-        , CutCheck = 0x25                       //< Отрезка чека
-        , ReadFontConfiguration = 0x26          //< Чтение параметров шрифта
-        , TotalExtinction = 0x27                //< Полное гашение
-        , Scrolling = 0x29                      //< Протяжка
-        , TableStructureRequest = 0x2D          //< Запрос структуры таблицы
-        , ShiftReportNoExtinction = 0x40        //< Суточный отчет без гашения
-        , ShiftCloseReport = 0x41               //< Отчет о закрытии смены
-        , Sell = 0x80                           //< Продажа
-        , Buy = 0x81                            //< Покупка
-        , ReturnSell = 0x82                     //< Возврат продажи
-        , ReturnBuy = 0x83                      //< Возврат покупки
-        , CloseCheck = 0x85                     //< Обычное закрытие чека
-        , CancelCheck = 0x88                    //< Аннулирование чека
-        , CheckResult = 0x89                    //< Подытог чека
-        , ContinuePrint = 0xB0                  //< Продолжить печать
-        , OpenShift = 0xE0                      //< Открытие смены
-        , FieldStructureRequest = 0x2E          //< Запрос структуры поля
-        , FontStringPrint = 0x40                //< Печать строки данным шрифтом
-        , SectionsReport = 0x42                 //< Отчет по секциям
-        , TaxesReport = 0x43                    //< Отчет по налогам
-        , CashierReport = 0x44                  //< Отчет по кассирам
-        , PayIn = 0x50                          //< Внесение
-        , PayOut = 0x51                         //< Выплата
-        , PrintCliches = 0x52                   //< Печать клише
-        , DocumentEndPrint = 0x53               //< Конец Документа (печать)
-        , PrintAds = 0x54                       //< Печать рекламного текста
-        , EnterFactoryNumber = 0x55             //< Ввод заводского номера
-        , NonZeroSums = 0xFE                    //< Получение необнуляемых сумм
-        , Ping = 0xFEF2                         //< Пинг
-        , Reboot = 0xFEF3                       //< Перезапуск
-        , GetInformationExchangeStatus = 0xFF39 //< Получить статус информационного обмена
-    };
+    bool openNonFiscalDocument(uint32_t pwd);
+
+    /**
+     * @brief Метод для закрытия нефискального документа.
+     * Не поддерживается в новых фискальных регистраторах.
+     * @param pwd Пароль системного администратора.
+     * @return Успешность закрытия.
+     */
+    bool closeNonFiscalDocument(uint32_t pwd);
+
+protected:
 
     /**
      * @brief Метод для отправки команд на ФР.

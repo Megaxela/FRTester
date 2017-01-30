@@ -11,17 +11,16 @@ WriteShitCashierNameTest::WriteShitCashierNameTest(TestEnvironment *environment)
     AbstractTest(
             environment,
             "Запись мусора в имена кассиров",
-            "Тест, записывающий все 255 байт в первых 4 кассиров, потом бьет 4 чека и проверяет отправку в ОФД."),
-    m_sysAdmPwd(30),
-    m_cashierPasswords({1, 2, 3, 4})
-
-
+            "Тест, записывающий все 255 байт в первых 4 кассиров, потом бьет 4 чека и проверяет отправку в ОФД.",
+            {{"System Admin Password", 30}})
 {
 
 }
 
 bool WriteShitCashierNameTest::execute()
 {
+    auto systemAdministratorPassword = getValueUInt32("System Admin Password");
+
     enviroment()->logger()->log("Запоминаем старые имена кассиров.");
 
     std::vector<std::string> oldNames;
@@ -29,7 +28,7 @@ bool WriteShitCashierNameTest::execute()
     for (uint32_t i = 0; i < 4; ++i)
     {
         auto result = enviroment()->driver()->readTableStr(
-                m_sysAdmPwd,
+                systemAdministratorPassword,
                 2,
                 (uint8_t) (i + 1),
                 2
@@ -79,7 +78,7 @@ bool WriteShitCashierNameTest::execute()
         );
 
         enviroment()->driver()->writeTable(
-                m_sysAdmPwd,
+                systemAdministratorPassword,
                 2,
                 (cashierIndex + 1),
                 2,

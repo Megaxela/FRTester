@@ -69,6 +69,7 @@ void QTestsTreeWidget::addTrigger(TriggerTestPtr trigger)
     data.trigger = trigger;
     data.item = new QTreeWidgetItem(m_triggersRootItem);
     data.item->setText(0, QString::fromStdString(trigger->name()));
+    data.item->setToolTip(0, QString::fromStdString(trigger->description()));
     data.item->setWhatsThis(0, QString::fromStdString(trigger->description()));
     data.enabled = true;
 
@@ -81,6 +82,7 @@ void QTestsTreeWidget::addTest(TestPtr test)
     data.test = test;
     data.item = new QTreeWidgetItem(m_testsRootItem);
     data.item->setText(0, QString::fromStdString(test->name()));
+    data.item->setToolTip(0, QString::fromStdString(test->description()));
     data.item->setWhatsThis(0, QString::fromStdString(test->description()));
     data.enabled = true;
 
@@ -115,6 +117,34 @@ void QTestsTreeWidget::mousePressEvent(QMouseEvent *event)
 
         m_testsMenu->move(event->globalPos());
         m_testsMenu->show();
+    }
+    else if (event->button() == Qt::LeftButton)
+    {
+        QTreeWidgetItem* pressedItem = itemAt(event->pos());
+
+        if (pressedItem != nullptr)
+        {
+            if (pressedItem->flags() & Qt::ItemIsSelectable)
+            {
+                // Searching this item in tests
+                for (auto& test : m_tests)
+                {
+                    if (test.item == pressedItem)
+                    {
+                        emit testSelected(test.test);
+                    }
+                }
+
+                // Searching this item in triggers
+                for (auto& trigger : m_triggers)
+                {
+                    if (trigger.item == pressedItem)
+                    {
+                        emit triggerSelected(trigger.trigger);
+                    }
+                }
+            }
+        }
     }
 
     QTreeWidget::mousePressEvent(event);

@@ -99,6 +99,12 @@ signals:
     void testingPaused();
 
     /**
+     * @brief Сигнал, вызываемый при вызове команды.
+     * @param tag Тэг.
+     */
+    void commandCalled(QString tag);
+
+    /**
      * @brief Сигнал, вызываемый при продолжении тестирования
      * после временной остановки.
      */

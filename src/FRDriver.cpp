@@ -473,7 +473,7 @@ FRDriver::FullState FRDriver::fullStateRequest(uint32_t password)
     state.numberInHall                      = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
     state.currentDocumentPassthrougNumber   = reader.read<uint16_t>(ByteArray::ByteOrder_LittleEndian);
     state.posFlags                          = reader.read<uint16_t>(ByteArray::ByteOrder_LittleEndian);
-    state.posMode                           = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    state.posMode                           = (uint8_t) (reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian) & 0b1111);
     state.posSubMode                        = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
     state.posPort                           = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
     reader.move(7); // Зарезервировано
@@ -534,6 +534,11 @@ uint16_t FRDriver::operatingRegisterRequest(uint32_t password, uint8_t registerN
     arguments.append(registerNumber, ByteArray::ByteOrder_LittleEndian);
 
     ByteArray data = sendCommand(Command::OperatingRegisterRequest, arguments, false);
+
+    if (data.size() < 5)
+    {
+        return 0;
+    }
 
     return data.read<uint16_t>(3, ByteArray::ByteOrder_LittleEndian);
 }
@@ -637,7 +642,7 @@ bool FRDriver::writeTable(uint32_t sysPassword,
 
     arguments.append(sysPassword, ByteArray::ByteOrder_LittleEndian);
     arguments.append(tableNumber);
-    arguments.append(row);
+    arguments.append(row, ByteArray::ByteOrder_LittleEndian);
     arguments.append(field);
     arguments.append((uint8_t*) value.c_str(),
                      (uint32_t) value.length());
@@ -1081,6 +1086,8 @@ bool FRDriver::writeTable(uint32_t sysPassword,
     arguments.append(field,              ByteArray::ByteOrder_LittleEndian);
     arguments.appendPart(value, valSize, ByteArray::ByteOrder_LittleEndian);
 
+    Log("Arguments: " + arguments.toHex());
+
     auto data = sendCommand(Command::WriteTable, arguments, false);
 
     return getLastError() == ErrorCode::NoError;
@@ -1171,6 +1178,28 @@ uint64_t FRDriver::checkResult(uint32_t password)
     reader.seek(3);
 
     return reader.readPart(5, ByteArray::ByteOrder_LittleEndian);
+}
+
+bool FRDriver::openNonFiscalDocument(uint32_t pwd)
+{
+    ByteArray arguments;
+
+    arguments.append(pwd, ByteArray::ByteOrder_LittleEndian);
+
+    auto data = sendCommand(Command::OpenNonFiscalDocument, arguments, false);
+
+    return getLastError() == ErrorCode::NoError;
+}
+
+bool FRDriver::closeNonFiscalDocument(uint32_t pwd)
+{
+    ByteArray arguments;
+
+    arguments.append(pwd, ByteArray::ByteOrder_LittleEndian);
+
+    auto data = sendCommand(Command::CloseNonFiscalDocument, arguments, false);
+
+    return getLastError() == ErrorCode::NoError;
 }
 
 static std::map<int, std::string> errorString = {

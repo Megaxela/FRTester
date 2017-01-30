@@ -30,6 +30,12 @@ public slots:
      */
     void onCommandRequestButtonPressed();
 
+    /**
+     * @brief Слот, вызываемый при нажатии на кнопку
+     * перезапуска фискального регистратора.
+     */
+    void onRebootButtonPressed();
+
 protected:
     void setupConnections() override;
 

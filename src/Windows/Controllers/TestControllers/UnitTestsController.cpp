@@ -7,6 +7,9 @@
 #include "Windows/Controllers/TestControllers/UnitTestsController.h"
 #include "Executor/TestLoggerWaiter.h"
 #include <QFileDialog>
+#include <include/Windows/Widgets/QNumberLineEdit.h>
+#include <QtWidgets/QCheckBox>
+#include <include/TestDriverHolder.h>
 
 UnitTestsController::UnitTestsController(Ui::MainWindow *ptr, QWidget *parent) :
     AbstractTabController(ptr, parent, nullptr)
@@ -52,6 +55,12 @@ void UnitTestsController::setupConnections()
             &QPushButton::clicked,
             this,
             &UnitTestsController::onClearLogButtonPressed);
+
+    // Выбор теста
+    connect(ui()->unitTestsTreeWidget,
+            &QTestsTreeWidget::testSelected,
+            this,
+            &UnitTestsController::onTestSelected);
 
     connect(m_testingExecutor,
             &TestingExecutor::testingFailed,
@@ -110,6 +119,11 @@ void UnitTestsController::setupConnections()
             &TestingExecutor::testingErrorAcquired,
             this,
             &UnitTestsController::onTestingErrorAcquired);
+
+    connect(m_testingExecutor,
+            &TestingExecutor::commandCalled,
+            this,
+            &UnitTestsController::onCommandCalled);
 
     connect(m_testLoggerWaiter,
             &TestLoggerWaiter::logReceived,
@@ -319,6 +333,7 @@ void UnitTestsController::onTestingResumed()
 
 void UnitTestsController::onTestingStarted()
 {
+    ui()->unitTestsStatisticsTableWidget->clear();
     onClearLogButtonPressed();
     addLogMessage("Тестирование начато");
     ui()->unitTestsStartStopPushButton->setText("Закончить");
@@ -411,4 +426,219 @@ QString UnitTestsController::htmlScreening(QString source)
 void UnitTestsController::onSelectedTestsExecuted(QVector<TestPtr> tests)
 {
     m_testingExecutor->setTestsToRun(tests.toStdVector());
+}
+
+void UnitTestsController::onTestSelected(TestPtr test)
+{
+    Log("Выбран тест \"" + test->name() + "\".");
+
+    // Загружаем переменные и отрисовываем их в formLayout
+    auto variables = test->getVariables();
+
+    // Получение formLayout
+    auto formLayout = ui()->unitTestsTestValuesFormLayout;
+
+    // Очистка FormLayout
+    QLayoutItem* child;
+    while ((child = formLayout->takeAt(0)) != 0)
+    {
+        delete child->widget();
+        delete child;
+    }
+
+    // Отрисовка новых виджетов
+    for (auto& variable : variables)
+    {
+        QWidget* widget = nullptr;
+
+        // Выбор виджета для типа данных
+        switch (variable.second)
+        {
+        case AbstractTest::DataValue::Type::UInt8:
+        {
+            auto numberLineEdit = new QNumberLineEdit<uint8_t>(parentWidget());
+            numberLineEdit->setNumberValue(test->getValueUInt8(variable.first));
+            connect(numberLineEdit,
+                    &QNumberLineEdit<uint8_t>::newUInt8ValueAccepted,
+                    [=](uint8_t value)
+                    {
+                        test->setValue(variable.first, value);
+                    });
+
+            widget = numberLineEdit;
+            break;
+        }
+        case AbstractTest::DataValue::Type::Int8:
+        {
+            auto numberLineEdit = new QNumberLineEdit<int8_t>(parentWidget());
+            numberLineEdit->setNumberValue(test->getValueInt8(variable.first));
+            connect(numberLineEdit,
+                    &QNumberLineEdit<int8_t>::newInt8ValueAccepted,
+                    [=](int8_t value)
+                    {
+                        test->setValue(variable.first, value);
+                    });
+
+            widget = numberLineEdit;
+            break;
+        }
+        case AbstractTest::DataValue::Type::UInt16:
+        {
+            auto numberLineEdit = new QNumberLineEdit<uint16_t>(parentWidget());
+            numberLineEdit->setNumberValue(test->getValueUInt16(variable.first));
+            connect(numberLineEdit,
+                    &QNumberLineEdit<uint16_t>::newUInt16ValueAccepted,
+                    [=](uint16_t value)
+                    {
+                        test->setValue(variable.first, value);
+                    });
+
+            widget = numberLineEdit;
+            break;
+        }
+        case AbstractTest::DataValue::Type::Int16:
+        {
+            auto numberLineEdit = new QNumberLineEdit<int16_t>(parentWidget());
+            numberLineEdit->setNumberValue(test->getValueInt16(variable.first));
+            connect(numberLineEdit,
+                    &QNumberLineEdit<int16_t>::newInt8ValueAccepted,
+                    [=](int16_t value)
+                    {
+                        test->setValue(variable.first, value);
+                    });
+
+            widget = numberLineEdit;
+            break;
+        }
+        case AbstractTest::DataValue::Type::UInt32:
+        {
+            auto numberLineEdit = new QNumberLineEdit<uint32_t>(parentWidget());
+            numberLineEdit->setNumberValue(test->getValueUInt32(variable.first));
+            connect(numberLineEdit,
+                    &QNumberLineEdit<uint32_t>::newUInt32ValueAccepted,
+                    [=](uint32_t value)
+                    {
+                        test->setValue(variable.first, value);
+                    });
+
+            widget = numberLineEdit;
+            break;
+        }
+        case AbstractTest::DataValue::Type::Int32:
+        {
+            auto numberLineEdit = new QNumberLineEdit<int32_t>(parentWidget());
+            numberLineEdit->setNumberValue(test->getValueInt32(variable.first));
+            connect(numberLineEdit,
+                    &QNumberLineEdit<int32_t>::newInt32ValueAccepted,
+                    [=](int32_t value)
+                    {
+                        test->setValue(variable.first, value);
+                    });
+
+            widget = numberLineEdit;
+            break;
+        }
+        case AbstractTest::DataValue::Type::UInt64:
+        {
+            auto numberLineEdit = new QNumberLineEdit<uint64_t>(parentWidget());
+            numberLineEdit->setNumberValue(test->getValueUInt64(variable.first));
+            connect(numberLineEdit,
+                    &QNumberLineEdit<uint64_t>::newUInt64ValueAccepted,
+                    [=](uint64_t value)
+                    {
+                        test->setValue(variable.first, value);
+                    });
+
+            widget = numberLineEdit;
+            break;
+        }
+        case AbstractTest::DataValue::Type::Int64:
+        {
+            auto numberLineEdit = new QNumberLineEdit<int64_t>(parentWidget());
+            numberLineEdit->setNumberValue(test->getValueInt64(variable.first));
+            connect(numberLineEdit,
+                    &QNumberLineEdit<int64_t>::newInt64ValueAccepted,
+                    [=](int64_t value)
+                    {
+                        test->setValue(variable.first, value);
+                    });
+
+            widget = numberLineEdit;
+            break;
+        }
+        case AbstractTest::DataValue::Type::Boolean:
+        {
+            auto checkBox = new QCheckBox(parentWidget());
+            checkBox->setChecked(test->getValueBoolean(variable.first));
+            connect(checkBox,
+                    &QCheckBox::stateChanged,
+                    [=](int state)
+                    {
+                        test->setValue(variable.first, (bool) state);
+                    });
+
+            widget = checkBox;
+            break;
+        }
+        default:
+            Critical("Неизвестный тип переменной. Чта?");
+        }
+
+        if (widget != nullptr)
+        {
+            formLayout->addRow(
+                    QString::fromStdString(variable.first),
+                    widget
+            );
+        }
+    }
+}
+
+void UnitTestsController::onCommandCalled(QString tag)
+{
+    auto findIterator = m_commandsCounter.find(tag);
+
+    if (findIterator != m_commandsCounter.end())
+    {
+        findIterator->second.first += 1;
+    }
+    else
+    {
+        m_commandsCounter[tag].first = 1;
+        m_commandsCounter[tag].second = nullptr;
+    }
+
+    redrawStatistics();
+}
+
+void UnitTestsController::redrawStatistics()
+{
+    for (auto& element : m_commandsCounter)
+    {
+        if (element.second.second)
+        {
+            element.second.second->setText(QString::number(element.second.first));
+        }
+        else
+        {
+            // Add table element
+            element.second.second = new QTableWidgetItem(element.second.first);
+
+            ui()->unitTestsStatisticsTableWidget->setRowCount(
+                    ui()->unitTestsStatisticsTableWidget->rowCount() + 1
+            );
+
+            ui()->unitTestsStatisticsTableWidget->setItem(
+                    ui()->unitTestsStatisticsTableWidget->rowCount() - 1,
+                    0,
+                    new QTableWidgetItem(element.first)
+            );
+
+            ui()->unitTestsStatisticsTableWidget->setItem(
+                    ui()->unitTestsStatisticsTableWidget->rowCount() - 1,
+                    1,
+                    element.second.second
+            );
+        }
+    }
 }

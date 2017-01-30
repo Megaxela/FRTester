@@ -51,6 +51,18 @@ protected:
 private slots:
 
     /**
+     * @brief Слот, использующийся для
+     * перерисовки окна со статистикой.
+     */
+    void redrawStatistics();
+
+    /**
+     * @brief Слот, вызываемый при вызове команды.
+     * @param command Команды.
+     */
+    void onCommandCalled(QString command);
+
+    /**
      * @brief Слот, вызываемый при обновлении
      * набора тестов.
      */
@@ -75,6 +87,13 @@ private slots:
      * @brief Слот, вызываемый при нажатии на кнопку очистки лога.
      */
     void onClearLogButtonPressed();
+
+    /**
+     * @brief Слот, вызываемый при выборе теста. Он занимается
+     * отрисовкой переменных в тестах.
+     * @param test Объект теста.
+     */
+    void onTestSelected(TestPtr test);
 
     // Слоты для TestingExecutor
     void onTestingFailed(QString reason);
@@ -121,6 +140,8 @@ private:
 
     TestingExecutor* m_testingExecutor;
     TestLoggerWaiter* m_testLoggerWaiter;
+
+    std::map<QString, std::pair<uint64_t, QTableWidgetItem*>> m_commandsCounter;
 };
 
 

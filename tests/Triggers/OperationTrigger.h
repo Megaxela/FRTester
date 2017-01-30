@@ -41,6 +41,8 @@ private:
     uint32_t m_operatingRegisterOperations;
     uint64_t m_previousCheckResult;
 
+    uint64_t m_nonzeroSum;
+
     bool m_success;
 };
 
