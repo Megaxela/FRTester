@@ -100,7 +100,7 @@ bool CheckLoaderTest::execute()
         {
             // Попытка произвести действие
             {
-                int tries = 10;
+                int tries = 25;
                 int realTries = 0;
                 do
                 {
@@ -114,7 +114,15 @@ bool CheckLoaderTest::execute()
                             0,
                             0,
                             0,
-                            "Good #" + std::to_string(operationIndex + 1)
+                            "Good #" +
+                            std::to_string(operationIndex + 1) +
+                            "/" +
+                            std::to_string(numberOfOperations) +
+                            " (" +
+                            std::to_string(checkIndex) +
+                            '/' +
+                            std::to_string(numberOfChecks) +
+                            ')'
                     );
 
                     if (realTries == 500)

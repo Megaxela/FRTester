@@ -89,7 +89,7 @@ PhysicalInterface::size_t TCPInterface::write(const ByteArray &data)
 //            );
 //        }
 
-        i += send(m_connectionSocket, data.data() + i, data.length() - i, 0);
+        i += send(m_connectionSocket, (const char*) (data.data() + i), data.length() - i, 0);
 
 //        m_lastByteSendTime = Time::get<std::chrono::microseconds>();
     }
@@ -124,7 +124,7 @@ ByteArray TCPInterface::read(const PhysicalInterface::size_t &size, uint32_t tim
         struct timeval timeout;
 
         timeout.tv_sec = 0;
-        timeout.tv_usec = (__suseconds_t) (timeoutMcs - timePassed);
+        timeout.tv_usec = timeoutMcs - timePassed;
 
         int r = select(m_connectionSocket + 1,
                        &read_fds,
@@ -145,10 +145,12 @@ ByteArray TCPInterface::read(const PhysicalInterface::size_t &size, uint32_t tim
         }
         else if (r == 1)
         {
-            ssize_t received = recv(m_connectionSocket,
-                                response + dataRead,
-                                size - dataRead,
-                                0);
+            ssize_t received = recv(
+                    m_connectionSocket,
+                    (char*) response + dataRead,
+                    size - dataRead,
+                    0
+            );
 
             if (received == -1)
             {

@@ -147,6 +147,8 @@ void UnitTestsController::configureWidgets()
     ui()->unitTestsLogTextEdit->setContextMenuPolicy(Qt::NoContextMenu);
     ui()->unitTestsLogTextEdit->setUndoRedoEnabled(false);
     ui()->unitTestsLogTextEdit->setReadOnly(true);
+
+    ui()->unitTestsStatisticsTableWidget->verticalHeader()->show();
 }
 
 void UnitTestsController::tabSelected()

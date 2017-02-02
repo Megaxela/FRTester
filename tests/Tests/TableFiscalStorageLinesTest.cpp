@@ -23,8 +23,8 @@ bool TableFiscalStorageLinesTest::execute()
     if (!enviroment()->driver()->writeTable(
             pwd,
             18,
+            1,
             9,
-            2,
             std::string(128, 'H')
     ))
     {

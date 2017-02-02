@@ -249,7 +249,7 @@ void CheckCloseTrigger::onPostExecute()
     // Ожидание окончания печати
     environment()->logger()->log("Ожидание окончания печати чека.");
 
-    uint32_t timeout = 10000; // ms
+    uint32_t timeout = 100000; // ms
     Time::time_t start = Time::get<std::chrono::milliseconds>();
 
     while (true)

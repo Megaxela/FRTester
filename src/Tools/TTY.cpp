@@ -65,7 +65,7 @@ int TTY::connect(const std::string &port, int baudrate)
     disconnect();
 
 #ifdef OS_WINDOWS
-    if (!stdex::begins(port, baudrate))
+    if (!stdex::begins(port, "COM"))
     {
         return 7;
     }

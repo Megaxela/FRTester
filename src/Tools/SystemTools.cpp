@@ -11,11 +11,13 @@
 
 #endif
 #ifdef OS_WINDOWS
-    #include "libraries/dirent/dirent.h"
+//    #include "libraries/dirent/dirent.h"
+    #include <windows.h>
 #endif
 
 std::vector<std::string> SystemTools::getAllFilesInDir(const std::string &path)
 {
+#ifdef OS_LINUX
     std::vector<std::string> result;
 
     DIR* dir;
@@ -40,6 +42,12 @@ std::vector<std::string> SystemTools::getAllFilesInDir(const std::string &path)
     }
 
     return result;
+#endif
+    // todo: Добавить библиотеку для DIR
+#ifdef OS_WINDOWS
+    return std::vector<std::string>();
+#endif
+
 }
 
 #ifdef OS_WINDOWS
@@ -69,6 +77,14 @@ bool SystemTools::Path::fileExists(const std::string &p)
 #endif
 
 #ifdef OS_WINDOWS
-    #error Написать реализацию функции, ибо иначе не будет работать логгирование
+    WIN32_FIND_DATA FindFileData;
+    HANDLE handle = FindFirstFile((TCHAR *) p.c_str(), &FindFileData) ;
+    int found = handle != INVALID_HANDLE_VALUE;
+    if(found)
+    {
+       //FindClose(&handle); this will crash
+       FindClose(handle);
+    }
+    return found;
 #endif
 }

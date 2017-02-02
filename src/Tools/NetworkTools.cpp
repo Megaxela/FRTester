@@ -5,9 +5,9 @@
 #include "include/Tools/NetworkTools.h"
 #include "include/Tools/Platform.h"
 
+#include <include/Tools/Logger.h>
 #ifdef OS_LINUX
     #include <sys/socket.h>
-    #include <include/Tools/Logger.h>
     #include <netinet/in.h>
     #include <include/Tools/IPv4Address.h>
     #include <zconf.h>

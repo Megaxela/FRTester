@@ -8,7 +8,7 @@
 
 IPv4Address::IPv4Address()
 {
-    m_data = INADDR_LOOPBACK;
+    m_data = (in_addr_t) 0x7f000001;
 }
 
 IPv4Address::~IPv4Address()

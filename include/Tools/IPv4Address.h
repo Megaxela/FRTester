@@ -10,6 +10,9 @@
 #ifdef OS_LINUX
     #include <netinet/in.h>
 #endif
+#ifdef OS_WINDOWS
+    typedef uint32_t in_addr_t;
+#endif
 
 /**
  * @brief IPv4 network address.
