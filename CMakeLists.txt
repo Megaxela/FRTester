@@ -5,7 +5,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/../${CMAKE_PROJECT_NAME}
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "-pthread -D_hypot=hypot")
 
-include_directories(${CMAKE_INCLUDE_PATH})
+include_directories(${CMAKE_INCLUDE_PATH} libraries)
 link_directories(${CMAKE_LIBRARY_PATH})
 
 message("${CMAKE_LIBRARY_PATH}")
@@ -182,7 +182,9 @@ set(SOURCE_FILES main.cpp
         include/Windows/Widgets/QNumberLineEdit.h
         src/Windows/Widgets/QBaseNumberLineEdit.cpp
         include/Windows/Widgets/QBaseNumberLineEdit.h
-    )
+        src/Testing/SettingsSystem.cpp
+        include/Testing/SettingsSystem.h
+        libraries/json.hpp)
 
 add_executable(FRTester
         ${SOURCE_FILES}

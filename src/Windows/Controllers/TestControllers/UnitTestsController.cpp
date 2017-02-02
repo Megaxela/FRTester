@@ -153,6 +153,13 @@ void UnitTestsController::configureWidgets()
 
 void UnitTestsController::tabSelected()
 {
+    auto formLayout = ui()->unitTestsTestValuesFormLayout;
+    QLayoutItem* child;
+    while ((child = formLayout->takeAt(0)) != 0)
+    {
+        delete child->widget();
+        delete child;
+    }
     updateUnitTestsSet();
 }
 

@@ -6,6 +6,7 @@
 #include <QtWidgets/QMessageBox>
 #include <include/DriverHolder.h>
 #include <include/TestDriverHolder.h>
+#include <include/Testing/SettingsSystem.h>
 #include "include/Windows/Controllers/ConnectControllers/ConnectTCPTabController.h"
 #include "ui_mainwindow.h"
 
@@ -27,6 +28,16 @@ void ConnectTCPTabController::setupConnections()
             &QPushButton::clicked,
             this,
             &ConnectTCPTabController::onConnecting);
+
+    connect(ui()->connectionTCPIPLineEdit,
+            &QLineEdit::editingFinished,
+            this,
+            &ConnectTCPTabController::onIPEditingFinished);
+
+    connect(ui()->connectionTCPPortLineEdit,
+            &QLineEdit::editingFinished,
+            this,
+            &ConnectTCPTabController::onPortEditingFinished);
 }
 
 void ConnectTCPTabController::configureWidgets()
@@ -40,6 +51,22 @@ void ConnectTCPTabController::configureWidgets()
 
     ui()->connectionTCPPortLineEdit->setValidator(
             new QIntValidator(0, 65535, this)
+    );
+
+    ui()->connectionTCPIPLineEdit->setText(
+            QString::fromStdString(
+                    SettingsSystem::instance().getValue(
+                            SettingsSystem::ConnectionIPAddress
+                    )
+            )
+    );
+
+    ui()->connectionTCPPortLineEdit->setText(
+            QString::fromStdString(
+                    SettingsSystem::instance().getValue(
+                            SettingsSystem::ConnectionIPPort
+                    )
+            )
     );
 }
 
@@ -104,4 +131,20 @@ void ConnectTCPTabController::onConnecting()
     }
 
     Log("Подключение к IP " + ipString.toStdString() + " на порту " + portString.toStdString() + " успешно.");
+}
+
+void ConnectTCPTabController::onIPEditingFinished()
+{
+    SettingsSystem::instance().setValue(
+            SettingsSystem::ConnectionIPAddress,
+            ui()->connectionTCPIPLineEdit->text().toStdString()
+    );
+}
+
+void ConnectTCPTabController::onPortEditingFinished()
+{
+    SettingsSystem::instance().setValue(
+            SettingsSystem::ConnectionIPPort,
+            ui()->connectionTCPPortLineEdit->text().toStdString()
+    );
 }

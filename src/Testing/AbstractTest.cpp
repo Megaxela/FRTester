@@ -4,6 +4,7 @@
 
 #include <include/Testing/TestEnvironment.h>
 #include <include/Testing/AbstractTest.h>
+#include <include/Testing/SettingsSystem.h>
 #include "include/Testing/AbstractTest.h"
 
 AbstractTest::AbstractTest(TestEnvironment *driver,
@@ -15,7 +16,22 @@ AbstractTest::AbstractTest(TestEnvironment *driver,
     m_description(description),
     m_dynamicValues(fields)
 {
+    // Загрузка сохраненных значений
+    for (auto& value : m_dynamicValues)
+    {
+        bool ok = false;
 
+        auto loaded = SettingsSystem::instance().getTestVariable(
+                this,
+                value.first,
+                &ok
+        );
+
+        if (ok)
+        {
+            setValue(value.first, loaded);
+        }
+    }
 }
 
 AbstractTest::~AbstractTest()
@@ -67,6 +83,11 @@ void AbstractTest::setValue(const std::string &name, uint8_t value)
         if (element.first == name && element.second.type == DataValue::Type::UInt8)
         {
             element.second.value.integer.uint8 = value;
+            SettingsSystem::instance().setTestVariable(
+                    this,
+                    element.first,
+                    element.second
+            );
             return;
         }
     }
@@ -81,6 +102,12 @@ void AbstractTest::setValue(const std::string &name, int8_t value)
         if (element.first == name && element.second.type == DataValue::Type::Int8)
         {
             element.second.value.integer.int8 = value;
+
+            SettingsSystem::instance().setTestVariable(
+                    this,
+                    element.first,
+                    element.second
+            );
             return;
         }
     }
@@ -95,6 +122,11 @@ void AbstractTest::setValue(const std::string &name, uint16_t value)
         if (element.first == name && element.second.type == DataValue::Type::UInt16)
         {
             element.second.value.integer.uint16 = value;
+            SettingsSystem::instance().setTestVariable(
+                    this,
+                    element.first,
+                    element.second
+            );
             return;
         }
     }
@@ -109,6 +141,11 @@ void AbstractTest::setValue(const std::string &name, int16_t value)
         if (element.first == name && element.second.type == DataValue::Type::Int16)
         {
             element.second.value.integer.int16 = value;
+            SettingsSystem::instance().setTestVariable(
+                    this,
+                    element.first,
+                    element.second
+            );
             return;
         }
     }
@@ -123,6 +160,11 @@ void AbstractTest::setValue(const std::string &name, uint32_t value)
         if (element.first == name && element.second.type == DataValue::Type::UInt32)
         {
             element.second.value.integer.uint32 = value;
+            SettingsSystem::instance().setTestVariable(
+                    this,
+                    element.first,
+                    element.second
+            );
             return;
         }
     }
@@ -137,6 +179,11 @@ void AbstractTest::setValue(const std::string &name, int32_t value)
         if (element.first == name && element.second.type == DataValue::Type::Int32)
         {
             element.second.value.integer.int32 = value;
+            SettingsSystem::instance().setTestVariable(
+                    this,
+                    element.first,
+                    element.second
+            );
             return;
         }
     }
@@ -151,6 +198,11 @@ void AbstractTest::setValue(const std::string &name, uint64_t value)
         if (element.first == name && element.second.type == DataValue::Type::UInt64)
         {
             element.second.value.integer.uint64 = value;
+            SettingsSystem::instance().setTestVariable(
+                    this,
+                    element.first,
+                    element.second
+            );
             return;
         }
     }
@@ -165,11 +217,34 @@ void AbstractTest::setValue(const std::string &name, int64_t value)
         if (element.first == name && element.second.type == DataValue::Type::Int64)
         {
             element.second.value.integer.int64 = value;
+            SettingsSystem::instance().setTestVariable(
+                    this,
+                    element.first,
+                    element.second
+            );
             return;
         }
     }
 
     throw std::length_error("Test has no int64 value with name \"" + name + "\".");
+}
+
+void AbstractTest::setValue(const std::string &name, const AbstractTest::DataValue &value)
+{
+    for (auto& element : m_dynamicValues)
+    {
+        if (element.first == name && element.second.type == value.type)
+        {
+            element.second = value;
+            SettingsSystem::instance().setTestVariable(
+                    this,
+                    element.first,
+                    element.second
+            );
+            return;
+        }
+    }
+    throw std::length_error("Test has no value with name \"" + name + "\".");
 }
 
 void AbstractTest::setValue(const std::string &name, bool value)
@@ -179,6 +254,11 @@ void AbstractTest::setValue(const std::string &name, bool value)
         if (element.first == name && element.second.type == DataValue::Type::Boolean)
         {
             element.second.value.boolean = value;
+            SettingsSystem::instance().setTestVariable(
+                    this,
+                    element.first,
+                    element.second
+            );
             return;
         }
     }
@@ -301,6 +381,19 @@ bool AbstractTest::getValueBoolean(const std::string &name) const
     }
 
     throw std::length_error("Test has no boolean value with name \"" + name + "\".");
+}
+
+AbstractTest::DataValue::Type AbstractTest::getValueType(const std::string &name) const
+{
+    for (auto& value : m_dynamicValues)
+    {
+        if (value.first == name)
+        {
+            return value.second.type;
+        }
+    }
+
+    throw std::length_error("Test has no value with name \"" + name + "\".");
 }
 
 bool AbstractTest::containsValue(const std::string &name) const

@@ -11,6 +11,7 @@
 #include <QtWidgets/QMessageBox>
 #include <Implementation/DefaultProtocol.h>
 #include <include/TestDriverHolder.h>
+#include <include/Testing/SettingsSystem.h>
 
 ConnectCOMTabController::ConnectCOMTabController(Ui::MainWindow *ptr, QWidget* parent) :
     AbstractTabController(ptr, parent, nullptr),
@@ -31,6 +32,18 @@ void ConnectCOMTabController::setupConnections()
             &QPushButton::clicked,
             this,
             &ConnectCOMTabController::onConnecting);
+
+    // Завершение редактирования COM порта
+    connect(ui()->connectionCOMDeviceLineEdit,
+            &QLineEdit::editingFinished,
+            this,
+            &ConnectCOMTabController::onDeviceEditingFinished);
+
+    // Завершение выбора скорости обмена
+    connect(ui()->connectionCOMBaudRateComboBox,
+            static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentIndexChanged),
+            this,
+            &ConnectCOMTabController::onBaudRateEditingFinished);
 }
 
 void ConnectCOMTabController::configureWidgets()
@@ -69,6 +82,24 @@ void ConnectCOMTabController::configureWidgets()
         ui()->connectionCOMBaudRateComboBox->addItem("50");
         ui()->connectionCOMBaudRateComboBox->addItem("0");
     }
+
+    ui()->connectionCOMDeviceLineEdit->setText(
+            QString::fromStdString(
+                    SettingsSystem::instance()
+                            .getValue(
+                                    SettingsSystem::ConnectionCOMPort
+                            )
+            )
+    );
+
+    ui()->connectionCOMBaudRateComboBox->setCurrentIndex(
+            std::stoi(
+                    SettingsSystem::instance()
+                            .getValue(
+                                    SettingsSystem::ConnectionCOMSpeed
+                            )
+            )
+    );
 }
 
 void ConnectCOMTabController::onConnecting()
@@ -105,4 +136,23 @@ void ConnectCOMTabController::onConnecting()
     }
 
     Log("Успешное подключение к COM порту №" + deviceName.toStdString());
+}
+
+
+void ConnectCOMTabController::onDeviceEditingFinished()
+{
+    SettingsSystem::instance().setValue(
+            SettingsSystem::ConnectionCOMPort,
+            ui()->connectionCOMDeviceLineEdit->text().toStdString()
+    );
+}
+
+void ConnectCOMTabController::onBaudRateEditingFinished()
+{
+    SettingsSystem::instance().setValue(
+            SettingsSystem::ConnectionCOMSpeed,
+            std::to_string(
+                    ui()->connectionCOMBaudRateComboBox->currentIndex()
+            )
+    );
 }

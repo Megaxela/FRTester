@@ -238,6 +238,13 @@ public:
     void setValue(const std::string& name, bool value);
 
     /**
+     * @brief Метод для установки значения переменной.
+     * @param name Название переменной.
+     * @param value Значение переменной.
+     */
+    void setValue(const std::string& name, const DataValue& value);
+
+    /**
      * @brief Метод для получения значения переменной.
      * @param name Название переменной
      * @return Значение.
@@ -299,6 +306,13 @@ public:
      * @return Значение.
      */
     bool getValueBoolean(const std::string& name) const;
+
+    /**
+     * @brief Метод для получения типа переменной.
+     * @param name Название переменной.
+     * @return Тип переменной.
+     */
+    DataValue::Type getValueType(const std::string& name) const;
 
     /**
      * @brief Метод для проверки наличия динамической переменной.

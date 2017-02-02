@@ -37,6 +37,10 @@ public:
 private slots:
     void onConnecting();
 
+    void onDeviceEditingFinished();
+
+    void onBaudRateEditingFinished();
+
 protected:
     void configureWidgets() override;
 

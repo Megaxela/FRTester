@@ -38,6 +38,18 @@ private slots:
      */
     void onConnecting();
 
+    /**
+     * @brief Слот, вызываемый при окончании редактирования
+     * поля с IP адресом для его сохранения.
+     */
+    void onIPEditingFinished();
+
+    /**
+     * @brief Слот, вызываемый при окончании редактирования
+     * поля с портом для его сохранения.
+     */
+    void onPortEditingFinished();
+
 protected:
     void setupConnections() override;
 
