@@ -14,9 +14,9 @@ OperationTrigger::OperationTrigger(TestEnvironment *environment) :
                             "Триггер операций",
                             "Триггер, контроллирующий правильность выполнения "
                             "операций.",
-                            true),
+                            true,
+                            {{"Password", (uint32_t) 30}}),
         m_tags({"sell", "buy", "return_sell", "return_buy"}),
-        m_usingPwd(30),
         m_success(false)
 {
 
@@ -25,6 +25,7 @@ OperationTrigger::OperationTrigger(TestEnvironment *environment) :
 void OperationTrigger::onPreExecute(const std::string &realTag,
                                     const ByteArray &arguments)
 {
+    auto password = getValueUInt32("Password");
     m_success = false;
     parseArguments(arguments);
     m_tag = realTag;
@@ -32,28 +33,30 @@ void OperationTrigger::onPreExecute(const std::string &realTag,
     uint8_t registerIndex = (uint8_t) ((m_dep - 1) * 4 + tagToIndex(realTag));
     // Получение накопления операции по отделам
     m_moneyRegistersOperationsByDepartment = environment()->driver()->currencyRegisterRequest(
-            m_usingPwd,
+            password,
             registerIndex
     );
 
     // Получения количества операций по отделам
     m_operatingRegisterOperations = environment()->driver()->operatingRegisterRequest(
-            m_usingPwd,
+            password,
             registerIndex
     );
 
     // Попытка получения подытога
     m_previousCheckResult = environment()->driver()->checkResult(
-            m_usingPwd
+            password
     );
 }
 
 void OperationTrigger::onPostExecute()
 {
+    auto password = getValueUInt32("Password");
+
     uint8_t registerIndex = (uint8_t) ((m_dep - 1) * 4 + tagToIndex(m_tag));
 
     auto currencyAfter = environment()->driver()->currencyRegisterRequest(
-            m_usingPwd,
+            password,
             registerIndex
     );
     auto currencyDifference = currencyAfter - m_moneyRegistersOperationsByDepartment;
@@ -74,7 +77,7 @@ void OperationTrigger::onPostExecute()
     }
 
     auto operationsAfter = environment()->driver()->operatingRegisterRequest(
-            m_usingPwd,
+            password,
             registerIndex
     );
 
@@ -90,7 +93,7 @@ void OperationTrigger::onPostExecute()
         return;
     }
 
-    auto checkResultAfter = environment()->driver()->checkResult(m_usingPwd);
+    auto checkResultAfter = environment()->driver()->checkResult(password);
 
     auto checkResultDifference = checkResultAfter - m_previousCheckResult;
 

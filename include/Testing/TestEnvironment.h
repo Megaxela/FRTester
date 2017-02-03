@@ -7,6 +7,7 @@
 
 
 #include "TestDriver.h"
+#include "TestingTools.h"
 
 class TestLogger;
 /**
@@ -23,24 +24,32 @@ public:
      */
     TestEnvironment(
             TestDriver* driver,
-            TestLogger* logger
+            TestLogger* logger,
+            TestingTools* tools
     );
 
     /**
      * @brief Метод для получения тестового драйвера.
-     * @return
+     * @return Тестовый драйвер.
      */
     TestDriver* driver() const;
 
     /**
-     * @brief
-     * @return
+     * @brief Метод для получения логгера.
+     * @return Тестовый логгер.
      */
     TestLogger* logger() const;
+
+    /**
+     * @brief Метод для полуения дополнительного инструментария.
+     * @return Объект тестового инструментария.
+     */
+    TestingTools* tools() const;
 
 private:
     TestDriver* m_driver;
     TestLogger* m_logger;
+    TestingTools* m_tools;
 };
 
 

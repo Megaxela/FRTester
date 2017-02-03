@@ -24,8 +24,6 @@ public:
 private:
     void parseArguments(const ByteArray &data);
 
-    uint32_t m_pwd;
-
     uint32_t m_argPwd;
     uint64_t m_cashSum;
     uint64_t m_type2Sum;

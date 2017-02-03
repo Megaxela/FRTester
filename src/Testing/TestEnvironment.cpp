@@ -6,10 +6,12 @@
 
 TestEnvironment::TestEnvironment(
         TestDriver *driver,
-        TestLogger* logger
+        TestLogger* logger,
+        TestingTools* tools
 ) :
     m_driver(driver),
-    m_logger(logger)
+    m_logger(logger),
+    m_tools(tools)
 {
 
 }
@@ -23,3 +25,9 @@ TestLogger *TestEnvironment::logger() const
 {
     return m_logger;
 }
+
+TestingTools *TestEnvironment::tools() const
+{
+    return m_tools;
+}
+

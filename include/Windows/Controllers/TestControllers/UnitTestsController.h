@@ -95,6 +95,13 @@ private slots:
      */
     void onTestSelected(TestPtr test);
 
+    /**
+     * @brief Слот, вызываемый при выборе триггера. Он занимается
+     * отрисовкой переменных в триггерах.
+     * @param trigger Объект триггера.
+     */
+    void onTriggerSelected(TriggerTestPtr trigger);
+
     // Слоты для TestingExecutor
     void onTestingFailed(QString reason);
 

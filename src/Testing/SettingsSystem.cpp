@@ -28,14 +28,14 @@ SettingsSystem &SettingsSystem::instance()
 
 void SettingsSystem::setTestVariable(AbstractTest* test,
                                      const std::string& name,
-                                     const AbstractTest::DataValue &value)
+                                     const DataValue &value)
 {
     auto hash = m_hash(test->name() + test->description());
 
     auto findIterator = m_testVariables.find(hash);
     if (findIterator == m_testVariables.end())
     {
-        m_testVariables[hash] = std::map<std::string, AbstractTest::DataValue>();
+        m_testVariables[hash] = std::map<std::string, DataValue>();
         m_testVariables[hash][name] = value;
     }
     else
@@ -44,7 +44,7 @@ void SettingsSystem::setTestVariable(AbstractTest* test,
     }
 }
 
-AbstractTest::DataValue SettingsSystem::getTestVariable(AbstractTest* test,
+DataValue SettingsSystem::getTestVariable(AbstractTest* test,
                                                         const std::string& name,
                                                         bool* ok)
 {
@@ -56,7 +56,7 @@ AbstractTest::DataValue SettingsSystem::getTestVariable(AbstractTest* test,
         {
             *ok = false;
         }
-        return AbstractTest::DataValue();
+        return DataValue();
     }
 
     if (m_testVariables[hash].find(name) == m_testVariables[hash].end())
@@ -65,7 +65,7 @@ AbstractTest::DataValue SettingsSystem::getTestVariable(AbstractTest* test,
         {
             *ok = false;
         }
-        return AbstractTest::DataValue();
+        return DataValue();
     }
 
     if (ok)
@@ -75,7 +75,11 @@ AbstractTest::DataValue SettingsSystem::getTestVariable(AbstractTest* test,
     return m_testVariables[hash][name];
 }
 
-SettingsSystem::SettingsSystem()
+SettingsSystem::SettingsSystem() :
+    m_values(),
+    m_testVariables(),
+    m_triggerVariables(),
+    m_hash()
 {
     loadData();
 }
@@ -97,6 +101,7 @@ void SettingsSystem::setValue(const std::string &name, const std::string &value)
 
 void SettingsSystem::loadData()
 {
+    Log("Загрузка сохраненных значений.");
     // Loading file with data
     if (!SystemTools::Path::fileExists("save.json"))
     {
@@ -132,65 +137,126 @@ void SettingsSystem::loadData()
     for (json::iterator test = testVariablesDict.begin(); test != testVariablesDict.end(); ++test)
     {
         auto longKey = std::stoul(test.key());
-        m_testVariables[longKey] = std::map<std::string, AbstractTest::DataValue>();
+        m_testVariables[longKey] = std::map<std::string, DataValue>();
         json value = test.value();
         for (json::iterator variable = value.begin(); variable  != value.end(); ++variable)
         {
-            AbstractTest::DataValue value;
+            DataValue value;
             std::string varType = variable.value()["type"];
             if (varType == "uint8_t")
             {
-                value.type = AbstractTest::DataValue::Type::UInt8;
+                value.type = DataValue::Type::UInt8;
                 value.value.integer.uint8 = variable.value()["value"];
             }
             else if (varType == "int8_t")
             {
-                value.type = AbstractTest::DataValue::Type::Int8;
+                value.type = DataValue::Type::Int8;
                 value.value.integer.int8 = variable.value()["value"];
             }
             else if (varType == "uint16_t")
             {
-                value.type = AbstractTest::DataValue::Type::UInt16;
+                value.type = DataValue::Type::UInt16;
                 value.value.integer.uint16 = variable.value()["value"];
             }
             else if (varType == "int16_t")
             {
-                value.type = AbstractTest::DataValue::Type::Int16;
+                value.type = DataValue::Type::Int16;
                 value.value.integer.int16 = variable.value()["value"];
             }
             else if (varType == "uint32_t")
             {
-                value.type = AbstractTest::DataValue::Type::UInt32;
+                value.type = DataValue::Type::UInt32;
                 value.value.integer.uint32 = variable.value()["value"];
             }
             else if (varType == "int32_t")
             {
-                value.type = AbstractTest::DataValue::Type::Int32;
+                value.type = DataValue::Type::Int32;
                 value.value.integer.int32 = variable.value()["value"];
             }
             else if (varType == "uint64_t")
             {
-                value.type = AbstractTest::DataValue::Type::UInt64;
+                value.type = DataValue::Type::UInt64;
                 value.value.integer.uint64 = variable.value()["value"];
             }
             else if (varType == "int64_t")
             {
-                value.type = AbstractTest::DataValue::Type::Int64;
+                value.type = DataValue::Type::Int64;
                 value.value.integer.int64 = variable.value()["value"];
             }
             else if (varType == "boolean")
             {
-                value.type = AbstractTest::DataValue::Type ::Boolean;
+                value.type = DataValue::Type::Boolean;
                 value.value.boolean = variable.value()["value"];
             }
 
             m_testVariables[longKey][variable.key()] = value;
         }
     }
+
+    testVariablesDict = root["trigger_variables"];
+    for (json::iterator test = testVariablesDict.begin(); test != testVariablesDict.end(); ++test)
+    {
+        auto longKey = std::stoul(test.key());
+        m_triggerVariables[longKey] = std::map<std::string, DataValue>();
+        json value = test.value();
+        for (json::iterator variable = value.begin(); variable  != value.end(); ++variable)
+        {
+            DataValue value;
+            std::string varType = variable.value()["type"];
+            if (varType == "uint8_t")
+            {
+                value.type = DataValue::Type::UInt8;
+                value.value.integer.uint8 = variable.value()["value"];
+            }
+            else if (varType == "int8_t")
+            {
+                value.type = DataValue::Type::Int8;
+                value.value.integer.int8 = variable.value()["value"];
+            }
+            else if (varType == "uint16_t")
+            {
+                value.type = DataValue::Type::UInt16;
+                value.value.integer.uint16 = variable.value()["value"];
+            }
+            else if (varType == "int16_t")
+            {
+                value.type = DataValue::Type::Int16;
+                value.value.integer.int16 = variable.value()["value"];
+            }
+            else if (varType == "uint32_t")
+            {
+                value.type = DataValue::Type::UInt32;
+                value.value.integer.uint32 = variable.value()["value"];
+            }
+            else if (varType == "int32_t")
+            {
+                value.type = DataValue::Type::Int32;
+                value.value.integer.int32 = variable.value()["value"];
+            }
+            else if (varType == "uint64_t")
+            {
+                value.type = DataValue::Type::UInt64;
+                value.value.integer.uint64 = variable.value()["value"];
+            }
+            else if (varType == "int64_t")
+            {
+                value.type = DataValue::Type::Int64;
+                value.value.integer.int64 = variable.value()["value"];
+            }
+            else if (varType == "boolean")
+            {
+                value.type = DataValue::Type::Boolean;
+                value.value.boolean = variable.value()["value"];
+            }
+
+            m_triggerVariables[longKey][variable.key()] = value;
+        }
+    }
 }
 
 void SettingsSystem::saveData()
 {
+    Log("Сохранение значений.");
     json root;
 
     // Запись настроек
@@ -207,39 +273,39 @@ void SettingsSystem::saveData()
         {
             switch (variable.second.type)
             {
-            case AbstractTest::DataValue::Type::UInt8:
+            case DataValue::Type::UInt8:
                 variables[variable.first]["type"] = "uint8_t";
                 variables[variable.first]["value"] = variable.second.value.integer.uint8;
                 break;
-            case AbstractTest::DataValue::Type::Int8:
+            case DataValue::Type::Int8:
                 variables[variable.first]["type"] = "int8_t";
                 variables[variable.first]["value"] = variable.second.value.integer.int8;
                 break;
-            case AbstractTest::DataValue::Type::UInt16:
+            case DataValue::Type::UInt16:
                 variables[variable.first]["type"] = "uint16_t";
                 variables[variable.first]["value"] = variable.second.value.integer.uint16;
                 break;
-            case AbstractTest::DataValue::Type::Int16:
+            case DataValue::Type::Int16:
                 variables[variable.first]["type"] = "int16_t";
                 variables[variable.first]["value"] = variable.second.value.integer.int16;
                 break;
-            case AbstractTest::DataValue::Type::UInt32:
+            case DataValue::Type::UInt32:
                 variables[variable.first]["type"] = "uint32_t";
                 variables[variable.first]["value"] = variable.second.value.integer.uint32;
                 break;
-            case AbstractTest::DataValue::Type::Int32:
+            case DataValue::Type::Int32:
                 variables[variable.first]["type"] = "int32_t";
                 variables[variable.first]["value"] = variable.second.value.integer.int32;
                 break;
-            case AbstractTest::DataValue::Type::UInt64:
+            case DataValue::Type::UInt64:
                 variables[variable.first]["type"] = "uint64_t";
                 variables[variable.first]["value"] = variable.second.value.integer.uint64;
                 break;
-            case AbstractTest::DataValue::Type::Int64:
+            case DataValue::Type::Int64:
                 variables[variable.first]["type"] = "int64_t";
                 variables[variable.first]["value"] = variable.second.value.integer.int64;
                 break;
-            case AbstractTest::DataValue::Type::Boolean:
+            case DataValue::Type::Boolean:
                 variables[variable.first]["type"] = "boolean";
                 variables[variable.first]["value"] = variable.second.value.boolean;
                 break;
@@ -249,9 +315,105 @@ void SettingsSystem::saveData()
         root["test_variables"][std::to_string(test.first)] = variables;
     }
 
+    // Проходимся по триггерам
+    for (auto& test : m_triggerVariables)
+    {
+        json variables;
+        for (auto& variable : test.second)
+        {
+            switch (variable.second.type)
+            {
+            case DataValue::Type::UInt8:
+                variables[variable.first]["type"] = "uint8_t";
+                variables[variable.first]["value"] = variable.second.value.integer.uint8;
+                break;
+            case DataValue::Type::Int8:
+                variables[variable.first]["type"] = "int8_t";
+                variables[variable.first]["value"] = variable.second.value.integer.int8;
+                break;
+            case DataValue::Type::UInt16:
+                variables[variable.first]["type"] = "uint16_t";
+                variables[variable.first]["value"] = variable.second.value.integer.uint16;
+                break;
+            case DataValue::Type::Int16:
+                variables[variable.first]["type"] = "int16_t";
+                variables[variable.first]["value"] = variable.second.value.integer.int16;
+                break;
+            case DataValue::Type::UInt32:
+                variables[variable.first]["type"] = "uint32_t";
+                variables[variable.first]["value"] = variable.second.value.integer.uint32;
+                break;
+            case DataValue::Type::Int32:
+                variables[variable.first]["type"] = "int32_t";
+                variables[variable.first]["value"] = variable.second.value.integer.int32;
+                break;
+            case DataValue::Type::UInt64:
+                variables[variable.first]["type"] = "uint64_t";
+                variables[variable.first]["value"] = variable.second.value.integer.uint64;
+                break;
+            case DataValue::Type::Int64:
+                variables[variable.first]["type"] = "int64_t";
+                variables[variable.first]["value"] = variable.second.value.integer.int64;
+                break;
+            case DataValue::Type::Boolean:
+                variables[variable.first]["type"] = "boolean";
+                variables[variable.first]["value"] = variable.second.value.boolean;
+                break;
+            }
+        }
+
+        root["trigger_variables"][std::to_string(test.first)] = variables;
+    }
+
+
     std::ofstream file("save.json");
 
     file << root;
 
     file.close();
+}
+
+void SettingsSystem::setTriggerVariable(AbstractTriggerTest *trigger, const std::string &name, const DataValue &value)
+{
+    auto hash = m_hash(trigger->name() + trigger->description());
+
+    auto findIterator = m_triggerVariables.find(hash);
+    if (findIterator == m_triggerVariables.end())
+    {
+        m_triggerVariables[hash] = std::map<std::string, DataValue>();
+        m_triggerVariables[hash][name] = value;
+    }
+    else
+    {
+        findIterator->second[name] = value;
+    }
+}
+
+DataValue SettingsSystem::getTriggerVariable(AbstractTriggerTest *trigger, const std::string &name, bool *ok)
+{
+    auto hash = m_hash(trigger->name() + trigger->description());
+
+    if (m_triggerVariables.find(hash) == m_triggerVariables.end())
+    {
+        if (ok)
+        {
+            *ok = false;
+        }
+        return DataValue();
+    }
+
+    if (m_triggerVariables[hash].find(name) == m_triggerVariables[hash].end())
+    {
+        if (ok)
+        {
+            *ok = false;
+        }
+        return DataValue();
+    }
+
+    if (ok)
+    {
+        *ok = true;
+    }
+    return m_triggerVariables[hash][name];
 }

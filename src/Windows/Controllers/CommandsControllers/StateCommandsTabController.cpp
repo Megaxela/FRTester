@@ -252,25 +252,25 @@ void StateCommandsTabController::onZeroSumsRequest()
     stringBuilder.append("Сумма №" +
                          QString::number(1) +
                          ": " +
-                         QString::number(requestResult.firstSum / 100.0, 'f') +
+                         QString::number(requestResult.incomingSum / 100.0, 'f') +
                          '\n');
 
     stringBuilder.append("Сумма №" +
                          QString::number(2) +
                          ": " +
-                         QString::number(requestResult.secondSum / 100.0, 'f') +
+                         QString::number(requestResult.consumptionSum / 100.0, 'f') +
                          '\n');
 
     stringBuilder.append("Сумма №" +
                          QString::number(3) +
                          ": " +
-                         QString::number(requestResult.thirdSum / 100.0, 'f') +
+                         QString::number(requestResult.returnIncomingSum / 100.0, 'f') +
                          '\n');
 
     stringBuilder.append("Сумма №" +
                          QString::number(4) +
                          ": " +
-                         QString::number(requestResult.fourthSum / 100.0, 'f') +
+                         QString::number(requestResult.returnConsumptionSum / 100.0, 'f') +
                          '\n');
 
     stringBuilder.append(divider + '\n');

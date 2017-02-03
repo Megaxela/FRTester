@@ -17,6 +17,7 @@
 #include <tests/Tests/WriteShitCashierNameTest.h>
 #include <tests/Tests/NonfiscalRequesting.h>
 #include <tests/Tests/TableFiscalStorageLinesTest.h>
+#include <tests/Triggers/ZReportTrigger.h>
 
 #define PY_LIST_DELIM ':'
 
@@ -25,7 +26,11 @@ TestCore::TestCore() :
 {
     m_environment = new TestEnvironment(
             &TestDriverHolder::driver(),
-            &TestLogger::instance()
+            &TestLogger::instance(),
+            new TestingTools(
+                    &TestDriverHolder::driver(),
+                    &TestLogger::instance()
+            )
     );
 
     init();
@@ -33,6 +38,7 @@ TestCore::TestCore() :
 
 TestCore::~TestCore()
 {
+    delete m_environment->tools();
     delete m_environment;
 
 //    Py_Finalize();
@@ -52,15 +58,17 @@ void TestCore::updateDatabase()
     m_triggers.clear();
 
     // Загрузка статических тестов
-//    m_tests.push_back(std::make_shared<CycleTest>(m_environment));
+    addTest(std::make_shared<CycleTest>(m_environment));
     addTest(std::make_shared<OperationTest>(m_environment));
     addTest(std::make_shared<CheckLoaderTest>(m_environment));
     addTest(std::make_shared<WriteShitCashierNameTest>(m_environment));
     addTest(std::make_shared<NonfiscalRequesting>(m_environment));
     addTest(std::make_shared<TableFiscalStorageLinesTest>(m_environment));
 
+    // Загрузка триггеров
     addTrigger(std::make_shared<OperationTrigger>(m_environment));
     addTrigger(std::make_shared<CheckCloseTrigger>(m_environment));
+    addTrigger(std::make_shared<ZReportTrigger>(m_environment));
 
 //    if (Py_IsInitialized())
 //    {

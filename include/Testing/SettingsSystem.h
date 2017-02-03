@@ -22,6 +22,14 @@
  *                 "value": 22
  *             }
  *         }
+ *     },
+ *     "trigger_variables" : {
+ *         "hash" : {
+ *             "variable_name" : {
+ *                 "type" : "uint32_t",
+ *                 "value": 22
+ *             }
+ *         }
  *     }
  * }
  */
@@ -63,7 +71,7 @@ public:
      * @param name Название переменной.
      * @param value Значение.
      */
-    void setTestVariable(AbstractTest* test, const std::string& name, const AbstractTest::DataValue &value);
+    void setTestVariable(AbstractTest* test, const std::string& name, const DataValue &value);
 
     /**
      * @brief Метод для получения значения переменной теста.
@@ -71,7 +79,24 @@ public:
      * @param name Название переменной.
      * @return Значение.
      */
-    AbstractTest::DataValue getTestVariable(AbstractTest* test, const std::string& name, bool* ok=nullptr);
+    DataValue getTestVariable(AbstractTest* test, const std::string& name, bool* ok=nullptr);
+
+    /**
+     * @brief Метод для задачи значения переменной триггера.
+     * @param trigger Объект триггера.
+     * @param name Название переменной.
+     * @param value Значение.
+     */
+    void setTriggerVariable(AbstractTriggerTest* trigger, const std::string& name, const DataValue& value);
+
+    /**
+     * @brief Метод для получения значения переменной триггера.
+     * @param trigger Объект триггера.
+     * @param name Название переменной.
+     * @param ok Успешность получения значений.
+     * @return Значение.
+     */
+    DataValue getTriggerVariable(AbstractTriggerTest* trigger, const std::string& name, bool* ok=nullptr);
 
 private:
     /**
@@ -90,7 +115,8 @@ private:
     void saveData();
 
     std::map<std::string, std::string> m_values;
-    std::map<size_t, std::map<std::string, AbstractTest::DataValue>> m_testVariables;
+    std::map<size_t, std::map<std::string, DataValue>> m_testVariables;
+    std::map<size_t, std::map<std::string, DataValue>> m_triggerVariables;
     std::hash<std::string> m_hash;
 };
 

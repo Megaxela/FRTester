@@ -64,9 +64,9 @@ void AbstractTest::setDescription(const std::string &description)
     m_description = description;
 }
 
-std::vector<std::pair<std::string, AbstractTest::DataValue::Type>> AbstractTest::getVariables() const
+std::vector<std::pair<std::string, DataValue::Type>> AbstractTest::getVariables() const
 {
-    std::vector<std::pair<std::string, AbstractTest::DataValue::Type>> result;
+    std::vector<std::pair<std::string, DataValue::Type>> result;
 
     for (auto& data : m_dynamicValues)
     {
@@ -229,7 +229,7 @@ void AbstractTest::setValue(const std::string &name, int64_t value)
     throw std::length_error("Test has no int64 value with name \"" + name + "\".");
 }
 
-void AbstractTest::setValue(const std::string &name, const AbstractTest::DataValue &value)
+void AbstractTest::setValue(const std::string &name, const DataValue &value)
 {
     for (auto& element : m_dynamicValues)
     {
@@ -383,7 +383,7 @@ bool AbstractTest::getValueBoolean(const std::string &name) const
     throw std::length_error("Test has no boolean value with name \"" + name + "\".");
 }
 
-AbstractTest::DataValue::Type AbstractTest::getValueType(const std::string &name) const
+DataValue::Type AbstractTest::getValueType(const std::string &name) const
 {
     for (auto& value : m_dynamicValues)
     {
@@ -409,7 +409,7 @@ bool AbstractTest::containsValue(const std::string &name) const
     return false;
 }
 
-bool AbstractTest::containsValue(const std::string &name, AbstractTest::DataValue::Type type) const
+bool AbstractTest::containsValue(const std::string &name, DataValue::Type type) const
 {
     for (auto& element : m_dynamicValues)
     {

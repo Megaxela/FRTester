@@ -1111,10 +1111,10 @@ FRDriver::NonZeroSums FRDriver::getNonZeroSums()
     ByteArrayReader reader(data);
     reader.seek(2);
 
-    sums.firstSum  = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
-    sums.secondSum = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
-    sums.thirdSum  = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
-    sums.fourthSum = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
+    sums.incomingSum  = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
+    sums.consumptionSum = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
+    sums.returnIncomingSum  = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
+    sums.returnConsumptionSum = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
 
     return sums;
 }

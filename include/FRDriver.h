@@ -322,10 +322,10 @@ public:
      */
     struct NonZeroSums
     {
-        uint64_t firstSum;
-        uint64_t secondSum;
-        uint64_t thirdSum;
-        uint64_t fourthSum;
+        uint64_t incomingSum;
+        uint64_t consumptionSum;
+        uint64_t returnIncomingSum;
+        uint64_t returnConsumptionSum;
     };
 
     /**

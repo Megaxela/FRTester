@@ -28,9 +28,12 @@ bool CycleTest::execute()
         return false;
     }
 
+    // Ожидание окончания печати
+    enviroment()->tools()->waitForPrintingFinished(pwd, 100000);
+
     if (!enviroment()->driver()->sell(
             pwd, // Пароль
-            100, // 1 шт
+            1000, // 1 шт
             16 * 100, // 16р
             0, // 0 (1) отдел
             0, // Налоги
@@ -69,6 +72,8 @@ bool CycleTest::execute()
         Error("Сдача не равна 0. Ошибочка.");
         return false;
     }
+
+    enviroment()->tools()->waitForPrintingFinished(pwd, 10000);
 
     return true;
 }

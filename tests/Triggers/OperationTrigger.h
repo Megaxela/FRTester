@@ -30,8 +30,6 @@ private:
 
     std::string m_tag;
 
-    uint32_t m_usingPwd;
-
     uint32_t m_pwd;
     uint64_t m_count;
     uint64_t m_value;

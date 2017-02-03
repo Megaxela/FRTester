@@ -113,10 +113,19 @@ ByteArray DefaultProtocol::receiveDataFromInterface(InterfacePtr physicalInterfa
         return byteArray;
     }
 
+    if (expectAck[0] == 0xFF)
+    {
+        Warning("На этапе считывания данных вместо ACK был получен 0xFF. Пробуем еще раз.");
+        expectAck = physicalInterface->read(
+                1, 5 * 1000 * 1000 // 5 секунд
+        );
+    }
+
     if (expectAck[0] != ACK)
     {
         Error("Получен неожиданный символ. Вместо ACK получен 0x" +
               expectAck.toHex());
+
         return byteArray;
     }
 
@@ -250,8 +259,14 @@ void DefaultProtocol::prepareDeviceToWrite(InterfacePtr physicalInterface)
 
             physicalInterface->write(ackArray);
 
+            physicalInterface->write(enqArray);
+
+            data = physicalInterface->read(1, 1000 * 50 * 50);
+
+            continue;
+
             // После этого ФР должен быть готов к работе
-            return;
+//            return;
         }
         else if (data[0] == 0xff) // todo: Странное поведение
         {
