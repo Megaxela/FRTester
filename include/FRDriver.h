@@ -69,6 +69,7 @@ public:
         , DocumentEndPrint = 0x53               //< Конец Документа (печать)
         , PrintAds = 0x54                       //< Печать рекламного текста
         , EnterFactoryNumber = 0x55             //< Ввод заводского номера
+        , PrintBarcode = 0xC2                   //< Печать штрих-кода EAN-13
         , OpenNonFiscalDocument = 0xE2          //< Открытие нефискального документа
         , CloseNonFiscalDocument = 0xE3         //< Закрытие нефискального документа
         , NonZeroSums = 0xFE                    //< Получение необнуляемых сумм
@@ -966,6 +967,14 @@ public:
      * @return Успешность закрытия.
      */
     bool closeNonFiscalDocument(uint32_t pwd);
+
+    /**
+     * @brief Метод для печати штрих-кода.
+     * @param pwd Пароль кассира.
+     * @param value 5 байт значения.
+     * @return Успешность печати.
+     */
+    bool printBarcode(uint32_t pwd, uint64_t value);
 
 protected:
 

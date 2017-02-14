@@ -258,6 +258,9 @@ void SettingsSystem::saveData()
 {
     Log("Сохранение значений.");
     json root;
+    root["settings"] = std::vector<int>();
+    root["test_variables"] = std::map<std::string, json>();
+    root["trigger_variables"] = std::map<std::string, json>();
 
     // Запись настроек
     for (auto& value : m_values)

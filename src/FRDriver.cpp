@@ -1111,9 +1111,9 @@ FRDriver::NonZeroSums FRDriver::getNonZeroSums()
     ByteArrayReader reader(data);
     reader.seek(2);
 
-    sums.incomingSum  = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
-    sums.consumptionSum = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
-    sums.returnIncomingSum  = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
+    sums.incomingSum          = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
+    sums.consumptionSum       = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
+    sums.returnIncomingSum    = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
     sums.returnConsumptionSum = reader.read<uint64_t>(ByteArray::ByteOrder_LittleEndian);
 
     return sums;
@@ -1198,6 +1198,18 @@ bool FRDriver::closeNonFiscalDocument(uint32_t pwd)
     arguments.append(pwd, ByteArray::ByteOrder_LittleEndian);
 
     auto data = sendCommand(Command::CloseNonFiscalDocument, arguments, false);
+
+    return getLastError() == ErrorCode::NoError;
+}
+
+bool FRDriver::printBarcode(uint32_t pwd, uint64_t value)
+{
+    ByteArray arguments;
+
+    arguments.append(pwd, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(value, 5, ByteArray::ByteOrder_LittleEndian);
+
+    auto data = sendCommand(Command::PrintBarcode, arguments, true);
 
     return getLastError() == ErrorCode::NoError;
 }

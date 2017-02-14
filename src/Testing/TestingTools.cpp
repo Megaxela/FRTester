@@ -4,6 +4,7 @@
 
 #include <include/Tools/Time.h>
 #include <include/Testing/TestLogger.h>
+#include <include/Tools/Logger.h>
 #include "include/Testing/TestingTools.h"
 
 TestingTools::TestingTools(TestDriver *testDriver, TestLogger* logger) :
@@ -67,3 +68,110 @@ bool TestingTools::waitForPrintingFinished(uint32_t password, uint32_t timeout)
         }
     }
 }
+
+TestingTools::Printing TestingTools::enablePrinting(uint32_t password, TestingTools::Printing mode)
+{
+    // Считываем прошлое состояние
+    auto initialPrintValue = m_currentDriver->readTableBin(
+            password,
+            17,
+            1,
+            7
+    );
+
+    if (m_currentDriver->getLastError() != FRDriver::ErrorCode::NoError)
+    {
+        m_logger->log("Не удалось получить текущее значение печати чека. Ошибка: #" +
+                      std::to_string((int) m_currentDriver->getLastError()) +
+                      ' ' +
+                      FRDriver::Converters::errorToString((int) m_currentDriver->getLastError()));
+        return Printing::Unknown;
+    }
+
+    Printing currentValue;
+
+    switch (initialPrintValue)
+    {
+    case 0: // Печать включена
+        currentValue = Printing::Enabled;
+        break;
+    case 1: // Печать выключена для одного чека
+        currentValue = Printing::DisabledForOneCheck;
+        break;
+    case 2: // Печать выключена
+        currentValue = Printing::Disabled;
+        break;
+    default:
+        currentValue = Printing::Unknown;
+        break;
+    }
+
+    if (currentValue != mode)
+    {
+        switch (mode)
+        {
+        case Printing::Unknown:
+            Error("В качестве режима был передан неизвестный режим.");
+            return Printing::Unknown;
+        case Printing::Enabled:
+            m_logger->log("Включаем печать чеков.");
+            if (!m_currentDriver->writeTable(
+                    password,
+                    17,
+                    1,
+                    7,
+                    0, // Значение
+                    1  // Размер значения
+            ))
+            {
+                m_logger->log(
+                        "Не удалось включить печать чеков. Ошибка: #" +
+                        std::to_string((int) m_currentDriver->getLastError()) +
+                        ' ' +
+                        FRDriver::Converters::errorToString((int) m_currentDriver->getLastError())
+                );
+                return Printing::Unknown;
+            }
+            break;
+        case Printing::DisabledForOneCheck:
+            m_logger->log("Отключаем печать чеков для одного документа.");
+            if (!m_currentDriver->writeTable(
+                    password,
+                    17,
+                    1,
+                    7,
+                    1, // Значение
+                    1  // Размер значения
+            ))
+            {
+                m_logger->log("Не удалось отключить печать чеков. Ошибка: #" +
+                              std::to_string((int) m_currentDriver->getLastError()) +
+                              ' ' +
+                              FRDriver::Converters::errorToString((int) m_currentDriver->getLastError()));
+                return Printing::Unknown;
+            }
+            break;
+        case Printing::Disabled:
+            m_logger->log("Отключаем печать чеков.");
+            if (!m_currentDriver->writeTable(
+                    password,
+                    17,
+                    1,
+                    7,
+                    2, // Значение
+                    1  // Размер значения
+            ))
+            {
+                m_logger->log("Не удалось отключить печать чеков. Ошибка: #" +
+                              std::to_string((int) m_currentDriver->getLastError()) +
+                              ' ' +
+                              FRDriver::Converters::errorToString((int) m_currentDriver->getLastError()));
+                return Printing::Unknown;
+            }
+            break;
+        }
+    }
+
+    return currentValue;
+}
+

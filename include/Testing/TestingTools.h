@@ -17,6 +17,14 @@ class TestLogger;
 class TestingTools
 {
 public:
+    enum class Printing
+    {
+        Unknown,
+        Enabled,
+        DisabledForOneCheck,
+        Disabled
+    };
+
     /**
      * @brief Конструктор.
      */
@@ -42,6 +50,14 @@ public:
      * @param enabled Использовать ли тестировочный драйвер.
      */
     void enableTesting(bool enabled);
+
+    /**
+     * @brief Метод для смены режима печати.
+     * @param password Пароль для чтения и записи таблиц.
+     * @param mode Новый режим печати.
+     * @return Старый режим печати.
+     */
+    Printing enablePrinting(uint32_t password, Printing mode);
 
 private:
     FRDriver* m_currentDriver;

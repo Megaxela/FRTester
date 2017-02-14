@@ -18,6 +18,8 @@
 #include <tests/Tests/NonfiscalRequesting.h>
 #include <tests/Tests/TableFiscalStorageLinesTest.h>
 #include <tests/Triggers/ZReportTrigger.h>
+#include <tests/Tests/BarcodePrintingTest.h>
+#include <tests/Tests/CheckFontTest.h>
 
 #define PY_LIST_DELIM ':'
 
@@ -53,7 +55,6 @@ TestCore &TestCore::instance()
 
 void TestCore::updateDatabase()
 {
-
     m_tests.clear();
     m_triggers.clear();
 
@@ -64,6 +65,8 @@ void TestCore::updateDatabase()
     addTest(std::make_shared<WriteShitCashierNameTest>(m_environment));
     addTest(std::make_shared<NonfiscalRequesting>(m_environment));
     addTest(std::make_shared<TableFiscalStorageLinesTest>(m_environment));
+    addTest(std::make_shared<BarcodePrintingTest>(m_environment));
+    addTest(std::make_shared<CheckFontTest>(m_environment));
 
     // Загрузка триггеров
     addTrigger(std::make_shared<OperationTrigger>(m_environment));

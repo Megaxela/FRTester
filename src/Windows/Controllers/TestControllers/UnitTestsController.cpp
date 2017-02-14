@@ -348,6 +348,7 @@ void UnitTestsController::onTestingResumed()
 void UnitTestsController::onTestingStarted()
 {
     ui()->unitTestsStatisticsTableWidget->clear();
+    m_commandsCounter.clear();
     onClearLogButtonPressed();
     addLogMessage("Тестирование начато");
     ui()->unitTestsStartStopPushButton->setText("Закончить");

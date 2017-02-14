@@ -12,7 +12,7 @@ WriteShitCashierNameTest::WriteShitCashierNameTest(TestEnvironment *environment)
             environment,
             "Запись мусора в имена кассиров",
             "Тест, записывающий все 255 байт в первых 4 кассиров, потом бьет 4 чека и проверяет отправку в ОФД.",
-            {{"System Admin Password", 30}})
+            {{"System Admin Password", (uint32_t) 30}})
 {
 
 }

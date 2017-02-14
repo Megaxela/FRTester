@@ -184,7 +184,7 @@ set(SOURCE_FILES main.cpp
         include/Windows/Widgets/QBaseNumberLineEdit.h
         src/Testing/SettingsSystem.cpp
         include/Testing/SettingsSystem.h
-        libraries/json.hpp tests/Triggers/ZReportTrigger.cpp tests/Triggers/ZReportTrigger.h src/Testing/TestingTools.cpp include/Testing/TestingTools.h src/Testing/TestDataValue.cpp include/Testing/TestDataValue.h src/Windows/Controllers/LogParserTabController.cpp include/Windows/Controllers/LogParserTabController.h)
+        libraries/json.hpp tests/Triggers/ZReportTrigger.cpp tests/Triggers/ZReportTrigger.h src/Testing/TestingTools.cpp include/Testing/TestingTools.h src/Testing/TestDataValue.cpp include/Testing/TestDataValue.h src/Windows/Controllers/LogParserTabController.cpp include/Windows/Controllers/LogParserTabController.h tests/Tests/BarcodePrintingTest.cpp tests/Tests/BarcodePrintingTest.h tests/Tests/CheckFontTest.cpp tests/Tests/CheckFontTest.h)
 
 add_executable(FRTester
         ${SOURCE_FILES}

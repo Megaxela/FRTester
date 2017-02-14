@@ -32,59 +32,20 @@ bool CheckLoaderTest::execute()
     auto goodCount = getValueUInt64("Good Count");
     auto printEnabled = getValueBoolean("Enable Print");
 
-    auto initialPrintValue = enviroment()->driver()->readTableBin(
+    auto printValue = printEnabled ? TestingTools::Printing::Enabled : TestingTools::Printing::Disabled;
+
+    auto currentPrintValue = enviroment()->tools()->enablePrinting(
             password,
-            17,
-            1,
-            7
+            printValue
     );
 
-    if (enviroment()->driver()->getLastError() != FRDriver::ErrorCode::NoError)
+    if (currentPrintValue == TestingTools::Printing::Unknown)
     {
-        enviroment()->logger()->log("Не удалось получить текущее значение печати чека.");
+        enviroment()->logger()->log("Не удалось изменить состояние печати. Останавлиаем тест.");
         return false;
     }
 
-    bool needToRestore = false;
-
-    if ((initialPrintValue == 0 || initialPrintValue == 1) && !printEnabled)
-    {
-        enviroment()->logger()->log("Отключаем печать чеков.");
-        if (!enviroment()->driver()->writeTable(
-                password,
-                17,
-                1,
-                7,
-                2, // Значение
-                1  // Размер значения
-        ))
-        {
-            enviroment()->logger()->log("Не удалось отключить печать чеков. Пожалуй остановим тестирование.");
-            return false;
-        }
-
-
-
-        needToRestore = true;
-    }
-    else if (initialPrintValue == 2 && printEnabled)
-    {
-        enviroment()->logger()->log("Включаем печать чеков.");
-        if (enviroment()->driver()->writeTable(
-                password,
-                17,
-                1,
-                7,
-                0, // Значение
-                1  // Размер значения
-        ))
-        {
-            enviroment()->logger()->log("Не удалось включить печать чеков. Пожалуй остановим тестирование.");
-            return false;
-        }
-
-        needToRestore = true;
-    }
+    bool needToRestore = printValue != currentPrintValue;
 
     enviroment()->driver()->openShift(password);
 
@@ -255,17 +216,10 @@ bool CheckLoaderTest::execute()
 
     if (needToRestore)
     {
-        enviroment()->logger()->log("Восстанавливаем значение печати чека.");
-        if (!enviroment()->driver()->writeTable(
-                password,
-                17,
-                1,
-                7,
-                initialPrintValue, // Значение
-                1  // Размер значения
-        ))
+        currentPrintValue = enviroment()->tools()->enablePrinting(password, currentPrintValue);
+        if (currentPrintValue == TestingTools::Printing::Unknown)
         {
-            enviroment()->logger()->log("Не удалось восстановить состояние печати.");
+            enviroment()->logger()->log("Не удалось изменить состояние печати. Останавлиаем тест.");
             return false;
         }
     }

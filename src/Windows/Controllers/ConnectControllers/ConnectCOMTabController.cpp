@@ -92,14 +92,21 @@ void ConnectCOMTabController::configureWidgets()
             )
     );
 
-    ui()->connectionCOMBaudRateComboBox->setCurrentIndex(
-            std::stoi(
-                    SettingsSystem::instance()
-                            .getValue(
-                                    SettingsSystem::ConnectionCOMSpeed
-                            )
-            )
-    );
+    try
+    {
+        ui()->connectionCOMBaudRateComboBox->setCurrentIndex(
+                std::stoi(
+                        SettingsSystem::instance()
+                                .getValue(
+                                        SettingsSystem::ConnectionCOMSpeed
+                                )
+                )
+        );
+    }
+    catch (std::invalid_argument e)
+    {
+        Error("Can't get baud rate index. Error: " + std::string(e.what()));
+    }
 }
 
 void ConnectCOMTabController::onConnecting()
