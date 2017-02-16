@@ -2,8 +2,8 @@
 // Created by megaxela on 05.12.16.
 //
 
-#include <include/Tools/Settings.h>
 #include <QtWidgets/QFileDialog>
+#include <include/Testing/SettingsSystem.h>
 #include "include/Windows/Controllers/SettingsController.h"
 #include "ui_mainwindow.h"
 
@@ -20,12 +20,10 @@ SettingsController::~SettingsController()
 
 void SettingsController::tabSelected()
 {
-    Settings::instance().load();
-
     ui()->settingsTestsPathLineEdit->setText(
             QString::fromStdString(
-                    Settings::instance().getValue(
-                            SETTINGS_NAMES_TESTSPATH,
+                    SettingsSystem::instance().getValue(
+                            SettingsSystem::TestsTestsPath,
                             "tests/"
                     )
             )
@@ -33,8 +31,8 @@ void SettingsController::tabSelected()
 
     ui()->settingsTriggersPathLineEdit->setText(
             QString::fromStdString(
-                    Settings::instance().getValue(
-                            SETTINGS_NAMES_TRIGGERSPATH,
+                    SettingsSystem::instance().getValue(
+                            SettingsSystem::TestsTriggerPath,
                             "triggers/"
                     )
             )
@@ -63,17 +61,16 @@ void SettingsController::configureWidgets()
 
 void SettingsController::tabLeaved()
 {
-    Settings::instance().setValue(
-            SETTINGS_NAMES_TESTSPATH,
+    SettingsSystem::instance().setValue(
+            SettingsSystem::TestsTestsPath,
             ui()->settingsTestsPathLineEdit->text().toStdString()
     );
 
-    Settings::instance().setValue(
-            SETTINGS_NAMES_TRIGGERSPATH,
+    SettingsSystem::instance().setValue(
+            SettingsSystem::TestsTriggerPath,
             ui()->settingsTriggersPathLineEdit->text().toStdString()
     );
 
-    Settings::instance().save();
 }
 
 void SettingsController::onTestsPathPushButtonPressed()

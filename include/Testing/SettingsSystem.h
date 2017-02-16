@@ -40,6 +40,9 @@ public:
     static const std::string ConnectionIPPort;
     static const std::string ConnectionCOMPort;
     static const std::string ConnectionCOMSpeed;
+    static const std::string GlobalTabSelected;
+    static const std::string TestsTestsPath;
+    static const std::string TestsTriggerPath;
 
     /**
      * @brief Деструктор.
@@ -56,7 +59,7 @@ public:
      * @param name Название переменной.
      * @return Значение переменной.
      */
-    std::string getValue(const std::string& name);
+    std::string getValue(const std::string& name, const std::string& defaultValue=std::string());
 
     /**
      * @brief Метод для задачи значения.

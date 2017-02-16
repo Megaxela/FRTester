@@ -18,6 +18,7 @@ ConnectCOMTabController::ConnectCOMTabController(Ui::MainWindow *ptr, QWidget* p
     m_comInterface(std::make_shared<COMInterface>())
 {
     m_comInterface->setByteSendTime(0);
+
 }
 
 ConnectCOMTabController::~ConnectCOMTabController()
@@ -105,7 +106,26 @@ void ConnectCOMTabController::configureWidgets()
     }
     catch (std::invalid_argument e)
     {
-        Error("Can't get baud rate index. Error: " + std::string(e.what()));
+        Error("Can't get baud rate index.");
+    }
+
+    // todo: Перевести на диалект контроллера
+    if (ui()->connectionTabWidget->currentWidget() == ui()->connectionCOMTab)
+    {
+        Log("Сейчас открыто COM подключение.");
+        QString deviceName = ui()->connectionCOMDeviceLineEdit->text();
+        QString baudRate   = ui()->connectionCOMBaudRateComboBox->currentText();
+
+        if (deviceName.isEmpty() || baudRate.isEmpty())
+        {
+            return;
+        }
+
+        m_comInterface->setDevice(deviceName.toStdString());
+        m_comInterface->setBaudRate(baudRate.toInt());
+
+        DriverHolder::driver().setInterface(m_comInterface);
+        TestDriverHolder::driver().setInterface(m_comInterface);
     }
 }
 

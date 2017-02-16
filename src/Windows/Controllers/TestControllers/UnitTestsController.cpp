@@ -641,7 +641,9 @@ void UnitTestsController::redrawStatistics()
         else
         {
             // Add table element
-            element.second.second = new QTableWidgetItem(element.second.first);
+            element.second.second = new QTableWidgetItem(
+                    (int) element.second.first
+            );
 
             ui()->unitTestsStatisticsTableWidget->setRowCount(
                     ui()->unitTestsStatisticsTableWidget->rowCount() + 1

@@ -14,6 +14,11 @@
 ConnectTabController::ConnectTabController(Ui::MainWindow *ptr, QWidget *parent, QTabWidget *tabWidget)
         : AbstractTabController(ptr, parent, tabWidget)
 {
+    auto proto = std::make_shared<DefaultProtocol>();
+
+    TestDriverHolder::driver().setProtocol(proto);
+    DriverHolder::driver().setProtocol(proto);
+
     addTabController(
             ui()->connectionCOMTab,
             new ConnectCOMTabController(
@@ -29,11 +34,6 @@ ConnectTabController::ConnectTabController(Ui::MainWindow *ptr, QWidget *parent,
                     parentWidget()
             )
     );
-
-    auto proto = std::make_shared<DefaultProtocol>();
-
-    TestDriverHolder::driver().setProtocol(proto);
-    DriverHolder::driver().setProtocol(proto);
 }
 
 ConnectTabController::~ConnectTabController()
@@ -53,5 +53,5 @@ void ConnectTabController::configureWidgets()
 
 void ConnectTabController::tabSelected()
 {
-    Log("Connection tab selected");
+
 }

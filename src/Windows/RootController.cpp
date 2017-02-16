@@ -8,6 +8,8 @@
 #include <include/Windows/Controllers/ConnectControllers/ConnectCOMTabController.h>
 #include <include/Windows/Controllers/ConnectTabController.h>
 #include <include/Windows/Controllers/TablesTabController.h>
+#include <include/Testing/SettingsSystem.h>
+#include <include/Tools/Logger.h>
 #include "include/Windows/Controllers/RootController.h"
 
 RootController::RootController(Ui::MainWindow *ptr,
@@ -61,11 +63,38 @@ RootController::~RootController()
 
 void RootController::setupConnections()
 {
-
+    // Соединение для контроля сохранений
+    connect(tabWidget(),
+            &QTabWidget::currentChanged,
+            this,
+            &RootController::onTabChanged);
 }
 
 void RootController::configureWidgets()
 {
+    try
+    {
+        tabWidget()->setCurrentIndex(
+                std::stoi(
+                        SettingsSystem::instance()
+                                .getValue(
+                                        SettingsSystem::GlobalTabSelected
+                                )
+                )
+        );
+    }
+    catch (std::invalid_argument e)
+    {
+        Error("Can't get global tab current index.");
+    }
+}
 
+void RootController::onTabChanged(int index)
+{
+    SettingsSystem::instance()
+            .setValue(
+                    SettingsSystem::GlobalTabSelected,
+                    std::to_string(index)
+            );
 }
 

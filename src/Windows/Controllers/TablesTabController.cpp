@@ -137,6 +137,12 @@ void TablesTabController::onCurrentTableChanged(int index)
         if (DriverHolder::driver().getLastError() != FRDriver::ErrorCode::NoError)
         {
             Critical("Ошибка получения структуры поля.");
+            QMessageBox::critical(
+                    parentWidget(),
+                    "Ошибка",
+                    QString::fromStdString("Ошибка получения структуры поля. Ошибка: " +
+                    FRDriver::Converters::errorToString((int) DriverHolder::driver().getLastError()))
+            );
             break;
         }
 

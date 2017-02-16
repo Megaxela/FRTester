@@ -123,10 +123,22 @@ bool CommandsTabController::checkConnectionWithDevice()
     ExcessLog("Проверка наличия соединения");
     if (!DriverHolder::driver().checkConnection())
     {
-        Error("Соединение с ФР отсутствует.");
-        QMessageBox::critical(parentWidget(), "Ошибка", "Соединение с ФР отсутствует.");
-        return false;
+        Log("В данный момент времени соединение отсутствует. Пробуем подключиться.");
+
+        if (DriverHolder::driver().physicalInterface() == nullptr ||
+            !DriverHolder::driver().physicalInterface()->openConnection())
+        {
+            Error("Соединение с ФР отсутствует.");
+            QMessageBox::critical(parentWidget(), "Ошибка", "Соединение с ФР отсутствует.");
+            return false;
+        }
+        else
+        {
+            Log("Соединение установлено.");
+            return true;
+        }
     }
+    ExcessLog("Соединение просутствует.");
 
     return true;
 }

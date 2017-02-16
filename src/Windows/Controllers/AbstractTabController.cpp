@@ -6,6 +6,8 @@
 #include <QDebug>
 #include <iostream>
 #include <include/Tools/Logger.h>
+#include <include/Tools/SystemTools.h>
+#include <include/Testing/SettingsSystem.h>
 
 AbstractTabController::AbstractTabController(Ui::MainWindow* ptr,
                                              QWidget* parent,
@@ -38,6 +40,29 @@ void AbstractTabController::init()
     configureWidgets();
     setupLocalConnections();
     setupConnections();
+
+    // Если этот контроллер управляет tabWidget - то
+    // устанавливаем активную вкладку.
+    if (tabWidget() != nullptr)
+    {
+        auto name = SystemTools::getTypeName(*this);
+
+        try
+        {
+            tabWidget()->setCurrentIndex(
+                    std::stoi(
+                            SettingsSystem::instance()
+                                    .getValue(
+                                            "active_tab_(" + name + ")"
+                                    )
+                    )
+            );
+        }
+        catch (std::invalid_argument e)
+        {
+            Error("Can't get saved tab for " + name + " controller.");
+        }
+    }
 }
 
 void AbstractTabController::tabLeaved()
@@ -71,6 +96,17 @@ void AbstractTabController::onCurrentTabChanged(int)
     if (m_tabControllers.contains(currentTab))
     {
         m_tabControllers[currentTab]->tabSelected();
+    }
+
+    if (tabWidget() != nullptr)
+    {
+        auto name = SystemTools::getTypeName(*this);
+
+        SettingsSystem::instance()
+                .setValue(
+                        "active_tab_(" + name + ")",
+                        std::to_string(tabWidget()->currentIndex())
+                );
     }
 
     m_previousTab = currentTab;

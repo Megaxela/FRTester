@@ -24,6 +24,9 @@ protected:
 
     void configureWidgets() override;
 
+private slots:
+    void onTabChanged(int);
+
 };
 
 

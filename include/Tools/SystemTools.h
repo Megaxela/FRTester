@@ -8,6 +8,8 @@
 #include <cinttypes>
 #include <vector>
 #include <string>
+#include <cxxabi.h>
+#include <iostream>
 #include "Tools/Platform.h"
 
 namespace SystemTools
@@ -94,6 +96,37 @@ namespace SystemTools
         }
 
         return (sizeof(T) * 8)- r;
+    }
+
+
+    template<typename T>
+    std::string getTypeName(const T &t)
+    {
+        int status;
+        char* demangled = abi::__cxa_demangle(typeid(t).name(),0,0,&status);
+
+        std::string result;
+        if (status == -1)
+        {
+            std::cerr << "Can't allocate memory." << std::endl;
+            return result;
+        }
+        else if (status == -2)
+        {
+            std::cerr << "Wrong mangled name." << std::endl;
+            return result;
+        }
+        else if (status == -3)
+        {
+            std::cerr << "Some argument is invalid." << std::endl;
+            return result;
+        }
+
+        result = demangled;
+
+        free(demangled);
+
+        return result;
     }
 
     namespace Path

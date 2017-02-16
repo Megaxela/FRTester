@@ -8,12 +8,18 @@
 #include "include/Testing/SettingsSystem.h"
 #include "libraries/json.hpp"
 
+#define SETTINGS_FILE "settings.json"
+
 using json = nlohmann::json ;
 
 const std::string SettingsSystem::ConnectionIPAddress  = "connection_ip_address";
 const std::string SettingsSystem::ConnectionCOMPort = "connection_com_port";
 const std::string SettingsSystem::ConnectionCOMSpeed = "connection_com_speed";
 const std::string SettingsSystem::ConnectionIPPort = "connection_ip_port";
+const std::string SettingsSystem::GlobalTabSelected = "global_tab_selected";
+const std::string SettingsSystem::TestsTestsPath = "tests_tests_path";
+const std::string SettingsSystem::TestsTriggerPath = "tests_triggers_path";
+
 
 SettingsSystem::~SettingsSystem()
 {
@@ -84,11 +90,11 @@ SettingsSystem::SettingsSystem() :
     loadData();
 }
 
-std::string SettingsSystem::getValue(const std::string &name)
+std::string SettingsSystem::getValue(const std::string &name, const std::string& defaultValue)
 {
     if (m_values.find(name) == m_values.end())
     {
-        return std::string();
+        return defaultValue;
     }
 
     return m_values[name];
@@ -97,19 +103,20 @@ std::string SettingsSystem::getValue(const std::string &name)
 void SettingsSystem::setValue(const std::string &name, const std::string &value)
 {
     m_values[name] = value;
+    saveData();
 }
 
 void SettingsSystem::loadData()
 {
     Log("Загрузка сохраненных значений.");
     // Loading file with data
-    if (!SystemTools::Path::fileExists("save.json"))
+    if (!SystemTools::Path::fileExists(SETTINGS_FILE))
     {
         Warning("Не существует файла сохранений.");
         return;
     }
 
-    std::ifstream file("save.json");
+    std::ifstream file(SETTINGS_FILE);
 
     if (!file)
     {
@@ -256,7 +263,7 @@ void SettingsSystem::loadData()
 
 void SettingsSystem::saveData()
 {
-    Log("Сохранение значений.");
+    ExcessLog("Сохранение значений.");
     json root;
     root["settings"] = std::map<std::string, std::string>();
     root["test_variables"] = std::map<std::string, json>();
@@ -369,9 +376,9 @@ void SettingsSystem::saveData()
     }
 
 
-    std::ofstream file("save.json");
+    std::ofstream file(SETTINGS_FILE);
 
-    file << root;
+    file << root.dump(4);
 
     file.close();
 }
@@ -390,6 +397,8 @@ void SettingsSystem::setTriggerVariable(AbstractTriggerTest *trigger, const std:
     {
         findIterator->second[name] = value;
     }
+
+    saveData();
 }
 
 DataValue SettingsSystem::getTriggerVariable(AbstractTriggerTest *trigger, const std::string &name, bool *ok)

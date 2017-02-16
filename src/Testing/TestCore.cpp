@@ -6,7 +6,6 @@
 #include <include/DriverHolder.h>
 #include <tests/Tests/CycleTest.h>
 #include <Tools/Logger.h>
-#include <include/Tools/Settings.h>
 #include <include/Testing/TestLogger.h>
 #include <include/TestDriverHolder.h>
 #include <include/Tools/Time.h>

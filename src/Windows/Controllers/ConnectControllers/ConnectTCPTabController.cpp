@@ -68,6 +68,47 @@ void ConnectTCPTabController::configureWidgets()
                     )
             )
     );
+
+    if (ui()->connectionTabWidget->currentWidget() == ui()->connectionTCPTab)
+    {
+        Log("Сейчас открыто TCP подключение.");
+
+        bool ok = false;
+
+        QString ipString = ui()->connectionTCPIPLineEdit->text();
+        QString portString = ui()->connectionTCPPortLineEdit->text();
+
+        uint16_t portInt = portString.toUShort(&ok);
+
+        if (!ok)
+        {
+            Error("Строка " + portString.toStdString() + " числом не является.");
+            QMessageBox::critical(
+                    parentWidget(),
+                    "Ошибка",
+                    "Строка " + portString + " числом не является."
+            );
+            return;
+        }
+
+        IPv4Address address;
+
+        if (!address.setFromString(ipString.toStdString()))
+        {
+            Error("Строка " + ipString.toStdString() + " не является валидным ip адресом.");
+            QMessageBox::critical(
+                    parentWidget(),
+                    "Ошибка",
+                    "Строка " + ipString + " не является валидным ip адресом."
+            );
+            return;
+        }
+
+        m_tcpInterface->setAddress(address, portInt);
+
+        DriverHolder::driver().setInterface(m_tcpInterface);
+        TestDriverHolder::driver().setInterface(m_tcpInterface);
+    }
 }
 
 void ConnectTCPTabController::onConnecting()
