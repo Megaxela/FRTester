@@ -322,6 +322,7 @@ void UnitTestsController::onTestingStopped()
     ui()->unitTestsStartStopPushButton->setText("Начать");
     ui()->unitTestsPauseResumePushButton->setText("Приостановить");
     ui()->unitTestsPauseResumePushButton->setEnabled(false);
+    setTabSelectionEnabled(true);
 }
 
 void UnitTestsController::onTestingFinished()
@@ -330,6 +331,7 @@ void UnitTestsController::onTestingFinished()
     ui()->unitTestsStartStopPushButton->setText("Начать");
     ui()->unitTestsPauseResumePushButton->setText("Приостановить");
     ui()->unitTestsPauseResumePushButton->setEnabled(false);
+    setTabSelectionEnabled(true);
 }
 
 void UnitTestsController::onTestingPaused()
@@ -353,6 +355,7 @@ void UnitTestsController::onTestingStarted()
     onClearLogButtonPressed();
     addLogMessage("Тестирование начато");
     ui()->unitTestsStartStopPushButton->setText("Закончить");
+    setTabSelectionEnabled(false);
 }
 
 void UnitTestsController::onTestingTestResultAcquired(TestPtr test, bool result)
@@ -821,6 +824,17 @@ void UnitTestsController::onTriggerSelected(TriggerTestPtr trigger)
                     QString::fromStdString(variable.first),
                     widget
             );
+        }
+    }
+}
+
+void UnitTestsController::setTabSelectionEnabled(bool enabled)
+{
+    for (uint32_t i = 0; i < ui()->mainTabWidget->count(); ++i)
+    {
+        if (ui()->mainTabWidget->currentIndex() != i)
+        {
+            ui()->mainTabWidget->setTabEnabled(i, enabled);
         }
     }
 }

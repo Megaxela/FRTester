@@ -143,6 +143,8 @@ private:
 
     void addLogMessage(QString message, MessageType type=MessageType::Log);
 
+    void setTabSelectionEnabled(bool enabled);
+
     QString htmlScreening(QString source);
 
     TestingExecutor* m_testingExecutor;
