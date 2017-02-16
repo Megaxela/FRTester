@@ -19,11 +19,13 @@
 #include <tests/Triggers/ZReportTrigger.h>
 #include <tests/Tests/BarcodePrintingTest.h>
 #include <tests/Tests/CheckFontTest.h>
+#include <include/Executor/TestingExecutor.h>
 
 #define PY_LIST_DELIM ':'
 
 TestCore::TestCore() :
-    m_sysAdmPassword(30)
+    m_sysAdmPassword(30),
+    m_testingExecutor(nullptr)
 {
     m_environment = new TestEnvironment(
             &TestDriverHolder::driver(),
@@ -56,6 +58,8 @@ void TestCore::updateDatabase()
 {
     m_tests.clear();
     m_triggers.clear();
+
+    m_environment->tools()->m_executor = m_testingExecutor;
 
     // Загрузка статических тестов
     addTest(std::make_shared<CycleTest>(m_environment));
@@ -418,10 +422,10 @@ void TestCore::interruptTesting()
 //    Py_AddPendingCall(&quit, NULL);
 //    PyGILState_Release(state);
 //    PyErr_SetString(PyExc_KeyboardInterrupt, "...");
-    if (DriverHolder::driver().physicalInterface() != nullptr)
-    {
-        DriverHolder::driver().physicalInterface()->closeConnection();
-    }
+//    if (DriverHolder::driver().physicalInterface() != nullptr)
+//    {
+//        DriverHolder::driver().physicalInterface()->closeConnection();
+//    }
 }
 
 void TestCore::setTestEnabled(TestPtr test, bool enabled)
@@ -492,4 +496,9 @@ void TestCore::addTrigger(TriggerTestPtr trigger)
     data.enabled = true;
 
     m_triggers.push_back(data);
+}
+
+void TestCore::setTestExecutor(TestingExecutor *executor)
+{
+    m_testingExecutor = executor;
 }

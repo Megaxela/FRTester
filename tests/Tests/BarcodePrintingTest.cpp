@@ -52,6 +52,27 @@ bool BarcodePrintingTest::execute()
 
     for (uint32_t i = 0; i < numberOfBarcodes; ++i)
     {
+        if (enviroment()->tools()->testingStoped())
+        {
+            enviroment()->logger()->log("Восстанавливаем состояние печати.");
+            if (before != TestingTools::Printing::Enabled)
+            {
+                before = enviroment()->tools()->enablePrinting(
+                        password,
+                        before
+                );
+
+                if (before == TestingTools::Printing::Unknown)
+                {
+                    enviroment()->logger()->log("Не удалось вернуть состояние печати. Останавливает тест.");
+                    return false;
+                }
+            }
+            enviroment()->logger()->log("Тестирование остановлено");
+
+            return true;
+        }
+
         auto value = distribution(generator);
         if (!enviroment()->driver()->standardStringPrint(
                 password,

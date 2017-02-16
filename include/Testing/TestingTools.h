@@ -9,6 +9,7 @@
 #include "TestDriver.h"
 
 class TestLogger;
+class TestingExecutor;
 
 /**
  * @brief Класс, описывающий тестовые инструменты для
@@ -16,6 +17,8 @@ class TestLogger;
  */
 class TestingTools
 {
+    friend class TestCore;
+
 public:
     enum class Printing
     {
@@ -59,7 +62,15 @@ public:
      */
     Printing enablePrinting(uint32_t password, Printing mode);
 
+    /**
+     * @brief Метод для проверки работает ли еще тестирование.
+     * @return Работает ли еще тестирование.
+     */
+    bool testingStoped();
+
 private:
+    TestingExecutor* m_executor;
+
     FRDriver* m_currentDriver;
     TestDriver* m_testDriver;
     TestLogger* m_logger;

@@ -30,6 +30,9 @@ bool NonfiscalRequesting::execute()
 
     for (uint32_t cycle = 0; cycle < docs; ++cycle)
     {
+
+        CHECK_IS_TEST_RUNNING;
+
         enviroment()->logger()->log("Открываем нефискальный документ #" + std::to_string(cycle + 1));
 
         enviroment()->driver()->openNonFiscalDocument(password);

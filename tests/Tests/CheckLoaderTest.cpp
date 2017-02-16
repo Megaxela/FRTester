@@ -55,10 +55,44 @@ bool CheckLoaderTest::execute()
          checkIndex < numberOfChecks;
          ++checkIndex)
     {
+        if (enviroment()->tools()->testingStoped())
+        {
+            // Восстанавливаем состояние печати
+            if (needToRestore)
+            {
+                currentPrintValue = enviroment()->tools()->enablePrinting(password, currentPrintValue);
+                if (currentPrintValue == TestingTools::Printing::Unknown)
+                {
+                    enviroment()->logger()->log("Не удалось изменить состояние печати. Останавлиаем тест.");
+                    return false;
+                }
+            }
+
+            enviroment()->logger()->log("Тестирование остановлено");
+            return true;
+        }
+
         for (uint32_t operationIndex = 0;
              operationIndex < numberOfOperations;
              ++operationIndex)
         {
+            if (enviroment()->tools()->testingStoped())
+            {
+                // Восстанавливаем состояние печати
+                if (needToRestore)
+                {
+                    currentPrintValue = enviroment()->tools()->enablePrinting(password, currentPrintValue);
+                    if (currentPrintValue == TestingTools::Printing::Unknown)
+                    {
+                        enviroment()->logger()->log("Не удалось изменить состояние печати. Останавлиаем тест.");
+                        return false;
+                    }
+                }
+
+                enviroment()->logger()->log("Тестирование остановлено");
+                return true;
+            }
+
             // Попытка произвести действие
             {
                 int tries = 25;
@@ -154,6 +188,23 @@ bool CheckLoaderTest::execute()
 
             do
             {
+                if (enviroment()->tools()->testingStoped())
+                {
+                    // Восстанавливаем состояние печати
+                    if (needToRestore)
+                    {
+                        currentPrintValue = enviroment()->tools()->enablePrinting(password, currentPrintValue);
+                        if (currentPrintValue == TestingTools::Printing::Unknown)
+                        {
+                            enviroment()->logger()->log("Не удалось изменить состояние печати. Останавлиаем тест.");
+                            return false;
+                        }
+                    }
+
+                    enviroment()->logger()->log("Тестирование остановлено");
+                    return true;
+                }
+
                 enviroment()->driver()->closeCheck(
                         password,
                         FROperations::smartRound(
@@ -203,7 +254,22 @@ bool CheckLoaderTest::execute()
                 return false;
             }
 
-            CHECK_TRIGGERS;
+            if (enviroment()->tools()->testingStoped())
+            {
+                // Восстанавливаем состояние печати
+                if (needToRestore)
+                {
+                    currentPrintValue = enviroment()->tools()->enablePrinting(password, currentPrintValue);
+                    if (currentPrintValue == TestingTools::Printing::Unknown)
+                    {
+                        enviroment()->logger()->log("Не удалось изменить состояние печати. Останавлиаем тест.");
+                        return false;
+                    }
+                }
+
+                enviroment()->logger()->log("Тестирование остановлено");
+                return true;
+            }
         }
 
         enviroment()->logger()->log(

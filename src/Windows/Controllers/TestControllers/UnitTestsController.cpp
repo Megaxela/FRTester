@@ -15,6 +15,8 @@ UnitTestsController::UnitTestsController(Ui::MainWindow *ptr, QWidget *parent) :
     AbstractTabController(ptr, parent, nullptr)
 {
     m_testingExecutor = new TestingExecutor();
+    TestCore::instance().setTestExecutor(m_testingExecutor);
+
     m_testLoggerWaiter = new TestLoggerWaiter();
     m_testLoggerWaiter->start();
 }

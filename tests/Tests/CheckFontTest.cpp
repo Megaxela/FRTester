@@ -38,11 +38,15 @@ bool CheckFontTest::execute()
 
     for (uint8_t field = 1; field <= 22; ++field)
     {
+
+        CHECK_IS_TEST_RUNNING;
         // Сохраняем прошлое значение.
         uint8_t lastValue = readFont(password, field);
 
         for (uint8_t fontValue = 1; fontValue <= 8; ++fontValue)
         {
+            CHECK_IS_TEST_RUNNING;
+
             // Записываем новое значение
             if (!writeFont(password, field, fontValue))
             {
@@ -50,68 +54,65 @@ bool CheckFontTest::execute()
                 return false;
             }
 
-            for (uint8_t sellIndex = 0; sellIndex < 3; ++sellIndex)
+            enviroment()->logger()->log(
+                    "Совершаем продажу с №" +
+                    std::to_string(sellIndex + 1) +
+                    " со шрифтом " +
+                    std::to_string(fontValue) +
+                    " в поле " +
+                    std::to_string(field)
+            );
+
+            if (!enviroment()->driver()->sell(
+                    password,
+                    1000,
+                    1000,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    "SOME TOOL"
+            ))
             {
-                enviroment()->logger()->log(
-                        "Совершаем продажу с №" +
-                        std::to_string(sellIndex + 1) +
-                        " со шрифтом " +
-                        std::to_string(fontValue) +
-                        " в поле " +
-                        std::to_string(field)
-                );
+                enviroment()->logger()->log("Не удалось совершить продажу. Ошибка #" +
+                                            std::to_string((int) enviroment()->driver()->getLastError()) +
+                                            ' ' +
+                                            FRDriver::Converters::errorToString((int) enviroment()->driver()->getLastError()));
+                return false;
+            }
 
-                if (!enviroment()->driver()->sell(
-                        password,
-                        1000,
-                        1000,
-                        1,
-                        0,
-                        0,
-                        0,
-                        0,
-                        "SOME TOOL"
-                ))
-                {
-                    enviroment()->logger()->log("Не удалось совершить продажу. Ошибка #" +
-                                                std::to_string((int) enviroment()->driver()->getLastError()) +
-                                                ' ' +
-                                                FRDriver::Converters::errorToString((int) enviroment()->driver()->getLastError()));
-                    return false;
-                }
+            // Закрытие чека
+            enviroment()->driver()->closeCheck(
+                    password,
+                    1000,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    "#" + std::to_string(sellIndex + 1) +
+                    " Font:" + std::to_string(fontValue) +
+                    " Field:" + std::to_string(field)
+            );
 
-                // Закрытие чека
-                enviroment()->driver()->closeCheck(
-                        password,
-                        1000,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        "#" + std::to_string(sellIndex + 1) +
-                        " Font:" + std::to_string(fontValue) +
-                        " Field:" + std::to_string(field)
-                );
+            if (enviroment()->driver()->getLastError() != FRDriver::ErrorCode::NoError)
+            {
+                enviroment()->logger()->log("Не удалось закрыть чек. Ошибка #" +
+                                            std::to_string((int) enviroment()->driver()->getLastError()) +
+                                            ' ' +
+                                            FRDriver::Converters::errorToString((int) enviroment()->driver()->getLastError()));
 
-                if (enviroment()->driver()->getLastError() != FRDriver::ErrorCode::NoError)
-                {
-                    enviroment()->logger()->log("Не удалось закрыть чек. Ошибка #" +
-                                                std::to_string((int) enviroment()->driver()->getLastError()) +
-                                                ' ' +
-                                                FRDriver::Converters::errorToString((int) enviroment()->driver()->getLastError()));
+                return false;
+            }
 
-                    return false;
-                }
-
-                if (!enviroment()->tools()->waitForPrintingFinished(password, 5000))
-                {
-                    enviroment()->logger()->log("Мы не дождались окончания печати.");
-                    return false;
-                }
+            if (!enviroment()->tools()->waitForPrintingFinished(password, 5000))
+            {
+                enviroment()->logger()->log("Мы не дождались окончания печати.");
+                return false;
             }
         }
 

@@ -17,6 +17,13 @@ if (TestCore::instance().hasFailedTriggers()) \
     return false; \
 }
 
+#define CHECK_IS_TEST_RUNNING \
+if (enviroment()->tools()->testingStoped())\
+{\
+    enviroment()->logger()->log("Тестирование остановлено");\
+    return true;\
+}\
+
 class AbstractTest;
 
 typedef std::shared_ptr<AbstractTest> TestPtr;

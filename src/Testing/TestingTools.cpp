@@ -6,8 +6,10 @@
 #include <include/Testing/TestLogger.h>
 #include <include/Tools/Logger.h>
 #include "include/Testing/TestingTools.h"
+#include <Executor/TestingExecutor.h>
 
 TestingTools::TestingTools(TestDriver *testDriver, TestLogger* logger) :
+    m_executor(nullptr),
     m_testDriver(testDriver),
     m_currentDriver(testDriver),
     m_logger(logger)
@@ -173,5 +175,10 @@ TestingTools::Printing TestingTools::enablePrinting(uint32_t password, TestingTo
     }
 
     return currentValue;
+}
+
+bool TestingTools::testingStoped()
+{
+    return !m_executor->isTestingRunning();
 }
 

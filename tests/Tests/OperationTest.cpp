@@ -30,6 +30,8 @@ bool OperationTest::execute()
          operatingIndex < 4;
          ++operatingIndex)
     {
+        CHECK_IS_TEST_RUNNING;
+
         uint32_t sum = 0;
 
         std::string actionName;
@@ -64,6 +66,8 @@ bool OperationTest::execute()
              departmentIndex <= 16;
              ++departmentIndex)
         {
+            CHECK_IS_TEST_RUNNING;
+
             uint32_t count = random(1000, 5000);
             uint32_t money = random(1000, 500000);
 
@@ -83,6 +87,7 @@ bool OperationTest::execute()
             int tries = 10;
             do
             {
+                CHECK_IS_TEST_RUNNING;
                 switch (operatingIndex)
                 {
                 case 0: // Продажа
@@ -173,6 +178,7 @@ bool OperationTest::execute()
             int tries = 10;
             do
             {
+                CHECK_IS_TEST_RUNNING;
                 closeResult = enviroment()->driver()->closeCheck(
                         password,
                         sum, // Оплата типом оплаты налом

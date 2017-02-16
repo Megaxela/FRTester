@@ -10,6 +10,8 @@
 #include "AbstractTriggerTest.h"
 #include "AbstractTest.h"
 
+class TestingExecutor;
+
 /**
  * @brief Класс, обрабатывающий основные функции
  * процесса тестирования. Синглетон, поскольку
@@ -123,6 +125,11 @@ public:
      */
     void setTriggerEnabled(TriggerTestPtr trigger, bool enabled);
 
+    /**
+     * @brief Метод для передачи модуля для выполнения тестов.
+     */
+    void setTestExecutor(TestingExecutor* );
+
 private:
 
     void addTest(TestPtr test);
@@ -159,6 +166,8 @@ private:
     std::vector<TriggerTestPtr> m_failedTriggers;
 
     uint32_t m_sysAdmPassword;
+
+    TestingExecutor* m_testingExecutor;
 };
 
 
