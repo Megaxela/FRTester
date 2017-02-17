@@ -17,8 +17,8 @@ const std::string SettingsSystem::ConnectionCOMPort = "connection_com_port";
 const std::string SettingsSystem::ConnectionCOMSpeed = "connection_com_speed";
 const std::string SettingsSystem::ConnectionIPPort = "connection_ip_port";
 const std::string SettingsSystem::GlobalTabSelected = "global_tab_selected";
-const std::string SettingsSystem::TestsTestsPath = "tests_tests_path";
-const std::string SettingsSystem::TestsTriggerPath = "tests_triggers_path";
+const std::string SettingsSystem::TestsSharedTestsPath = "tests_tests_path";
+const std::string SettingsSystem::TestsSharedTriggersPath = "tests_triggers_path";
 
 
 SettingsSystem::~SettingsSystem()

@@ -41,8 +41,8 @@ public:
     static const std::string ConnectionCOMPort;
     static const std::string ConnectionCOMSpeed;
     static const std::string GlobalTabSelected;
-    static const std::string TestsTestsPath;
-    static const std::string TestsTriggerPath;
+    static const std::string TestsSharedTestsPath;
+    static const std::string TestsSharedTriggersPath;
 
     /**
      * @brief Деструктор.

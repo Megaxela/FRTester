@@ -10,10 +10,28 @@
 #include <string>
 #include <cxxabi.h>
 #include <iostream>
+#include <functional>
 #include "Tools/Platform.h"
+
+#ifdef OS_WINDOWS
+    #define LIB_EXTENSION ".dll"
+#endif
+#ifdef OS_LINUX
+    #define LIB_EXTENSION ".so"
+    #include <dlfcn.h>
+#endif
 
 namespace SystemTools
 {
+#ifdef OS_LINUX
+    typedef void* LibraryType;
+#endif
+#ifdef OS_WINDOWS
+    typedef HINSTANCE LibraryType;
+#endif
+
+    const LibraryType WrongLibrary = nullptr;
+
     /**
      * @brief Метод, производящий смещение числа влево.
      * Требуется по причине того, что не все процессоры
@@ -127,6 +145,27 @@ namespace SystemTools
         free(demangled);
 
         return result;
+    }
+
+    /**
+     * @brief Метод для кроссплатформенной загрузки
+     * динамических библиотек.
+     * @param path Путь к библиотеке.
+     * @return Handle к библиотеке.
+     */
+    LibraryType loadLibrary(const std::string &path);
+
+    template <typename T>
+    std::function<T> getFunctionFromLibrary(const LibraryType& lib, const std::string &name)
+    {
+#ifdef OS_LINUX
+        T* proc = (T*) dlsym(lib, name.c_str());
+        return proc;
+#endif
+#ifdef OS_WINDOWS
+        T* proc = (T*) GetProcAddress(lib, name.c_str());
+        return proc;
+#endif
     }
 
     namespace Path

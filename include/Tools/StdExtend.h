@@ -38,6 +38,14 @@ STDEXTEND_NAMESPACE
      * @return Is string `s` begins with string `with`
      */
     bool begins(const std::string &s, const std::string &with);
+
+    /**
+     * @brief Method for checking is string ends with...
+     * @param s String.
+     * @param with String end.
+     * @return Is string `s` ends with string `with`
+     */
+    bool ends(const std::string &s, const std::string &with);
 };
 
 

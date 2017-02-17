@@ -168,6 +168,8 @@ private:
     uint32_t m_sysAdmPassword;
 
     TestingExecutor* m_testingExecutor;
+
+    std::vector<SystemTools::LibraryType> m_sharedTests;
 };
 
 

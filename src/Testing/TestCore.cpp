@@ -20,6 +20,8 @@
 #include <tests/Tests/BarcodePrintingTest.h>
 #include <tests/Tests/CheckFontTest.h>
 #include <include/Executor/TestingExecutor.h>
+#include <include/Testing/SettingsSystem.h>
+#include <include/Tools/StdExtend.h>
 
 #define PY_LIST_DELIM ':'
 
@@ -75,6 +77,19 @@ void TestCore::updateDatabase()
     addTrigger(std::make_shared<OperationTrigger>(m_environment));
     addTrigger(std::make_shared<CheckCloseTrigger>(m_environment));
     addTrigger(std::make_shared<ZReportTrigger>(m_environment));
+
+    // Загрузка тестов из shared библиотек
+    for (auto& library : m_sharedTests)
+    {
+        auto testCreator = SystemTools::getFunctionFromLibrary<
+                AbstractTest*(TestEnvironment*)
+        >(
+                library,
+                "createTest"
+        );
+
+        addTest(TestPtr(testCreator(m_environment)));
+    }
 
 //    if (Py_IsInitialized())
 //    {
@@ -369,6 +384,45 @@ void TestCore::clearFailedTriggers()
 
 void TestCore::init()
 {
+    Log("Загрузка shared библиотек с тестами.");
+    auto sharedTestsDirectory = SettingsSystem::instance()
+            .getValue(
+                    SettingsSystem::TestsSharedTestsPath,
+                    "tests/"
+            );
+
+    auto sharedTests = SystemTools::getAllFilesInDir(sharedTestsDirectory);
+
+    for (auto &fileName : sharedTests)
+    {
+        if (stdex::ends(fileName, LIB_EXTENSION))
+        {
+            ExcessLog("Файл \"" + fileName + "\" является библиотекой.");
+            Log("Загружаем \"" + fileName + "\"...");
+
+            auto lib = SystemTools::loadLibrary(
+                    SystemTools::Path::join(
+                            sharedTestsDirectory,
+                            fileName
+                    )
+            );
+
+            if (lib == SystemTools::WrongLibrary)
+            {
+                Error("Не удалось загрузить библиотеку \"" +
+                      fileName +
+                      "\". Errno: " +
+                      std::to_string(errno));
+                continue;
+            }
+        }
+        else
+        {
+            ExcessLog("Файл \"" + fileName + "\" не является библиотекой.");
+        }
+    }
+
+
 //    Py_Initialize();
 //    initfrdriver();
 //    Py_SetPythonHome("python2/");

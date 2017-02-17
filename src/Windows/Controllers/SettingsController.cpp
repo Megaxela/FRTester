@@ -23,7 +23,7 @@ void SettingsController::tabSelected()
     ui()->settingsTestsPathLineEdit->setText(
             QString::fromStdString(
                     SettingsSystem::instance().getValue(
-                            SettingsSystem::TestsTestsPath,
+                            SettingsSystem::TestsSharedTestsPath,
                             "tests/"
                     )
             )
@@ -32,7 +32,7 @@ void SettingsController::tabSelected()
     ui()->settingsTriggersPathLineEdit->setText(
             QString::fromStdString(
                     SettingsSystem::instance().getValue(
-                            SettingsSystem::TestsTriggerPath,
+                            SettingsSystem::TestsSharedTriggersPath,
                             "triggers/"
                     )
             )
@@ -62,12 +62,12 @@ void SettingsController::configureWidgets()
 void SettingsController::tabLeaved()
 {
     SettingsSystem::instance().setValue(
-            SettingsSystem::TestsTestsPath,
+            SettingsSystem::TestsSharedTestsPath,
             ui()->settingsTestsPathLineEdit->text().toStdString()
     );
 
     SettingsSystem::instance().setValue(
-            SettingsSystem::TestsTriggerPath,
+            SettingsSystem::TestsSharedTriggersPath,
             ui()->settingsTriggersPathLineEdit->text().toStdString()
     );
 

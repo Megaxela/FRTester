@@ -2,8 +2,9 @@ cmake_minimum_required(VERSION 3.6)
 project(FRTester)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/../${CMAKE_PROJECT_NAME}_executable")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/../FRDriver/libs"
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS "-pthread -D_hypot=hypot")
+set(CMAKE_CXX_FLAGS "-pthread -D_hypot=hypot "))
 
 include_directories(${CMAKE_INCLUDE_PATH} libraries)
 link_directories(${CMAKE_LIBRARY_PATH})
@@ -21,6 +22,12 @@ find_package( Qt5Widgets REQUIRED )
 find_package( Qt5Gui REQUIRED )
 
 include_directories(include)
+
+if (WIN32)
+
+else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -shared")
+endif()
 
 #-----------------------
 # Files
@@ -67,7 +74,11 @@ set(DRIVER_FILES
         src/Implementation/TestProtocol.cpp
         )
 
-set(SOURCE_FILES main.cpp
+set(MAIN_FILES
+        main.cpp
+        )
+
+set(SOURCE_FILES
         src/Windows/MainWindow.cpp
         include/Windows/MainWindow.h
         src/DriverHolder.cpp
@@ -198,10 +209,16 @@ set(SOURCE_FILES main.cpp
         )
 
 add_executable(FRTester
+        ${MAIN_FILES}
         ${SOURCE_FILES}
         ${DRIVER_FILES}
         ${UIS_HDRS}
         ${RESOURCE_ADDED})
+
 qt5_use_modules(FRTester Core Widgets Gui)
 # -lpython2.7
-target_link_libraries(FRTester ${Qt5Widgets_LIBRARIES} )
+if (WIN32)
+
+else()
+    target_link_libraries(FRTester ${Qt5Widgets_LIBRARIES})
+endif()

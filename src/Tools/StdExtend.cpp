@@ -10,4 +10,9 @@ STDEXTEND_NAMESPACE
     {
         return s.compare(0, with.size(), with) == 0;
     }
+
+    bool ends(const std::string &s, const std::string &with)
+    {
+        return s.compare(s.size() - with.size(), s.size(), with) == 0;
+    }
 };

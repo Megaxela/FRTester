@@ -55,8 +55,7 @@ bool CheckFontTest::execute()
             }
 
             enviroment()->logger()->log(
-                    "Совершаем продажу с №" +
-                    std::to_string(sellIndex + 1) +
+                    "Совершаем продажу"
                     " со шрифтом " +
                     std::to_string(fontValue) +
                     " в поле " +
@@ -94,7 +93,6 @@ bool CheckFontTest::execute()
                     0,
                     0,
                     0,
-                    "#" + std::to_string(sellIndex + 1) +
                     " Font:" + std::to_string(fontValue) +
                     " Field:" + std::to_string(field)
             );

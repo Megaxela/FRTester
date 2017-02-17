@@ -848,7 +848,7 @@
             <item>
              <widget class="QTabWidget" name="commandsDeviceTabWidget">
               <property name="currentIndex">
-               <number>2</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="commandsDeviceMoneyTab">
                <attribute name="title">
@@ -1394,7 +1394,7 @@ p, li { white-space: pre-wrap; }
        <attribute name="title">
         <string>Обработка лога</string>
        </attribute>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -1475,7 +1475,7 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>10</x>
           <y>10</y>
-          <width>361</width>
+          <width>461</width>
           <height>128</height>
          </rect>
         </property>
@@ -1488,7 +1488,7 @@ p, li { white-space: pre-wrap; }
            <item row="0" column="0">
             <widget class="QLabel" name="label_19">
              <property name="text">
-              <string>Путь к тестам</string>
+              <string>Путь к shared тестам</string>
              </property>
             </widget>
            </item>
@@ -1523,7 +1523,7 @@ p, li { white-space: pre-wrap; }
            <item row="1" column="0">
             <widget class="QLabel" name="label_20">
              <property name="text">
-              <string>Путь к триггерам</string>
+              <string>Путь к shared триггерам</string>
              </property>
             </widget>
            </item>
