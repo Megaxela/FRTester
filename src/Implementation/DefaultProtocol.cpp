@@ -142,9 +142,25 @@ ByteArray DefaultProtocol::receiveDataFromInterface(InterfacePtr physicalInterfa
 
     if (expectStx[0] != STX)
     {
-        Error("После ACK получен неожиданный байт. Вместо STX получен 0x" +
-              expectStx.toHex());
-        return byteArray;
+        Warning("После ACK получен неожиданный байт. Вместо STX получен 0x" +
+                expectStx.toHex());
+
+        Log("Пробуем считать еще один байт.");
+        expectStx = physicalInterface->read(
+                1, 2 * 1000 * 1000 // 2 секунды
+        );
+
+        if (expectStx.empty())
+        {
+            Error("Больше данных от ККТ не поступало. FAIL.");
+            return byteArray;
+        }
+
+        if (expectStx[0] != STX)
+        {
+            Error("И это опять не STX. Ответ: 0x" + expectStx.toHex());
+            return byteArray;
+        }
     }
 
     // Считываем длину ответа

@@ -20,6 +20,8 @@ bool CrazyStatusRequestTest::execute()
     auto result = getValue("Количество").toUInt32();
 
     auto time = Time::getMilliseconds();
+    uint32_t lastSSR = 0;
+
     for (uint32_t i = 0; i < result; ++i)
     {
         auto response = environment()->driver()->fullStateRequest(
@@ -39,8 +41,12 @@ bool CrazyStatusRequestTest::execute()
                     "Запрошено " +
                     std::to_string(i + 1) +
                     " из " +
-                    std::to_string(result)
+                    std::to_string(result) +
+                    " (" +
+                    std::to_string(i - lastSSR) +
+                    " запросов в секунду)"
             );
+            lastSSR = i;
         }
     }
 
