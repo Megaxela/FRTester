@@ -22,6 +22,8 @@ bool CrazyStatusRequestTest::execute()
     auto time = Time::getMilliseconds();
     uint32_t lastSSR = 0;
 
+    environment()->driver()->openShift(getValue("Пароль").toUInt32());
+
     for (uint32_t i = 0; i < result; ++i)
     {
         environment()->driver()->sell(
