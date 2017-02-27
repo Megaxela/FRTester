@@ -21,11 +21,11 @@
 #include "Tools/StdExtend.h"
 
 //
-//#ifndef DebugLog
-//    #define DebugLog(x)
+//#ifndef Log
+//    #define Log(x)
 //#endif
-//#ifndef DebugError
-//    #define DebugError(x)
+//#ifndef Error
+//    #define Error(x)
 //#endif
 
 static int TIMEOUT = 1000;
@@ -70,7 +70,7 @@ int TTY::connect(const std::string &port, int baudrate)
         return 7;
     }
 
-    DebugLog("Подключаемся к порту \"" + port + "\".");
+    Log("Подключаемся к порту \"" + port + "\".");
     m_Handle = CreateFileA(
             ("\\\\.\\" + port).c_str(),
             GENERIC_READ | GENERIC_WRITE,
@@ -83,20 +83,20 @@ int TTY::connect(const std::string &port, int baudrate)
 
     if(m_Handle == INVALID_HANDLE_VALUE)
     {
-        DebugLog("Не удалось подключиться к объекту. Ошибка CreateFileA: " + std::to_string(GetLastError()));
+        Log("Не удалось подключиться к объекту. Ошибка CreateFileA: " + std::to_string(GetLastError()));
         return 6;
     }
 
-    DebugLog("Подключение прошло успешно. Настраиваем подключение.");
+    Log("Подключение прошло успешно. Настраиваем подключение.");
     if (!SetCommMask(m_Handle, EV_RXCHAR))
     {
-        DebugError("Не удалось установить маску. Ошибка SetCommMask: " + std::to_string(GetLastError()));
+        Error("Не удалось установить маску. Ошибка SetCommMask: " + std::to_string(GetLastError()));
         return 5;
     }
 
     if (!SetupComm(m_Handle, 1500, 1500))
     {
-        DebugError("Не удалось настроить скорости передачи данных. Ошибка SetupComm: " + std::to_string(GetLastError()));
+        Error("Не удалось настроить скорости передачи данных. Ошибка SetupComm: " + std::to_string(GetLastError()));
         return 4;
     }
 
@@ -109,7 +109,7 @@ int TTY::connect(const std::string &port, int baudrate)
 
     if (!SetCommTimeouts(m_Handle, &CommTimeOuts))
     {
-        DebugError("Не удалось настроить таймауты. Ошибка SetCommTimeouts: " + std::to_string(GetLastError()));
+        Error("Не удалось настроить таймауты. Ошибка SetCommTimeouts: " + std::to_string(GetLastError()));
         CloseHandle(m_Handle);
         m_Handle = INVALID_HANDLE_VALUE;
         return 3;
@@ -122,7 +122,7 @@ int TTY::connect(const std::string &port, int baudrate)
 
     if (!GetCommState(m_Handle, &ComDCM))
     {
-        DebugError("Не удалось получить состояние порта. Ошибка GetCommState: " + std::to_string(GetLastError()));
+        Error("Не удалось получить состояние порта. Ошибка GetCommState: " + std::to_string(GetLastError()));
         return 2;
     }
 
@@ -150,7 +150,7 @@ int TTY::connect(const std::string &port, int baudrate)
 
     if (!SetCommState(m_Handle, &ComDCM))
     {
-        DebugError("Не удалось задать состояние порта. Ошибка SetCommState: " + std::to_string(GetLastError()));
+        Error("Не удалось задать состояние порта. Ошибка SetCommState: " + std::to_string(GetLastError()));
         CloseHandle(m_Handle);
         m_Handle = INVALID_HANDLE_VALUE;
         return 1;
@@ -158,16 +158,16 @@ int TTY::connect(const std::string &port, int baudrate)
 
     sleep(m_afterConnectionWaitingTime);
 
-    DebugLog("Соединение завершено успешно.");
+    Log("Соединение завершено успешно.");
     return 0;
 #endif
 #ifdef OS_LINUX
-    DebugLog("Подключаемся к интерфейсу \"" + port + "\".");
+    Log("Подключаемся к интерфейсу \"" + port + "\".");
     m_fileDescriptor = open(port.c_str(), O_RDWR | O_NOCTTY);
     if (m_fileDescriptor <= 0)
     {
         int err = errno;
-        DebugError("Не удалось открыть интерфейс. Ошибка open #" +
+        Error("Не удалось открыть интерфейс. Ошибка open #" +
                    std::to_string(err) + ": " +
                    std::string(strerror(err)));
         return err;
@@ -182,7 +182,7 @@ int TTY::connect(const std::string &port, int baudrate)
     if (tcgetattr(m_fileDescriptor, &tty) != 0)
     {
         int err = errno;
-        DebugError("Не удалось получить атрибуты. Ошибка tcgetattr #" +
+        Error("Не удалось получить атрибуты. Ошибка tcgetattr #" +
                std::to_string(err) +
                std::string(strerror(err)));
         return err;
@@ -287,7 +287,7 @@ int TTY::connect(const std::string &port, int baudrate)
         baudRateDef =  B4000000;
         break;
     default:
-        DebugError("Неизвестный baud rate (" + std::to_string(baudrate) + ").");
+        Error("Неизвестный baud rate (" + std::to_string(baudrate) + ").");
         return -1;
     }
 
@@ -326,7 +326,7 @@ int TTY::connect(const std::string &port, int baudrate)
     if (tcsetattr(m_fileDescriptor, TCSANOW, &tty) != 0)
     {
         int err = errno;
-        DebugError("Не удалось установить атрибуты. Ошибка tcsetattr #" +
+        Error("Не удалось установить атрибуты. Ошибка tcsetattr #" +
                    std::to_string(err) + ": " +
                    std::string(strerror(err)));
         return err;
@@ -337,7 +337,7 @@ int TTY::connect(const std::string &port, int baudrate)
         sleep(m_afterConnectionWaitingTime);
     }
 
-    DebugLog("Соединение с интерфейсом успешно открыто и настроено.");
+    Log("Соединение с интерфейсом успешно открыто и настроено.");
 
     return 0;
 #endif
@@ -350,7 +350,7 @@ void TTY::disconnect()
     {
         if (!CloseHandle(m_Handle))
         {
-            DebugError("Не удалось закрыть соединение. Ошибка CloseHandle: " + std::to_string(GetLastError()));
+            Error("Не удалось закрыть соединение. Ошибка CloseHandle: " + std::to_string(GetLastError()));
             return;
         }
 
@@ -372,7 +372,7 @@ uint32_t TTY::write(const ByteArray &dataArray) const
     DWORD feedback;
     if (!WriteFile(m_Handle, dataArray.data(), (DWORD) dataArray.size(), &feedback, 0) || feedback != (DWORD) dataArray.size())
     {
-        DebugError("Ошибка записи в TTY. Ошибка WriteFile: " + std::to_string(GetLastError()));
+        Error("Ошибка записи в TTY. Ошибка WriteFile: " + std::to_string(GetLastError()));
         CloseHandle(m_Handle);
         m_Handle = INVALID_HANDLE_VALUE;
         throw TTYException("[TTY::write] Error while writing.");
@@ -386,7 +386,7 @@ uint32_t TTY::write(const ByteArray &dataArray) const
     ssize_t dataWrote = ::write(m_fileDescriptor, dataArray.data(), dataArray.size());
     if (dataWrote < dataArray.size())
     {
-        DebugError("Было отправлено только " +
+        Error("Было отправлено только " +
                    std::to_string(dataWrote) +
                    " байт, вместо " +
                    std::to_string(dataArray.size()));
@@ -413,7 +413,7 @@ ByteArray TTY::read(uint32_t size, uint32_t timeoutMcs) const
     {
         if (!ReadFile(m_Handle, response + dataRead, size - dataRead, &feedback, NULL))
         {
-            DebugError("Не удалось считать данных из TTY. Ошибка ReadFile: " + std::to_string(GetLastError()));
+            Error("Не удалось считать данных из TTY. Ошибка ReadFile: " + std::to_string(GetLastError()));
             CloseHandle(m_Handle);
             m_Handle = INVALID_HANDLE_VALUE;
             throw TTYException("[TTY::read] Can't read from COM.");
@@ -423,7 +423,7 @@ ByteArray TTY::read(uint32_t size, uint32_t timeoutMcs) const
 
         if (Time::get<std::chrono::microseconds>() - beginReadTime > timeoutMcs)
         {
-            DebugError("Timeout чтения.");
+            Error("Timeout чтения.");
             break;
         }
     }
@@ -447,6 +447,7 @@ ByteArray TTY::read(uint32_t size, uint32_t timeoutMcs) const
 
     uint32_t timePassed = 0;
 
+    LogStream() << "Запрашиваю " << size << " байт с таймаутом в " << timeoutMcs << " микросекунд." << std::endl;
     while (dataRead < size)
     {
         auto beginReadTime = Time::get<std::chrono::microseconds>();
@@ -468,7 +469,7 @@ ByteArray TTY::read(uint32_t size, uint32_t timeoutMcs) const
 //        timePassed += (uint32_t) (Time::get<std::chrono::microseconds>() - beginReadTime);
         if (r == -1)
         {
-            DebugError("Ошибка select. #" +
+            Error("Ошибка select. #" +
                        std::to_string(errno) + ": " +
                        strerror(errno));
             return ByteArray();
@@ -482,7 +483,7 @@ ByteArray TTY::read(uint32_t size, uint32_t timeoutMcs) const
         }
         else
         {
-            DebugError("Timeout чтения.");
+            Error("Timeout чтения.");
             break;
         }
     }

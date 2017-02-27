@@ -327,7 +327,7 @@ ByteArray ByteArray::fromHex(const std::string &hex)
 
     if (num % 2)
     {
-        Error("Wrong hex string was passed.");
+        ErrorEx("ByteArray", "Wrong hex string was passed.");
         return ByteArray();
     }
 
@@ -339,7 +339,7 @@ ByteArray ByteArray::fromHex(const std::string &hex)
     }
     catch(std::invalid_argument &e)
     {
-        Error("Wrong hex values.");
+        ErrorEx("ByteArray", "Wrong hex values.");
         return ByteArray();
     }
 

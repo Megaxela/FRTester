@@ -40,7 +40,7 @@ std::vector<std::string> SystemTools::getAllFilesInDir(const std::string &path)
     }
     else
     {
-        Critical("Такой папки не существует.");
+        CriticalEx("SystemTools", "Такой папки не существует.");
     }
 
     return result;

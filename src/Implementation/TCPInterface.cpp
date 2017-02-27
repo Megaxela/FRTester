@@ -138,7 +138,7 @@ ByteArray TCPInterface::read(const PhysicalInterface::size_t &size, uint32_t tim
 //        timePassed += (uint32_t) (Time::get<std::chrono::microseconds>() - beginReadTime);
         if (r == -1)
         {
-            DebugError("Ошибка select. #" +
+            Error("Ошибка select. #" +
                        std::to_string(errno) + ": " +
                        strerror(errno));
             return ByteArray();
@@ -154,7 +154,7 @@ ByteArray TCPInterface::read(const PhysicalInterface::size_t &size, uint32_t tim
 
             if (received == -1)
             {
-                DebugError("Соединение порвано.");
+                Error("Соединение порвано.");
                 return ByteArray();
             }
 
@@ -164,7 +164,7 @@ ByteArray TCPInterface::read(const PhysicalInterface::size_t &size, uint32_t tim
         }
         else
         {
-            DebugError("Timeout чтения.");
+            Error("Timeout чтения.");
             return ByteArray();
         }
     }

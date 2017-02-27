@@ -6,26 +6,32 @@
 #include <iostream>
 #include <sstream>
 #include <ctime>
-#include <include/Tools/SystemTools.h>
+#include <random>
+#include <algorithm>
+
+#include <iostream>
+#include <sstream>
+#include <ctime>
 
 Logger::Logger() :
-    m_file(),
-    m_working(true),
-    m_messages(),
-    m_messagesMutex(),
-    m_mainThread(), // Will be run in constructor
-    m_cond(),
-    m_clearVariable(),
-    m_maxFilenameSize(0),
-    m_maxFunctionNameSize(0),
-    m_logFilename("logs/log.txt"),
-    m_outEnabled(true),
-    m_minErrorClass(ErrorClass::Info)
+        m_file(),
+        m_working(true),
+        m_messages(),
+        m_messagesMutex(),
+        m_mainThread(), // Will be run in constructor
+        m_cond(),
+        m_clearVariable(),
+        m_maxFilenameSize(0),
+        m_maxFunctionNameSize(0),
+        m_logFilename("logs/log.txt"),
+        m_outEnabled(true),
+        m_minErrorClass(ErrorClass::Info),
+        m_cutFilename(true)
 {
     // Running main thread.
     m_mainThread = std::thread(&Logger::mainThread, this);
 
-    log(ErrorClass::Info, __FILENAME__, __LINE__, __FUNCTION__, "Logger started", "Log");
+    log(ErrorClass::Info, __FILE__, __LINE__, SystemTools::getTypeName(*this), __FUNCTION__, "Logger started", "Log");
 }
 
 Logger::~Logger()
@@ -64,21 +70,23 @@ Logger &Logger::i()
 void Logger::log(ErrorClass errorClass,
                  const char *file,
                  int line,
+                 const std::string& classname,
                  const char *function,
                  const std::string &message,
-                 const std::string &prefix)
+                 const char *prefix)
 {
     std::unique_lock<std::mutex> lock(m_messagesMutex);
 
     m_messages.push({
-            errorClass,
-            file,
-            function,
-            line,
-            time(0),
-            message,
-            prefix
-    });
+                            errorClass,
+                            file,
+                            classname,
+                            function,
+                            line,
+                            time(0),
+                            message,
+                            prefix
+                    });
 
     m_cond.notify_one();
 }
@@ -86,6 +94,7 @@ void Logger::log(ErrorClass errorClass,
 std::string Logger::formString(const char *file,
                                int line,
                                time_t time,
+                               const std::string& classname,
                                const char *function,
                                const std::string &message,
                                const std::string &prefix)
@@ -122,7 +131,17 @@ std::string Logger::formString(const char *file,
     {
         std::stringstream filenameSS;
 
-        filenameSS << file
+        std::string finishedFilename;
+        if (m_cutFilename)
+        {
+            finishedFilename = (strrchr(file, '/') ? strrchr(file, '/') + 1 : file);
+        }
+        else
+        {
+            finishedFilename = file;
+        }
+
+        filenameSS << finishedFilename
                    << ':'
                    << line;
 
@@ -139,8 +158,13 @@ std::string Logger::formString(const char *file,
     {
         std::stringstream functionNameSS;
 
-        functionNameSS << "["
-                       << function
+        functionNameSS << "[";
+
+        if (!classname.empty())
+        {
+            functionNameSS << classname << "::";
+        }
+        functionNameSS << function
                        << "]";
 
         uint32_t len = (uint32_t) functionNameSS.str().length();
@@ -196,7 +220,7 @@ void Logger::mainThread()
             }
         }
 
-        Message front;
+        Message front = Logger::Message();
 
         {
 
@@ -214,6 +238,7 @@ void Logger::mainThread()
                         front.file,
                         front.line,
                         front.time,
+                        front.classname,
                         front.function,
                         front.msg,
                         front.prefix
@@ -225,23 +250,23 @@ void Logger::mainThread()
                     {
                         switch (front.errorClass)
                         {
-                            case ErrorClass::Info:
-                                std::cout << result << std::endl;
-                                break;
-                            case ErrorClass::Warning:
-                                std::cerr << result << std::endl;
-                                break;
-                            case ErrorClass::Error:
-                                std::cerr << result << std::endl;
-                                break;
-                            case ErrorClass::Critical:
-                                std::cerr << result << std::endl;
-                                break;
-                            case ErrorClass::None:
-                                // What?
-                                break;
-                            case ErrorClass::Excess:
-                                break;
+                        case ErrorClass::Info:
+                            std::cout << result << std::endl;
+                            break;
+                        case ErrorClass::Warning:
+                            std::cout << result << std::endl;
+                            break;
+                        case ErrorClass::Error:
+                            std::cout << result << std::endl;
+                            break;
+                        case ErrorClass::Critical:
+                            std::cout << result << std::endl;
+                            break;
+                        case ErrorClass::None:
+                            // What?
+                            break;
+                        case ErrorClass::Excess:
+                            break;
                         }
                     }
                 }
@@ -322,12 +347,63 @@ std::string Logger::fixSize(const std::string &s, uint32_t expectedSize, char r)
     return sCopy;
 }
 
+void Logger::cutFilename(bool cut)
+{
+    m_cutFilename = cut;
+}
 
 
+Logger::StreamBuffer::StreamBuffer() :
+        m_ss(),
+        m_errorClass(Logger::ErrorClass::None),
+        m_file(nullptr),
+        m_line(0),
+        m_classname(),
+        m_function(nullptr),
+        m_prefix(nullptr)
+{
+
+}
 
 
+void Logger::StreamBuffer::newMessage(Logger::ErrorClass errorClass,
+                                      const char *file,
+                                      int line,
+                                      const std::string& classname,
+                                      const char *function,
+                                      const char *prefix)
+{
+    m_errorClass = errorClass;
+    m_file = file;
+    m_line = line;
+    m_classname = classname;
+    m_function = function;
+    m_prefix = prefix;
+}
 
+int Logger::StreamBuffer::overflow(int __c)
+{
+    if (__c == '\n')
+    {
+        Logger::i().log(m_errorClass, m_file, m_line, m_classname, m_function, m_ss, m_prefix);
+        m_ss.clear();
+        return traits_type::eof();
+    }
 
+    m_ss += (char) __c;
 
+    return __c;
+}
 
+static Logger::StreamBuffer streamBuffer;
 
+Logger::Stream::Stream(Logger::ErrorClass errorClass,
+                       const char *file,
+                       int line,
+                       const std::string& classname,
+                       const char *function,
+                       const char *prefix) :
+        std::ostream(&streamBuffer)
+{
+    streamBuffer.newMessage(errorClass, file, line, classname, function, prefix);
+}

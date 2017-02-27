@@ -104,7 +104,7 @@ ByteArray DefaultProtocol::receiveDataFromInterface(InterfacePtr physicalInterfa
 
     // Считываем ACK
     ByteArray expectAck = physicalInterface->read(
-            1, 5 * 1000 * 1000 // 5 секунд
+            1, 60 * 1000 * 1000 // 60 секунд
     );
 
     if (expectAck.empty())
@@ -117,7 +117,7 @@ ByteArray DefaultProtocol::receiveDataFromInterface(InterfacePtr physicalInterfa
     {
         Warning("На этапе считывания данных вместо ACK был получен 0xFF. Пробуем еще раз.");
         expectAck = physicalInterface->read(
-                1, 5 * 1000 * 1000 // 5 секунд
+                1, 60 * 1000 * 1000 // 5 секунд
         );
     }
 
@@ -149,7 +149,7 @@ ByteArray DefaultProtocol::receiveDataFromInterface(InterfacePtr physicalInterfa
 
     // Считываем длину ответа
     ByteArray dataSize = physicalInterface->read(
-            1, 5 * 1000 * 1000 // 5 Секунд
+            1, 60 * 1000 * 1000 // 5 Секунд
     );
 
     if (dataSize.empty())
@@ -159,7 +159,7 @@ ByteArray DefaultProtocol::receiveDataFromInterface(InterfacePtr physicalInterfa
     }
 
     ByteArray data = physicalInterface->read(
-            dataSize[0], 5 * 1000 * 1000 // 5 Секунд
+            dataSize[0], 60 * 1000 * 1000 // 5 Секунд
     );
 
     if (data.empty() && dataSize[0] != 0)
@@ -169,7 +169,7 @@ ByteArray DefaultProtocol::receiveDataFromInterface(InterfacePtr physicalInterfa
     }
 
     ByteArray checkSum = physicalInterface->read(
-            1, 5 * 1000 * 1000 // 5 секунд
+            1, 60 * 1000 * 1000 // 5 секунд
     );
 
     byteArray.append(expectStx);
