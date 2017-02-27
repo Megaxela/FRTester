@@ -32,6 +32,21 @@ public:
      */
     ~UnitTestsController() override;
 
+    bool messageQuestionResult() const;
+
+public slots:
+    void openMessageQuestion(QString mess, QString ok, QString fl);
+
+    void openMessageNotify(QString mess);
+
+signals:
+
+    void openMessageQuestionSignal(QString mess, QString ok, QString fl);
+
+    void openMessageNotifySignal(QString mess);
+
+    void onMessageBoxClosed();
+
 protected:
     /**
      * @brief Метод для настройки коннектов.
@@ -147,6 +162,7 @@ private:
 
     QString htmlScreening(QString source);
 
+    bool m_questionResult;
     TestingExecutor* m_testingExecutor;
     TestLoggerWaiter* m_testLoggerWaiter;
 

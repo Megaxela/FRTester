@@ -2,9 +2,7 @@ cmake_minimum_required(VERSION 3.6)
 project(FRTester)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/../${CMAKE_PROJECT_NAME}_executable")
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/../FRDriver/libs"
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS "-pthread -D_hypot=hypot "))
 
 include_directories(${CMAKE_INCLUDE_PATH} libraries)
 link_directories(${CMAKE_LIBRARY_PATH})
@@ -26,7 +24,7 @@ include_directories(include)
 if (WIN32)
 
 else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -shared")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -D_hypot=hypot")
 endif()
 
 #-----------------------
@@ -206,7 +204,7 @@ set(SOURCE_FILES
         tests/Tests/BarcodePrintingTest.h
         tests/Tests/CheckFontTest.cpp
         tests/Tests/CheckFontTest.h
-        )
+        src/Windows/Controllers/TestControllers/TestsEditorController.cpp include/Windows/Controllers/TestControllers/TestsEditorController.h src/Testing/ManualTests/ManualTest.cpp include/Testing/ManualTests/ManualTest.h src/Testing/ManualTests/AbstractTestAction.cpp include/Testing/ManualTests/AbstractTestAction.h src/Windows/Widgets/QTestActionsTreeWidget.cpp include/Windows/Widgets/QTestActionsTreeWidget.h src/Testing/ManualTests/Actions/BeepTestAction.cpp include/Testing/ManualTests/Actions/BeepTestAction.h src/Testing/ManualTests/ManualTestFabric.cpp include/Testing/ManualTests/ManualTestFabric.h src/Windows/Widgets/QTestDisplayTreeWidget.cpp include/Windows/Widgets/QTestDisplayTreeWidget.h src/Windows/Widgets/QActionTreeWidgetItem.cpp include/Windows/Widgets/QActionTreeWidgetItem.h src/Windows/Widgets/QManualTestsListWidget.cpp include/Windows/Widgets/QManualTestsListWidget.h src/Tools/GUIHelper.cpp include/Tools/GUIHelper.h src/Testing/ManualTests/Actions/LongStateRequestTestAction.cpp include/Testing/ManualTests/Actions/LongStateRequestTestAction.h src/Testing/ManualTests/Actions/WhileTestAction.cpp include/Testing/ManualTests/Actions/WhileTestAction.h src/Testing/ManualTests/Actions/TimeoutTestAction.cpp include/Testing/ManualTests/Actions/TimeoutTestAction.h src/Testing/ManualTests/Actions/SendRawTestAction.cpp include/Testing/ManualTests/Actions/SendRawTestAction.h src/Testing/ManualTests/Actions/NotifyWindowTestAction.cpp include/Testing/ManualTests/Actions/NotifyWindowTestAction.h src/Testing/ManualTests/Actions/ExitIfTestAction.cpp include/Testing/ManualTests/Actions/ExitIfTestAction.h src/Testing/ManualTests/Actions/IfTestAction.cpp include/Testing/ManualTests/Actions/IfTestAction.h tests/Tests/MagnitCheckTest.cpp tests/Tests/MagnitCheckTest.h tests/Tests/MessageBoxTest.cpp tests/Tests/MessageBoxTest.h src/Windows/Widgets/QHexLineEdit.cpp include/Windows/Widgets/QHexLineEdit.h include/Testing/ManualTests/Actions/OpenShiftTestAction.cpp include/Testing/ManualTests/Actions/OpenShiftTestAction.h include/Testing/ManualTests/Actions/ShiftCloseTestAction.cpp include/Testing/ManualTests/Actions/ShiftCloseTestAction.h include/Testing/ManualTests/Actions/SellTestAction.cpp include/Testing/ManualTests/Actions/SellTestAction.h include/Testing/ManualTests/Actions/BuyTestAction.cpp include/Testing/ManualTests/Actions/BuyTestAction.h include/Testing/ManualTests/Actions/ReturnSellTestAction.cpp include/Testing/ManualTests/Actions/ReturnSellTestAction.h include/Testing/ManualTests/Actions/ReturnBuyTestAction.cpp include/Testing/ManualTests/Actions/ReturnBuyTestAction.h include/Testing/ManualTests/Actions/ShortStateRequest.cpp include/Testing/ManualTests/Actions/ShortStateRequest.h include/Testing/ManualTests/Actions/CloseCheckTestAction.cpp include/Testing/ManualTests/Actions/CloseCheckTestAction.h include/Testing/ManualTests/Actions/ResumePrintingTestAction.cpp include/Testing/ManualTests/Actions/ResumePrintingTestAction.h include/Testing/ManualTests/Actions/CancelChechTestAction.cpp include/Testing/ManualTests/Actions/CancelChechTestAction.h include/Testing/ManualTests/Actions/StandardStringPrintTestAction.cpp include/Testing/ManualTests/Actions/StandardStringPrintTestAction.h include/Testing/ManualTests/Actions/DocumentHeaderPrintTestAction.cpp include/Testing/ManualTests/Actions/DocumentHeaderPrintTestAction.h include/Testing/ManualTests/Actions/CutCheckTestAction.cpp include/Testing/ManualTests/Actions/CutCheckTestAction.h include/Testing/ManualTests/Actions/ScrollTestAction.cpp include/Testing/ManualTests/Actions/ScrollTestAction.h include/Testing/ManualTests/Actions/FontStringPrintTestAction.cpp include/Testing/ManualTests/Actions/FontStringPrintTestAction.h tests/Tests/CrazyStatusRequestTest.cpp tests/Tests/CrazyStatusRequestTest.h)
 
 add_executable(FRTester
         ${MAIN_FILES}

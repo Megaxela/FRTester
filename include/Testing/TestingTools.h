@@ -7,9 +7,11 @@
 
 #include <include/FRDriver.h>
 #include "TestDriver.h"
+#include <Testing/TestLogger.h>
 
-class TestLogger;
 class TestingExecutor;
+class QWidget;
+class UnitTestsController;
 
 /**
  * @brief Класс, описывающий тестовые инструменты для
@@ -68,12 +70,44 @@ public:
      */
     bool testingStoped();
 
+    /**
+     * @brief Метод для задачи вопроса пользователю.
+     * @param question Вопрос пользователю.
+     * @param acceptMessage Строка кнопки, возвращающая true
+     * @param declineMessage Строка кнопки, возвращающая false
+     * @return
+     */
+    bool messageQuestion(
+            const std::string &question,
+            const std::string &acceptMessage,
+            const std::string &declineMessage
+    );
+
+    /**
+     * @brief Метод для уведомления пользователя.
+     * @param question Текст уведомления.
+     */
+    void messageNotify(
+            const std::string &text
+    );
+
+    /**
+     * @brief Метод для передачи родительского виджета.
+     * @param parent Родительский виджет.
+     */
+    void setParentWidget(QWidget* parent);
+
+    void setUnitTestsController(UnitTestsController* controller);
+
 private:
     TestingExecutor* m_executor;
 
     FRDriver* m_currentDriver;
     TestDriver* m_testDriver;
     TestLogger* m_logger;
+    QWidget* m_parentWidget;
+
+    UnitTestsController* m_controller;
 };
 
 

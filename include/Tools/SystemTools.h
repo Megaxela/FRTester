@@ -159,8 +159,9 @@ namespace SystemTools
     std::function<T> getFunctionFromLibrary(const LibraryType& lib, const std::string &name)
     {
 #ifdef OS_LINUX
-        T* proc = (T*) dlsym(lib, name.c_str());
-        return proc;
+        return nullptr;
+//        T* proc = (T*) dlsym(lib, name.c_str());
+//        return proc;
 #endif
 #ifdef OS_WINDOWS
         T* proc = (T*) GetProcAddress(lib, name.c_str());
@@ -184,6 +185,7 @@ namespace SystemTools
          * @return Есть ли файл?
          */
         bool fileExists(const std::string &p);
+
     }
 
 };

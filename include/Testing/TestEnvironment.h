@@ -8,8 +8,6 @@
 
 #include "TestDriver.h"
 #include "TestingTools.h"
-
-class TestLogger;
 /**
  * @brief Класс, описывающий тестовое окружение.
  * Весь инструментарий, доступный для тестирования

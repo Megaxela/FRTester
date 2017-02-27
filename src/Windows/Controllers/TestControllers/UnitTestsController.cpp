@@ -10,15 +10,28 @@
 #include <include/Windows/Widgets/QNumberLineEdit.h>
 #include <QtWidgets/QCheckBox>
 #include <include/TestDriverHolder.h>
+#include <include/Tools/GUIHelper.h>
+#include <QtWidgets/QMessageBox>
 
 UnitTestsController::UnitTestsController(Ui::MainWindow *ptr, QWidget *parent) :
-    AbstractTabController(ptr, parent, nullptr)
+    AbstractTabController(ptr, parent, nullptr),
+    m_questionResult(false)
 {
     m_testingExecutor = new TestingExecutor();
     TestCore::instance().setTestExecutor(m_testingExecutor);
+    TestCore::instance().setUnitTestsController(this);
 
     m_testLoggerWaiter = new TestLoggerWaiter();
     m_testLoggerWaiter->start();
+
+    connect(this,
+            &UnitTestsController::openMessageNotifySignal,
+            this,
+            &UnitTestsController::openMessageNotify);
+    connect(this,
+            &UnitTestsController::openMessageQuestionSignal,
+            this,
+            &UnitTestsController::openMessageQuestion);
 }
 
 UnitTestsController::~UnitTestsController()
@@ -460,12 +473,7 @@ void UnitTestsController::onTestSelected(TestPtr test)
     auto formLayout = ui()->unitTestsTestValuesFormLayout;
 
     // Очистка FormLayout
-    QLayoutItem* child;
-    while ((child = formLayout->takeAt(0)) != 0)
-    {
-        delete child->widget();
-        delete child;
-    }
+    GUIHelper::cleanFormLayout(formLayout);
 
     // Отрисовка новых виджетов
     for (auto& variable : variables)
@@ -841,4 +849,33 @@ void UnitTestsController::setTabSelectionEnabled(bool enabled)
             ui()->mainTabWidget->setTabEnabled(i, enabled);
         }
     }
+}
+
+void UnitTestsController::openMessageQuestion(QString mess, QString ok, QString fl)
+{
+    m_questionResult = QMessageBox::question(
+            parentWidget(),
+            "Вопрос от теста",
+            mess,
+            ok,
+            fl
+    ) == 0;
+
+    emit onMessageBoxClosed();
+}
+
+void UnitTestsController::openMessageNotify(QString mess)
+{
+    QMessageBox::information(
+            parentWidget(),
+            "Информация",
+            mess
+    );
+
+    emit onMessageBoxClosed();
+}
+
+bool UnitTestsController::messageQuestionResult() const
+{
+    return m_questionResult;
 }

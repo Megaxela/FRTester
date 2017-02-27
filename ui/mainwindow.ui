@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="mainTabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>7</number>
       </property>
       <property name="movable">
        <bool>true</bool>
@@ -1385,6 +1385,206 @@ p, li { white-space: pre-wrap; }
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="testsEditorTab">
+       <attribute name="title">
+        <string>Редактор тестов</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_31">
+        <item>
+         <widget class="QGroupBox" name="groupBox_11">
+          <property name="maximumSize">
+           <size>
+            <width>250</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="title">
+           <string>Мануальные тесты</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_16">
+           <item>
+            <widget class="QManualTestsListWidget" name="testsEditor_testsListWidget"/>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_28">
+             <item>
+              <widget class="QPushButton" name="testsEditor_addTestPushButton">
+               <property name="text">
+                <string>Добавить тест</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="testsEditor_removeTestPushButton">
+               <property name="text">
+                <string>Удалить тест</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_12">
+          <property name="title">
+           <string>Редактирование теста</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_21">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_29">
+             <item>
+              <widget class="QLabel" name="label_29">
+               <property name="text">
+                <string>Название теста: </string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="testsEdit_testNameLineEdit"/>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_30">
+             <item>
+              <widget class="QGroupBox" name="groupBox_13">
+               <property name="title">
+                <string>Действия в тесте</string>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_17">
+                <item>
+                 <widget class="QLineEdit" name="testsEdit_testActionsSearchLineEdit">
+                  <property name="placeholderText">
+                   <string>Поиск</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QTestDisplayTreeWidget" name="testsEdit_testActionsLineEdit">
+                  <property name="editTriggers">
+                   <set>QAbstractItemView::EditKeyPressed</set>
+                  </property>
+                  <property name="dragEnabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="dragDropMode">
+                   <enum>QAbstractItemView::InternalMove</enum>
+                  </property>
+                  <property name="defaultDropAction">
+                   <enum>Qt::MoveAction</enum>
+                  </property>
+                  <property name="selectionBehavior">
+                   <enum>QAbstractItemView::SelectItems</enum>
+                  </property>
+                  <attribute name="headerVisible">
+                   <bool>false</bool>
+                  </attribute>
+                  <column>
+                   <property name="text">
+                    <string notr="true">1</string>
+                   </property>
+                  </column>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_20">
+               <item>
+                <widget class="QGroupBox" name="groupBox_15">
+                 <property name="title">
+                  <string>Настройки действия</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_19">
+                  <item>
+                   <layout class="QFormLayout" name="formLayout_8">
+                    <item row="0" column="0">
+                     <widget class="QLabel" name="label_27">
+                      <property name="text">
+                       <string>Название:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QLabel" name="testsEdit_actionNameLabel">
+                      <property name="text">
+                       <string>name</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <widget class="QScrollArea" name="scrollArea">
+                    <property name="widgetResizable">
+                     <bool>true</bool>
+                    </property>
+                    <widget class="QWidget" name="scrollAreaWidgetContents">
+                     <property name="geometry">
+                      <rect>
+                       <x>0</x>
+                       <y>0</y>
+                       <width>313</width>
+                       <height>110</height>
+                      </rect>
+                     </property>
+                     <layout class="QVBoxLayout" name="verticalLayout_22">
+                      <item>
+                       <layout class="QFormLayout" name="testsEdit_actionSettingsFormLayout"/>
+                      </item>
+                     </layout>
+                    </widget>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <widget class="QGroupBox" name="groupBox_14">
+                 <property name="title">
+                  <string>Доступные действия</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_18">
+                  <item>
+                   <widget class="QLineEdit" name="testsEdit_actionsSearchLineEdit">
+                    <property name="placeholderText">
+                     <string>Поиск</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QTestActionsTreeWidget" name="testsEdit_availableActionsTreeWidget">
+                    <property name="dragEnabled">
+                     <bool>true</bool>
+                    </property>
+                    <property name="dragDropMode">
+                     <enum>QAbstractItemView::DragOnly</enum>
+                    </property>
+                    <attribute name="headerVisible">
+                     <bool>false</bool>
+                    </attribute>
+                    <column>
+                     <property name="text">
+                      <string>1</string>
+                     </property>
+                    </column>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
       <widget class="QWidget" name="wayTestTab">
        <attribute name="title">
         <string>Граф состояний</string>
@@ -1476,7 +1676,7 @@ p, li { white-space: pre-wrap; }
           <x>10</x>
           <y>10</y>
           <width>461</width>
-          <height>128</height>
+          <height>151</height>
          </rect>
         </property>
         <property name="title">
@@ -1506,6 +1706,13 @@ p, li { white-space: pre-wrap; }
              </item>
             </layout>
            </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_20">
+             <property name="text">
+              <string>Путь к shared триггерам</string>
+             </property>
+            </widget>
+           </item>
            <item row="1" column="1">
             <layout class="QHBoxLayout" name="horizontalLayout_9">
              <item>
@@ -1520,12 +1727,26 @@ p, li { white-space: pre-wrap; }
              </item>
             </layout>
            </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_20">
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_28">
              <property name="text">
-              <string>Путь к shared триггерам</string>
+              <string>Путь к ручным тестам</string>
              </property>
             </widget>
+           </item>
+           <item row="2" column="1">
+            <layout class="QHBoxLayout" name="horizontalLayout_32">
+             <item>
+              <widget class="QLineEdit" name="settingsManualTestsPathLineEdit"/>
+             </item>
+             <item>
+              <widget class="QPushButton" name="settingsManualTestsPathPushButton">
+               <property name="text">
+                <string>Выбрать</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
          </item>
@@ -1552,6 +1773,21 @@ p, li { white-space: pre-wrap; }
    <class>QTestsTreeWidget</class>
    <extends>QTreeWidget</extends>
    <header>include/Windows/Widgets/QTestsTreeWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QTestActionsTreeWidget</class>
+   <extends>QTreeWidget</extends>
+   <header>include/Windows/Widgets/QTestActionsTreeWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QTestDisplayTreeWidget</class>
+   <extends>QTreeWidget</extends>
+   <header>include/Windows/Widgets/QTestDisplayTreeWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QManualTestsListWidget</class>
+   <extends>QListWidget</extends>
+   <header>include/Windows/Widgets/QManualTestsListWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

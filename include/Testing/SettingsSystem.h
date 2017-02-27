@@ -43,6 +43,7 @@ public:
     static const std::string GlobalTabSelected;
     static const std::string TestsSharedTestsPath;
     static const std::string TestsSharedTriggersPath;
+    static const std::string TestsManualTestsPath;
 
     /**
      * @brief Деструктор.

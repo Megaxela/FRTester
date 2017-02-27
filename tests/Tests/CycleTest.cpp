@@ -22,16 +22,16 @@ bool CycleTest::execute()
 {
     auto pwd = getValueUInt32("Password");
 
-    if (!enviroment()->driver()->openShift(30))
+    if (!environment()->driver()->openShift(30))
     {
         Error("Не удалось открыть смену.");
         return false;
     }
 
     // Ожидание окончания печати
-    enviroment()->tools()->waitForPrintingFinished(pwd, 100000);
+    environment()->tools()->waitForPrintingFinished(pwd, 100000);
 
-    if (!enviroment()->driver()->sell(
+    if (!environment()->driver()->sell(
             pwd, // Пароль
             1000, // 1 шт
             16 * 100, // 16р
@@ -47,7 +47,7 @@ bool CycleTest::execute()
         return false;
     }
 
-    auto result = enviroment()->driver()->closeCheck(
+    auto result = environment()->driver()->closeCheck(
             pwd, // Пароль
             4 * 100, // Кэш
             4 * 100, // Картой
@@ -61,7 +61,7 @@ bool CycleTest::execute()
             "EASY"
     );
 
-    if (enviroment()->driver()->getLastError() != FRDriver::ErrorCode::NoError)
+    if (environment()->driver()->getLastError() != FRDriver::ErrorCode::NoError)
     {
         Error("Не удалось закрыть чек. Предположительно ФР сейчас умрет.");
         return false;
@@ -73,7 +73,7 @@ bool CycleTest::execute()
         return false;
     }
 
-    enviroment()->tools()->waitForPrintingFinished(pwd, 10000);
+    environment()->tools()->waitForPrintingFinished(pwd, 10000);
 
     return true;
 }

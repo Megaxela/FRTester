@@ -94,9 +94,11 @@ bool SystemTools::Path::fileExists(const std::string &p)
 SystemTools::LibraryType SystemTools::loadLibrary(const std::string &path)
 {
 #ifdef OS_LINUX
-    return dlopen(path.c_str(), RTLD_LAZY);
+    return nullptr;
+//    return dlopen(path.c_str(), RTLD_LAZY);
 #endif
 #ifdef OS_WINDOWS
     return LoadLibrary(path.c_str());
 #endif
 }
+

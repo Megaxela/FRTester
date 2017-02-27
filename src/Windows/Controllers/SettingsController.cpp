@@ -24,7 +24,7 @@ void SettingsController::tabSelected()
             QString::fromStdString(
                     SettingsSystem::instance().getValue(
                             SettingsSystem::TestsSharedTestsPath,
-                            "tests/"
+                            "tests/shared"
                     )
             )
     );
@@ -33,7 +33,16 @@ void SettingsController::tabSelected()
             QString::fromStdString(
                     SettingsSystem::instance().getValue(
                             SettingsSystem::TestsSharedTriggersPath,
-                            "triggers/"
+                            "triggers/shared"
+                    )
+            )
+    );
+
+    ui()->settingsManualTestsPathLineEdit->setText(
+            QString::fromStdString(
+                    SettingsSystem::instance().getValue(
+                            SettingsSystem::TestsManualTestsPath,
+                            "tests/manual"
                     )
             )
     );
@@ -52,6 +61,12 @@ void SettingsController::setupConnections()
             &QPushButton::clicked,
             this,
             &SettingsController::onTriggersPathPushButtonPressed);
+
+    // Кнопка выбора пути до ручных тестов
+    connect(ui()->settingsManualTestsPathPushButton,
+            &QPushButton::clicked,
+            this,
+            &SettingsController::onManualTestsPathPushButtonPressed);
 }
 
 void SettingsController::configureWidgets()
@@ -71,6 +86,10 @@ void SettingsController::tabLeaved()
             ui()->settingsTriggersPathLineEdit->text().toStdString()
     );
 
+    SettingsSystem::instance().setValue(
+            SettingsSystem::TestsManualTestsPath,
+            ui()->settingsManualTestsPathLineEdit->text().toStdString()
+    );
 }
 
 void SettingsController::onTestsPathPushButtonPressed()
@@ -107,4 +126,22 @@ void SettingsController::onTriggersPathPushButtonPressed()
     }
 
     ui()->settingsTriggersPathLineEdit->setText(path);
+}
+
+void SettingsController::onManualTestsPathPushButtonPressed()
+{
+    // Выбор пути
+    QString path = QFileDialog::getExistingDirectory(
+            parentWidget(),
+            "Выберите папку с ручными тестами.",
+            ui()->settingsManualTestsPathLineEdit->text()
+    );
+
+    // Путь не был выбран
+    if (path.isEmpty())
+    {
+        return;
+    }
+
+    ui()->settingsManualTestsPathLineEdit->setText(path);
 }

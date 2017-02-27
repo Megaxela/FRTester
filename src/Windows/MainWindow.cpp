@@ -4,6 +4,7 @@
 
 #include <include/Tools/Logger.h>
 #include <include/Windows/Controllers/RootController.h>
+#include <include/Testing/TestCore.h>
 #include "include/Windows/MainWindow.h"
 #include "ui_mainwindow.h"
 
@@ -16,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_rootController = new RootController(m_ui, this, m_ui->mainTabWidget);
     m_rootController->init();
+
+    TestCore::instance().environment()->tools()->setParentWidget(this);
 }
 
 MainWindow::~MainWindow()

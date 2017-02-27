@@ -13,14 +13,14 @@
 #define CHECK_TRIGGERS \
 if (TestCore::instance().hasFailedTriggers()) \
 { \
-    enviroment()->logger()->log("Найдены проваленные триггеры."); \
+    environment()->logger()->log("Найдены проваленные триггеры."); \
     return false; \
 }
 
 #define CHECK_IS_TEST_RUNNING \
-if (enviroment()->tools()->testingStoped())\
+if (environment()->tools()->testingStoped())\
 {\
-    enviroment()->logger()->log("Тестирование остановлено");\
+    environment()->logger()->log("Тестирование остановлено");\
     return true;\
 }\
 
@@ -161,6 +161,13 @@ public:
 
     /**
      * @brief Метод для получения значения переменной.
+     * @param name Название переменной.
+     * @return Значение.
+     */
+    DataValue getValue(const std::string& name);
+
+    /**
+     * @brief Метод для получения значения переменной.
      * @param name Название переменной
      * @return Значение.
      */
@@ -244,15 +251,20 @@ public:
      */
     bool containsValue(const std::string& name, DataValue::Type type) const;
 
-protected:
     /**
-     * @brief Метод для получения драйвера.
+     * @brief Метод для получения тестировочного окружения.
      * @return
      */
-    TestEnvironment* enviroment();
+    TestEnvironment* environment();
+
+    /**
+     * @brief Метод для установки тестировочного окружения.
+     * @param environment Тестировочное окружение.
+     */
+    void setEnvironment(TestEnvironment* environment);
 
 private:
-    TestEnvironment* m_enviroment;
+    TestEnvironment* m_environment;
 
     std::string m_name;
     std::string m_description;

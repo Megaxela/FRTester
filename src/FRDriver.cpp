@@ -50,11 +50,6 @@ ByteArray FRDriver::sendRaw(const ByteArray &data)
         throw DriverException("Адаптеры для драйвера не были установлены.");
     }
 
-//    if (!m_protocol->prepareDeviceToWrite(m_interface))
-//    {
-//        Error("Не удалось подготовить ФР к записи данных.");
-//        return ByteArray();
-//    }
     m_protocol->prepareDeviceToWrite(m_interface);
 
     // Оборачиваем данные
@@ -1210,6 +1205,20 @@ bool FRDriver::printBarcode(uint32_t pwd, uint64_t value)
     arguments.appendPart(value, 5, ByteArray::ByteOrder_LittleEndian);
 
     auto data = sendCommand(Command::PrintBarcode, arguments, true);
+
+    return getLastError() == ErrorCode::NoError;
+}
+
+bool FRDriver::sendTag(uint32_t pwd, uint16_t tag, const std::string &str)
+{
+    ByteArray arguments;
+
+    arguments.append(pwd, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(tag, ByteArray::ByteOrder_LittleEndian);
+    arguments.append((uint16_t) str.size(), ByteArray::ByteOrder_LittleEndian);
+    arguments.append((uint8_t*) str.c_str(), (uint32_t) str.size());
+
+    auto data = sendCommand(Command::SendTag, arguments, false);
 
     return getLastError() == ErrorCode::NoError;
 }

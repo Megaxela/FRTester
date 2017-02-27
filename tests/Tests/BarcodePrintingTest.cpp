@@ -26,14 +26,14 @@ bool BarcodePrintingTest::execute()
     auto numberOfBarcodes = getValueUInt32("Number Of Barcodes");
 
     // Включаем печать, иначе какой смысл
-    auto before = enviroment()->tools()->enablePrinting(
+    auto before = environment()->tools()->enablePrinting(
             password,
             TestingTools::Printing::Enabled
     );
 
     if (before == TestingTools::Printing::Unknown)
     {
-        enviroment()->logger()->log("Не удалось включить печать.");
+        environment()->logger()->log("Не удалось включить печать.");
         return false;
     }
 
@@ -46,66 +46,66 @@ bool BarcodePrintingTest::execute()
         seed = (uint32_t) Time::getMilliseconds();
     }
 
-    enviroment()->logger()->log("Используется seed: " + std::to_string(seed));
+    environment()->logger()->log("Используется seed: " + std::to_string(seed));
 
     generator.seed(seed);
 
     for (uint32_t i = 0; i < numberOfBarcodes; ++i)
     {
-        if (enviroment()->tools()->testingStoped())
+        if (environment()->tools()->testingStoped())
         {
-            enviroment()->logger()->log("Восстанавливаем состояние печати.");
+            environment()->logger()->log("Восстанавливаем состояние печати.");
             if (before != TestingTools::Printing::Enabled)
             {
-                before = enviroment()->tools()->enablePrinting(
+                before = environment()->tools()->enablePrinting(
                         password,
                         before
                 );
 
                 if (before == TestingTools::Printing::Unknown)
                 {
-                    enviroment()->logger()->log("Не удалось вернуть состояние печати. Останавливает тест.");
+                    environment()->logger()->log("Не удалось вернуть состояние печати. Останавливает тест.");
                     return false;
                 }
             }
-            enviroment()->logger()->log("Тестирование остановлено");
+            environment()->logger()->log("Тестирование остановлено");
 
             return true;
         }
 
         auto value = distribution(generator);
-        if (!enviroment()->driver()->standardStringPrint(
+        if (!environment()->driver()->standardStringPrint(
                 password,
                 1,
                 "Value: " + std::to_string(value) + " on barcode #" + std::to_string(i)
         ))
         {
-            enviroment()->logger()->log(
+            environment()->logger()->log(
                     "Не удалось напечатать значение. Ошибка: #" +
-                    std::to_string((int) enviroment()->driver()->getLastError()) +
+                    std::to_string((int) environment()->driver()->getLastError()) +
                     ' ' +
                     FRDriver::Converters::errorToString(
-                            (int) enviroment()->driver()->getLastError()
+                            (int) environment()->driver()->getLastError()
                     )
             );
 
             return false;
         }
 
-        enviroment()->logger()->log("Печатается штрих-код со значением " + std::to_string(value) + " на штрихкоде №" + std::to_string(i) + "...");
-        if (!enviroment()->driver()->printBarcode(
+        environment()->logger()->log("Печатается штрих-код со значением " + std::to_string(value) + " на штрихкоде №" + std::to_string(i) + "...");
+        if (!environment()->driver()->printBarcode(
                 password,
                 value
         ))
         {
-            enviroment()->logger()->log(
+            environment()->logger()->log(
                     "Не удалось напечатать штрих-код со значением " +
                     std::to_string(value) +
                     " Ошибка #" +
-                    std::to_string((int) enviroment()->driver()->getLastError()) +
+                    std::to_string((int) environment()->driver()->getLastError()) +
                     ' ' +
                     FRDriver::Converters::errorToString(
-                            (int) enviroment()->driver()->getLastError()
+                            (int) environment()->driver()->getLastError()
                     )
             );
 
@@ -117,14 +117,14 @@ bool BarcodePrintingTest::execute()
 
     if (before != TestingTools::Printing::Enabled)
     {
-        before = enviroment()->tools()->enablePrinting(
+        before = environment()->tools()->enablePrinting(
                 password,
                 before
         );
 
         if (before == TestingTools::Printing::Unknown)
         {
-            enviroment()->logger()->log("Не удалось вернуть состояние печати. Останавливает тест.");
+            environment()->logger()->log("Не удалось вернуть состояние печати. Останавливает тест.");
             return false;
         }
     }

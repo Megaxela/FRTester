@@ -6,6 +6,11 @@
 #define FRTESTER_TESTDATAVALUE_H
 
 #include <cstdint>
+#include <stdexcept>
+#include <libraries/json.hpp>
+#include <include/Tools/ByteArray.h>
+
+using nlohmann::json;
 
 struct DataValue
 {
@@ -19,7 +24,9 @@ struct DataValue
         Int32,
         UInt64,
         Int64,
-        Boolean
+        Boolean,
+        String,
+        ByteArray
     };
 
     DataValue() :
@@ -83,6 +90,132 @@ struct DataValue
         value.integer.int64 = number;
     }
 
+    DataValue(const std::string& str) :
+            type(Type::String)
+    {
+        value.string = str;
+    }
+
+    DataValue(const ByteArray& byteArray) :
+            type(Type::ByteArray)
+    {
+        value.byteArray = byteArray;
+    }
+
+    uint64_t toUInt64() const
+    {
+        if (type != Type::UInt64)
+        {
+            throw std::logic_error("Неверный тип переменной.");
+        }
+
+        return value.integer.uint64;
+    }
+
+    int64_t toInt64() const
+    {
+        if (type != Type::Int64)
+        {
+            throw std::logic_error("Неверный тип переменной.");
+        }
+
+        return value.integer.int64;
+    }
+
+    uint32_t toUInt32() const
+    {
+        if (type != Type::UInt32)
+        {
+            throw std::logic_error("Неверный тип переменной.");
+        }
+
+        return value.integer.uint32;
+    }
+
+    int32_t toInt32() const
+    {
+        if (type != Type::Int32)
+        {
+            throw std::logic_error("Неверный тип переменной.");
+        }
+
+        return value.integer.int32;
+    }
+
+    uint16_t toUInt16() const
+    {
+        if (type != Type::UInt16)
+        {
+            throw std::logic_error("Неверный тип переменной.");
+        }
+
+        return value.integer.uint16;
+    }
+
+    int16_t toInt16() const
+    {
+        if (type != Type::Int16)
+        {
+            throw std::logic_error("Неверный тип переменной.");
+        }
+
+        return value.integer.int16;
+    }
+
+    uint8_t toUInt8() const
+    {
+        if (type != Type::UInt8)
+        {
+            throw std::logic_error("Неверный тип переменной.");
+        }
+
+        return value.integer.uint8;
+    }
+
+    int8_t toInt8() const
+    {
+        if (type != Type::Int8)
+        {
+            throw std::logic_error("Неверный тип переменной.");
+        }
+
+        return value.integer.int8;
+    }
+
+    bool toBoolean() const
+    {
+        if (type != Type::Boolean)
+        {
+            throw std::logic_error("Неверный тип переменной.");
+        }
+
+        return value.boolean;
+    }
+
+    ByteArray toByteArray() const
+    {
+        if (type == Type::ByteArray)
+        {
+            throw std::logic_error("Неверный тип переменной.");
+        }
+
+        return value.byteArray;
+    }
+
+    std::string toString() const
+    {
+        if (type != Type::String)
+        {
+            throw std::logic_error("Неверный тип переменной.");
+        }
+
+        return value.string;
+    }
+
+    static void from_json(const json& j, DataValue& value);
+
+    static void to_json(json& j, const DataValue& value);
+
     Type type;
 
     struct {
@@ -97,8 +230,9 @@ struct DataValue
             int64_t int64;
         } integer;
         bool boolean;
+        std::string string;
+        ByteArray byteArray;
     } value;
 };
-
 
 #endif //FRTESTER_TESTDATAVALUE_H

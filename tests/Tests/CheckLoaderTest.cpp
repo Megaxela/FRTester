@@ -34,41 +34,41 @@ bool CheckLoaderTest::execute()
 
     auto printValue = printEnabled ? TestingTools::Printing::Enabled : TestingTools::Printing::Disabled;
 
-    auto currentPrintValue = enviroment()->tools()->enablePrinting(
+    auto currentPrintValue = environment()->tools()->enablePrinting(
             password,
             printValue
     );
 
     if (currentPrintValue == TestingTools::Printing::Unknown)
     {
-        enviroment()->logger()->log("Не удалось изменить состояние печати. Останавлиаем тест.");
+        environment()->logger()->log("Не удалось изменить состояние печати. Останавлиаем тест.");
         return false;
     }
 
     bool needToRestore = printValue != currentPrintValue;
 
-    enviroment()->driver()->openShift(password);
+    environment()->driver()->openShift(password);
 
-    enviroment()->logger()->log("Начинаем пробивать чеки.");
+    environment()->logger()->log("Начинаем пробивать чеки.");
 
     for (uint32_t checkIndex = 0;
          checkIndex < numberOfChecks;
          ++checkIndex)
     {
-        if (enviroment()->tools()->testingStoped())
+        if (environment()->tools()->testingStoped())
         {
             // Восстанавливаем состояние печати
             if (needToRestore)
             {
-                currentPrintValue = enviroment()->tools()->enablePrinting(password, currentPrintValue);
+                currentPrintValue = environment()->tools()->enablePrinting(password, currentPrintValue);
                 if (currentPrintValue == TestingTools::Printing::Unknown)
                 {
-                    enviroment()->logger()->log("Не удалось изменить состояние печати. Останавлиаем тест.");
+                    environment()->logger()->log("Не удалось изменить состояние печати. Останавлиаем тест.");
                     return false;
                 }
             }
 
-            enviroment()->logger()->log("Тестирование остановлено");
+            environment()->logger()->log("Тестирование остановлено");
             return true;
         }
 
@@ -76,20 +76,20 @@ bool CheckLoaderTest::execute()
              operationIndex < numberOfOperations;
              ++operationIndex)
         {
-            if (enviroment()->tools()->testingStoped())
+            if (environment()->tools()->testingStoped())
             {
                 // Восстанавливаем состояние печати
                 if (needToRestore)
                 {
-                    currentPrintValue = enviroment()->tools()->enablePrinting(password, currentPrintValue);
+                    currentPrintValue = environment()->tools()->enablePrinting(password, currentPrintValue);
                     if (currentPrintValue == TestingTools::Printing::Unknown)
                     {
-                        enviroment()->logger()->log("Не удалось изменить состояние печати. Останавлиаем тест.");
+                        environment()->logger()->log("Не удалось изменить состояние печати. Останавлиаем тест.");
                         return false;
                     }
                 }
 
-                enviroment()->logger()->log("Тестирование остановлено");
+                environment()->logger()->log("Тестирование остановлено");
                 return true;
             }
 
@@ -100,7 +100,7 @@ bool CheckLoaderTest::execute()
                 do
                 {
                     ++realTries;
-                    bool result = enviroment()->driver()->sell(
+                    bool result = environment()->driver()->sell(
                             password,
                             goodCount,
                             goodPrice,
@@ -122,7 +122,7 @@ bool CheckLoaderTest::execute()
 
                     if (realTries == 500)
                     {
-                        enviroment()->logger()->log(
+                        environment()->logger()->log(
                                 "Печать предыдущей команды осуществляется слишком долго."
                                 " (более 500 попыток) Прерываем тест."
                         );
@@ -130,9 +130,9 @@ bool CheckLoaderTest::execute()
                         return false;
                     }
 
-                    if ((int) enviroment()->driver()->getLastError() != 0)
+                    if ((int) environment()->driver()->getLastError() != 0)
                     {
-                        if ((int) enviroment()->driver()->getLastError() != 80)
+                        if ((int) environment()->driver()->getLastError() != 80)
                         {
                             --tries;
                         }
@@ -145,17 +145,17 @@ bool CheckLoaderTest::execute()
                     }
 
                 }
-                while (enviroment()->driver()->getLastError() != FRDriver::ErrorCode::NoError &&
+                while (environment()->driver()->getLastError() != FRDriver::ErrorCode::NoError &&
                        tries > 0);
 
                 if (tries == 0)
                 {
-                    enviroment()->logger()->log(
+                    environment()->logger()->log(
                             "Не удалось произвести продажу. Последняя ошибка: #" +
-                            std::to_string((int) enviroment()->driver()->getLastError()) +
+                            std::to_string((int) environment()->driver()->getLastError()) +
                             ' ' +
                             FRDriver::Converters::errorToString(
-                                    (int) enviroment()->driver()->getLastError()
+                                    (int) environment()->driver()->getLastError()
                             )
                     );
 
@@ -169,7 +169,7 @@ bool CheckLoaderTest::execute()
             {
                 if ((operationIndex + 1) % (numberOfOperations / 5) == 0)
                 {
-                    enviroment()->logger()->log(
+                    environment()->logger()->log(
                             "Пробито " +
                             std::to_string(operationIndex + 1) +
                             '/' +
@@ -179,7 +179,7 @@ bool CheckLoaderTest::execute()
             }
         }
 
-        enviroment()->logger()->log(
+        environment()->logger()->log(
                 "Пробит весь чек. Закрываем его."
         );
 
@@ -188,24 +188,24 @@ bool CheckLoaderTest::execute()
 
             do
             {
-                if (enviroment()->tools()->testingStoped())
+                if (environment()->tools()->testingStoped())
                 {
                     // Восстанавливаем состояние печати
                     if (needToRestore)
                     {
-                        currentPrintValue = enviroment()->tools()->enablePrinting(password, currentPrintValue);
+                        currentPrintValue = environment()->tools()->enablePrinting(password, currentPrintValue);
                         if (currentPrintValue == TestingTools::Printing::Unknown)
                         {
-                            enviroment()->logger()->log("Не удалось изменить состояние печати. Останавлиаем тест.");
+                            environment()->logger()->log("Не удалось изменить состояние печати. Останавлиаем тест.");
                             return false;
                         }
                     }
 
-                    enviroment()->logger()->log("Тестирование остановлено");
+                    environment()->logger()->log("Тестирование остановлено");
                     return true;
                 }
 
-                enviroment()->driver()->closeCheck(
+                environment()->driver()->closeCheck(
                         password,
                         FROperations::smartRound(
                                 goodPrice * (goodCount * 0.001)
@@ -224,55 +224,55 @@ bool CheckLoaderTest::execute()
                         std::to_string(numberOfChecks)
                 );
 
-                if ((int) enviroment()->driver()->getLastError() != 0 &&
-                    (int) enviroment()->driver()->getLastError() != 80)
+                if ((int) environment()->driver()->getLastError() != 0 &&
+                    (int) environment()->driver()->getLastError() != 80)
                 {
                     --tries;
                 }
             }
-            while (enviroment()->driver()->getLastError() != FRDriver::ErrorCode::NoError &&
+            while (environment()->driver()->getLastError() != FRDriver::ErrorCode::NoError &&
                    tries > 0);
 
             if (tries == 0)
             {
-                enviroment()->logger()->log(
+                environment()->logger()->log(
                         "Ошибка на чеке " +
                         std::to_string(checkIndex) +
                         '/' +
                         std::to_string(numberOfChecks)
                 );
 
-                enviroment()->logger()->log(
+                environment()->logger()->log(
                         "Не удалось закрыть чек в течении 10 попыток. Последняя ошибка: #" +
-                        std::to_string((int) enviroment()->driver()->getLastError()) +
+                        std::to_string((int) environment()->driver()->getLastError()) +
                         ' ' +
                         FRDriver::Converters::errorToString(
-                                (int) enviroment()->driver()->getLastError()
+                                (int) environment()->driver()->getLastError()
                         )
                 );
 
                 return false;
             }
 
-            if (enviroment()->tools()->testingStoped())
+            if (environment()->tools()->testingStoped())
             {
                 // Восстанавливаем состояние печати
                 if (needToRestore)
                 {
-                    currentPrintValue = enviroment()->tools()->enablePrinting(password, currentPrintValue);
+                    currentPrintValue = environment()->tools()->enablePrinting(password, currentPrintValue);
                     if (currentPrintValue == TestingTools::Printing::Unknown)
                     {
-                        enviroment()->logger()->log("Не удалось изменить состояние печати. Останавлиаем тест.");
+                        environment()->logger()->log("Не удалось изменить состояние печати. Останавлиаем тест.");
                         return false;
                     }
                 }
 
-                enviroment()->logger()->log("Тестирование остановлено");
+                environment()->logger()->log("Тестирование остановлено");
                 return true;
             }
         }
 
-        enviroment()->logger()->log(
+        environment()->logger()->log(
                 "Пробит чек " +
                 std::to_string(checkIndex + 1) +
                 '/' +
@@ -282,10 +282,10 @@ bool CheckLoaderTest::execute()
 
     if (needToRestore)
     {
-        currentPrintValue = enviroment()->tools()->enablePrinting(password, currentPrintValue);
+        currentPrintValue = environment()->tools()->enablePrinting(password, currentPrintValue);
         if (currentPrintValue == TestingTools::Printing::Unknown)
         {
-            enviroment()->logger()->log("Не удалось изменить состояние печати. Останавлиаем тест.");
+            environment()->logger()->log("Не удалось изменить состояние печати. Останавлиаем тест.");
             return false;
         }
     }

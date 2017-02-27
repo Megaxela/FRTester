@@ -57,6 +57,13 @@ void AbstractTabController::init()
                                     )
                     )
             );
+
+            auto result = m_tabControllers.find(tabWidget()->currentWidget());
+
+            if (result != m_tabControllers.end())
+            {
+                result.value()->tabSelected();
+            }
         }
         catch (std::invalid_argument e)
         {

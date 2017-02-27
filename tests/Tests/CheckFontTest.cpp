@@ -18,18 +18,18 @@ bool CheckFontTest::execute()
 {
     auto password = getValueUInt32("Password");
     // Открываем смену
-    if (!enviroment()->driver()->openShift(password))
+    if (!environment()->driver()->openShift(password))
     {
-        enviroment()->logger()->log("Не удалось открыть смену. Ошибка #" +
-                                    std::to_string((int) enviroment()->driver()->getLastError()) +
+        environment()->logger()->log("Не удалось открыть смену. Ошибка #" +
+                                    std::to_string((int) environment()->driver()->getLastError()) +
                                     ' ' +
-                                    FRDriver::Converters::errorToString((int) enviroment()->driver()->getLastError()));
+                                    FRDriver::Converters::errorToString((int) environment()->driver()->getLastError()));
         return false;
     }
 
-    if (!enviroment()->tools()->waitForPrintingFinished(password, 5000))
+    if (!environment()->tools()->waitForPrintingFinished(password, 5000))
     {
-        enviroment()->logger()->log(
+        environment()->logger()->log(
                 "Не удалось дождаться окончания печати документа открытия смены."
         );
 
@@ -50,11 +50,11 @@ bool CheckFontTest::execute()
             // Записываем новое значение
             if (!writeFont(password, field, fontValue))
             {
-                enviroment()->logger()->log("Не удалось записать шрифт. Останавливаем тестирование.");
+                environment()->logger()->log("Не удалось записать шрифт. Останавливаем тестирование.");
                 return false;
             }
 
-            enviroment()->logger()->log(
+            environment()->logger()->log(
                     "Совершаем продажу"
                     " со шрифтом " +
                     std::to_string(fontValue) +
@@ -62,7 +62,7 @@ bool CheckFontTest::execute()
                     std::to_string(field)
             );
 
-            if (!enviroment()->driver()->sell(
+            if (!environment()->driver()->sell(
                     password,
                     1000,
                     1000,
@@ -74,15 +74,15 @@ bool CheckFontTest::execute()
                     "SOME TOOL"
             ))
             {
-                enviroment()->logger()->log("Не удалось совершить продажу. Ошибка #" +
-                                            std::to_string((int) enviroment()->driver()->getLastError()) +
+                environment()->logger()->log("Не удалось совершить продажу. Ошибка #" +
+                                            std::to_string((int) environment()->driver()->getLastError()) +
                                             ' ' +
-                                            FRDriver::Converters::errorToString((int) enviroment()->driver()->getLastError()));
+                                            FRDriver::Converters::errorToString((int) environment()->driver()->getLastError()));
                 return false;
             }
 
             // Закрытие чека
-            enviroment()->driver()->closeCheck(
+            environment()->driver()->closeCheck(
                     password,
                     1000,
                     0,
@@ -97,19 +97,19 @@ bool CheckFontTest::execute()
                     " Field:" + std::to_string(field)
             );
 
-            if (enviroment()->driver()->getLastError() != FRDriver::ErrorCode::NoError)
+            if (environment()->driver()->getLastError() != FRDriver::ErrorCode::NoError)
             {
-                enviroment()->logger()->log("Не удалось закрыть чек. Ошибка #" +
-                                            std::to_string((int) enviroment()->driver()->getLastError()) +
+                environment()->logger()->log("Не удалось закрыть чек. Ошибка #" +
+                                            std::to_string((int) environment()->driver()->getLastError()) +
                                             ' ' +
-                                            FRDriver::Converters::errorToString((int) enviroment()->driver()->getLastError()));
+                                            FRDriver::Converters::errorToString((int) environment()->driver()->getLastError()));
 
                 return false;
             }
 
-            if (!enviroment()->tools()->waitForPrintingFinished(password, 5000))
+            if (!environment()->tools()->waitForPrintingFinished(password, 5000))
             {
-                enviroment()->logger()->log("Мы не дождались окончания печати.");
+                environment()->logger()->log("Мы не дождались окончания печати.");
                 return false;
             }
         }
@@ -117,7 +117,7 @@ bool CheckFontTest::execute()
         // Возвращаем старое значение
         if (!writeFont(password, field, lastValue))
         {
-            enviroment()->logger()->log("Не удалось восстановить шрифт. Останавливаем тестирование.");
+            environment()->logger()->log("Не удалось восстановить шрифт. Останавливаем тестирование.");
             return false;
         }
     }
@@ -127,19 +127,19 @@ bool CheckFontTest::execute()
 
 uint8_t CheckFontTest::readFont(uint32_t pwd, uint8_t field)
 {
-    auto value = enviroment()->driver()->readTableBin(
+    auto value = environment()->driver()->readTableBin(
             pwd,
             8,
             1,
             field
     );
 
-    if (enviroment()->driver()->getLastError() != FRDriver::ErrorCode::NoError)
+    if (environment()->driver()->getLastError() != FRDriver::ErrorCode::NoError)
     {
-        enviroment()->logger()->log("Не удалось получить " + std::to_string(field) + " значение таблицы №8. Ошибка: #" +
-                                    std::to_string((int) enviroment()->driver()->getLastError()) +
+        environment()->logger()->log("Не удалось получить " + std::to_string(field) + " значение таблицы №8. Ошибка: #" +
+                                    std::to_string((int) environment()->driver()->getLastError()) +
                                     ' ' +
-                                    FRDriver::Converters::errorToString((int) enviroment()->driver()->getLastError()));
+                                    FRDriver::Converters::errorToString((int) environment()->driver()->getLastError()));
 
         return 0;
     }
@@ -149,7 +149,7 @@ uint8_t CheckFontTest::readFont(uint32_t pwd, uint8_t field)
 
 bool CheckFontTest::writeFont(uint32_t pwd, uint8_t field, uint8_t value)
 {
-    if (!enviroment()->driver()->writeTable(
+    if (!environment()->driver()->writeTable(
             pwd,
             8,
             1,
@@ -158,10 +158,10 @@ bool CheckFontTest::writeFont(uint32_t pwd, uint8_t field, uint8_t value)
             1
     ))
     {
-        enviroment()->logger()->log("Не удалось записать значение " + std::to_string(value) + " в поле " + std::to_string(field) + " в таблицы №8. Ошибка: #" +
-                                    std::to_string((int) enviroment()->driver()->getLastError()) +
+        environment()->logger()->log("Не удалось записать значение " + std::to_string(value) + " в поле " + std::to_string(field) + " в таблицы №8. Ошибка: #" +
+                                    std::to_string((int) environment()->driver()->getLastError()) +
                                     ' ' +
-                                    FRDriver::Converters::errorToString((int) enviroment()->driver()->getLastError()));
+                                    FRDriver::Converters::errorToString((int) environment()->driver()->getLastError()));
 
         return false;
     }

@@ -1,0 +1,15 @@
+//
+// Created by megaxela on 27.02.17.
+//
+
+#ifndef FRTESTER_RESUMEPRINTINGTESTACTION_H
+#define FRTESTER_RESUMEPRINTINGTESTACTION_H
+
+
+class ResumePrintingTestAction
+{
+
+};
+
+
+#endif //FRTESTER_RESUMEPRINTINGTESTACTION_H

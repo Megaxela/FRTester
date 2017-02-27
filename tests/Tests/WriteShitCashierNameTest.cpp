@@ -21,27 +21,27 @@ bool WriteShitCashierNameTest::execute()
 {
     auto systemAdministratorPassword = getValueUInt32("System Admin Password");
 
-    enviroment()->logger()->log("Запоминаем старые имена кассиров.");
+    environment()->logger()->log("Запоминаем старые имена кассиров.");
 
     std::vector<std::string> oldNames;
 
     for (uint32_t i = 0; i < 4; ++i)
     {
-        auto result = enviroment()->driver()->readTableStr(
+        auto result = environment()->driver()->readTableStr(
                 systemAdministratorPassword,
                 2,
                 (uint8_t) (i + 1),
                 2
         );
 
-        if (enviroment()->driver()->getLastError() != FRDriver::ErrorCode::NoError)
+        if (environment()->driver()->getLastError() != FRDriver::ErrorCode::NoError)
         {
-            enviroment()->logger()->log(
+            environment()->logger()->log(
                     "Не удалось записать данные. Ошибка #" +
-                    std::to_string((int) enviroment()->driver()->getLastError()) +
+                    std::to_string((int) environment()->driver()->getLastError()) +
                     ' ' +
                     FRDriver::Converters::errorToString(
-                            (int) enviroment()->driver()->getLastError()
+                            (int) environment()->driver()->getLastError()
                     )
             );
 
@@ -54,12 +54,12 @@ bool WriteShitCashierNameTest::execute()
 
         oldNames.push_back(oldNameUtf8);
 
-        enviroment()->logger()->log(
+        environment()->logger()->log(
                 "Старое название кассира №" + std::to_string(i + 1) + oldNameUtf8
         );
     }
 
-    enviroment()->logger()->log("Начинается запись мусора в названия (пропуская 0x00).");
+    environment()->logger()->log("Начинается запись мусора в названия (пропуская 0x00).");
 
     uint8_t byteValue = 0x01;
     std::string nameString;
@@ -71,13 +71,13 @@ bool WriteShitCashierNameTest::execute()
             nameString += byteValue++;
         }
 
-        enviroment()->logger()->log(
+        environment()->logger()->log(
                 "Запись названия для " +
                 std::to_string(cashierIndex) +
                 " кассира."
         );
 
-        enviroment()->driver()->writeTable(
+        environment()->driver()->writeTable(
                 systemAdministratorPassword,
                 2,
                 (cashierIndex + 1),
@@ -85,14 +85,14 @@ bool WriteShitCashierNameTest::execute()
                 nameString
         );
 
-        if (enviroment()->driver()->getLastError() != FRDriver::ErrorCode::NoError)
+        if (environment()->driver()->getLastError() != FRDriver::ErrorCode::NoError)
         {
-            enviroment()->logger()->log(
+            environment()->logger()->log(
                     "Не удалось записать данные. Ошибка #" +
-                    std::to_string((int) enviroment()->driver()->getLastError()) +
+                    std::to_string((int) environment()->driver()->getLastError()) +
                     ' ' +
                     FRDriver::Converters::errorToString(
-                            (int) enviroment()->driver()->getLastError()
+                            (int) environment()->driver()->getLastError()
                     )
             );
 
@@ -100,7 +100,7 @@ bool WriteShitCashierNameTest::execute()
         }
     }
 
-    enviroment()->logger()->log("Данные записаны.");
+    environment()->logger()->log("Данные записаны.");
 
     return false;
 }

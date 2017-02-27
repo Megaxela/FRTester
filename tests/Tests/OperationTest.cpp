@@ -24,7 +24,7 @@ OperationTest::OperationTest(TestEnvironment *environment)
 bool OperationTest::execute()
 {
     auto password = getValueUInt32("Password");
-    enviroment()->driver()->openShift(password);
+    environment()->driver()->openShift(password);
 
     for (uint32_t operatingIndex = 0;
          operatingIndex < 4;
@@ -58,7 +58,7 @@ bool OperationTest::execute()
             break;
         }
 
-        enviroment()->logger()->log("Тестирование \"" +
+        environment()->logger()->log("Тестирование \"" +
                                     actionName +
                                     "\" по отделам.");
 
@@ -75,7 +75,7 @@ bool OperationTest::execute()
                     money * (count * 0.001)
             );
 
-            enviroment()->logger()->log(
+            environment()->logger()->log(
                     "Значения: (Количество * Сумма) " +
                     std::to_string(count * 0.001) +
                     " * " +
@@ -91,7 +91,7 @@ bool OperationTest::execute()
                 switch (operatingIndex)
                 {
                 case 0: // Продажа
-                    enviroment()->driver()->sell(
+                    environment()->driver()->sell(
                             password,
                             count, // Количество
                             money, // Цена
@@ -105,7 +105,7 @@ bool OperationTest::execute()
                     break;
 
                 case 1: // Покупка
-                    enviroment()->driver()->buy(
+                    environment()->driver()->buy(
                             password,
                             count, // Количество
                             money, // Цена
@@ -120,7 +120,7 @@ bool OperationTest::execute()
 
 
                 case 2: // Возврат покупки
-                    enviroment()->driver()->returnBuy(
+                    environment()->driver()->returnBuy(
                             password,
                             count, // Количество
                             money, // Цена
@@ -134,7 +134,7 @@ bool OperationTest::execute()
                     break;
 
                 case 3: // Возврат продажи
-                    enviroment()->driver()->returnBuy(
+                    environment()->driver()->returnBuy(
                             password,
                             count, // Количество
                             money, // Цена
@@ -149,20 +149,20 @@ bool OperationTest::execute()
                 default:break;
                 }
             }
-            while (enviroment()->driver()->getLastError() != FRDriver::ErrorCode::NoError && (--tries) > 0);
+            while (environment()->driver()->getLastError() != FRDriver::ErrorCode::NoError && (--tries) > 0);
 
             sum += multi;
 
             if (tries == 0)
             {
-                enviroment()->logger()->log(
+                environment()->logger()->log(
                         "Не удалось произвести операцию \"" +
                         actionName +
                         "\". Последняя ошибка: #" +
-                        std::to_string((int) enviroment()->driver()->getLastError()) +
+                        std::to_string((int) environment()->driver()->getLastError()) +
                         ' ' +
                         FRDriver::Converters::errorToString(
-                                (int) enviroment()->driver()->getLastError()
+                                (int) environment()->driver()->getLastError()
                         )
                 );
                 return false;
@@ -171,7 +171,7 @@ bool OperationTest::execute()
             CHECK_TRIGGERS;
         }
 
-        enviroment()->logger()->log("Закрытие чека с суммой: " + std::to_string(sum * 0.01));
+        environment()->logger()->log("Закрытие чека с суммой: " + std::to_string(sum * 0.01));
 
         FRDriver::CheckResult closeResult;
         {
@@ -179,7 +179,7 @@ bool OperationTest::execute()
             do
             {
                 CHECK_IS_TEST_RUNNING;
-                closeResult = enviroment()->driver()->closeCheck(
+                closeResult = environment()->driver()->closeCheck(
                         password,
                         sum, // Оплата типом оплаты налом
                         0,
@@ -193,14 +193,14 @@ bool OperationTest::execute()
                         ""
                 );
             }
-            while(enviroment()->driver()->getLastError() != FRDriver::ErrorCode::NoError && (--tries) > 0);
+            while(environment()->driver()->getLastError() != FRDriver::ErrorCode::NoError && (--tries) > 0);
 
             if (tries == 0)
             {
-                enviroment()->logger()->log(
+                environment()->logger()->log(
                         "Не удалось закрыть чек после 10 попыток. Последняя ошибка: " +
                         FRDriver::Converters::errorToString(
-                                (int) enviroment()->driver()->getLastError()
+                                (int) environment()->driver()->getLastError()
                         )
                 );
 
@@ -210,7 +210,7 @@ bool OperationTest::execute()
 
         CHECK_TRIGGERS;
 
-        enviroment()->logger()->log(
+        environment()->logger()->log(
                 "Сдача: " +
                 std::to_string(closeResult.change) +
                 ", должна быть 0."
@@ -218,7 +218,7 @@ bool OperationTest::execute()
 
         if (closeResult.change != 0)
         {
-            enviroment()->logger()->log("Сдача != 0. Где-то что-то было не правильно посчитано.");
+            environment()->logger()->log("Сдача != 0. Где-то что-то было не правильно посчитано.");
             return false;
         }
     }

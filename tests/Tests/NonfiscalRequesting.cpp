@@ -33,66 +33,66 @@ bool NonfiscalRequesting::execute()
 
         CHECK_IS_TEST_RUNNING;
 
-        enviroment()->logger()->log("Открываем нефискальный документ #" + std::to_string(cycle + 1));
+        environment()->logger()->log("Открываем нефискальный документ #" + std::to_string(cycle + 1));
 
-        enviroment()->driver()->openNonFiscalDocument(password);
-        if (enviroment()->driver()->getLastError() != FRDriver::ErrorCode::PointOfSalesWrongCommandIsNotSupportedForThisPointOfSalesImplementation)
+        environment()->driver()->openNonFiscalDocument(password);
+        if (environment()->driver()->getLastError() != FRDriver::ErrorCode::PointOfSalesWrongCommandIsNotSupportedForThisPointOfSalesImplementation)
         {
-            enviroment()->logger()->log("    Каким-то образом прошло открытие нефискального документа.");
+            environment()->logger()->log("    Каким-то образом прошло открытие нефискального документа.");
             return false;
         }
 
-        enviroment()->logger()->log("    Печать текста.");
+        environment()->logger()->log("    Печать текста.");
 
         for (uint32_t line = 0; line < 20; ++line)
         {
-            auto result = enviroment()->driver()->fontStringPrint(password, 7, 1, "Line #" + std::to_string(line + 1));
+            auto result = environment()->driver()->fontStringPrint(password, 7, 1, "Line #" + std::to_string(line + 1));
             if (!result)
             {
-                enviroment()->logger()->log(
+                environment()->logger()->log(
                         "    Печать " +
                         std::to_string(line + 1) +
                         " строки не удалась. Ошибка: " +
-                        FRDriver::Converters::errorToString((int) enviroment()->driver()->getLastError())
+                        FRDriver::Converters::errorToString((int) environment()->driver()->getLastError())
                 );
 
                 return false;
             }
         }
 
-        enviroment()->logger()->log("Закрываем нефискальный документ #" + std::to_string(cycle + 1));
-        enviroment()->driver()->closeNonFiscalDocument(password);
-        if (enviroment()->driver()->getLastError() != FRDriver::ErrorCode::PointOfSalesWrongCommandIsNotSupportedForThisPointOfSalesImplementation)
+        environment()->logger()->log("Закрываем нефискальный документ #" + std::to_string(cycle + 1));
+        environment()->driver()->closeNonFiscalDocument(password);
+        if (environment()->driver()->getLastError() != FRDriver::ErrorCode::PointOfSalesWrongCommandIsNotSupportedForThisPointOfSalesImplementation)
         {
-            enviroment()->logger()->log("Каким-то образом прошло открытие нефискального документа.");
+            environment()->logger()->log("Каким-то образом прошло открытие нефискального документа.");
             return false;
         }
 
-        enviroment()->logger()->log("Делаем полную отрезку.");
-        if (!enviroment()->driver()->cutCheck(password, 1))
+        environment()->logger()->log("Делаем полную отрезку.");
+        if (!environment()->driver()->cutCheck(password, 1))
         {
-            enviroment()->logger()->log(
+            environment()->logger()->log(
                     "Отрезка чека не удалась."
             );
 
             return false;
         }
 
-        enviroment()->logger()->log("Еще раз пытаемся что-то напечатать.");
-        enviroment()->driver()->fontStringPrint(password, 7, 1, "ERROR");
+        environment()->logger()->log("Еще раз пытаемся что-то напечатать.");
+        environment()->driver()->fontStringPrint(password, 7, 1, "ERROR");
 
-        enviroment()->logger()->log("Получаем короткий запрос состояния.");
+        environment()->logger()->log("Получаем короткий запрос состояния.");
         for (uint32_t times = 0; times < 20; ++times)
         {
-            auto state = enviroment()->driver()->shortStateRequest(password);
-            if (enviroment()->driver()->getLastError() != FRDriver::ErrorCode::NoError)
+            auto state = environment()->driver()->shortStateRequest(password);
+            if (environment()->driver()->getLastError() != FRDriver::ErrorCode::NoError)
             {
-                enviroment()->logger()->log("Не удалось получить короткий запрос состояния.");
+                environment()->logger()->log("Не удалось получить короткий запрос состояния.");
                 return false;
             }
         }
 
-        enviroment()->logger()->log(std::to_string(cycle) + " чек напечатан в буффер. Ждем 1 секунду.");
+        environment()->logger()->log(std::to_string(cycle) + " чек напечатан в буффер. Ждем 1 секунду.");
         std::this_thread::sleep_for(
                 std::chrono::milliseconds(800)
         );

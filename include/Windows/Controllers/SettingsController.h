@@ -68,6 +68,11 @@ private slots:
      */
     void onTriggersPathPushButtonPressed();
 
+    /**
+     * @brief Слот, вызываемый при нажатии на кнопку
+     * выбора папки с ручными тестами.
+     */
+    void onManualTestsPathPushButtonPressed();
 };
 
 

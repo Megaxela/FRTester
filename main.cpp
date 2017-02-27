@@ -3,6 +3,9 @@
 #include <QtWidgets/QApplication>
 #include <Tools/Logger.h>
 #include <include/Tools/StableController.h>
+#include <include/FRDriver.h>
+#include <include/Implementation/DefaultProtocol.h>
+#include <include/Implementation/TCPInterface.h>
 
 int main(int argc, char* argv[])
 {
@@ -19,4 +22,26 @@ int main(int argc, char* argv[])
     w.show();
 
     return a.exec();
+
+//    FRDriver driver;
+//    driver.setProtocol(std::make_shared<DefaultProtocol>());
+//
+//    auto tcp = std::make_shared<TCPInterface>();
+//    driver.setInterface(tcp);
+//
+//    tcp->setAddress(IPv4Address::fromString("192.168.137.111"), 7778);
+//
+//    if (!driver.physicalInterface()->openConnection())
+//    {
+//        std::cout << "Can't connect." << std::endl;
+//        return -1;
+//    }
+//
+//    std::cout << "Tag send result: " << driver.sendTag(
+//            30,
+//            15000,
+//            "\xef\xf0\xe8\xec\xe5\xf0"
+//    );
+
+    return 0;
 }

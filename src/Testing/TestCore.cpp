@@ -22,6 +22,11 @@
 #include <include/Executor/TestingExecutor.h>
 #include <include/Testing/SettingsSystem.h>
 #include <include/Tools/StdExtend.h>
+#include <include/Testing/ManualTests/ManualTest.h>
+#include <include/Testing/ManualTests/ManualTestFabric.h>
+#include <tests/Tests/MagnitCheckTest.h>
+#include <tests/Tests/MessageBoxTest.h>
+#include <tests/Tests/CrazyStatusRequestTest.h>
 
 #define PY_LIST_DELIM ':'
 
@@ -72,6 +77,9 @@ void TestCore::updateDatabase()
     addTest(std::make_shared<TableFiscalStorageLinesTest>(m_environment));
     addTest(std::make_shared<BarcodePrintingTest>(m_environment));
     addTest(std::make_shared<CheckFontTest>(m_environment));
+    addTest(std::make_shared<MagnitCheckTest>(m_environment));
+    addTest(std::make_shared<MessageBoxTest>(m_environment));
+    addTest(std::make_shared<CrazyStatusRequestTest>(m_environment));
 
     // Загрузка триггеров
     addTrigger(std::make_shared<OperationTrigger>(m_environment));
@@ -89,6 +97,51 @@ void TestCore::updateDatabase()
         );
 
         addTest(TestPtr(testCreator(m_environment)));
+    }
+
+    // Загрузка ручных тестов
+    auto path = SettingsSystem::instance().getValue(
+            SettingsSystem::TestsManualTestsPath,
+            "tests/manual"
+    );
+
+    auto files = SystemTools::getAllFilesInDir(path);
+
+    for (auto& file : files)
+    {
+        // Тест ли это
+        if (!stdex::ends(file, ".json"))
+        {
+            continue;
+        }
+
+        std::ifstream fileStream(
+                SystemTools::Path::join(
+                        path,
+                        file
+                )
+        );
+
+        if (!fileStream.is_open())
+        {
+            Error("Не удалось открыть файл с тестов \"" + file + "\".");
+            continue;
+        }
+
+        ManualTestPtr manualTest;
+
+        try
+        {
+            manualTest = ManualTestFabric::createTest(json::parse(fileStream));
+        }
+        catch (std::invalid_argument e)
+        {
+            Error("Тест \"" + file + "\" поврежден. Не удалось его распарсить.");
+            continue;
+        }
+
+        manualTest->setEnvironment(m_environment);
+        addTest(manualTest);
     }
 
 //    if (Py_IsInitialized())
@@ -555,4 +608,14 @@ void TestCore::addTrigger(TriggerTestPtr trigger)
 void TestCore::setTestExecutor(TestingExecutor *executor)
 {
     m_testingExecutor = executor;
+}
+
+TestEnvironment *TestCore::environment() const
+{
+    return m_environment;
+}
+
+void TestCore::setUnitTestsController(UnitTestsController *controller)
+{
+    m_environment->tools()->setUnitTestsController(controller);
 }

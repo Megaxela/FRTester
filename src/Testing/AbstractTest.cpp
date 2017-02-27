@@ -11,7 +11,7 @@ AbstractTest::AbstractTest(TestEnvironment *driver,
                            const std::string &name,
                            const std::string &description,
                            const std::vector<std::pair<std::string, DataValue>> &fields) :
-    m_enviroment(driver),
+    m_environment(driver),
     m_name(name),
     m_description(description),
     m_dynamicValues(fields)
@@ -39,9 +39,9 @@ AbstractTest::~AbstractTest()
 
 }
 
-TestEnvironment *AbstractTest::enviroment()
+TestEnvironment *AbstractTest::environment()
 {
-    return m_enviroment;
+    return m_environment;
 }
 
 std::string AbstractTest::name() const
@@ -370,6 +370,19 @@ int64_t AbstractTest::getValueInt64(const std::string &name) const
     throw std::length_error("Test has no int64 value with name \"" + name + "\".");
 }
 
+DataValue AbstractTest::getValue(const std::string &name)
+{
+    for (auto& value : m_dynamicValues)
+    {
+        if (value.first == name)
+        {
+            return value.second;
+        }
+    }
+
+    throw std::length_error("Test has no int64 value with name \"" + name + "\".");
+}
+
 bool AbstractTest::getValueBoolean(const std::string &name) const
 {
     for (auto& value : m_dynamicValues)
@@ -420,4 +433,9 @@ bool AbstractTest::containsValue(const std::string &name, DataValue::Type type) 
     }
 
     return false;
+}
+
+void AbstractTest::setEnvironment(TestEnvironment *environment)
+{
+    m_environment = environment;
 }

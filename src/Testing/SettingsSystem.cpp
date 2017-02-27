@@ -19,7 +19,7 @@ const std::string SettingsSystem::ConnectionIPPort = "connection_ip_port";
 const std::string SettingsSystem::GlobalTabSelected = "global_tab_selected";
 const std::string SettingsSystem::TestsSharedTestsPath = "tests_tests_path";
 const std::string SettingsSystem::TestsSharedTriggersPath = "tests_triggers_path";
-
+const std::string SettingsSystem::TestsManualTestsPath = "tests_manual_tests_path";
 
 SettingsSystem::~SettingsSystem()
 {
@@ -141,62 +141,20 @@ void SettingsSystem::loadData()
 
     // Загрузка значений
     json testVariablesDict = root["test_variables"];
-    for (json::iterator test = testVariablesDict.begin(); test != testVariablesDict.end(); ++test)
+    for (json::iterator test = testVariablesDict.begin();
+         test != testVariablesDict.end();
+         ++test)
     {
         auto longKey = std::stoul(test.key());
         m_testVariables[longKey] = std::map<std::string, DataValue>();
         json value = test.value();
-        for (json::iterator variable = value.begin(); variable  != value.end(); ++variable)
+        for (json::iterator variable = value.begin();
+             variable  != value.end();
+             ++variable)
         {
-            DataValue value;
-            std::string varType = variable.value()["type"];
-            if (varType == "uint8_t")
-            {
-                value.type = DataValue::Type::UInt8;
-                value.value.integer.uint8 = variable.value()["value"];
-            }
-            else if (varType == "int8_t")
-            {
-                value.type = DataValue::Type::Int8;
-                value.value.integer.int8 = variable.value()["value"];
-            }
-            else if (varType == "uint16_t")
-            {
-                value.type = DataValue::Type::UInt16;
-                value.value.integer.uint16 = variable.value()["value"];
-            }
-            else if (varType == "int16_t")
-            {
-                value.type = DataValue::Type::Int16;
-                value.value.integer.int16 = variable.value()["value"];
-            }
-            else if (varType == "uint32_t")
-            {
-                value.type = DataValue::Type::UInt32;
-                value.value.integer.uint32 = variable.value()["value"];
-            }
-            else if (varType == "int32_t")
-            {
-                value.type = DataValue::Type::Int32;
-                value.value.integer.int32 = variable.value()["value"];
-            }
-            else if (varType == "uint64_t")
-            {
-                value.type = DataValue::Type::UInt64;
-                value.value.integer.uint64 = variable.value()["value"];
-            }
-            else if (varType == "int64_t")
-            {
-                value.type = DataValue::Type::Int64;
-                value.value.integer.int64 = variable.value()["value"];
-            }
-            else if (varType == "boolean")
-            {
-                value.type = DataValue::Type::Boolean;
-                value.value.boolean = variable.value()["value"];
-            }
-
-            m_testVariables[longKey][variable.key()] = value;
+            DataValue v;
+            DataValue::from_json(variable.value(), v);
+            m_testVariables[longKey][variable.key()] = v;
         }
     }
 
@@ -208,55 +166,9 @@ void SettingsSystem::loadData()
         json value = test.value();
         for (json::iterator variable = value.begin(); variable  != value.end(); ++variable)
         {
-            DataValue value;
-            std::string varType = variable.value()["type"];
-            if (varType == "uint8_t")
-            {
-                value.type = DataValue::Type::UInt8;
-                value.value.integer.uint8 = variable.value()["value"];
-            }
-            else if (varType == "int8_t")
-            {
-                value.type = DataValue::Type::Int8;
-                value.value.integer.int8 = variable.value()["value"];
-            }
-            else if (varType == "uint16_t")
-            {
-                value.type = DataValue::Type::UInt16;
-                value.value.integer.uint16 = variable.value()["value"];
-            }
-            else if (varType == "int16_t")
-            {
-                value.type = DataValue::Type::Int16;
-                value.value.integer.int16 = variable.value()["value"];
-            }
-            else if (varType == "uint32_t")
-            {
-                value.type = DataValue::Type::UInt32;
-                value.value.integer.uint32 = variable.value()["value"];
-            }
-            else if (varType == "int32_t")
-            {
-                value.type = DataValue::Type::Int32;
-                value.value.integer.int32 = variable.value()["value"];
-            }
-            else if (varType == "uint64_t")
-            {
-                value.type = DataValue::Type::UInt64;
-                value.value.integer.uint64 = variable.value()["value"];
-            }
-            else if (varType == "int64_t")
-            {
-                value.type = DataValue::Type::Int64;
-                value.value.integer.int64 = variable.value()["value"];
-            }
-            else if (varType == "boolean")
-            {
-                value.type = DataValue::Type::Boolean;
-                value.value.boolean = variable.value()["value"];
-            }
-
-            m_triggerVariables[longKey][variable.key()] = value;
+            DataValue v;
+            DataValue::from_json(variable.value(), v);
+            m_triggerVariables[longKey][variable.key()] = v;
         }
     }
 }
@@ -281,45 +193,9 @@ void SettingsSystem::saveData()
         json variables;
         for (auto& variable : test.second)
         {
-            switch (variable.second.type)
-            {
-            case DataValue::Type::UInt8:
-                variables[variable.first]["type"] = "uint8_t";
-                variables[variable.first]["value"] = variable.second.value.integer.uint8;
-                break;
-            case DataValue::Type::Int8:
-                variables[variable.first]["type"] = "int8_t";
-                variables[variable.first]["value"] = variable.second.value.integer.int8;
-                break;
-            case DataValue::Type::UInt16:
-                variables[variable.first]["type"] = "uint16_t";
-                variables[variable.first]["value"] = variable.second.value.integer.uint16;
-                break;
-            case DataValue::Type::Int16:
-                variables[variable.first]["type"] = "int16_t";
-                variables[variable.first]["value"] = variable.second.value.integer.int16;
-                break;
-            case DataValue::Type::UInt32:
-                variables[variable.first]["type"] = "uint32_t";
-                variables[variable.first]["value"] = variable.second.value.integer.uint32;
-                break;
-            case DataValue::Type::Int32:
-                variables[variable.first]["type"] = "int32_t";
-                variables[variable.first]["value"] = variable.second.value.integer.int32;
-                break;
-            case DataValue::Type::UInt64:
-                variables[variable.first]["type"] = "uint64_t";
-                variables[variable.first]["value"] = variable.second.value.integer.uint64;
-                break;
-            case DataValue::Type::Int64:
-                variables[variable.first]["type"] = "int64_t";
-                variables[variable.first]["value"] = variable.second.value.integer.int64;
-                break;
-            case DataValue::Type::Boolean:
-                variables[variable.first]["type"] = "boolean";
-                variables[variable.first]["value"] = variable.second.value.boolean;
-                break;
-            }
+            json j;
+            DataValue::to_json(j, variable.second);
+            variables[variable.first] = j;
         }
 
         root["test_variables"][std::to_string(test.first)] = variables;
@@ -331,45 +207,11 @@ void SettingsSystem::saveData()
         json variables;
         for (auto& variable : test.second)
         {
-            switch (variable.second.type)
-            {
-            case DataValue::Type::UInt8:
-                variables[variable.first]["type"] = "uint8_t";
-                variables[variable.first]["value"] = variable.second.value.integer.uint8;
-                break;
-            case DataValue::Type::Int8:
-                variables[variable.first]["type"] = "int8_t";
-                variables[variable.first]["value"] = variable.second.value.integer.int8;
-                break;
-            case DataValue::Type::UInt16:
-                variables[variable.first]["type"] = "uint16_t";
-                variables[variable.first]["value"] = variable.second.value.integer.uint16;
-                break;
-            case DataValue::Type::Int16:
-                variables[variable.first]["type"] = "int16_t";
-                variables[variable.first]["value"] = variable.second.value.integer.int16;
-                break;
-            case DataValue::Type::UInt32:
-                variables[variable.first]["type"] = "uint32_t";
-                variables[variable.first]["value"] = variable.second.value.integer.uint32;
-                break;
-            case DataValue::Type::Int32:
-                variables[variable.first]["type"] = "int32_t";
-                variables[variable.first]["value"] = variable.second.value.integer.int32;
-                break;
-            case DataValue::Type::UInt64:
-                variables[variable.first]["type"] = "uint64_t";
-                variables[variable.first]["value"] = variable.second.value.integer.uint64;
-                break;
-            case DataValue::Type::Int64:
-                variables[variable.first]["type"] = "int64_t";
-                variables[variable.first]["value"] = variable.second.value.integer.int64;
-                break;
-            case DataValue::Type::Boolean:
-                variables[variable.first]["type"] = "boolean";
-                variables[variable.first]["value"] = variable.second.value.boolean;
-                break;
-            }
+            json j;
+
+            DataValue::to_json(j, variable.second);
+
+            variables[variable.first] = j;
         }
 
         root["trigger_variables"][std::to_string(test.first)] = variables;

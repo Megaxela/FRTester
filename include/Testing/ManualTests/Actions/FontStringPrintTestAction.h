@@ -1,0 +1,15 @@
+//
+// Created by megaxela on 27.02.17.
+//
+
+#ifndef FRTESTER_FONTSTRINGPRINTTESTACTION_H
+#define FRTESTER_FONTSTRINGPRINTTESTACTION_H
+
+
+class FontStringPrintTestAction
+{
+
+};
+
+
+#endif //FRTESTER_FONTSTRINGPRINTTESTACTION_H

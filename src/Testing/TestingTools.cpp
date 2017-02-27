@@ -7,12 +7,17 @@
 #include <include/Tools/Logger.h>
 #include "include/Testing/TestingTools.h"
 #include <Executor/TestingExecutor.h>
+#include <QtWidgets/QMessageBox>
+#include <Windows/Controllers/TestControllers/UnitTestsController.h>
+#include <QObject>
 
 TestingTools::TestingTools(TestDriver *testDriver, TestLogger* logger) :
     m_executor(nullptr),
     m_testDriver(testDriver),
     m_currentDriver(testDriver),
-    m_logger(logger)
+    m_logger(logger),
+    m_parentWidget(nullptr),
+    m_controller(nullptr)
 {
 
 }
@@ -182,3 +187,50 @@ bool TestingTools::testingStoped()
     return !m_executor->isTestingRunning();
 }
 
+bool TestingTools::messageQuestion(const std::string &question,
+                                   const std::string &acceptMessage,
+                                   const std::string &declineMessage)
+{
+    QEventLoop loop;
+
+    QObject::connect(m_controller,
+                     &UnitTestsController::onMessageBoxClosed,
+                     &loop,
+                     &QEventLoop::quit);
+
+    emit m_controller->openMessageQuestionSignal(
+            QString::fromStdString(question),
+            QString::fromStdString(acceptMessage),
+            QString::fromStdString(declineMessage)
+    );
+
+    loop.exec();
+
+    return m_controller->messageQuestionResult();
+}
+
+void TestingTools::messageNotify(const std::string &text)
+{
+    QEventLoop loop;
+
+    QObject::connect(m_controller,
+                     &UnitTestsController::onMessageBoxClosed,
+                     &loop,
+                     &QEventLoop::quit);
+
+    emit m_controller->openMessageNotifySignal(
+            QString::fromStdString(text)
+    );
+
+    loop.exec();
+}
+
+void TestingTools::setParentWidget(QWidget *parent)
+{
+    m_parentWidget = parent;
+}
+
+void TestingTools::setUnitTestsController(UnitTestsController *controller)
+{
+    m_controller = controller;
+}

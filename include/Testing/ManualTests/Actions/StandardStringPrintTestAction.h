@@ -1,0 +1,15 @@
+//
+// Created by megaxela on 27.02.17.
+//
+
+#ifndef FRTESTER_STANDARDSTRINGPRINTTESTACTION_H
+#define FRTESTER_STANDARDSTRINGPRINTTESTACTION_H
+
+
+class StandardStringPrintTestAction
+{
+
+};
+
+
+#endif //FRTESTER_STANDARDSTRINGPRINTTESTACTION_H

@@ -10,6 +10,7 @@
 #include <include/Windows/Controllers/TablesTabController.h>
 #include <include/Testing/SettingsSystem.h>
 #include <include/Tools/Logger.h>
+#include <include/Windows/Controllers/TestControllers/TestsEditorController.h>
 #include "include/Windows/Controllers/RootController.h"
 
 RootController::RootController(Ui::MainWindow *ptr,
@@ -43,6 +44,13 @@ RootController::RootController(Ui::MainWindow *ptr,
     addTabController(
             ui()->unitTestsTab,
             new UnitTestsController(
+                    ui(),
+                    parentWidget()
+            )
+    );
+    addTabController(
+            ui()->testsEditorTab,
+            new TestsEditorController(
                     ui(),
                     parentWidget()
             )

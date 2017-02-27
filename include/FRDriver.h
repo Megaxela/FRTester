@@ -73,6 +73,7 @@ public:
         , OpenNonFiscalDocument = 0xE2          //< Открытие нефискального документа
         , CloseNonFiscalDocument = 0xE3         //< Закрытие нефискального документа
         , NonZeroSums = 0xFE                    //< Получение необнуляемых сумм
+        , SendTag = 0xFF0C                      //< Отправка тега
         , Ping = 0xFEF2                         //< Пинг
         , Reboot = 0xFEF3                       //< Перезапуск
         , GetInformationExchangeStatus = 0xFF39 //< Получить статус информационного обмена
@@ -975,6 +976,9 @@ public:
      * @return Успешность печати.
      */
     bool printBarcode(uint32_t pwd, uint64_t value);
+
+    // todo: Сменить type на перечисление
+    bool sendTag(uint32_t pwd, uint16_t tag, const std::string &str);
 
 protected:
 

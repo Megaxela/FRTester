@@ -20,7 +20,7 @@ bool TableFiscalStorageLinesTest::execute()
 {
     uint32_t pwd = getValueUInt32("Password");
 
-    if (!enviroment()->driver()->writeTable(
+    if (!environment()->driver()->writeTable(
             pwd,
             18,
             1,
@@ -28,9 +28,9 @@ bool TableFiscalStorageLinesTest::execute()
             std::string(128, 'H')
     ))
     {
-        enviroment()->logger()->log("Не удалось записать длинную строку в таблицу.");
+        environment()->logger()->log("Не удалось записать длинную строку в таблицу.");
         return true;
     }
 
-    return enviroment()->driver()->openShift(pwd);
+    return environment()->driver()->openShift(pwd);
 }

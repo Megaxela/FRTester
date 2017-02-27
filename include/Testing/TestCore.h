@@ -130,6 +130,19 @@ public:
      */
     void setTestExecutor(TestingExecutor* );
 
+    /**
+     * @brief Метод для получения environment.
+     * @return Указатель на тестовое окружение, созданное
+     * Core.
+     */
+    TestEnvironment* environment() const;
+
+    /**
+     * @brief Метод для передачи контроллера Unit тестов.
+     * @param controller Указатель на контроллер.
+     */
+    void setUnitTestsController(UnitTestsController* controller);
+
 private:
 
     void addTest(TestPtr test);
