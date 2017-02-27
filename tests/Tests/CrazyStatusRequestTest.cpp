@@ -24,7 +24,33 @@ bool CrazyStatusRequestTest::execute()
 
     for (uint32_t i = 0; i < result; ++i)
     {
-        auto response = environment()->driver()->fullStateRequest(
+        environment()->driver()->sell(
+                getValue("Пароль").toUInt32(),
+                1,
+                1000,
+                1,
+                0,
+                0,
+                0,
+                0,
+                "TEST"
+        );
+
+        environment()->driver()->closeCheck(
+                getValue("Пароль").toUInt32(),
+                1000,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                "Text to print"
+        );
+
+        environment()->tools()->waitForPrintingFinished(
                 getValue("Пароль").toUInt32()
         );
 
