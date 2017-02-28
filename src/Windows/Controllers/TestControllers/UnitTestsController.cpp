@@ -342,6 +342,19 @@ void UnitTestsController::onTestingStopped()
 
 void UnitTestsController::onTestingFinished()
 {
+    // Выводим статистику в лог по просьбе Прохора
+    Log("=============STATISTIC=============")
+    for (uint32_t i = 0; i < ui()->unitTestsStatisticsTableWidget->rowCount(); ++i)
+    {
+        Log("[" +
+            ui()->unitTestsStatisticsTableWidget->item(i, 0)->text().toStdString() +
+            "](" +
+            ui()->unitTestsStatisticsTableWidget->item(i, 1)->text().toStdString() +
+            ")"
+        );
+    }
+    Log("===================================");
+
     addLogMessage("Тестирование было завершено.");
     ui()->unitTestsStartStopPushButton->setText("Начать");
     ui()->unitTestsPauseResumePushButton->setText("Приостановить");

@@ -6,6 +6,7 @@
 #include <include/Testing/FROperations.h>
 #include <thread>
 #include <chrono>
+#include <include/Tools/Time.h>
 #include "CheckLoaderTest.h"
 #include "Testing/TestLogger.h"
 
@@ -187,6 +188,9 @@ bool CheckLoaderTest::execute()
                 "Пробит весь чек. Закрываем его."
         );
 
+        time_t checkCloseTime = 0;
+        time_t printTime = 0;
+
         {
             int tries = 10;
 
@@ -221,24 +225,42 @@ bool CheckLoaderTest::execute()
                     }
                 }
 
-                environment()->driver()->closeCheck(
-                        password,
-                        FROperations::smartRound(
-                                goodPrice * (goodCount * 0.001)
-                        ) * numberOfOperations,
-                        0,
-                        0,
-                        0,
-                        discount,
-                        0,
-                        0,
-                        0,
-                        0,
-                        "Check #" +
-                        std::to_string(checkIndex) +
-                        '/' +
-                        std::to_string(numberOfChecks)
+                checkCloseTime = Time::timeFunction<std::chrono::milliseconds>(
+                        [=]()
+                        {
+                            environment()->driver()->closeCheck(
+                                    password,
+                                    FROperations::smartRound(
+                                            goodPrice * (goodCount * 0.001)
+                                    ) * numberOfOperations,
+                                    0,
+                                    0,
+                                    0,
+                                    discount,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    "Check #" +
+                                    std::to_string(checkIndex) +
+                                    '/' +
+                                    std::to_string(numberOfChecks)
+                            );
+                        }
                 );
+
+                if (environment()->driver()->getLastError() == FRDriver::ErrorCode::NoError)
+                {
+                    printTime = Time::timeFunction<std::chrono::milliseconds>(
+                            [=]()
+                            {
+                                environment()->tools()->waitForPrintingFinished(
+                                        password,
+                                        5000
+                                );
+                            }
+                    );
+                }
 
                 if ((int) environment()->driver()->getLastError() != 0 &&
                     (int) environment()->driver()->getLastError() != 80)
@@ -292,7 +314,12 @@ bool CheckLoaderTest::execute()
                 "Пробит чек " +
                 std::to_string(checkIndex + 1) +
                 '/' +
-                std::to_string(numberOfChecks)
+                std::to_string(numberOfChecks) +
+                " (время закрытия " +
+                std::to_string(checkCloseTime) +
+                " мс, время печати " +
+                std::to_string(printTime) +
+                ")."
         );
     }
 
