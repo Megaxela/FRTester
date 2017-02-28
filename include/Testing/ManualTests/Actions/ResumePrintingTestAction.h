@@ -6,9 +6,19 @@
 #define FRTESTER_RESUMEPRINTINGTESTACTION_H
 
 
-class ResumePrintingTestAction
-{
+#include <include/Testing/ManualTests/AbstractTestAction.h>
 
+class ResumePrintingTestAction : public AbstractTestAction
+{
+public:
+    ResumePrintingTestAction();
+
+    ~ResumePrintingTestAction();
+
+    bool execute() override;
+
+protected:
+    TestActionPtr createAction() const override;
 };
 
 

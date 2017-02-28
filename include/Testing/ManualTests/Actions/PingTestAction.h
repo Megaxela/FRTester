@@ -2,18 +2,18 @@
 // Created by megaxela on 27.02.17.
 //
 
-#ifndef FRTESTER_SELLTESTACTION_H
-#define FRTESTER_SELLTESTACTION_H
+#ifndef FRTESTER_PINGTESTACTION_H
+#define FRTESTER_PINGTESTACTION_H
 
 
 #include <include/Testing/ManualTests/AbstractTestAction.h>
 
-class SellTestAction : public AbstractTestAction
+class PingTestAction : public AbstractTestAction
 {
 public:
-    SellTestAction();
+    PingTestAction();
 
-    ~SellTestAction();
+    ~PingTestAction();
 
     bool execute() override;
 
@@ -22,4 +22,4 @@ protected:
 };
 
 
-#endif //FRTESTER_SELLTESTACTION_H
+#endif //FRTESTER_PINGTESTACTION_H

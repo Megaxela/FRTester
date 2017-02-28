@@ -6,9 +6,20 @@
 #define FRTESTER_SHORTSTATEREQUEST_H
 
 
-class ShortStateRequest
-{
+#include <include/Testing/ManualTests/AbstractTestAction.h>
 
+class ShortStateRequest : public AbstractTestAction
+{
+public:
+
+    ShortStateRequest();
+
+    ~ShortStateRequest();
+
+    bool execute() override;
+
+protected:
+    TestActionPtr createAction() const override;
 };
 
 

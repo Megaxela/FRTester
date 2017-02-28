@@ -6,9 +6,20 @@
 #define FRTESTER_CLOSECHECKTESTACTION_H
 
 
-class CloseCheckTestAction
-{
+#include <include/Testing/ManualTests/AbstractTestAction.h>
 
+class CloseCheckTestAction : public AbstractTestAction
+{
+public:
+
+    CloseCheckTestAction();
+
+    ~CloseCheckTestAction();
+
+    bool execute() override;
+
+protected:
+    TestActionPtr createAction() const override;
 };
 
 

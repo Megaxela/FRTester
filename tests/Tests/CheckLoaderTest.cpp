@@ -18,6 +18,8 @@ CheckLoaderTest::CheckLoaderTest(TestEnvironment *environment) :
                   {"Number Of Operations", (uint32_t) 100},
                   {"Good Price", (uint64_t) 5000},
                   {"Good Count", (uint64_t) 1000},
+                  {"Discount", (uint16_t) 0},
+                  {"Manual close", false},
                   {"Enable Print", true}})
 {
 
@@ -31,6 +33,8 @@ bool CheckLoaderTest::execute()
     auto goodPrice = getValueUInt64("Good Price");
     auto goodCount = getValueUInt64("Good Count");
     auto printEnabled = getValueBoolean("Enable Print");
+    auto manualClose = getValueBoolean("Manual close");
+    auto discount = getValue("Discount").toUInt16();
 
     auto printValue = printEnabled ? TestingTools::Printing::Enabled : TestingTools::Printing::Disabled;
 
@@ -205,6 +209,18 @@ bool CheckLoaderTest::execute()
                     return true;
                 }
 
+                if (manualClose)
+                {
+                    if (!environment()->tools()->messageQuestion(
+                            "Закрыть чек или прервать тестирование?",
+                            "Закрыть чек",
+                            "Прервать тест"
+                    ))
+                    {
+                        return false;
+                    }
+                }
+
                 environment()->driver()->closeCheck(
                         password,
                         FROperations::smartRound(
@@ -213,7 +229,7 @@ bool CheckLoaderTest::execute()
                         0,
                         0,
                         0,
-                        0,
+                        discount,
                         0,
                         0,
                         0,

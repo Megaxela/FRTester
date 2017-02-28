@@ -6,9 +6,20 @@
 #define FRTESTER_SCROLLTESTACTION_H
 
 
-class ScrollTestAction
-{
+#include <include/Testing/ManualTests/AbstractTestAction.h>
 
+class ScrollTestAction : public AbstractTestAction
+{
+public:
+
+    ScrollTestAction();
+
+    ~ScrollTestAction();
+
+    bool execute() override;
+
+protected:
+    TestActionPtr createAction() const override;
 };
 
 

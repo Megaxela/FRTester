@@ -6,9 +6,20 @@
 #define FRTESTER_SHIFTCLOSETESTACTION_H
 
 
-class ShiftCloseTestAction
-{
+#include <include/Testing/ManualTests/AbstractTestAction.h>
 
+class ShiftCloseTestAction : public AbstractTestAction
+{
+public:
+
+    ShiftCloseTestAction();
+
+    ~ShiftCloseTestAction();
+
+    bool execute() override;
+
+protected:
+    TestActionPtr createAction() const override;
 };
 
 

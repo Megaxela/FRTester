@@ -6,9 +6,19 @@
 #define FRTESTER_STANDARDSTRINGPRINTTESTACTION_H
 
 
-class StandardStringPrintTestAction
-{
+#include <include/Testing/ManualTests/AbstractTestAction.h>
 
+class StandardStringPrintTestAction : public AbstractTestAction
+{
+public:
+    StandardStringPrintTestAction();
+
+    ~StandardStringPrintTestAction();
+
+    bool execute() override;
+
+protected:
+    TestActionPtr createAction() const override;
 };
 
 

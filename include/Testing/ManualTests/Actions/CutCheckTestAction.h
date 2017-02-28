@@ -6,9 +6,19 @@
 #define FRTESTER_CUTCHECKTESTACTION_H
 
 
-class CutCheckTestAction
-{
+#include <include/Testing/ManualTests/AbstractTestAction.h>
 
+class CutCheckTestAction : public AbstractTestAction
+{
+public:
+    CutCheckTestAction();
+
+    ~CutCheckTestAction();
+
+    bool execute() override;
+
+protected:
+    TestActionPtr createAction() const override;
 };
 
 

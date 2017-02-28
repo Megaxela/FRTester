@@ -6,9 +6,20 @@
 #define FRTESTER_FONTSTRINGPRINTTESTACTION_H
 
 
-class FontStringPrintTestAction
-{
+#include <include/Testing/ManualTests/AbstractTestAction.h>
 
+class FontStringPrintTestAction : public AbstractTestAction
+{
+public:
+
+    FontStringPrintTestAction();
+
+    ~FontStringPrintTestAction();
+
+    bool execute() override;
+
+protected:
+    TestActionPtr createAction() const override;
 };
 
 

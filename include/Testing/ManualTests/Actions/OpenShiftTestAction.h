@@ -6,9 +6,19 @@
 #define FRTESTER_OPENSHIFTTESTACTION_H
 
 
-class OpenShiftTestAction
-{
+#include <include/Testing/ManualTests/AbstractTestAction.h>
 
+class OpenShiftTestAction : public AbstractTestAction
+{
+public:
+    OpenShiftTestAction();
+
+    ~OpenShiftTestAction();
+
+    bool execute() override;
+
+protected:
+    TestActionPtr createAction() const override;
 };
 
 

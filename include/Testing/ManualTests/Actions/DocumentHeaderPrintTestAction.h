@@ -6,9 +6,19 @@
 #define FRTESTER_DOCUMENTHEADERPRINTTESTACTION_H
 
 
-class DocumentHeaderPrintTestAction
-{
+#include <include/Testing/ManualTests/AbstractTestAction.h>
 
+class DocumentHeaderPrintTestAction : public AbstractTestAction
+{
+public:
+    DocumentHeaderPrintTestAction();
+
+    ~DocumentHeaderPrintTestAction();
+
+    bool execute() override;
+
+protected:
+    TestActionPtr createAction() const override;
 };
 
 

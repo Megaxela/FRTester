@@ -6,9 +6,20 @@
 #define FRTESTER_RETURNSELLTESTACTION_H
 
 
-class ReturnSellTestAction
-{
+#include <include/Testing/ManualTests/AbstractTestAction.h>
 
+class ReturnSellTestAction : public AbstractTestAction
+{
+public:
+
+    ReturnSellTestAction();
+
+    ~ReturnSellTestAction();
+
+    bool execute() override;
+
+protected:
+    TestActionPtr createAction() const override;
 };
 
 

@@ -2,18 +2,19 @@
 // Created by megaxela on 27.02.17.
 //
 
-#ifndef FRTESTER_SELLTESTACTION_H
-#define FRTESTER_SELLTESTACTION_H
+#ifndef FRTESTER_REBOOTTESTACTION_H
+#define FRTESTER_REBOOTTESTACTION_H
 
 
 #include <include/Testing/ManualTests/AbstractTestAction.h>
 
-class SellTestAction : public AbstractTestAction
+class RebootTestAction : public AbstractTestAction
 {
 public:
-    SellTestAction();
 
-    ~SellTestAction();
+    RebootTestAction();
+
+    ~RebootTestAction();
 
     bool execute() override;
 
@@ -22,4 +23,4 @@ protected:
 };
 
 
-#endif //FRTESTER_SELLTESTACTION_H
+#endif //FRTESTER_REBOOTTESTACTION_H

@@ -6,9 +6,19 @@
 #define FRTESTER_SHIFTREPORTWITHOUTEXTINCTIONTESTACTION_H
 
 
-class ShiftReportWithoutExtinctionTestAction
-{
+#include <include/Testing/ManualTests/AbstractTestAction.h>
 
+class ShiftReportWithoutExtinctionTestAction : public AbstractTestAction
+{
+public:
+    ShiftReportWithoutExtinctionTestAction();
+
+    ~ShiftReportWithoutExtinctionTestAction();
+
+    bool execute() override;
+
+protected:
+    TestActionPtr createAction() const override;
 };
 
 

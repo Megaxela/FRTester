@@ -3,3 +3,23 @@
 //
 
 #include "include/Testing/ManualTests/Actions/ResumePrintingTestAction.h"
+
+ResumePrintingTestAction::ResumePrintingTestAction()
+{
+
+}
+
+ResumePrintingTestAction::~ResumePrintingTestAction()
+{
+
+}
+
+bool ResumePrintingTestAction::execute()
+{
+    return false;
+}
+
+TestActionPtr ResumePrintingTestAction::createAction() const
+{
+    return TestActionPtr();
+}
