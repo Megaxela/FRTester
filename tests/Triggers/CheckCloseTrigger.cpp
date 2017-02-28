@@ -232,11 +232,17 @@ void CheckCloseTrigger::onPostExecute()
     // Ожидание окончания печати
     auto pwd = getValueUInt32("Password");
 
-    if (!environment()->tools()->waitForPrintingFinished(pwd, 100000)) // ms
-    {
-        environment()->logger()->log("Не удалось дождаться окончания печати чека.");
-        return;
-    }
+    auto time = Time::timeFunction<std::chrono::milliseconds>(
+            [=]()
+            {
+                if (!environment()->tools()->waitForPrintingFinished(pwd, 100000)) // ms
+                {
+                    environment()->logger()->log("Не удалось дождаться окончания печати чека.");
+                }
+            }
+    );
+
+    environment()->logger()->log("Печать шла " + std::to_string(time) + " мс.");
 
     // Проверка регистров с 0 - 63
     auto newRegisterValue = environment()->driver()->currencyRegisterRequest(

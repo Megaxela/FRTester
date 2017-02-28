@@ -82,9 +82,9 @@ void TestCore::updateDatabase()
     addTest(std::make_shared<CrazyStatusRequestTest>(m_environment));
 
     // Загрузка триггеров
-    addTrigger(std::make_shared<OperationTrigger>(m_environment));
-    addTrigger(std::make_shared<CheckCloseTrigger>(m_environment));
-    addTrigger(std::make_shared<ZReportTrigger>(m_environment));
+//    addTrigger(std::make_shared<OperationTrigger>(m_environment));
+//    addTrigger(std::make_shared<CheckCloseTrigger>(m_environment));
+//    addTrigger(std::make_shared<ZReportTrigger>(m_environment));
 
     // Загрузка тестов из shared библиотек
     for (auto& library : m_sharedTests)
