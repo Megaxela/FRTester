@@ -69,16 +69,16 @@ void TestCore::updateDatabase()
     m_environment->tools()->m_executor = m_testingExecutor;
 
     // Загрузка статических тестов
-    addTest(std::make_shared<CycleTest>(m_environment));
-    addTest(std::make_shared<OperationTest>(m_environment));
-    addTest(std::make_shared<CheckLoaderTest>(m_environment));
-    addTest(std::make_shared<WriteShitCashierNameTest>(m_environment));
-    addTest(std::make_shared<NonfiscalRequesting>(m_environment));
-    addTest(std::make_shared<TableFiscalStorageLinesTest>(m_environment));
-    addTest(std::make_shared<BarcodePrintingTest>(m_environment));
-    addTest(std::make_shared<CheckFontTest>(m_environment));
-    addTest(std::make_shared<MagnitCheckTest>(m_environment));
-    addTest(std::make_shared<MessageBoxTest>(m_environment));
+//    addTest(std::make_shared<CycleTest>(m_environment));
+//    addTest(std::make_shared<OperationTest>(m_environment));
+//    addTest(std::make_shared<CheckLoaderTest>(m_environment));
+//    addTest(std::make_shared<WriteShitCashierNameTest>(m_environment));
+//    addTest(std::make_shared<NonfiscalRequesting>(m_environment));
+//    addTest(std::make_shared<TableFiscalStorageLinesTest>(m_environment));
+//    addTest(std::make_shared<BarcodePrintingTest>(m_environment));
+//    addTest(std::make_shared<CheckFontTest>(m_environment));
+//    addTest(std::make_shared<MagnitCheckTest>(m_environment));
+//    addTest(std::make_shared<MessageBoxTest>(m_environment));
     addTest(std::make_shared<CrazyStatusRequestTest>(m_environment));
 
     // Загрузка триггеров
