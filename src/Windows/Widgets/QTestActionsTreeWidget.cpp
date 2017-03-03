@@ -18,18 +18,18 @@ QTestActionsTreeWidget::QTestActionsTreeWidget(QWidget *parent) :
         QTreeWidget(parent)
 {
 
-//    m_action.push_back(Action(
-//            {"Команды"},
-//            std::make_shared<BeepTestAction>()
-//    ));
-//    m_action.push_back(Action(
-//            {"Команды"},
-//            std::make_shared<LongStateRequestTestAction>()
-//    ));
-//    m_action.push_back(Action(
-//            {"Дополнительно"},
-//            std::make_shared<WhileTestAction>()
-//    ));
+    m_action.push_back(Action(
+            {"Команды"},
+            std::make_shared<BeepTestAction>()
+    ));
+    m_action.push_back(Action(
+            {"Команды"},
+            std::make_shared<LongStateRequestTestAction>()
+    ));
+    m_action.push_back(Action(
+            {"Дополнительно"},
+            std::make_shared<WhileTestAction>()
+    ));
 
     displayActions();
 
