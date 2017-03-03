@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="mainTabWidget">
       <property name="currentIndex">
-       <number>7</number>
+       <number>2</number>
       </property>
       <property name="movable">
        <bool>true</bool>
@@ -848,7 +848,7 @@
             <item>
              <widget class="QTabWidget" name="commandsDeviceTabWidget">
               <property name="currentIndex">
-               <number>0</number>
+               <number>1</number>
               </property>
               <widget class="QWidget" name="commandsDeviceMoneyTab">
                <attribute name="title">
@@ -894,6 +894,30 @@
                 </item>
                 <item>
                  <layout class="QHBoxLayout" name="horizontalLayout_19">
+                  <item>
+                   <widget class="QPushButton" name="commandsDeviceOperationsReadOnePushButton">
+                    <property name="text">
+                     <string>Прочитать</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="commandsDeviceOperationsCurrentNumberSpinBox">
+                    <property name="maximum">
+                     <number>255</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_30">
+                    <property name="text">
+                     <string>регистр.</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="commandsDeviceOperationsCurrentResultLineEdit"/>
+                  </item>
                   <item>
                    <spacer name="horizontalSpacer_6">
                     <property name="orientation">

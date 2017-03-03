@@ -18,7 +18,15 @@ DeviceOperationsCommandsTabController::DeviceOperationsCommandsTabController(Ui:
 
 void DeviceOperationsCommandsTabController::setupConnections()
 {
+    connect(ui()->commandsDeviceOperationsReadPushButton,
+            &QPushButton::clicked,
+            this,
+            &DeviceOperationsCommandsTabController::onReadButtonPressed);
 
+    connect(ui()->commandsDeviceOperationsReadOnePushButton,
+            &QPushButton::clicked,
+            this,
+            &DeviceOperationsCommandsTabController::onCurrentReadButtonPressed);
 }
 
 void DeviceOperationsCommandsTabController::configureWidgets()
@@ -70,4 +78,27 @@ void DeviceOperationsCommandsTabController::onReadButtonPressed()
     }
 
     commandsTabController()->setLastStatus();
+}
+
+void DeviceOperationsCommandsTabController::onCurrentReadButtonPressed()
+{
+    if (!commandsTabController()->checkConnectionWithDevice())
+    {
+        return;
+    }
+
+    auto result = DriverHolder::driver().operatingRegisterRequest(
+            commandsTabController()->password(),
+            static_cast<uint8_t>(ui()->commandsDeviceOperationsCurrentNumberSpinBox->value())
+    );
+
+    if (DriverHolder::driver().getLastError() != FRDriver::ErrorCode::NoError)
+    {
+        commandsTabController()->setLastStatus();
+        return;
+    }
+
+    ui()->commandsDeviceOperationsCurrentResultLineEdit->setText(
+            QString::number(result)
+    );
 }

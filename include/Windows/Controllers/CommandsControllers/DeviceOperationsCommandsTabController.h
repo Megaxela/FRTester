@@ -31,6 +31,11 @@ private slots:
      */
     void onReadButtonPressed();
 
+    /**
+     * @brief
+     */
+    void onCurrentReadButtonPressed();
+
 private:
     CommandsTabController* commandsTabController();
 
