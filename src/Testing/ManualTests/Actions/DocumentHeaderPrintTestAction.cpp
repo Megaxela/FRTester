@@ -13,7 +13,7 @@ DocumentHeaderPrintTestAction::DocumentHeaderPrintTestAction() :
     AbstractTestAction("Печать заголовка",
                        "",
                        {{"Password", (uint32_t) 30},
-                        {"Document", ""},
+                        {"Document", std::string("")},
                         {"Document number", (uint16_t) 0}},
                        {CATEGORY_ACTIONS})
 {

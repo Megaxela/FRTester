@@ -12,7 +12,7 @@ StandardStringPrintTestAction::StandardStringPrintTestAction() :
     AbstractTestAction("Печать строки",
                         "",
                        {{"Password", (uint32_t) 30},
-                        {"String", ""}},
+                        {"String", std::string("")}},
                        {CATEGORY_ACTIONS})
 {
 

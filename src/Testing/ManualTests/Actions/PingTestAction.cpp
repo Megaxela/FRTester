@@ -11,7 +11,7 @@ REGISTER_ACTION(PingTestAction);
 PingTestAction::PingTestAction() :
     AbstractTestAction("Пинг",
                        "",
-                       {{"URL", ""}},
+                       {{"URL", std::string("")}},
                        {CATEGORY_ACTIONS})
 {
 

@@ -19,7 +19,7 @@ ReturnBuyTestAction::ReturnBuyTestAction() :
                         {"2 tax", (uint8_t) 0},
                         {"3 tax", (uint8_t) 0},
                         {"4 tax", (uint8_t) 0},
-                        {"String", "Строка для печати"}},
+                        {"String", std::string("Строка для печати")}},
                        {CATEGORY_ACTIONS})
 {
 

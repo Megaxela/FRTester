@@ -11,7 +11,7 @@ FontStringPrintTestAction::FontStringPrintTestAction() :
     AbstractTestAction("Тест печати шрифтом",
                        "",
                        {{"Password", (uint32_t) 30},
-                        {"Text", ""},
+                        {"Text", std::string("")},
                         {"Font", (uint8_t) 1}},
                        {CATEGORY_ACTIONS})
 {

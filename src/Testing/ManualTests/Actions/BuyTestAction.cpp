@@ -19,7 +19,7 @@ BuyTestAction::BuyTestAction() :
                         {"2 tax", (uint8_t) 0},
                         {"3 tax", (uint8_t) 0},
                         {"4 tax", (uint8_t) 0},
-                        {"String", "String для печати"}},
+                        {"String", std::string("String для печати")}},
                        {CATEGORY_ACTIONS})
 {
 
