@@ -12,7 +12,7 @@ BeepTestAction::BeepTestAction() :
     AbstractTestAction("Гудок",
                        "Действие, выполняющее гудок.",
                        {{"Password", (uint32_t) 30}},
-                       {CATEGORY_COMMANDS})
+                       {CATEGORY_ACTIONS})
 {
 
 }

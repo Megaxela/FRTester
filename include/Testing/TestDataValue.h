@@ -194,7 +194,7 @@ struct DataValue
 
     ByteArray toByteArray() const
     {
-        if (type == Type::ByteArray)
+        if (type != Type::ByteArray)
         {
             throw std::logic_error("Неверный тип переменной.");
         }
