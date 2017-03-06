@@ -4,7 +4,11 @@
 
 #include "include/Testing/ManualTests/Actions/RebootTestAction.h"
 
-RebootTestAction::RebootTestAction()
+RebootTestAction::RebootTestAction() :
+    AbstractTestAction("Перезагрузка ФР",
+                        "",
+                       {},
+                       {CATEGORY_ACTIONS})
 {
 
 }
@@ -16,10 +20,12 @@ RebootTestAction::~RebootTestAction()
 
 bool RebootTestAction::execute()
 {
-    return false;
+    environment()->driver()->reboot();
+
+    return true;
 }
 
 TestActionPtr RebootTestAction::createAction() const
 {
-    return TestActionPtr();
+    return std::make_shared<RebootTestAction>();
 }

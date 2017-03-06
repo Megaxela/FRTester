@@ -12,24 +12,31 @@
 #include <include/Windows/Widgets/QActionTreeWidgetItem.h>
 #include <include/Testing/ManualTests/Actions/LongStateRequestTestAction.h>
 #include <include/Testing/ManualTests/Actions/WhileTestAction.h>
+#include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Windows/Widgets/QTestActionsTreeWidget.h"
 
 QTestActionsTreeWidget::QTestActionsTreeWidget(QWidget *parent) :
         QTreeWidget(parent)
 {
 
-    m_action.push_back(Action(
-            {"Команды"},
-            std::make_shared<BeepTestAction>()
-    ));
-    m_action.push_back(Action(
-            {"Команды"},
-            std::make_shared<LongStateRequestTestAction>()
-    ));
-    m_action.push_back(Action(
-            {"Дополнительно"},
-            std::make_shared<WhileTestAction>()
-    ));
+    auto result = TestActionFabric::instance().getNames();
+
+    for (auto& actionName : result)
+    {
+        auto action = TestActionFabric::instance().create(actionName);
+
+        QVector<QString> category;
+
+        for (auto& categoryName : action->category())
+        {
+            category.push_back(QString::fromStdString(categoryName));
+        }
+
+        m_action.push_back(Action(
+                category,
+                action
+        ));
+    }
 
     displayActions();
 

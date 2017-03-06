@@ -4,8 +4,16 @@
 
 
 #include <include/Testing/ManualTests/Actions/PayinTestAction.h>
+#include <include/Testing/ManualTests/TestActionFabric.h>
 
-PayinTestAction::PayinTestAction()
+REGISTER_ACTION(PayinTestAction);
+
+PayinTestAction::PayinTestAction() :
+    AbstractTestAction("Внесение",
+                       "Внесение денежной суммы",
+                       {{"Пароль", (uint32_t) 30},
+                        {"Сумма", (uint64_t) 0}},
+                       {CATEGORY_ACTIONS})
 {
 
 }
@@ -17,10 +25,14 @@ PayinTestAction::~PayinTestAction()
 
 bool PayinTestAction::execute()
 {
-    return false;
+    environment()->driver()->payin(
+            getValue("Пароль").toUInt32(),
+            getValue("Сумма").toUInt64()
+    )
+    return true;
 }
 
 TestActionPtr PayinTestAction::createAction() const
 {
-    return TestActionPtr();
+    return std::make_shared<PayinTestAction>();
 }

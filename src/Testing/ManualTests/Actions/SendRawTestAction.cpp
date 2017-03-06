@@ -4,10 +4,13 @@
 
 #include "include/Testing/ManualTests/Actions/SendRawTestAction.h"
 
+REGISTER_ACTION(SendRawTestAction);
+
 SendRawTestAction::SendRawTestAction() :
     AbstractTestAction("Отправка байт",
                        "Действие для отправки чистых байт.",
-                       {{"Байты", ByteArray()}})
+                       {{"Байты", ByteArray()}},
+                       {CATEGORY_ADDITIONAL})
 {
 
 }

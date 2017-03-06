@@ -6,6 +6,7 @@
 #include <include/Tools/Logger.h>
 #include <include/Testing/ManualTests/Actions/LongStateRequestTestAction.h>
 #include <include/Testing/ManualTests/Actions/WhileTestAction.h>
+#include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/ManualTestFabric.h"
 
 #define ADD_ACTION(NAME)\
@@ -60,12 +61,8 @@ TestActionPtr ManualTestFabric::createAction(json action)
 {
     std::string actionName = action["action"];
 
-    TestActionPtr testAction;
-
-    BEG_ACTION(BeepTestAction)
-    ADD_ACTION(LongStateRequestTestAction)
-    ADD_ACTION(WhileTestAction)
-    END_ACTION()
+    TestActionPtr testAction = TestActionFabric::instance()
+            .create(actionName);
 
     // Загрузка значений переменных
     for (auto& element : action["variables"])

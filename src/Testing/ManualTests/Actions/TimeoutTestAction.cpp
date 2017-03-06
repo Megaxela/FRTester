@@ -3,12 +3,16 @@
 //
 
 #include <include/Tools/Time.h>
+#include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/TimeoutTestAction.h"
+
+REGISTER_ACTION(TimeoutTestAction);
 
 TimeoutTestAction::TimeoutTestAction() :
     AbstractTestAction("Таймаут",
                        "Таймаут в мс.",
-                       {{"Таймаут (в мс)", (uint32_t) 1000}})
+                       {{"Таймаут (в мс)", (uint32_t) 1000}},
+                       {CATEGORY_ADDITIONAL})
 {
 
 }
@@ -29,5 +33,5 @@ bool TimeoutTestAction::execute()
 
 TestActionPtr TimeoutTestAction::createAction() const
 {
-    return TestActionPtr();
+    return std::make_shared<TimeoutTestAction>();
 }

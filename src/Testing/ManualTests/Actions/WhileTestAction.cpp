@@ -4,11 +4,15 @@
 
 #include "include/Testing/ManualTests/Actions/WhileTestAction.h"
 #include <Testing/TestLogger.h>
+#include <include/Testing/ManualTests/TestActionFabric.h>
+
+REGISTER_ACTION(WhileTestAction);
 
 WhileTestAction::WhileTestAction() :
     AbstractTestAction("Цикл While",
                        "Действие, зациклено выполняет дочерние команды",
-                       {{"Times", (uint32_t) 20}})
+                       {{"Times", (uint32_t) 20}},
+                       {CATEGORY_ADDITIONAL})
 {
     setAllowChildren(true);
 }

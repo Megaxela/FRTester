@@ -4,8 +4,15 @@
 
 
 #include <include/Testing/ManualTests/Actions/PingTestAction.h>
+#include <include/Testing/ManualTests/TestActionFabric.h>
 
-PingTestAction::PingTestAction()
+REGISTER_ACTION(PingTestAction);
+
+PingTestAction::PingTestAction() :
+    AbstractTestAction("Пинг",
+                       "",
+                       {{"URL", ""}},
+                       {CATEGORY_ACTIONS})
 {
 
 }
@@ -17,10 +24,14 @@ PingTestAction::~PingTestAction()
 
 bool PingTestAction::execute()
 {
-    return false;
+    environment()->driver()->ping(
+            getValue("URL").toString()
+    );
+
+    return true;
 }
 
 std::shared_ptr <AbstractTestAction> PingTestAction::createAction() const
 {
-    return std::shared_ptr<AbstractTestAction>();
+    return std::shared_ptr<PingTestAction>();
 }

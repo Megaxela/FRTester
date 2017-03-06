@@ -3,11 +3,15 @@
 //
 
 #include <include/Testing/ManualTests/Actions/CashierReportTestAction.h>
+#include <include/Testing/ManualTests/TestActionFabric.h>
+
+REGISTER_ACTION(CashierReportTestAction);
 
 CashierReportTestAction::CashierReportTestAction() :
     AbstractTestAction("Отчет по кассирам",
                        "",
-                       {{"Пароль", (uint32_t) 30}})
+                       {{"Пароль", (uint32_t) 30}},
+                       {CATEGORY_ACTIONS})
 {
 
 }

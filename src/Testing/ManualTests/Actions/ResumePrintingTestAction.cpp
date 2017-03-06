@@ -4,7 +4,11 @@
 
 #include "include/Testing/ManualTests/Actions/ResumePrintingTestAction.h"
 
-ResumePrintingTestAction::ResumePrintingTestAction()
+ResumePrintingTestAction::ResumePrintingTestAction() :
+    AbstractTestAction("Продожение печати",
+                        "",
+                       {{"Пароль", (uint32_t) 30}},
+                       {CATEGORY_ACTIONS})
 {
 
 }
@@ -16,10 +20,14 @@ ResumePrintingTestAction::~ResumePrintingTestAction()
 
 bool ResumePrintingTestAction::execute()
 {
-    return false;
+    environment()->driver()->resumePrinting(
+            getValue("Пароль").toUInt32()
+    );
+
+    return true;
 }
 
 TestActionPtr ResumePrintingTestAction::createAction() const
 {
-    return TestActionPtr();
+    return std::make_shared<ResumePrintingTestAction>();
 }

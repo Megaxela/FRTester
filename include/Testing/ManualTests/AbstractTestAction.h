@@ -10,6 +10,12 @@
 #include <vector>
 #include <include/Testing/TestEnvironment.h>
 
+
+
+#define CATEGORY_ACTIONS "Действия"
+#define CATEGORY_COMMANDS "Команды"
+#define CATEGORY_ADDITIONAL "Дополнительно"
+
 class ManualTest;
 class AbstractTestAction;
 class QTreeWidgetItem;
@@ -29,7 +35,8 @@ public:
     AbstractTestAction(
             const std::string &name,
             const std::string &description,
-            const std::vector<std::pair<std::string, DataValue>> &fields
+            const std::vector<std::pair<std::string, DataValue>> &fields,
+            const std::vector<std::string> category
     );
 
     /**
@@ -163,6 +170,12 @@ public:
      */
     bool allowChildren() const;
 
+    /**
+     * @brief Метод для получения категории действия.
+     * @return Массив с категориями
+     */
+    std::vector<std::string> category() const;
+
 protected:
 
     virtual TestActionPtr createAction() const = 0;
@@ -180,6 +193,7 @@ private:
     std::string m_description;
     std::vector<std::pair<std::string, DataValue>> m_dynamicValues;
     std::vector<TestActionPtr> m_childrenActions;
+    std::vector<std::string> m_category;
 };
 
 

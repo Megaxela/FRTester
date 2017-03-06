@@ -11,12 +11,14 @@
 
 AbstractTestAction::AbstractTestAction(const std::string &name,
                                        const std::string &description,
-                                       const std::vector<std::pair<std::string, DataValue>> &fields) :
+                                       const std::vector<std::pair<std::string, DataValue>> &fields,
+                                       const std::vector<std::string> category) :
     m_manualTest(nullptr),
     m_name(name),
     m_description(description),
     m_dynamicValues(fields),
-    m_allowChildren(false)
+    m_allowChildren(false),
+    m_category(category)
 {
 
 }
@@ -193,4 +195,9 @@ void AbstractTestAction::applyTest(TestActionPtr action, ManualTest *test)
     {
         applyTest(child, test);
     }
+}
+
+std::vector<std::string> AbstractTestAction::category() const
+{
+    return m_category;
 }

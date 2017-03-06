@@ -4,12 +4,16 @@
 
 #include "include/Testing/ManualTests/Actions/LongStateRequestTestAction.h"
 #include <Testing/TestLogger.h>
+#include <include/Testing/ManualTests/TestActionFabric.h>
+
+REGISTER_ACTION(LongStateRequestTestAction);
 
 LongStateRequestTestAction::LongStateRequestTestAction() :
     AbstractTestAction("Длинный запрос состояния",
                        "Действие, выполняющее длинный запрос состояния",
                        {{"Password", (uint32_t) 30},
-                        {"Print stats", true}})
+                        {"Print stats", true}},
+                       {CATEGORY_ACTIONS})
 {
 
 }

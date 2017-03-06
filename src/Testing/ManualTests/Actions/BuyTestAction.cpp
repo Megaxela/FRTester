@@ -3,7 +3,10 @@
 //
 
 #include <include/Tools/Codecs.h>
+#include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/BuyTestAction.h"
+
+REGISTER_ACTION(BuyTestAction);
 
 BuyTestAction::BuyTestAction() :
     AbstractTestAction("Покупка",
@@ -16,7 +19,8 @@ BuyTestAction::BuyTestAction() :
                         {"2 налог", (uint8_t) 0},
                         {"3 налог", (uint8_t) 0},
                         {"4 налог", (uint8_t) 0},
-                        {"Строка", "Строка для печати"}})
+                        {"Строка", "Строка для печати"}},
+                       {CATEGORY_ACTIONS})
 {
 
 }

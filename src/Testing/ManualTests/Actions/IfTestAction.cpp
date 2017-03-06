@@ -2,13 +2,17 @@
 // Created by megaxela on 22.02.17.
 //
 
+#include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/IfTestAction.h"
+
+REGISTER_ACTION(IfTestAction);
 
 IfTestAction::IfTestAction() :
     AbstractTestAction("Если...",
                        "Действие, выполняющее определенный набор "
                        "действий при выполнении определенного условия.",
-                       {{"Password", (uint32_t) 30}})
+                       {{"Password", (uint32_t) 30}},
+                       {CATEGORY_ADDITIONAL})
 {
 
 }

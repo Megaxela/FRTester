@@ -2,9 +2,17 @@
 // Created by megaxela on 27.02.17.
 //
 
+#include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/PrintDocumentEndTestAction.h"
 
-PrintDocumentEndTestAction::PrintDocumentEndTestAction()
+REGISTER_ACTION(PrintDocumentEndTestAction);
+
+PrintDocumentEndTestAction::PrintDocumentEndTestAction() :
+    AbstractTestAction("Печать конца документа",
+                       "",
+                       {{"Пароль", (uint32_t) 30},
+                        {"Печатать рекламный текст", (bool) false}},
+                       {CATEGORY_ACTIONS})
 {
 
 }
@@ -16,10 +24,14 @@ PrintDocumentEndTestAction::~PrintDocumentEndTestAction()
 
 bool PrintDocumentEndTestAction::execute()
 {
-    return false;
+    environment()->driver()->printDocumentEnd(
+        getValue("Пароль").toUInt32(),
+        (uint8_t) getValue("Печатать рекламный текст").toBoolean()
+    );
+    return true;
 }
 
 TestActionPtr PrintDocumentEndTestAction::createAction() const
 {
-    return TestActionPtr();
+    return std::make_shared<PrintDocumentEndTestAction>();
 }
