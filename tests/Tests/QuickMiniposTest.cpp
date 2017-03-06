@@ -2,7 +2,10 @@
 // Created by megaxela on 06.03.17.
 //
 
+#include <include/Testing/StaticTestFabric.h>
 #include "QuickMiniposTest.h"
+
+REGISTER_STATIC_TEST(QuickMiniposTest);
 
 QuickMiniposTest::QuickMiniposTest() :
     AbstractTest(nullptr,
