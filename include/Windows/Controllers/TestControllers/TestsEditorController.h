@@ -11,6 +11,7 @@
 
 class TestsEditorController : public AbstractTabController
 {
+    Q_OBJECT
 public:
     /**
      * @brief Конструктор.
@@ -27,6 +28,10 @@ public:
     void tabSelected() override;
 
     void tabLeaved() override;
+
+signals:
+
+    void actionChanged(TestActionPtr action);
 
 protected:
     void setupConnections() override;

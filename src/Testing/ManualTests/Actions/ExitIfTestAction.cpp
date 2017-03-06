@@ -10,7 +10,7 @@ REGISTER_ACTION(ExitIfTestAction);
 ExitIfTestAction::ExitIfTestAction() :
     AbstractTestAction("Выйти, если...",
                        "Тест будет прерван, если выполнится условие.",
-                       {{"Пароль", (uint32_t) 30}},
+                       {{"Password", (uint32_t) 30}},
                        {CATEGORY_ACTIONS})
 {
     //

@@ -7,7 +7,7 @@
 OpenShiftTestAction::OpenShiftTestAction() :
     AbstractTestAction("Открытие смены",
                        "Действие, открывающее смену.",
-                       {{"Пароль", (uint32_t) 30}},
+                       {{"Password", (uint32_t) 30}},
                        {CATEGORY_ACTIONS})
 {
 
@@ -21,7 +21,7 @@ OpenShiftTestAction::~OpenShiftTestAction()
 bool OpenShiftTestAction::execute()
 {
     environment()->driver()->openShift(
-            getValue("Пароль").toUInt32()
+            getValue("Password").toUInt32()
     );
 
     return true;
@@ -29,5 +29,5 @@ bool OpenShiftTestAction::execute()
 
 TestActionPtr OpenShiftTestAction::createAction() const
 {
-    return TestActionPtr();
+    return std::make_shared<OpenShiftTestAction>();
 }

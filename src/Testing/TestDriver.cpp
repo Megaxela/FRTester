@@ -29,11 +29,16 @@ ByteArray TestDriver::sendCommand(const FRDriver::Command &c, const ByteArray &a
         return FRDriver::sendCommand(c, arguments, false);
     }
 
-    std::vector<TriggerTestPtr> currentTriggers;
-    TestCore::instance().getTriggers(tag, currentTriggers);
+    std::vector<TriggerTestPtr> currentTriggers =
+            TestCore::instance().getActiveTriggers();
 
     for (auto trigger : currentTriggers)
     {
+        if (!trigger->containsTag(tag))
+        {
+            continue;
+        }
+
         trigger->environment()->logger()->log(
                 "Активируется триггер \"" +
                 trigger->name() +
@@ -57,6 +62,11 @@ ByteArray TestDriver::sendCommand(const FRDriver::Command &c, const ByteArray &a
 
         for (auto trigger : currentTriggers)
         {
+            if (!trigger->containsTag(tag))
+            {
+                continue;
+            }
+
             trigger->onPostExecute();
             if (!trigger->succeed())
             {

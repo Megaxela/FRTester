@@ -4,6 +4,15 @@
 
 #include "CheckFontTest.h"
 #include <Testing/TestLogger.h>
+#include <include/Testing/StaticTestFabric.h>
+
+REGISTER_STATIC_TEST(CheckFontTest);
+
+CheckFontTest::CheckFontTest() :
+    CheckFontTest(nullptr)
+{
+
+}
 
 CheckFontTest::CheckFontTest(TestEnvironment* environment) :
     AbstractTest(environment,

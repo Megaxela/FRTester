@@ -10,8 +10,8 @@ REGISTER_ACTION(PrintDocumentEndTestAction);
 PrintDocumentEndTestAction::PrintDocumentEndTestAction() :
     AbstractTestAction("Печать конца документа",
                        "",
-                       {{"Пароль", (uint32_t) 30},
-                        {"Печатать рекламный текст", (bool) false}},
+                       {{"Password", (uint32_t) 30},
+                        {"Print ads", (bool) false}},
                        {CATEGORY_ACTIONS})
 {
 
@@ -25,8 +25,8 @@ PrintDocumentEndTestAction::~PrintDocumentEndTestAction()
 bool PrintDocumentEndTestAction::execute()
 {
     environment()->driver()->printDocumentEnd(
-        getValue("Пароль").toUInt32(),
-        (uint8_t) getValue("Печатать рекламный текст").toBoolean()
+        getValue("Password").toUInt32(),
+        (uint8_t) getValue("Print ads").toBoolean()
     );
     return true;
 }

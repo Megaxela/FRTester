@@ -11,8 +11,8 @@ REGISTER_ACTION(PayoutTestAction);
 PayoutTestAction::PayoutTestAction() :
     AbstractTestAction("Выплата",
                        "",
-                       {{"Пароль", (uint32_t) 30},
-                        {"Сумма", (uint64_t) 0}},
+                       {{"Password", (uint32_t) 30},
+                        {"Sum", (uint64_t) 0}},
                        {CATEGORY_ACTIONS})
 {
 
@@ -26,8 +26,8 @@ PayoutTestAction::~PayoutTestAction()
 bool PayoutTestAction::execute()
 {
     environment()->driver()->payout(
-            getValue("Пароль").toUInt32(),
-            getValue("Сумма").toUInt64()
+            getValue("Password").toUInt32(),
+            getValue("Sum").toUInt64()
     );
 
     return true;

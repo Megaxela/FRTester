@@ -11,6 +11,8 @@
 class CheckCloseTrigger : public AbstractTriggerTest
 {
 public:
+    CheckCloseTrigger();
+
     CheckCloseTrigger(TestEnvironment* environment);
 
     void onPreExecute(const std::string &realTag, const ByteArray &arguments) override;

@@ -11,6 +11,8 @@
 class MessageBoxTest : public AbstractTest
 {
 public:
+    MessageBoxTest();
+
     MessageBoxTest(TestEnvironment* testEnvironment);
 
     virtual bool execute();

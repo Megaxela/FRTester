@@ -10,9 +10,9 @@ REGISTER_ACTION(FontStringPrintTestAction);
 FontStringPrintTestAction::FontStringPrintTestAction() :
     AbstractTestAction("Тест печати шрифтом",
                        "",
-                       {{"Пароль", (uint32_t) 30},
-                        {"Текст", ""},
-                        {"Шрифт", (uint8_t) 1}},
+                       {{"Password", (uint32_t) 30},
+                        {"Text", ""},
+                        {"Font", (uint8_t) 1}},
                        {CATEGORY_ACTIONS})
 {
 
@@ -26,10 +26,10 @@ FontStringPrintTestAction::~FontStringPrintTestAction()
 bool FontStringPrintTestAction::execute()
 {
     environment()->driver()->fontStringPrint(
-            getValue("Пароль").toUInt32(),
+            getValue("Password").toUInt32(),
             1,
-            getValue("Шрифт").toUInt8(),
-            getValue("Текст").toString()
+            getValue("Font").toUInt8(),
+            getValue("Text").toString()
     );
 
     return true;

@@ -117,6 +117,10 @@ void AbstractTestAction::populateTreeWidgetItem(QTreeWidgetItem *item) const
     {
         item->setFlags(item->flags() | Qt::ItemIsDropEnabled);
     }
+    else
+    {
+        item->setFlags(item->flags() ^ Qt::ItemIsDropEnabled);
+    }
 
     auto childVector = children();
     for (auto& child : childVector )

@@ -3,7 +3,16 @@
 //
 
 #include <include/Tools/Logger.h>
+#include <include/Testing/StaticTestFabric.h>
 #include "MagnitCheckTest.h"
+
+REGISTER_STATIC_TEST(MagnitCheckTest);
+
+MagnitCheckTest::MagnitCheckTest() :
+    MagnitCheckTest(nullptr)
+{
+
+}
 
 MagnitCheckTest::MagnitCheckTest(TestEnvironment *environment) :
     AbstractTest(

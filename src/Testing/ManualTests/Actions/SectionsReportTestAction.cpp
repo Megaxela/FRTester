@@ -10,7 +10,7 @@ REGISTER_ACTION(SectionsReportTestAction);
 SectionsReportTestAction::SectionsReportTestAction() :
     AbstractTestAction("Печать отчета по секциям",
                        "",
-                       {{"Пароль", (uint32_t) 30}},
+                       {{"Password", (uint32_t) 30}},
                        {CATEGORY_ACTIONS})
 {
 
@@ -24,7 +24,7 @@ SectionsReportTestAction::~SectionsReportTestAction()
 bool SectionsReportTestAction::execute()
 {
     environment()->driver()->sectionsReport(
-            getValue("Пароль").toUInt32()
+            getValue("Password").toUInt32()
     );
 
     return true;

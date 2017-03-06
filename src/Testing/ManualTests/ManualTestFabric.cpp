@@ -64,8 +64,7 @@ TestActionPtr ManualTestFabric::createAction(json action)
     TestActionPtr testAction = TestActionFabric::instance()
             .create(actionName);
 
-    // Загрузка значений переменных
-    for (auto& element : action["variables"])
+    // Загрузка значений переменных.
     for (json::iterator element = action["variables"].begin();
          element != action["variables"].end();
          ++element)

@@ -6,6 +6,15 @@
 #include <Testing/TestLogger.h>
 #include <include/Tools/Codecs.h>
 #include <include/Tools/Logger.h>
+#include <include/Testing/StaticTestFabric.h>
+
+REGISTER_STATIC_TEST(WriteShitCashierNameTest);
+
+WriteShitCashierNameTest::WriteShitCashierNameTest() :
+    WriteShitCashierNameTest(nullptr)
+{
+
+}
 
 WriteShitCashierNameTest::WriteShitCashierNameTest(TestEnvironment *environment) :
     AbstractTest(

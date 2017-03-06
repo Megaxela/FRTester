@@ -11,6 +11,8 @@
 class NonfiscalRequesting : public AbstractTest
 {
 public:
+    NonfiscalRequesting();
+
     /**
      * @brief Constructor.
      */

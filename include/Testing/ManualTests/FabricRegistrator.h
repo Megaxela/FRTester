@@ -12,9 +12,9 @@ template<typename Fabric, typename Object>
 class FabricRegistrator
 {
 public:
-    FabricRegistrator(const Fabric::NameType& name)
+    FabricRegistrator(const typename Fabric::NameType& name)
     {
-        Fabric::i().registerObject<Object>(name);
+        Fabric::instance().template registerObject<Object>(name);
     }
 };
 

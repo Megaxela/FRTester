@@ -11,6 +11,8 @@
 class CheckFontTest : public AbstractTest
 {
 public:
+    CheckFontTest();
+
     CheckFontTest(TestEnvironment* testEnvironment);
 
     bool execute() override;

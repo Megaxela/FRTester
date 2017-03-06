@@ -3,8 +3,16 @@
 //
 
 #include <Tools/Logger.h>
+#include <include/Testing/StaticTestFabric.h>
 #include "CycleTest.h"
 
+REGISTER_STATIC_TEST(CycleTest);
+
+CycleTest::CycleTest() :
+    CycleTest(nullptr)
+{
+
+}
 
 CycleTest::CycleTest(TestEnvironment *enviroment) :
         AbstractTest(

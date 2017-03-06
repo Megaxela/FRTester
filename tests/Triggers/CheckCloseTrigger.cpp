@@ -8,6 +8,15 @@
 #include <Testing/TestEnvironment.h>
 #include <Testing/TestLogger.h>
 #include <include/Tools/Time.h>
+#include <include/Testing/StaticTriggerFabric.h>
+
+REGISTER_STATIC_TRIGGER(CheckCloseTrigger);
+
+CheckCloseTrigger::CheckCloseTrigger() :
+    CheckCloseTrigger(nullptr)
+{
+
+}
 
 CheckCloseTrigger::CheckCloseTrigger(TestEnvironment *environment) :
     AbstractTriggerTest(

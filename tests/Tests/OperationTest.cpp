@@ -7,7 +7,15 @@
 #include <cmath>
 #include <include/Testing/TestCore.h>
 #include <include/Testing/FROperations.h>
+#include <include/Testing/StaticTestFabric.h>
 
+REGISTER_STATIC_TEST(OperationTest);
+
+OperationTest::OperationTest() :
+    OperationTest(nullptr)
+{
+
+}
 
 OperationTest::OperationTest(TestEnvironment *environment)
         : AbstractTest(

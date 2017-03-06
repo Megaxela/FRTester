@@ -7,8 +7,17 @@
 #include <thread>
 #include <chrono>
 #include <include/Tools/Time.h>
+#include <include/Testing/StaticTestFabric.h>
 #include "CheckLoaderTest.h"
 #include "Testing/TestLogger.h"
+
+REGISTER_STATIC_TEST(CheckLoaderTest);
+
+CheckLoaderTest::CheckLoaderTest() :
+    CheckLoaderTest(nullptr)
+{
+
+}
 
 CheckLoaderTest::CheckLoaderTest(TestEnvironment *environment) :
     AbstractTest(environment,

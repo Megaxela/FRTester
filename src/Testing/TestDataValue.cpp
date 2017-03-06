@@ -108,8 +108,10 @@ void DataValue::to_json(json &j, const DataValue &value)
     case DataValue::Type::String:
         j["type"] = "string";
         j["value"] = value.value.string;
+        break;
     case DataValue::Type::ByteArray:
         j["type"] = "byteArray";
         j["value"] = value.value.byteArray.toHex();
+        break;
     }
 }

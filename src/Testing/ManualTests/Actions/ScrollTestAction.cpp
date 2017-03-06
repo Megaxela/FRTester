@@ -7,8 +7,8 @@
 ScrollTestAction::ScrollTestAction() :
     AbstractTestAction("Прокрутка ленты",
                         "",
-                       {{"Пароль", (uint32_t) 30},
-                        {"Количество строк", (uint8_t) 8}},
+                       {{"Password", (uint32_t) 30},
+                        {"Count", (uint8_t) 8}},
                        {CATEGORY_ACTIONS})
 {
 
@@ -22,9 +22,9 @@ ScrollTestAction::~ScrollTestAction()
 bool ScrollTestAction::execute()
 {
     environment()->driver()->scrolling(
-            getValue("Пароль").toUInt32(),
+            getValue("Password").toUInt32(),
             1,
-            getValue("Количество строк").toUInt8()
+            getValue("Count").toUInt8()
     );
 
     return true;

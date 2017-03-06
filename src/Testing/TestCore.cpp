@@ -27,6 +27,9 @@
 #include <tests/Tests/MagnitCheckTest.h>
 #include <tests/Tests/MessageBoxTest.h>
 #include <tests/Tests/CrazyStatusRequestTest.h>
+#include <include/Testing/StaticTestFabric.h>
+#include <include/Testing/StaticTriggerFabric.h>
+#include <include/Testing/ManualTests/Fabric.h>
 
 #define PY_LIST_DELIM ':'
 
@@ -69,22 +72,28 @@ void TestCore::updateDatabase()
     m_environment->tools()->m_executor = m_testingExecutor;
 
     // Загрузка статических тестов
-    addTest(std::make_shared<CycleTest>(m_environment));
-    addTest(std::make_shared<OperationTest>(m_environment));
-    addTest(std::make_shared<CheckLoaderTest>(m_environment));
-    addTest(std::make_shared<WriteShitCashierNameTest>(m_environment));
-    addTest(std::make_shared<NonfiscalRequesting>(m_environment));
-    addTest(std::make_shared<TableFiscalStorageLinesTest>(m_environment));
-    addTest(std::make_shared<BarcodePrintingTest>(m_environment));
-    addTest(std::make_shared<CheckFontTest>(m_environment));
-    addTest(std::make_shared<MagnitCheckTest>(m_environment));
-    addTest(std::make_shared<MessageBoxTest>(m_environment));
-    addTest(std::make_shared<CrazyStatusRequestTest>(m_environment));
 
-    // Загрузка триггеров
-//    addTrigger(std::make_shared<OperationTrigger>(m_environment));
-//    addTrigger(std::make_shared<CheckCloseTrigger>(m_environment));
-//    addTrigger(std::make_shared<ZReportTrigger>(m_environment));
+    auto staticTestsNames = StaticTestFabric::instance().getNames();
+
+    for (auto& testName : staticTestsNames)
+    {
+        auto test = StaticTestFabric::instance().create(testName);
+
+        test->setEnvironment(m_environment);
+
+        addTest(test);
+    }
+
+    auto staticTriggersNames = StaticTriggerFabric::instance().getNames();
+
+    for (auto& triggerName : staticTriggersNames)
+    {
+        auto trigger = StaticTriggerFabric::instance().create(triggerName);
+
+        trigger->setEnvironment(m_environment);
+
+        addTrigger(trigger);
+    }
 
     // Загрузка тестов из shared библиотек
     for (auto& library : m_sharedTests)
@@ -537,7 +546,7 @@ void TestCore::interruptTesting()
 
 void TestCore::setTestEnabled(TestPtr test, bool enabled)
 {
-    for (auto el : m_tests)
+    for (auto& el : m_tests)
     {
         if (el.test == test)
         {
@@ -550,7 +559,7 @@ std::vector<TestPtr> TestCore::getActiveTests()
 {
     std::vector<TestPtr> tests;
 
-    for (auto el : m_tests)
+    for (auto& el : m_tests)
     {
         if (el.enabled)
         {
@@ -565,7 +574,7 @@ std::vector<TriggerTestPtr> TestCore::getActiveTriggers()
 {
     std::vector<TriggerTestPtr> triggers;
 
-    for (auto el : m_triggers)
+    for (auto& el : m_triggers)
     {
         if (el.enabled)
         {
@@ -578,7 +587,7 @@ std::vector<TriggerTestPtr> TestCore::getActiveTriggers()
 
 void TestCore::setTriggerEnabled(TriggerTestPtr trigger, bool enabled)
 {
-    for (auto el : m_triggers)
+    for (auto& el : m_triggers)
     {
         if (el.trigger == trigger)
         {

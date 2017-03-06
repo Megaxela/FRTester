@@ -12,9 +12,9 @@ REGISTER_ACTION(DocumentHeaderPrintTestAction);
 DocumentHeaderPrintTestAction::DocumentHeaderPrintTestAction() :
     AbstractTestAction("Печать заголовка",
                        "",
-                       {{"Пароль", (uint32_t) 30},
-                        {"Документ", ""},
-                        {"Номер документа", (uint16_t) 0}},
+                       {{"Password", (uint32_t) 30},
+                        {"Document", ""},
+                        {"Document number", (uint16_t) 0}},
                        {CATEGORY_ACTIONS})
 {
 
@@ -28,15 +28,15 @@ DocumentHeaderPrintTestAction::~DocumentHeaderPrintTestAction()
 bool DocumentHeaderPrintTestAction::execute()
 {
     environment()->driver()->documentHeaderPrint(
-            getValue("Пароль").toUInt32(),
+            getValue("Password").toUInt32(),
             Codecs::instance().convert(
                     "utf-8",
                     "cp1251",
                     QByteArray(
-                            getValue("Строка для печати").toString().c_str()
+                            getValue("Document").toString().c_str()
                     )
             ).toStdString(),
-            getValue("Номер документа").toUInt16()
+            getValue("Document number").toUInt16()
     );
 
     return true;

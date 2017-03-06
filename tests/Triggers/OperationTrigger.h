@@ -11,6 +11,8 @@
 class OperationTrigger : public AbstractTriggerTest
 {
 public:
+    OperationTrigger();
+
     OperationTrigger(TestEnvironment *environment);
 
     void onPreExecute(const std::string &realTag, const ByteArray &arguments) override;

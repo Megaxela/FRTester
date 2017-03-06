@@ -11,6 +11,9 @@
 class CrazyStatusRequestTest : public AbstractTest
 {
 public:
+
+    CrazyStatusRequestTest();
+
     /**
      * @brief Конструктор.
      */

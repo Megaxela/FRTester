@@ -8,6 +8,9 @@
 #include <include/Tools/Time.h>
 #include <thread>
 #include <chrono>
+#include <include/Testing/StaticTestFabric.h>
+
+REGISTER_STATIC_TEST(BarcodePrintingTest);
 
 BarcodePrintingTest::BarcodePrintingTest(TestEnvironment *environment) :
     AbstractTest(environment, "Тест проверяющий печать штрих-кодов.",
@@ -130,4 +133,10 @@ bool BarcodePrintingTest::execute()
     }
 
     return true;
+}
+
+BarcodePrintingTest::BarcodePrintingTest() :
+    BarcodePrintingTest(nullptr)
+{
+
 }

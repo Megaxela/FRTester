@@ -4,6 +4,15 @@
 
 #include "TableFiscalStorageLinesTest.h"
 #include <Testing/TestLogger.h>
+#include <include/Testing/StaticTestFabric.h>
+
+REGISTER_STATIC_TEST(TableFiscalStorageLinesTest);
+
+TableFiscalStorageLinesTest::TableFiscalStorageLinesTest() :
+    TableFiscalStorageLinesTest(nullptr)
+{
+
+}
 
 TableFiscalStorageLinesTest::TableFiscalStorageLinesTest(TestEnvironment* environment) :
     AbstractTest(

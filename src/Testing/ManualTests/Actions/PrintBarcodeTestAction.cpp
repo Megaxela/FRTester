@@ -10,8 +10,8 @@ REGISTER_ACTION(PrintBarcodeTestAction);
 PrintBarcodeTestAction::PrintBarcodeTestAction() :
     AbstractTestAction("Печать штрих-кода",
                        "",
-                       {{"Пароль", (uint32_t) 30},
-                        {"Значение", (uint64_t) 0}},
+                       {{"Password", (uint32_t) 30},
+                        {"Value", (uint64_t) 0}},
                        {CATEGORY_ACTIONS})
 {
 
@@ -25,8 +25,8 @@ PrintBarcodeTestAction::~PrintBarcodeTestAction()
 bool PrintBarcodeTestAction::execute()
 {
     environment()->driver()->printBarcode(
-            getValue("Пароль").toUInt32(),
-            getValue("Значение").toUInt64()
+            getValue("Password").toUInt32(),
+            getValue("Value").toUInt64()
     );
 
     return true;

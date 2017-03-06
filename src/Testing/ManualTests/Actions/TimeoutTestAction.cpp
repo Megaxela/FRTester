@@ -11,7 +11,7 @@ REGISTER_ACTION(TimeoutTestAction);
 TimeoutTestAction::TimeoutTestAction() :
     AbstractTestAction("Таймаут",
                        "Таймаут в мс.",
-                       {{"Таймаут (в мс)", (uint32_t) 1000}},
+                       {{"Timeout (ms)", (uint32_t) 1000}},
                        {CATEGORY_ADDITIONAL})
 {
 
@@ -25,7 +25,7 @@ TimeoutTestAction::~TimeoutTestAction()
 bool TimeoutTestAction::execute()
 {
     Time::sleep<std::chrono::milliseconds>(
-            getValue("Таймаут (в мс)").toUInt32()
+            getValue("Timeout (ms)").toUInt32()
     );
 
     return true;

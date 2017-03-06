@@ -10,7 +10,7 @@ REGISTER_ACTION(CancelCheckTestAction);
 CancelCheckTestAction::CancelCheckTestAction() :
     AbstractTestAction("Аннулирование чека",
                        "",
-                       {{"Пароль", (uint32_t) 30}},
+                       {{"Password", (uint32_t) 30}},
                        {CATEGORY_ACTIONS})
 {
 
@@ -24,7 +24,7 @@ CancelCheckTestAction::~CancelCheckTestAction()
 bool CancelCheckTestAction::execute()
 {
     environment()->driver()->cancelCheck(
-            getValue("Пароль").toUInt32()
+            getValue("Password").toUInt32()
     );
 
     return true;

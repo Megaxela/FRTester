@@ -10,8 +10,8 @@ REGISTER_ACTION(CutCheckTestAction);
 CutCheckTestAction::CutCheckTestAction() :
     AbstractTestAction("Отрезка чека",
                        "",
-                       {{"Пароль", (uint32_t) 30},
-                        {"Полная отрезка", false}},
+                       {{"Password", (uint32_t) 30},
+                        {"Full cut", false}},
                        {CATEGORY_ACTIONS})
 {
 
@@ -25,8 +25,8 @@ CutCheckTestAction::~CutCheckTestAction()
 bool CutCheckTestAction::execute()
 {
     environment()->driver()->cutCheck(
-            getValue("Пароль").toUInt32(),
-            (uint8_t) getValue("Полная отрезка").toBoolean()
+            getValue("Password").toUInt32(),
+            (uint8_t) getValue("Full cut").toBoolean()
     );
 
     return true;

@@ -11,6 +11,8 @@
 class CheckLoaderTest : public AbstractTest
 {
 public:
+    CheckLoaderTest();
+
     CheckLoaderTest(TestEnvironment* environment);
 
     bool execute() override;

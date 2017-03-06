@@ -3,7 +3,16 @@
 //
 
 #include <include/Tools/Time.h>
+#include <include/Testing/StaticTestFabric.h>
 #include "CrazyStatusRequestTest.h"
+
+REGISTER_STATIC_TEST(CrazyStatusRequestTest);
+
+CrazyStatusRequestTest::CrazyStatusRequestTest() :
+    CrazyStatusRequestTest(nullptr)
+{
+
+}
 
 CrazyStatusRequestTest::CrazyStatusRequestTest(TestEnvironment *environment) :
     AbstractTest(environment,

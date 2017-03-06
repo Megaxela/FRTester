@@ -10,7 +10,7 @@ REGISTER_ACTION(ShiftReportWithoutExtinctionTestAction);
 ShiftReportWithoutExtinctionTestAction::ShiftReportWithoutExtinctionTestAction() :
     AbstractTestAction("X отчет",
                        "Отчет о закрытии смены без гашения",
-                       {{"Пароль", (uint32_t) 30}},
+                       {{"Password", (uint32_t) 30}},
                        {CATEGORY_ACTIONS})
 {
 
@@ -24,7 +24,7 @@ ShiftReportWithoutExtinctionTestAction::~ShiftReportWithoutExtinctionTestAction(
 bool ShiftReportWithoutExtinctionTestAction::execute()
 {
     environment()->driver()->shiftReportWithoutExtinction(
-            getValue("Пароль").toUInt32()
+            getValue("Password").toUInt32()
     );
 
     return true;

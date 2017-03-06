@@ -11,6 +11,8 @@
 class TableFiscalStorageLinesTest : public AbstractTest
 {
 public:
+    TableFiscalStorageLinesTest();
+
     TableFiscalStorageLinesTest(TestEnvironment* environment);
 
     bool execute() override;

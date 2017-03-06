@@ -260,6 +260,12 @@ public:
      */
     bool containsValue(const std::string& name, DataValue::Type type) const;
 
+    /**
+     * @brief Метод для задачи тестировочного окружения.
+     * @param environment
+     */
+    void setEnvironment(TestEnvironment* environment);
+
 private:
     std::string m_name;
 

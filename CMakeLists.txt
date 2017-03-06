@@ -300,7 +300,14 @@ set(SOURCE_FILES
         include/Testing/ManualTests/Actions/RebootTestAction.h
         src/Testing/ManualTests/Actions/PrintBarcodeTestAction.cpp
         include/Testing/ManualTests/Actions/PrintBarcodeTestAction.h
-        src/Testing/ManualTests/Fabric.cpp include/Testing/ManualTests/Fabric.h src/Testing/ManualTests/FabricRegistrator.cpp include/Testing/ManualTests/FabricRegistrator.h include/Testing/ManualTests/TestActionFabric.h)
+        src/Testing/ManualTests/Fabric.cpp
+        include/Testing/ManualTests/Fabric.h
+        src/Testing/ManualTests/FabricRegistrator.cpp
+        include/Testing/ManualTests/FabricRegistrator.h
+        include/Testing/ManualTests/TestActionFabric.h
+        include/Testing/StaticTestFabric.h
+        include/Testing/StaticTriggerFabric.h
+        )
 
 add_executable(FRTester
         ${MAIN_FILES}

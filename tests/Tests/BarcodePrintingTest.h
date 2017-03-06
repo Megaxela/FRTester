@@ -11,6 +11,8 @@
 class BarcodePrintingTest : public AbstractTest
 {
 public:
+    BarcodePrintingTest();
+
     BarcodePrintingTest(TestEnvironment* environment);
 
     bool execute() override;

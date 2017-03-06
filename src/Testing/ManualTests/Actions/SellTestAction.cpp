@@ -11,15 +11,15 @@ REGISTER_ACTION(SellTestAction);
 SellTestAction::SellTestAction() :
     AbstractTestAction("Продажа",
                        "",
-                       {{"Пароль", (uint32_t) 30},
-                        {"Количество", (uint64_t) 1000},
-                        {"Цена", (uint64_t) 10000},
-                        {"Отдел", (uint8_t) 1},
-                        {"1 налог", (uint8_t) 0},
-                        {"2 налог", (uint8_t) 0},
-                        {"3 налог", (uint8_t) 0},
-                        {"4 налог", (uint8_t) 0},
-                        {"Строка", "Строка для печати"}},
+                       {{"Password", (uint32_t) 30},
+                        {"Count", (uint64_t) 1000},
+                        {"Price", (uint64_t) 10000},
+                        {"Department", (uint8_t) 1},
+                        {"1 tax", (uint8_t) 0},
+                        {"2 tax", (uint8_t) 0},
+                        {"3 tax", (uint8_t) 0},
+                        {"4 tax", (uint8_t) 0},
+                        {"String", "Строка для печати"}},
                        {CATEGORY_ACTIONS})
 {
 
@@ -33,18 +33,18 @@ SellTestAction::~SellTestAction()
 bool SellTestAction::execute()
 {
     environment()->driver()->sell(
-            getValue("Пароль").toUInt32(),
-            getValue("Количество").toUInt64(),
-            getValue("Цена").toUInt64(),
-            getValue("Отдел").toUInt8(),
-            getValue("1 налог").toUInt8(),
-            getValue("2 налог").toUInt8(),
-            getValue("3 налог").toUInt8(),
-            getValue("4 налог").toUInt8(),
+            getValue("Password").toUInt32(),
+            getValue("Count").toUInt64(),
+            getValue("Price").toUInt64(),
+            getValue("Department").toUInt8(),
+            getValue("1 tax").toUInt8(),
+            getValue("2 tax").toUInt8(),
+            getValue("3 tax").toUInt8(),
+            getValue("4 tax").toUInt8(),
             Codecs::instance().convert(
                     "utf-8",
                     "cp1251",
-                    getValue("Строка").toString().c_str()
+                    getValue("String").toString().c_str()
             ).toStdString()
     );
 

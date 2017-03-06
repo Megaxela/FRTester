@@ -49,14 +49,16 @@ void AbstractTabController::init()
 
         try
         {
-            tabWidget()->setCurrentIndex(
-                    std::stoi(
-                            SettingsSystem::instance()
-                                    .getValue(
-                                            "active_tab_(" + name + ")"
-                                    )
-                    )
+            auto index = std::stoi(
+                    SettingsSystem::instance()
+                            .getValue(
+                                    "active_tab_(" + name + ")"
+                            )
             );
+
+            tabWidget()->setCurrentIndex(index);
+
+            m_previousTab = tabWidget()->currentWidget();
 
             auto result = m_tabControllers.find(tabWidget()->currentWidget());
 

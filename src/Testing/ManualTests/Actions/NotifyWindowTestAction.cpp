@@ -10,7 +10,7 @@ REGISTER_ACTION(NotifyWindowTestAction);
 NotifyWindowTestAction::NotifyWindowTestAction() :
     AbstractTestAction("Уведомление пользователя",
                        "Действие, уведомляющее пользователя о чем-то.",
-                       {{"Запрос", std::string("Текст уведомления")}},
+                       {{"Request", std::string("Текст уведомления")}},
                        {CATEGORY_ADDITIONAL})
 {
 
@@ -24,12 +24,12 @@ NotifyWindowTestAction::~NotifyWindowTestAction()
 bool NotifyWindowTestAction::execute()
 {
     environment()->tools()->messageNotify(
-            getValue("Запрос").toString()
+            getValue("Request").toString()
     );
     return true;
 }
 
 TestActionPtr NotifyWindowTestAction::createAction() const
 {
-    return TestActionPtr();
+    return std::make_shared<NotifyWindowTestAction>();
 }

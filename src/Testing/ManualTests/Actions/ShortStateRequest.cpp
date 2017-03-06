@@ -7,8 +7,8 @@
 ShortStateRequest::ShortStateRequest() :
     AbstractTestAction("Короткий запрос состояния",
                         "",
-                       {{"Пароль", (uint32_t) 30},
-                        {"Вывести", (bool) false}},
+                       {{"Password", (uint32_t) 30},
+                        {"Print?", (bool) false}},
                        {CATEGORY_ACTIONS})
 {
 
@@ -22,10 +22,10 @@ ShortStateRequest::~ShortStateRequest()
 bool ShortStateRequest::execute()
 {
     auto result = environment()->driver()->shortStateRequest(
-            getValue("Пароль").toUInt32()
+            getValue("Password").toUInt32()
     );
 
-    if (getValue("Вывести").toBoolean())
+    if (getValue("Print?").toBoolean())
     {
         if (environment()->driver()->getLastError() == FRDriver::ErrorCode::NoError)
         {

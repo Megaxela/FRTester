@@ -2,6 +2,7 @@
 // Created by megaxela on 27.02.17.
 //
 
+#include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/ShiftCloseTestAction.h"
 
 REGISTER_ACTION(ShiftCloseTestAction);
@@ -9,7 +10,7 @@ REGISTER_ACTION(ShiftCloseTestAction);
 ShiftCloseTestAction::ShiftCloseTestAction() :
     AbstractTestAction("Z отчет",
                        "",
-                       {{"Пароль", (uint32_t) 30}},
+                       {{"Password", (uint32_t) 30}},
                        {CATEGORY_ACTIONS})
 {
 
@@ -23,7 +24,7 @@ ShiftCloseTestAction::~ShiftCloseTestAction()
 bool ShiftCloseTestAction::execute()
 {
     environment()->driver()->shiftCloseReport(
-            getValue("Пароль").toUInt32()
+            getValue("Password").toUInt32()
     );
 
     return true;

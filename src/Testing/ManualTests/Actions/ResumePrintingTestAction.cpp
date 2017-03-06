@@ -7,7 +7,7 @@
 ResumePrintingTestAction::ResumePrintingTestAction() :
     AbstractTestAction("Продожение печати",
                         "",
-                       {{"Пароль", (uint32_t) 30}},
+                       {{"Password", (uint32_t) 30}},
                        {CATEGORY_ACTIONS})
 {
 
@@ -21,7 +21,7 @@ ResumePrintingTestAction::~ResumePrintingTestAction()
 bool ResumePrintingTestAction::execute()
 {
     environment()->driver()->resumePrinting(
-            getValue("Пароль").toUInt32()
+            getValue("Password").toUInt32()
     );
 
     return true;

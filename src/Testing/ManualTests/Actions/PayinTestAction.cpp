@@ -11,8 +11,8 @@ REGISTER_ACTION(PayinTestAction);
 PayinTestAction::PayinTestAction() :
     AbstractTestAction("Внесение",
                        "Внесение денежной суммы",
-                       {{"Пароль", (uint32_t) 30},
-                        {"Сумма", (uint64_t) 0}},
+                       {{"Password", (uint32_t) 30},
+                        {"Sum", (uint64_t) 0}},
                        {CATEGORY_ACTIONS})
 {
 
@@ -26,9 +26,10 @@ PayinTestAction::~PayinTestAction()
 bool PayinTestAction::execute()
 {
     environment()->driver()->payin(
-            getValue("Пароль").toUInt32(),
-            getValue("Сумма").toUInt64()
-    )
+            getValue("Password").toUInt32(),
+            getValue("Sum").toUInt64()
+    );
+
     return true;
 }
 

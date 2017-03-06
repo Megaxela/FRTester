@@ -208,3 +208,30 @@ void QTestDisplayTreeWidget::applyItem(QActionTreeWidgetItem *item, bool root)
         }
     }
 }
+
+void QTestDisplayTreeWidget::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Delete)
+    {
+        if (currentItem() != nullptr)
+        {
+            delete currentItem();
+        }
+    }
+
+
+    QTreeView::keyPressEvent(event);
+}
+
+void QTestDisplayTreeWidget::onActionChanged(TestActionPtr action)
+{
+    for (uint32_t i = 0; i < topLevelItemCount(); ++i)
+    {
+        auto item = static_cast<QActionTreeWidgetItem*>(topLevelItem(i));
+
+        if (item->getAction() == action)
+        {
+            item->setText(0, QString::fromStdString(action->getFullName()));
+        }
+    }
+}

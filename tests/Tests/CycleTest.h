@@ -17,6 +17,8 @@
 class CycleTest : public AbstractTest
 {
 public:
+    CycleTest();
+
     /**
      * @brief Конструктор.
      * @param driver Указатель на тестировочное окружение.

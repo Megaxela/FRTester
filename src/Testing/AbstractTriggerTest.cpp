@@ -425,3 +425,8 @@ bool AbstractTriggerTest::containsValue(const std::string &name, DataValue::Type
 
     return false;
 }
+
+void AbstractTriggerTest::setEnvironment(TestEnvironment *environment)
+{
+    m_environment = environment;
+}

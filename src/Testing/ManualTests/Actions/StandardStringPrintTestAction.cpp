@@ -11,8 +11,8 @@ REGISTER_ACTION(StandardStringPrintTestAction);
 StandardStringPrintTestAction::StandardStringPrintTestAction() :
     AbstractTestAction("Печать строки",
                         "",
-                       {{"Пароль", (uint32_t) 30},
-                        {"Строка", ""}},
+                       {{"Password", (uint32_t) 30},
+                        {"String", ""}},
                        {CATEGORY_ACTIONS})
 {
 
@@ -26,12 +26,12 @@ StandardStringPrintTestAction::~StandardStringPrintTestAction()
 bool StandardStringPrintTestAction::execute()
 {
     environment()->driver()->standardStringPrint(
-            getValue("Пароль").toUInt32(),
+            getValue("Password").toUInt32(),
             1,
             Codecs::instance().convert(
                     "utf-8",
                     "cp1251",
-                    getValue("Строка").toString().c_str()
+                    getValue("String").toString().c_str()
             ).toStdString()
     );
 

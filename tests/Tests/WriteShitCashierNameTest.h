@@ -11,6 +11,8 @@
 class WriteShitCashierNameTest : public AbstractTest
 {
 public:
+    WriteShitCashierNameTest();
+
     WriteShitCashierNameTest(TestEnvironment* environment);
 
     bool execute() override;

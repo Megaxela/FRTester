@@ -6,8 +6,17 @@
 #include <algorithm>
 #include <include/Tools/ByteArrayReader.h>
 #include <include/Testing/FROperations.h>
+#include <include/Testing/StaticTriggerFabric.h>
 #include "Testing/TestEnvironment.h"
 #include "Testing/TestLogger.h"
+
+REGISTER_STATIC_TRIGGER(OperationTrigger);
+
+OperationTrigger::OperationTrigger() :
+    OperationTrigger(nullptr)
+{
+
+}
 
 OperationTrigger::OperationTrigger(TestEnvironment *environment) :
         AbstractTriggerTest(environment,

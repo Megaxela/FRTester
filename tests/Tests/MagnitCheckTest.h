@@ -12,6 +12,8 @@
 class MagnitCheckTest : public AbstractTest
 {
 public:
+    MagnitCheckTest();
+
     MagnitCheckTest(TestEnvironment* environment);
 
     bool execute() override;

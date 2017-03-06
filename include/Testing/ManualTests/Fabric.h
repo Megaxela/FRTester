@@ -42,7 +42,7 @@ public:
      * @param name Название типа.
      */
     template<typename T>
-    void registerObject(const SerializeType &name )
+    void registerObject(const SerializeType &name)
     {
         m_actions[name] = []()
         {
@@ -58,7 +58,7 @@ public:
             throw std::invalid_argument("Can't find registred type \"" + name + "\".");
         }
 
-        return f.second();
+        return f->second();
     }
 
     /**
@@ -70,7 +70,7 @@ public:
         std::vector<SerializeType> type;
         for (auto& element : m_actions)
         {
-            type.push_back(element);
+            type.push_back(element.first);
         }
 
         return type;

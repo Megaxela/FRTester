@@ -25,7 +25,10 @@ TestsEditorController::~TestsEditorController()
 
 void TestsEditorController::setupConnections()
 {
-
+    connect(this,
+            &TestsEditorController::actionChanged,
+            ui()->testsEdit_testActionsLineEdit,
+            &QTestDisplayTreeWidget::onActionChanged);
 }
 
 void TestsEditorController::tabSelected()
@@ -195,6 +198,7 @@ void TestsEditorController::onAvailableActionElementSelected(TestActionPtr item)
                     [=](uint8_t value)
                     {
                         m_editingAction->setValue(variable.first, value);
+                        emit actionChanged(m_editingAction);
                     });
 
             widget = numberLineEdit;
@@ -209,6 +213,7 @@ void TestsEditorController::onAvailableActionElementSelected(TestActionPtr item)
                     [=](int8_t value)
                     {
                         m_editingAction->setValue(variable.first, value);
+                        emit actionChanged(m_editingAction);
                     });
 
             widget = numberLineEdit;
@@ -223,6 +228,7 @@ void TestsEditorController::onAvailableActionElementSelected(TestActionPtr item)
                     [=](uint16_t value)
                     {
                         m_editingAction->setValue(variable.first, value);
+                        emit actionChanged(m_editingAction);
                     });
 
             widget = numberLineEdit;
@@ -237,6 +243,7 @@ void TestsEditorController::onAvailableActionElementSelected(TestActionPtr item)
                     [=](int16_t value)
                     {
                         m_editingAction->setValue(variable.first, value);
+                        emit actionChanged(m_editingAction);
                     });
 
             widget = numberLineEdit;
@@ -251,6 +258,7 @@ void TestsEditorController::onAvailableActionElementSelected(TestActionPtr item)
                     [=](uint32_t value)
                     {
                         m_editingAction->setValue(variable.first, value);
+                        emit actionChanged(m_editingAction);
                     });
 
             widget = numberLineEdit;
@@ -265,6 +273,7 @@ void TestsEditorController::onAvailableActionElementSelected(TestActionPtr item)
                     [=](int32_t value)
                     {
                         m_editingAction->setValue(variable.first, value);
+                        emit actionChanged(m_editingAction);
                     });
 
             widget = numberLineEdit;
@@ -279,6 +288,7 @@ void TestsEditorController::onAvailableActionElementSelected(TestActionPtr item)
                     [=](uint64_t value)
                     {
                         m_editingAction->setValue(variable.first, value);
+                        emit actionChanged(m_editingAction);
                     });
 
             widget = numberLineEdit;
@@ -293,6 +303,7 @@ void TestsEditorController::onAvailableActionElementSelected(TestActionPtr item)
                     [=](int64_t value)
                     {
                         m_editingAction->setValue(variable.first, value);
+                        emit actionChanged(m_editingAction);
                     });
 
             widget = numberLineEdit;
@@ -307,6 +318,7 @@ void TestsEditorController::onAvailableActionElementSelected(TestActionPtr item)
                     [=](int state)
                     {
                         m_editingAction->setValue(variable.first, (bool) state);
+                        emit actionChanged(m_editingAction);
                     });
 
             widget = checkBox;
@@ -321,12 +333,31 @@ void TestsEditorController::onAvailableActionElementSelected(TestActionPtr item)
                     [=](ByteArray n)
                     {
                         m_editingAction->setValue(variable.first, n);
+                        emit actionChanged(m_editingAction);
                     });
             widget = hexLineEdit;
             break;
         }
+        case DataValue::Type::String:
+        {
+            auto stringEdit = new QLineEdit(parentWidget());
+            stringEdit->setText(
+                    QString::fromStdString(
+                            variable.second.toString()
+                    )
+            );
+            connect(stringEdit,
+                    &QLineEdit::textChanged,
+                    [=](QString s)
+                    {
+                        m_editingAction->setValue(variable.first, s.toStdString());
+                        emit actionChanged(m_editingAction);
+                    });
+            widget = stringEdit;
+            break;
+        }
         default:
-            Critical("Неизвестный тип переменной. Чта?");
+            Log("Unknown value type. What??");
         }
 
         if (widget != nullptr)

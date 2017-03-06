@@ -10,7 +10,7 @@ REGISTER_ACTION(TaxesReportTestAction);
 TaxesReportTestAction::TaxesReportTestAction() :
     AbstractTestAction("Отчет о налогах",
                         "",
-                       {{"Пароль", (uint32_t) 30}},
+                       {{"Password", (uint32_t) 30}},
                        {CATEGORY_ACTIONS})
 {
 
@@ -24,7 +24,7 @@ TaxesReportTestAction::~TaxesReportTestAction()
 bool TaxesReportTestAction::execute()
 {
     environment()->driver()->taxesReport(
-            getValue("Пароль").toUInt32()
+            getValue("Password").toUInt32()
     );
 
     return true;

@@ -15,6 +15,8 @@
 class ZReportTrigger : public AbstractTriggerTest
 {
 public:
+    ZReportTrigger();
+
     /**
      * @brief Конструктор.
      * @param environment Тестовое окружение.

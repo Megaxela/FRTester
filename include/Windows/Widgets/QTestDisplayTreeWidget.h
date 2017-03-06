@@ -59,6 +59,10 @@ public:
      */
     void applyChanges();
 
+public slots:
+
+    void onActionChanged(TestActionPtr action);
+
 signals:
 
     void onActionSelected(TestActionPtr action);
@@ -66,8 +70,9 @@ signals:
 protected:
     void dropEvent(QDropEvent *event) override;
 
-
     void dragEnterEvent(QDragEnterEvent *event) override;
+
+    virtual void keyPressEvent(QKeyEvent *event);
 
 private slots:
     /**

@@ -8,9 +8,10 @@
 REGISTER_ACTION(PrintAdsTestAction);
 
 PrintAdsTestAction::PrintAdsTestAction() :
-    AbstractTestAction("Метод печати рекламного теста",
+    AbstractTestAction("Печать рекламного теста",
                        "",
-                       {{"Пароль", (uint32_t) 30}})
+                       {{"Password", (uint32_t) 30}},
+                       {CATEGORY_ACTIONS})
 {
 
 }
@@ -23,7 +24,7 @@ PrintAdsTestAction::~PrintAdsTestAction()
 bool PrintAdsTestAction::execute()
 {
     environment()->driver()->printAds(
-            getValue("Пароль").toUInt32()
+            getValue("Password").toUInt32()
     );
 
     return true;
