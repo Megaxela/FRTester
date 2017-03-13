@@ -2,7 +2,10 @@
 // Created by megaxela on 27.02.17.
 //
 
+#include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/ShortStateRequest.h"
+
+REGISTER_ACTION(ShortStateRequest);
 
 ShortStateRequest::ShortStateRequest() :
     AbstractTestAction("Короткий запрос состояния",

@@ -27,12 +27,6 @@ bool CashierReportTestAction::execute()
 
     environment()->driver()->cashierReport(pass);
 
-    if (!environment()->tools()->waitForPrintingFinished(pass, 10000))
-    {
-        environment()->logger()->log("Не дождались окончания печати отчета.");
-        return false;
-    }
-
     return true;
 }
 

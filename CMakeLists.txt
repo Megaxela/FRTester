@@ -307,7 +307,7 @@ set(SOURCE_FILES
         include/Testing/ManualTests/TestActionFabric.h
         include/Testing/StaticTestFabric.h
         include/Testing/StaticTriggerFabric.h
-        tests/Tests/QuickMiniposTest.cpp tests/Tests/QuickMiniposTest.h)
+        tests/Tests/QuickMiniposTest.cpp tests/Tests/QuickMiniposTest.h src/Testing/ManualTests/Actions/WaitForPrintingFinishTestAction.cpp include/Testing/ManualTests/Actions/WaitForPrintingFinishTestAction.h)
 
 add_executable(FRTester
         ${MAIN_FILES}

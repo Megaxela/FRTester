@@ -24,7 +24,7 @@ SendRawTestAction::~SendRawTestAction()
 bool SendRawTestAction::execute()
 {
     environment()->driver()->sendRaw(getValue("Bytes").toByteArray());
-    return false;
+    return true;
 }
 
 TestActionPtr SendRawTestAction::createAction() const

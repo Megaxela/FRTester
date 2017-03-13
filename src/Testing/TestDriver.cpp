@@ -142,6 +142,8 @@ std::string TestDriver::getCommandTag(const FRDriver::Command &c)
         return pos->second;
     }
 
+    WarningStream() << "Для команды с кодом №" << (int) c << " не найден тэг." << std::endl;
+
     return "";
 }
 

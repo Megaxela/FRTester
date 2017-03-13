@@ -2,7 +2,10 @@
 // Created by megaxela on 27.02.17.
 //
 
+#include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/ScrollTestAction.h"
+
+REGISTER_ACTION(ScrollTestAction);
 
 ScrollTestAction::ScrollTestAction() :
     AbstractTestAction("Прокрутка ленты",

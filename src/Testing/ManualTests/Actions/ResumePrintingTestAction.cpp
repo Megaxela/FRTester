@@ -2,7 +2,10 @@
 // Created by megaxela on 27.02.17.
 //
 
+#include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/ResumePrintingTestAction.h"
+
+REGISTER_ACTION(ResumePrintingTestAction);
 
 ResumePrintingTestAction::ResumePrintingTestAction() :
     AbstractTestAction("Продожение печати",

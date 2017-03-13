@@ -11,7 +11,7 @@ QuickMiniposTest::QuickMiniposTest() :
     AbstractTest(nullptr,
                  "MINIPOS тест",
                  "",
-                 {{}})
+                 {})
 {
 
 }

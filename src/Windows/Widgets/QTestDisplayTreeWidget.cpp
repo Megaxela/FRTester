@@ -63,13 +63,22 @@ void QTestDisplayTreeWidget::dropEvent(QDropEvent *event)
             )->currentItem()
     );
 
-    m_test->addTestAction(item->getAction()->copy());
+    QTreeWidgetItem* parentItem = nullptr;
 
-    auto testAction = new QActionTreeWidgetItem(currentItem(), item->getAction()->copy());
+    if (static_cast<QActionTreeWidgetItem*>(currentItem())
+            ->getAction()
+            ->allowChildren())
+    {
+        parentItem = currentItem();
+    }
 
-    item->getAction()->populateTreeWidgetItem(testAction);
+    auto copy = item->getAction()->copy();
 
-    if (!currentItem())
+    auto testAction = new QActionTreeWidgetItem(parentItem, copy);
+
+    copy->populateTreeWidgetItem(testAction);
+
+    if (!parentItem)
     {
         addTopLevelItem(testAction);
     }
@@ -141,7 +150,7 @@ void QTestDisplayTreeWidget::displayActions()
         auto item = new QActionTreeWidgetItem(this, testAction);
 
         //
-        item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
+//        item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
 
         // Изменяем tree widget если требуется
         testAction->populateTreeWidgetItem(item);

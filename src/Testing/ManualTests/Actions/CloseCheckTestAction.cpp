@@ -54,6 +54,8 @@ bool CloseCheckTestAction::execute()
                     )
             ).toStdString()
     );
+
+    return true;
 }
 
 TestActionPtr CloseCheckTestAction::createAction() const
