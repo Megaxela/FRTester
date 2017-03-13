@@ -8,7 +8,7 @@
 #include <chrono>
 #include <include/Testing/StaticTestFabric.h>
 
-REGISTER_STATIC_TEST(NonfiscalRequesting);
+REGISTER_STATIC_TEST(NonfiscalRequesting)
 
 NonfiscalRequesting::NonfiscalRequesting() :
     NonfiscalRequesting(nullptr)
@@ -93,7 +93,7 @@ bool NonfiscalRequesting::execute()
         environment()->logger()->log("Получаем короткий запрос состояния.");
         for (uint32_t times = 0; times < 20; ++times)
         {
-            auto state = environment()->driver()->shortStateRequest(password);
+            environment()->driver()->shortStateRequest(password);
             if (environment()->driver()->getLastError() != FRDriver::ErrorCode::NoError)
             {
                 environment()->logger()->log("Не удалось получить короткий запрос состояния.");

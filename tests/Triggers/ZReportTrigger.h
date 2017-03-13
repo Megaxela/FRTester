@@ -18,12 +18,6 @@ public:
     ZReportTrigger();
 
     /**
-     * @brief Конструктор.
-     * @param environment Тестовое окружение.
-     */
-    ZReportTrigger(TestEnvironment* environment);
-
-    /**
      * @brief Метод, вызываемый перед выполнением команды.
      * @param realTag Тэг вызываемой команды.
      * @param arguments Аргументы команды.
@@ -53,7 +47,14 @@ protected:
     bool m_success;
     bool m_preError;
     FRDriver::NonZeroSums m_nonZeroSums;
-    struct {
+    struct ZeroSums {
+        ZeroSums() :
+            incomingSum(0),
+            consumptionSum(0),
+            returnIncomingSum(0),
+            returnConsumptionSum(0)
+        {}
+
         uint64_t incomingSum;
         uint64_t consumptionSum;
         uint64_t returnIncomingSum;

@@ -92,7 +92,7 @@ void DeviceActionsCommandsTabController::onCommandRequestButtonPressed()
 
     ByteArray byteArray = ByteArray::fromHex(s.toStdString());
 
-    if (byteArray.size() != s.size() / 2)
+    if (byteArray.size() != static_cast<uint32_t>(s.size() / 2))
     {
         Error("Не удалось преобразовать строку.");
         ui()->commandsDeviceActionResponseLineEdit->setText(

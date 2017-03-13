@@ -13,7 +13,10 @@
 #include <include/Windows/Widgets/QHexLineEdit.h>
 
 TestsEditorController::TestsEditorController(Ui::MainWindow *ptr, QWidget *parent):
-    AbstractTabController(ptr, parent)
+    AbstractTabController(ptr, parent),
+    m_currentTest(),
+    m_editingAction(),
+    m_editorDisconnected(false)
 {
 
 }

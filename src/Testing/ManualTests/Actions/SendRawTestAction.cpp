@@ -5,7 +5,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/SendRawTestAction.h"
 
-REGISTER_ACTION(SendRawTestAction);
+REGISTER_ACTION(SendRawTestAction)
 
 SendRawTestAction::SendRawTestAction() :
     AbstractTestAction("Отправка байт",

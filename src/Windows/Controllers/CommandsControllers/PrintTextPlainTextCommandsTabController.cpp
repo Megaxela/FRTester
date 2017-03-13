@@ -55,7 +55,7 @@ void PrintTextPlainTextCommandsTabController::onPrintButtonPressed()
 
         if (!DriverHolder::driver().standardStringPrint(
                 commandsTabControllerParent()->password(),
-                0b111,
+                7, //0b111 - C++14
                 line
         ))
         {

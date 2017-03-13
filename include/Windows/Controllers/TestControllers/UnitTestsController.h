@@ -144,6 +144,9 @@ private slots:
     void onSelectedTestsExecuted(QVector<TestPtr> tests);
 
 private:
+    UnitTestsController(const UnitTestsController&) = delete;
+    UnitTestsController& operator=(const UnitTestsController&) = delete;
+
     enum class MessageType
     {
         Log,

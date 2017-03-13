@@ -100,6 +100,9 @@ public:
     void setUnitTestsController(UnitTestsController* controller);
 
 private:
+    TestingTools(const TestingTools&) = delete;
+    TestingTools& operator=(const TestingTools&) = delete;
+
     TestingExecutor* m_executor;
 
     FRDriver* m_currentDriver;

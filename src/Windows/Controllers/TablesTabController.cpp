@@ -10,7 +10,11 @@
 #include "ui_mainwindow.h"
 
 TablesTabController::TablesTabController(Ui::MainWindow *ptr, QWidget *parent)
-        : AbstractTabController(ptr, parent, nullptr)
+        : AbstractTabController(ptr, parent, nullptr),
+          m_tables(),
+          m_tableStructures(),
+          m_currentTableFieldsStructures(),
+          m_cellBackup()
 {
     for (uint8_t i = 1; i <= 24; ++i)
     {
@@ -49,7 +53,7 @@ void TablesTabController::onTablesUpdate()
 
     ui()->tablesFieldsListWidget->clear();
 
-    for (int i = 0; i < m_tables.size(); ++i)
+    for (uint32_t i = 0; i < m_tables.size(); ++i)
     {
         auto structure = DriverHolder::driver().tableStructureRequest(
                pwd,

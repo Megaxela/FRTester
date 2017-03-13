@@ -5,7 +5,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/IfTestAction.h"
 
-REGISTER_ACTION(IfTestAction);
+REGISTER_ACTION(IfTestAction)
 
 IfTestAction::IfTestAction() :
     AbstractTestAction("Если...",

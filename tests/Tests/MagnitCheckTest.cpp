@@ -6,7 +6,7 @@
 #include <include/Testing/StaticTestFabric.h>
 #include "MagnitCheckTest.h"
 
-REGISTER_STATIC_TEST(MagnitCheckTest);
+REGISTER_STATIC_TEST(MagnitCheckTest)
 
 MagnitCheckTest::MagnitCheckTest() :
     MagnitCheckTest(nullptr)

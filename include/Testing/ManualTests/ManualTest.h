@@ -23,6 +23,8 @@ public:
     ManualTest(const std::string &name,
                const std::string &description);
 
+    virtual ~ManualTest();
+
     /**
      * @brief Метод для добавления действия.
      * @param testAction Действие.

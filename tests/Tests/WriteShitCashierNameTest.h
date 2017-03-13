@@ -16,10 +16,6 @@ public:
     WriteShitCashierNameTest(TestEnvironment* environment);
 
     bool execute() override;
-
-private:
-    uint32_t m_sysAdmPwd;
-    std::vector<uint32_t> m_cashierPasswords;
 };
 
 

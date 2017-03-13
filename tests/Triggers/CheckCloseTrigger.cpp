@@ -10,30 +10,43 @@
 #include <include/Tools/Time.h>
 #include <include/Testing/StaticTriggerFabric.h>
 
-REGISTER_STATIC_TRIGGER(CheckCloseTrigger);
+REGISTER_STATIC_TRIGGER(CheckCloseTrigger)
+
 
 CheckCloseTrigger::CheckCloseTrigger() :
-    CheckCloseTrigger(nullptr)
-{
-
-}
-
-CheckCloseTrigger::CheckCloseTrigger(TestEnvironment *environment) :
     AbstractTriggerTest(
-            environment,
+            nullptr,
             "Триггер закрытия чека",
             "Триггер контроллирующий правильность оперирования "
             "регистрами при закрытии чека.",
             true,
             {{"Password", (uint32_t) 30}}
     ),
+    m_argPwd(0),
+    m_cashSum(0),
+    m_type2Sum(0),
+    m_type3Sum(0),
+    m_type4Sum(0),
+    m_checkResult(0),
+    m_currentShiftNumber(0),
+    m_currentAction(4),
+    m_cashRegister193(0),
+    m_0to63MoneyRegister(0),
+    m_121to182MoneyRegister(0),
+    m_193to196PayMoneyRegister(0),
+    m_197to200PayMoneyRegister(0),
+    m_201to204PayMoneyRegister(0),
+    m_205to208PayMoneyRegister(0),
+    m_totalCashRegister241(0),
+    m_nonZeroSum(0),
     m_tags({"close_check"}),
-    m_success(false)
+    m_success(false),
+    m_willSucceed(false)
 {
 
 }
 
-void CheckCloseTrigger::onPreExecute(const std::string &realTag, const ByteArray &arguments)
+void CheckCloseTrigger::onPreExecute(const std::string &, const ByteArray &arguments)
 {
     auto pwd = getValueUInt32("Password");
     m_success = false;

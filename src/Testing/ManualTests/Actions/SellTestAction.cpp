@@ -6,7 +6,7 @@
 #include <include/Tools/Codecs.h>
 #include "include/Testing/ManualTests/Actions/SellTestAction.h"
 
-REGISTER_ACTION(SellTestAction);
+REGISTER_ACTION(SellTestAction)
 
 SellTestAction::SellTestAction() :
     AbstractTestAction("Продажа",

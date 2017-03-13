@@ -5,7 +5,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/WaitForPrintingFinishTestAction.h"
 
-REGISTER_ACTION(WaitForPrintingFinishTestAction);
+REGISTER_ACTION(WaitForPrintingFinishTestAction)
 
 WaitForPrintingFinishTestAction::WaitForPrintingFinishTestAction() :
     AbstractTestAction("Ожидание окончание печати чека",

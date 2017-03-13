@@ -9,8 +9,12 @@
 #include "include/Executor/TestingExecutor.h"
 
 TestingExecutor::TestingExecutor() :
-    m_paused(false),
+    m_tempTests(),
+    m_mutex(),
     m_running(false),
+    m_paused(false),
+    m_passthroughTesting(false),
+    m_notifier(),
     m_timeToWaitForLog(500)
 {
     qRegisterMetaType<TestPtr>("TestPtr");
@@ -70,7 +74,7 @@ void TestingExecutor::run()
         return;
     }
 
-    int index = 0;
+    uint32_t index = 0;
 
     bool lastTestResult;
 

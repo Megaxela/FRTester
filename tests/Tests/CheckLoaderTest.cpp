@@ -11,7 +11,7 @@
 #include "CheckLoaderTest.h"
 #include "Testing/TestLogger.h"
 
-REGISTER_STATIC_TEST(CheckLoaderTest);
+REGISTER_STATIC_TEST(CheckLoaderTest)
 
 CheckLoaderTest::CheckLoaderTest() :
     CheckLoaderTest(nullptr)
@@ -114,7 +114,7 @@ bool CheckLoaderTest::execute()
                 do
                 {
                     ++realTries;
-                    bool result = environment()->driver()->sell(
+                    environment()->driver()->sell(
                             password,
                             goodCount,
                             goodPrice,

@@ -5,7 +5,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/PrintClichesTestAction.h"
 
-REGISTER_ACTION(PrintClichesTestAction);
+REGISTER_ACTION(PrintClichesTestAction)
 
 PrintClichesTestAction::PrintClichesTestAction() :
     AbstractTestAction("Печать клише",

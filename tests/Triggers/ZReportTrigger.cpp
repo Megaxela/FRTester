@@ -7,28 +7,25 @@
 #include <Testing/TestLogger.h>
 #include <include/Testing/StaticTriggerFabric.h>
 
-REGISTER_STATIC_TRIGGER(ZReportTrigger);
+REGISTER_STATIC_TRIGGER(ZReportTrigger)
+
 
 ZReportTrigger::ZReportTrigger() :
-    ZReportTrigger(nullptr)
-{
-
-}
-
-ZReportTrigger::ZReportTrigger(TestEnvironment *environment) :
-    AbstractTriggerTest(environment,
+    AbstractTriggerTest(nullptr,
                         "Тригеер закрытия смены.",
                         "Триггер, проверяющий правильность закрытия смены.",
                         true,
                         {{"Password", (uint32_t) 30}}),
     m_success(false),
-    m_preError(false)
+    m_preError(false),
+    m_nonZeroSums(),
+    m_countedSums()
 {
 
 }
 
-void ZReportTrigger::onPreExecute(const std::string &realTag,
-                                  const ByteArray &arguments)
+void ZReportTrigger::onPreExecute(const std::string &,
+                                  const ByteArray &)
 {
     auto password = getValueUInt32("Password");
     m_success = false;

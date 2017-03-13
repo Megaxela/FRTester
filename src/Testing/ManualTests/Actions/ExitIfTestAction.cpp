@@ -5,7 +5,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/ExitIfTestAction.h"
 
-REGISTER_ACTION(ExitIfTestAction);
+REGISTER_ACTION(ExitIfTestAction)
 
 ExitIfTestAction::ExitIfTestAction() :
     AbstractTestAction("Выйти, если...",

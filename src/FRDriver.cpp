@@ -10,6 +10,9 @@
 #include "Tools/Time.h"
 
 FRDriver::FRDriver() :
+    m_sendMutex(),
+    m_protocol(),
+    m_interface(),
     m_commandsDelay(0),
     m_lastErrorCode(ErrorCode::NoError),
     m_lastReceivedCashierNumber(0)
@@ -67,15 +70,13 @@ ByteArray FRDriver::sendRaw(const ByteArray &data)
 
     ExcessLog("Время отправки заняло: " + std::to_string(sendTime) + " микросекунд.");
 
-    auto byteSendTimeMcs = sendTime / formedData.length();
-
     if (sendTime == 0)
     {
         Warning("Время отправки команды равно нулю.");
     }
 
     // Проверяем количество отправленных данных
-    if (sent < formedData.length())
+    if (static_cast<uint32_t>(sent) < formedData.length())
     {
         Warning("На фискальный регистратор были отправлены не все данные. (" +
                 std::to_string(sent) + "/" + std::to_string(formedData.length()));
@@ -149,7 +150,7 @@ void FRDriver::proceedResponse(const ByteArray &data, bool cashier)
     }
 
     uint8_t commandSize = (uint8_t) (data[0] == 0xFF ? 2 : 1);
-    if (data.length() < commandSize + 1)
+    if (data.length() < static_cast<uint32_t>(commandSize + 1))
     {
         Error("Попытка обработать ответ неверной длины. Меняю последнюю ошибку на Unknown.");
         m_lastErrorCode = ErrorCode::Unknown;
@@ -311,11 +312,11 @@ bool FRDriver::buy(uint32_t password,
     arguments.append    (thirdTax);
     arguments.append    (fourthTax);
     arguments.append    ((uint8_t*) good.c_str(),
-                         good.length());
+                         static_cast<uint32_t>(good.length()));
 
     if (good.length() < 40)
     {
-        arguments.appendMultiple<uint8_t>(0x00, 40 - good.length());
+        arguments.appendMultiple<uint8_t>(0x00, static_cast<uint32_t>(40 - good.length()));
     }
 
     ByteArray data = sendCommand(Command::Buy, arguments, false);
@@ -459,8 +460,8 @@ FRDriver::FullState FRDriver::fullStateRequest(uint32_t password)
     ByteArrayReader reader(data);
     reader.seek(3);
 
-    state.firmwareVersion.major             = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
-    state.firmwareVersion.minor             = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    state.firmwareVersion.majorVersion             = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
+    state.firmwareVersion.minorVersion             = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
     state.firmwareBuild                     = reader.read<uint16_t>(ByteArray::ByteOrder_LittleEndian);
     state.firmwareDate.day                  = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
     state.firmwareDate.month                = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
@@ -468,7 +469,7 @@ FRDriver::FullState FRDriver::fullStateRequest(uint32_t password)
     state.numberInHall                      = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
     state.currentDocumentPassthrougNumber   = reader.read<uint16_t>(ByteArray::ByteOrder_LittleEndian);
     state.posFlags                          = reader.read<uint16_t>(ByteArray::ByteOrder_LittleEndian);
-    state.posMode                           = (uint8_t) (reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian) & 0b1111);
+    state.posMode                           = (uint8_t) (reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian) & 15); //0b1111 C++14
     state.posSubMode                        = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
     state.posPort                           = reader.read<uint8_t> (ByteArray::ByteOrder_LittleEndian);
     reader.move(7); // Зарезервировано

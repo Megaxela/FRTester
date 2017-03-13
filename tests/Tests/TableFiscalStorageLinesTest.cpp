@@ -6,7 +6,7 @@
 #include <Testing/TestLogger.h>
 #include <include/Testing/StaticTestFabric.h>
 
-REGISTER_STATIC_TEST(TableFiscalStorageLinesTest);
+REGISTER_STATIC_TEST(TableFiscalStorageLinesTest)
 
 TableFiscalStorageLinesTest::TableFiscalStorageLinesTest() :
     TableFiscalStorageLinesTest(nullptr)

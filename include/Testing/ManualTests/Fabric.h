@@ -80,7 +80,8 @@ private:
     /**
      * @brief Конструктор.
      */
-    Fabric()
+    Fabric() :
+            m_actions()
     {
 
     }

@@ -10,26 +10,29 @@
 #include "Testing/TestEnvironment.h"
 #include "Testing/TestLogger.h"
 
-REGISTER_STATIC_TRIGGER(OperationTrigger);
+REGISTER_STATIC_TRIGGER(OperationTrigger)
 
 OperationTrigger::OperationTrigger() :
-    OperationTrigger(nullptr)
-{
-
-}
-
-OperationTrigger::OperationTrigger(TestEnvironment *environment) :
-        AbstractTriggerTest(environment,
+        AbstractTriggerTest(nullptr,
                             "Триггер операций",
                             "Триггер, контроллирующий правильность выполнения "
-                            "операций.",
+                                    "операций.",
                             true,
                             {{"Password", (uint32_t) 30}}),
         m_tags({"sell", "buy", "return_sell", "return_buy"}),
+        m_tag(),
+        m_pwd(0),
+        m_count(0),
+        m_value(0),
+        m_dep(0),
+        m_moneyRegistersOperationsByDepartment(0),
+        m_operatingRegisterOperations(0),
+        m_previousCheckResult(0),
         m_success(false)
 {
 
 }
+
 
 void OperationTrigger::onPreExecute(const std::string &realTag,
                                     const ByteArray &arguments)

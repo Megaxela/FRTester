@@ -34,17 +34,21 @@
 #define PY_LIST_DELIM ':'
 
 TestCore::TestCore() :
-    m_sysAdmPassword(30),
-    m_testingExecutor(nullptr)
-{
-    m_environment = new TestEnvironment(
+    m_triggers(),
+    m_tests(),
+    m_environment(new TestEnvironment(
             &TestDriverHolder::driver(),
             &TestLogger::instance(),
             new TestingTools(
                     &TestDriverHolder::driver(),
                     &TestLogger::instance()
             )
-    );
+    )),
+    m_failedTriggers(),
+    m_sysAdmPassword(30),
+    m_testingExecutor(nullptr),
+    m_sharedTests()
+{
 
     init();
 }

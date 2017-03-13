@@ -5,7 +5,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/SectionsReportTestAction.h"
 
-REGISTER_ACTION(SectionsReportTestAction);
+REGISTER_ACTION(SectionsReportTestAction)
 
 SectionsReportTestAction::SectionsReportTestAction() :
     AbstractTestAction("Печать отчета по секциям",

@@ -107,7 +107,7 @@ void PrintTextOperationsCommandsTabController::onScrollPressed()
 
     if (!DriverHolder::driver().scrolling(
             commandsTabControllerParent()->password(),
-            0b111,
+            7, // 0b111 C++14
             (uint8_t) ui()->commandsPrintTextOperationsScrollLinesSpinBox->value()
     ))
     {

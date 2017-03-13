@@ -267,6 +267,9 @@ public:
     void setEnvironment(TestEnvironment* environment);
 
 private:
+    AbstractTriggerTest(const AbstractTriggerTest&) = delete;
+    AbstractTriggerTest& operator=(const AbstractTriggerTest&) = delete;
+
     std::string m_name;
 
     std::string m_description;

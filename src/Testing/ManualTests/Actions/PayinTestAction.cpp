@@ -6,7 +6,7 @@
 #include <include/Testing/ManualTests/Actions/PayinTestAction.h>
 #include <include/Testing/ManualTests/TestActionFabric.h>
 
-REGISTER_ACTION(PayinTestAction);
+REGISTER_ACTION(PayinTestAction)
 
 PayinTestAction::PayinTestAction() :
     AbstractTestAction("Внесение",

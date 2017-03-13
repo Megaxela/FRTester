@@ -26,7 +26,7 @@ ByteArray TestDriver::sendCommand(const FRDriver::Command &c, const ByteArray &a
 
     if (tag.empty())
     {
-        return FRDriver::sendCommand(c, arguments, false);
+        return FRDriver::sendCommand(c, arguments, responseHasCashier);
     }
 
     std::vector<TriggerTestPtr> currentTriggers =

@@ -183,6 +183,9 @@ protected:
     void setAllowChildren(bool allow);
 
 private:
+    AbstractTestAction(const AbstractTestAction&) = delete;
+    AbstractTestAction& operator=(const AbstractTestAction&) = delete;
+
 
     void applyTest(TestActionPtr action, ManualTest* test);
 

@@ -6,7 +6,7 @@
 #include <include/Tools/Codecs.h>
 #include "include/Testing/ManualTests/Actions/StandardStringPrintTestAction.h"
 
-REGISTER_ACTION(StandardStringPrintTestAction);
+REGISTER_ACTION(StandardStringPrintTestAction)
 
 StandardStringPrintTestAction::StandardStringPrintTestAction() :
     AbstractTestAction("Печать строки",

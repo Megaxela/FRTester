@@ -61,7 +61,7 @@ namespace ManualTestFabric
      * @return JSON значение.
      */
     json serializeActionToJSON(TestActionPtr action);
-};
+}
 
 
 #endif //FRTESTER_MANUALTESTFABRIC_H

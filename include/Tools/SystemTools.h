@@ -156,7 +156,7 @@ namespace SystemTools
     LibraryType loadLibrary(const std::string &path);
 
     template <typename T>
-    std::function<T> getFunctionFromLibrary(const LibraryType& lib, const std::string &name)
+    std::function<T> getFunctionFromLibrary(const LibraryType& /*lib*/, const std::string &/*name*/)
     {
 #ifdef OS_LINUX
         return nullptr;
@@ -188,7 +188,7 @@ namespace SystemTools
 
     }
 
-};
+}
 
 
 #endif //CARDMASTER_SYSTEMTOOLS_H

@@ -5,7 +5,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/NotifyWindowTestAction.h"
 
-REGISTER_ACTION(NotifyWindowTestAction);
+REGISTER_ACTION(NotifyWindowTestAction)
 
 NotifyWindowTestAction::NotifyWindowTestAction() :
     AbstractTestAction("Уведомление пользователя",

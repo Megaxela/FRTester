@@ -5,7 +5,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/ShiftCloseTestAction.h"
 
-REGISTER_ACTION(ShiftCloseTestAction);
+REGISTER_ACTION(ShiftCloseTestAction)
 
 ShiftCloseTestAction::ShiftCloseTestAction() :
     AbstractTestAction("Z отчет",

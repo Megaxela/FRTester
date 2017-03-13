@@ -6,7 +6,7 @@
 #include <include/Testing/ManualTests/Actions/PingTestAction.h>
 #include <include/Testing/ManualTests/TestActionFabric.h>
 
-REGISTER_ACTION(PingTestAction);
+REGISTER_ACTION(PingTestAction)
 
 PingTestAction::PingTestAction() :
     AbstractTestAction("Пинг",

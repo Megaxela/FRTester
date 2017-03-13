@@ -12,6 +12,9 @@ class QBaseNumberLineEdit : public QLineEdit
 {
     Q_OBJECT
 public:
+    QBaseNumberLineEdit(QWidget*);
+
+    virtual ~QBaseNumberLineEdit();
 
 signals:
     void newUInt8ValueAccepted(uint8_t value);

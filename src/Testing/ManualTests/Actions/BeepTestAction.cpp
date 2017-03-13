@@ -6,7 +6,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/BeepTestAction.h"
 
-REGISTER_ACTION(BeepTestAction);
+REGISTER_ACTION(BeepTestAction)
 
 BeepTestAction::BeepTestAction() :
     AbstractTestAction("Гудок",

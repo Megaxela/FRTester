@@ -5,7 +5,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/ShortStateRequest.h"
 
-REGISTER_ACTION(ShortStateRequest);
+REGISTER_ACTION(ShortStateRequest)
 
 ShortStateRequest::ShortStateRequest() :
     AbstractTestAction("Короткий запрос состояния",

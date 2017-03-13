@@ -6,7 +6,8 @@
 #include <QTextCodec>
 #include <include/Tools/Logger.h>
 
-Codecs::Codecs()
+Codecs::Codecs() :
+    m_codecs()
 {
 
 }

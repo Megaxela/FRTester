@@ -16,7 +16,9 @@
 #include "include/Windows/Widgets/QTestActionsTreeWidget.h"
 
 QTestActionsTreeWidget::QTestActionsTreeWidget(QWidget *parent) :
-        QTreeWidget(parent)
+        QTreeWidget(parent),
+        m_searchFilter(),
+        m_action()
 {
 
     auto result = TestActionFabric::instance().getNames();
@@ -84,7 +86,7 @@ void QTestActionsTreeWidget::displayActions()
         if (element.categories.size() != 0)
         {
             bool found = false;
-            for (uint32_t i = 0; i < topLevelItemCount() && !found; ++i)
+            for (int i = 0; i < topLevelItemCount() && !found; ++i)
             {
                 auto topLevelItemPtr = topLevelItem(i);
                 if (element.categories[0] == topLevelItemPtr->text(0))
@@ -110,10 +112,10 @@ void QTestActionsTreeWidget::displayActions()
         }
 
         // Ищем/формируем дочерние объекты (если требуется)
-        for (uint32_t i = 1; i < element.categories.size(); ++i)
+        for (int i = 1; i < element.categories.size(); ++i)
         {
             bool found = false;
-            for (uint32_t childIndex = 0;
+            for (int childIndex = 0;
                  childIndex < topElement->childCount() && !found;
                  ++childIndex)
             {
@@ -149,8 +151,8 @@ QMimeData *QTestActionsTreeWidget::mimeData(const QList<QTreeWidgetItem *> items
 
     for (auto& element : items)
     {
-        if (type == 0 && element->type() == QActionTreeWidgetItem::Type ||
-            type == 1 && element->type() == QActionTreeWidgetItem::ActionType)
+        if (((type == 0) && (element->type() == QActionTreeWidgetItem::Type)) ||
+            ((type == 1) && (element->type() == QActionTreeWidgetItem::ActionType)))
         {
             type = 2;
             break;

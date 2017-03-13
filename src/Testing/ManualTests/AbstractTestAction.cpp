@@ -14,10 +14,11 @@ AbstractTestAction::AbstractTestAction(const std::string &name,
                                        const std::vector<std::pair<std::string, DataValue>> &fields,
                                        const std::vector<std::string> category) :
     m_manualTest(nullptr),
+    m_allowChildren(false),
     m_name(name),
     m_description(description),
     m_dynamicValues(fields),
-    m_allowChildren(false),
+    m_childrenActions(),
     m_category(category)
 {
 

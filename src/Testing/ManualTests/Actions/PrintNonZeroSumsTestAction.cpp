@@ -5,7 +5,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/PrintNonZeroSumsTestAction.h"
 
-REGISTER_ACTION(PrintNonZeroSumsTestAction);
+REGISTER_ACTION(PrintNonZeroSumsTestAction)
 
 PrintNonZeroSumsTestAction::PrintNonZeroSumsTestAction() :
     AbstractTestAction("Вывод ненулевых сумм",

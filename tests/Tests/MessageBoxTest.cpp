@@ -5,7 +5,7 @@
 #include <include/Testing/StaticTestFabric.h>
 #include "MessageBoxTest.h"
 
-REGISTER_STATIC_TEST(MessageBoxTest);
+REGISTER_STATIC_TEST(MessageBoxTest)
 
 MessageBoxTest::MessageBoxTest() :
     MessageBoxTest(nullptr)

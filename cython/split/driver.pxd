@@ -215,8 +215,8 @@ cdef extern from "../include/FRDriver.h" namespace "FRDriver":
         uint8_t second
 
     cdef struct FirmwareVersion:
-        char major
-        char minor
+        char majorVersion
+        char minorVersion
 
     cdef struct DateStructure:
         uint8_t day

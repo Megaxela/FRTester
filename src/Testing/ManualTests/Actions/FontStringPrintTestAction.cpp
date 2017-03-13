@@ -5,7 +5,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/FontStringPrintTestAction.h"
 
-REGISTER_ACTION(FontStringPrintTestAction);
+REGISTER_ACTION(FontStringPrintTestAction)
 
 FontStringPrintTestAction::FontStringPrintTestAction() :
     AbstractTestAction("Тест печати шрифтом",

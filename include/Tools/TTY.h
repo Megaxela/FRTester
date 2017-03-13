@@ -103,8 +103,6 @@ private:
      */
     int m_afterConnectionWaitingTime;
 
-    uint32_t m_byteSendTime;
-
 #ifdef OS_WINDOWS
     mutable HANDLE m_Handle;
 #endif

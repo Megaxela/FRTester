@@ -5,7 +5,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/ShiftReportWithoutExtinctionTestAction.h"
 
-REGISTER_ACTION(ShiftReportWithoutExtinctionTestAction);
+REGISTER_ACTION(ShiftReportWithoutExtinctionTestAction)
 
 ShiftReportWithoutExtinctionTestAction::ShiftReportWithoutExtinctionTestAction() :
     AbstractTestAction("X отчет",

@@ -68,7 +68,7 @@ namespace Time
             T(value)
         );
     }
-};
+}
 
 
 #endif //HGENGINE_TIME_H

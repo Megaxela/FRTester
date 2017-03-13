@@ -47,7 +47,7 @@ public:
     /**
      * @brief Деструктор.
      */
-    ~AbstractTest();
+    virtual ~AbstractTest();
 
     /**
      * @brief Виртуальный метод, выполняющий тест.
@@ -264,6 +264,9 @@ public:
     void setEnvironment(TestEnvironment* environment);
 
 private:
+    AbstractTest(const AbstractTest&) = delete;
+    AbstractTest& operator=(const AbstractTest&) = delete;
+
     TestEnvironment* m_environment;
 
     std::string m_name;

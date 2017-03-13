@@ -27,7 +27,9 @@ const int TCPInterface::Type = 3;
 
 TCPInterface::TCPInterface() :
         PhysicalInterface(TCPInterface::Type),
-        m_connectionSocket(NetworkTools::invalidSocket)
+        m_connectionSocket(NetworkTools::invalidSocket),
+        m_address(),
+        m_port(0)
 {
 
 }
@@ -110,7 +112,7 @@ ByteArray TCPInterface::read(const PhysicalInterface::size_t &size, uint32_t tim
     FD_SET(m_connectionSocket, &read_fds);
     FD_SET(m_connectionSocket, &except_fds);
 
-    byte response[size];
+    byte* response = new byte[size];
     memset(response, 0, size * sizeof(byte));
 
     size_t dataRead = 0;
@@ -141,6 +143,7 @@ ByteArray TCPInterface::read(const PhysicalInterface::size_t &size, uint32_t tim
             Error("Ошибка select. #" +
                        std::to_string(errno) + ": " +
                        strerror(errno));
+            delete[] response;
             return ByteArray();
         }
         else if (r == 1)
@@ -155,6 +158,7 @@ ByteArray TCPInterface::read(const PhysicalInterface::size_t &size, uint32_t tim
             if (received == -1)
             {
                 Error("Соединение порвано.");
+                delete[] response;
                 return ByteArray();
             }
 
@@ -165,6 +169,7 @@ ByteArray TCPInterface::read(const PhysicalInterface::size_t &size, uint32_t tim
         else
         {
             Error("Timeout чтения.");
+            delete[] response;
             return ByteArray();
         }
     }
@@ -172,6 +177,7 @@ ByteArray TCPInterface::read(const PhysicalInterface::size_t &size, uint32_t tim
     auto ba = ByteArray(response, static_cast<uint32_t>(dataRead));
 
     ExcessLog(" READ: " + ba.toHex());
+    delete[] response;
 
     return ba;
 }

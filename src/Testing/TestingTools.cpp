@@ -13,8 +13,8 @@
 
 TestingTools::TestingTools(TestDriver *testDriver, TestLogger* logger) :
     m_executor(nullptr),
-    m_testDriver(testDriver),
     m_currentDriver(testDriver),
+    m_testDriver(testDriver),
     m_logger(logger),
     m_parentWidget(nullptr),
     m_controller(nullptr)

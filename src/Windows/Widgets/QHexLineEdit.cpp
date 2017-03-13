@@ -7,7 +7,8 @@
 
 QHexLineEdit::QHexLineEdit(QWidget *parent, uint32_t maxSize) :
     QLineEdit(parent),
-    m_size(0)
+    m_size(0),
+    m_value()
 {
     setHexSize(maxSize);
 }

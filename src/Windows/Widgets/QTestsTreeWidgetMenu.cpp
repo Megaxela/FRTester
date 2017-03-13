@@ -5,7 +5,8 @@
 #include "include/Windows/Widgets/QTestsTreeWidgetMenu.h"
 
 QTestsTreeWidgetMenu::QTestsTreeWidgetMenu(QWidget *parent) :
-        QMenu(parent)
+        QMenu(parent),
+        m_multipleMode(false)
 {
     addAction("Включить", [=]()
     {

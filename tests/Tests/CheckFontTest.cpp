@@ -6,7 +6,7 @@
 #include <Testing/TestLogger.h>
 #include <include/Testing/StaticTestFabric.h>
 
-REGISTER_STATIC_TEST(CheckFontTest);
+REGISTER_STATIC_TEST(CheckFontTest)
 
 CheckFontTest::CheckFontTest() :
     CheckFontTest(nullptr)

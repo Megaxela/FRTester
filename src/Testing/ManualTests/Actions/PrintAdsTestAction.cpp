@@ -5,7 +5,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/PrintAdsTestAction.h"
 
-REGISTER_ACTION(PrintAdsTestAction);
+REGISTER_ACTION(PrintAdsTestAction)
 
 PrintAdsTestAction::PrintAdsTestAction() :
     AbstractTestAction("Печать рекламного теста",

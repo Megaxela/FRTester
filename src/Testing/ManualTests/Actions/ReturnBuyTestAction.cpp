@@ -6,7 +6,7 @@
 #include <include/Tools/Codecs.h>
 #include "include/Testing/ManualTests/Actions/ReturnBuyTestAction.h"
 
-REGISTER_ACTION(ReturnBuyTestAction);
+REGISTER_ACTION(ReturnBuyTestAction)
 
 ReturnBuyTestAction::ReturnBuyTestAction() :
     AbstractTestAction("Возврат покупки",

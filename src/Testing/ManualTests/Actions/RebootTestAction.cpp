@@ -5,7 +5,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/RebootTestAction.h"
 
-REGISTER_ACTION(RebootTestAction);
+REGISTER_ACTION(RebootTestAction)
 
 RebootTestAction::RebootTestAction() :
     AbstractTestAction("Перезагрузка ФР",

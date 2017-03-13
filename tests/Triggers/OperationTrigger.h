@@ -13,8 +13,6 @@ class OperationTrigger : public AbstractTriggerTest
 public:
     OperationTrigger();
 
-    OperationTrigger(TestEnvironment *environment);
-
     void onPreExecute(const std::string &realTag, const ByteArray &arguments) override;
 
     void onPostExecute() override;
@@ -40,8 +38,6 @@ private:
     uint64_t m_moneyRegistersOperationsByDepartment;
     uint32_t m_operatingRegisterOperations;
     uint64_t m_previousCheckResult;
-
-    uint64_t m_nonzeroSum;
 
     bool m_success;
 };

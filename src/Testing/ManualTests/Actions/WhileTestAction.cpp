@@ -6,7 +6,7 @@
 #include <Testing/TestLogger.h>
 #include <include/Testing/ManualTests/TestActionFabric.h>
 
-REGISTER_ACTION(WhileTestAction);
+REGISTER_ACTION(WhileTestAction)
 
 WhileTestAction::WhileTestAction() :
     AbstractTestAction("Цикл While",

@@ -11,7 +11,7 @@
 namespace TypeConverters
 {
     uint64_t toUint64(QString q);
-};
+}
 
 struct ConvertException : std::exception
 {

@@ -26,6 +26,7 @@ public:
      * @param max Максимальное значение.
      */
     QNumberLineEdit(QWidget* parent, T min=std::numeric_limits<T>::min(), T max=std::numeric_limits<T>::max()) :
+            QBaseNumberLineEdit(parent),
             m_lastAcceptedValue(min),
             m_minimum(min),
             m_maximum(max)

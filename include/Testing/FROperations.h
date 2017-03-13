@@ -17,7 +17,7 @@ namespace FROperations
      * @return Результат округления.
      */
     uint32_t smartRound(double val);
-};
+}
 
 
 #endif //FRTESTER_FROPERATIONS_H

@@ -105,6 +105,9 @@ private:
      */
     void setParentController(AbstractTabController* controller);
 
+    AbstractTabController(const AbstractTabController&) = delete;
+    AbstractTabController& operator=(const AbstractTabController&) = delete;
+
     QMap<QWidget*, AbstractTabController*> m_tabControllers;
 
     QWidget* m_previousTab;

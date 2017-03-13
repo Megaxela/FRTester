@@ -6,7 +6,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/CloseCheckTestAction.h"
 
-REGISTER_ACTION(CloseCheckTestAction);
+REGISTER_ACTION(CloseCheckTestAction)
 
 CloseCheckTestAction::CloseCheckTestAction() :
     AbstractTestAction("Закрытие чека",

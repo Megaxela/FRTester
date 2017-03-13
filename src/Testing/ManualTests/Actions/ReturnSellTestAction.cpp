@@ -6,7 +6,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/ReturnSellTestAction.h"
 
-REGISTER_ACTION(ReturnSellTestAction);
+REGISTER_ACTION(ReturnSellTestAction)
 
 ReturnSellTestAction::ReturnSellTestAction() :
     AbstractTestAction("Возврат продажи",

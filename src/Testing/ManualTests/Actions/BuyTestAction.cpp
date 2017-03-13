@@ -6,7 +6,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/BuyTestAction.h"
 
-REGISTER_ACTION(BuyTestAction);
+REGISTER_ACTION(BuyTestAction)
 
 BuyTestAction::BuyTestAction() :
     AbstractTestAction("Покупка",

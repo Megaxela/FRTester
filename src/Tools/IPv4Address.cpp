@@ -6,9 +6,10 @@
 #include <sstream>
 #include "include/Tools/IPv4Address.h"
 
-IPv4Address::IPv4Address()
+IPv4Address::IPv4Address() :
+    m_data((in_addr_t) 0x7f000001)
 {
-    m_data = (in_addr_t) 0x7f000001;
+
 }
 
 IPv4Address::~IPv4Address()

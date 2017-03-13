@@ -6,7 +6,7 @@
 #include <include/Testing/StaticTestFabric.h>
 #include "CrazyStatusRequestTest.h"
 
-REGISTER_STATIC_TEST(CrazyStatusRequestTest);
+REGISTER_STATIC_TEST(CrazyStatusRequestTest)
 
 CrazyStatusRequestTest::CrazyStatusRequestTest() :
     CrazyStatusRequestTest(nullptr)

@@ -6,7 +6,7 @@
 #include <Testing/TestLogger.h>
 #include <include/Testing/ManualTests/TestActionFabric.h>
 
-REGISTER_ACTION(LongStateRequestTestAction);
+REGISTER_ACTION(LongStateRequestTestAction)
 
 LongStateRequestTestAction::LongStateRequestTestAction() :
     AbstractTestAction("Длинный запрос состояния",

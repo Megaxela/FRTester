@@ -5,7 +5,10 @@
 #include "include/Testing/TestLogger.h"
 
 TestLogger::TestLogger() :
-    m_finished(false)
+    m_notifier(),
+    m_mutex(),
+    m_finished(false),
+    m_messages()
 {
 
 }

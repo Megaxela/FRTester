@@ -9,6 +9,8 @@ const int COMInterface::Type = 1;
 
 COMInterface::COMInterface() :
     PhysicalInterface(COMInterface::Type),
+    m_device(),
+    m_baudRate(2400),
     m_byteSendTime(20000),
     m_lastByteSendTime(Time::get<std::chrono::microseconds>())
 {

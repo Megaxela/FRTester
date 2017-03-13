@@ -7,7 +7,7 @@
 #include <include/Tools/Codecs.h>
 #include "include/Testing/ManualTests/Actions/DocumentHeaderPrintTestAction.h"
 
-REGISTER_ACTION(DocumentHeaderPrintTestAction);
+REGISTER_ACTION(DocumentHeaderPrintTestAction)
 
 DocumentHeaderPrintTestAction::DocumentHeaderPrintTestAction() :
     AbstractTestAction("Печать заголовка",

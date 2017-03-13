@@ -9,7 +9,7 @@
 #include <include/Testing/FROperations.h>
 #include <include/Testing/StaticTestFabric.h>
 
-REGISTER_STATIC_TEST(OperationTest);
+REGISTER_STATIC_TEST(OperationTest)
 
 OperationTest::OperationTest() :
     OperationTest(nullptr)
@@ -23,7 +23,8 @@ OperationTest::OperationTest(TestEnvironment *environment)
             "Тест операций",
             "Тест всех операций",
             {{"Password", (uint32_t) 30}}
-        )
+        ),
+          m_generator()
 
 {
 

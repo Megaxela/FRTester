@@ -14,7 +14,7 @@ namespace GUIHelper
      * @param formLayout QFormLayout.
      */
     void cleanFormLayout(QFormLayout* formLayout);
-};
+}
 
 
 #endif //FRTESTER_GUIHELPER_H

@@ -5,7 +5,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/PrintBarcodeTestAction.h"
 
-REGISTER_ACTION(PrintBarcodeTestAction);
+REGISTER_ACTION(PrintBarcodeTestAction)
 
 PrintBarcodeTestAction::PrintBarcodeTestAction() :
     AbstractTestAction("Печать штрих-кода",

@@ -98,7 +98,7 @@ ByteArray DefaultProtocol::responseAfterReceivedData()
     return data;
 }
 
-ByteArray DefaultProtocol::receiveDataFromInterface(InterfacePtr physicalInterface, uint32_t responseBytesExpected)
+ByteArray DefaultProtocol::receiveDataFromInterface(InterfacePtr physicalInterface, uint32_t /*responseBytesExpected*/)
 {
     ByteArray byteArray;
 

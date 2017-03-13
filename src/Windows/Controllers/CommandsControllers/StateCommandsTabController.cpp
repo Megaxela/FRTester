@@ -89,9 +89,9 @@ void StateCommandsTabController::onFullRequest()
     stringBuilder.append(divider + "\n");
 
     stringBuilder.append("Версия прошивки: " +
-                         QString(requestResult.firmwareVersion.major) +
+                         QString(requestResult.firmwareVersion.majorVersion) +
                          "." +
-                         QString(requestResult.firmwareVersion.minor) + '\n');
+                         QString(requestResult.firmwareVersion.minorVersion) + '\n');
     stringBuilder.append("Версия сборки:   " +
                          QString::number(requestResult.firmwareBuild) + '\n');
     stringBuilder.append("Дата сборки:     " +

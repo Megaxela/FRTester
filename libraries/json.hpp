@@ -294,8 +294,8 @@ class basic_json
         result["version"] =
         {
             {"string", "2.0.10"},
-            {"major", 2},
-            {"minor", 0},
+            {"majorVersion", 2},
+            {"minorVersion", 0},
             {"patch", 10},
         };
 

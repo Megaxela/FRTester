@@ -14,7 +14,7 @@
 namespace DriverHolder
 {
     FRDriver& driver();
-};
+}
 
 
 #endif //FRTESTER_DRIVERHOLDER_H

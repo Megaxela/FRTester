@@ -6,7 +6,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/TimeoutTestAction.h"
 
-REGISTER_ACTION(TimeoutTestAction);
+REGISTER_ACTION(TimeoutTestAction)
 
 TimeoutTestAction::TimeoutTestAction() :
     AbstractTestAction("Таймаут",

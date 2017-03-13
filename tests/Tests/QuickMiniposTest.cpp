@@ -5,7 +5,7 @@
 #include <include/Testing/StaticTestFabric.h>
 #include "QuickMiniposTest.h"
 
-REGISTER_STATIC_TEST(QuickMiniposTest);
+REGISTER_STATIC_TEST(QuickMiniposTest)
 
 QuickMiniposTest::QuickMiniposTest() :
     AbstractTest(nullptr,

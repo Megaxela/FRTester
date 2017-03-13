@@ -17,7 +17,8 @@
 
 QTestDisplayTreeWidget::QTestDisplayTreeWidget(QWidget *parent) :
         QTreeWidget(parent),
-        m_test()
+        m_test(),
+        m_searchFilter()
 {
     connect(this,
             &QTestDisplayTreeWidget::currentItemChanged,
@@ -182,7 +183,7 @@ void QTestDisplayTreeWidget::applyChanges()
 
     m_test->clear();
 
-    for (uint32_t i = 0; i < topLevelItemCount(); ++i)
+    for (int i = 0; i < topLevelItemCount(); ++i)
     {
         applyItem(static_cast<QActionTreeWidgetItem*>(topLevelItem(i)));
     }
@@ -203,7 +204,7 @@ void QTestDisplayTreeWidget::applyItem(QActionTreeWidgetItem *item, bool root)
     if (item->getAction()->allowChildren())
     {
         item->getAction()->clearChildren();
-        for (uint32_t childIndex = 0;
+        for (int childIndex = 0;
              childIndex < item->childCount();
              ++childIndex)
         {
@@ -234,7 +235,7 @@ void QTestDisplayTreeWidget::keyPressEvent(QKeyEvent *event)
 
 void QTestDisplayTreeWidget::onActionChanged(TestActionPtr action)
 {
-    for (uint32_t i = 0; i < topLevelItemCount(); ++i)
+    for (int i = 0; i < topLevelItemCount(); ++i)
     {
         auto item = static_cast<QActionTreeWidgetItem*>(topLevelItem(i));
 

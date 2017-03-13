@@ -5,7 +5,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/ResumePrintingTestAction.h"
 
-REGISTER_ACTION(ResumePrintingTestAction);
+REGISTER_ACTION(ResumePrintingTestAction)
 
 ResumePrintingTestAction::ResumePrintingTestAction() :
     AbstractTestAction("Продожение печати",

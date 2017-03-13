@@ -14,6 +14,6 @@ namespace StableController
     void excessExecute();
 
     static std::function<void()> _cb;
-};
+}
 
 #endif //FRTESTER_STABLECONTROLLER_H

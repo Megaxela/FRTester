@@ -11,8 +11,8 @@
 #include <include/Testing/AbstractTriggerTest.h>
 #include "QTestsTreeWidgetMenu.h"
 
-Q_DECLARE_METATYPE(TestPtr);
-Q_DECLARE_METATYPE(TriggerTestPtr);
+Q_DECLARE_METATYPE(TestPtr)
+Q_DECLARE_METATYPE(TriggerTestPtr)
 
 /**
  * @brief Класс, описывающий древовидное меню
@@ -65,8 +65,32 @@ protected:
     void mousePressEvent(QMouseEvent *event) override;
 
 private:
+    QTestsTreeWidget(const QTestsTreeWidget&) = delete;
+    QTestsTreeWidget& operator=(const QTestsTreeWidget&) = delete;
+
     struct TestData
     {
+        TestData() :
+            test(),
+            item(nullptr),
+            enabled(true)
+        {}
+
+        TestData(const TestData& rhs) :
+            test(rhs.test),
+            item(rhs.item),
+            enabled(rhs.enabled)
+        {}
+
+        TestData& operator=(const TestData& rhs)
+        {
+            test = rhs.test;
+            item = rhs.item;
+            enabled = rhs.enabled;
+
+            return (*this);
+        }
+
         TestPtr test;
         QTreeWidgetItem* item;
         bool enabled;
@@ -74,6 +98,27 @@ private:
 
     struct TriggerData
     {
+        TriggerData() :
+            trigger(),
+            item(nullptr),
+            enabled(true)
+        {}
+
+        TriggerData(const TriggerData& rhs) :
+            trigger(rhs.trigger),
+            item(rhs.item),
+            enabled(rhs.enabled)
+        {}
+
+        TriggerData& operator=(const TriggerData& rhs)
+        {
+            trigger = rhs.trigger;
+            item = rhs.item;
+            enabled = rhs.enabled;
+
+            return (*this);
+        }
+
         TriggerTestPtr trigger;
         QTreeWidgetItem* item;
         bool enabled;

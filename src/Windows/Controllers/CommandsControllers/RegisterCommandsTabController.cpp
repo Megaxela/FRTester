@@ -112,7 +112,6 @@ void RegisterCommandsTabController::onBuyButtonPressed()
 
     ExcessLog("Проверка входных данных");
 
-    bool ok = false;
 
     uint64_t count = static_cast<uint32_t>(ui()->commandsRegistrationCountDoubleSpinBox->value() * 100);
     uint64_t price = static_cast<uint32_t>(ui()->commandsRegistrationPriceDoubleSpinBox->value() * 100);

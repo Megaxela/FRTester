@@ -7,7 +7,8 @@
 
 ManualTest::ManualTest(const std::string &name,
                        const std::string &description) :
-        AbstractTest(nullptr, name, description, {})
+        AbstractTest(nullptr, name, description, {}),
+        m_testActions()
 {}
 
 void ManualTest::addTestAction(TestActionPtr testAction)
@@ -107,4 +108,9 @@ void ManualTest::applyTest(TestActionPtr action, ManualTest* test)
     {
         child->setManualTest(test);
     }
+}
+
+ManualTest::~ManualTest()
+{
+
 }

@@ -5,7 +5,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/CancelCheckTestAction.h"
 
-REGISTER_ACTION(CancelCheckTestAction);
+REGISTER_ACTION(CancelCheckTestAction)
 
 CancelCheckTestAction::CancelCheckTestAction() :
     AbstractTestAction("Аннулирование чека",

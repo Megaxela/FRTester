@@ -67,7 +67,7 @@ namespace NetworkTools
      * @param socket Socket to be closed.
      */
     void closeSocket(socket_t socket);
-};
+}
 
 
 

@@ -5,7 +5,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/ScrollTestAction.h"
 
-REGISTER_ACTION(ScrollTestAction);
+REGISTER_ACTION(ScrollTestAction)
 
 ScrollTestAction::ScrollTestAction() :
     AbstractTestAction("Прокрутка ленты",

@@ -6,7 +6,7 @@
 #include <include/Testing/ManualTests/Actions/PayoutTestAction.h>
 #include <include/Testing/ManualTests/TestActionFabric.h>
 
-REGISTER_ACTION(PayoutTestAction);
+REGISTER_ACTION(PayoutTestAction)
 
 PayoutTestAction::PayoutTestAction() :
     AbstractTestAction("Выплата",

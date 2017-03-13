@@ -14,7 +14,7 @@
 namespace TestDriverHolder
 {
     TestDriver& driver();
-};
+}
 
 
 #endif //FRTESTER_TESTDRIVERHOLDER_H

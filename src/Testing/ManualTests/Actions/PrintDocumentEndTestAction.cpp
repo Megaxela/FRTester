@@ -5,7 +5,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/PrintDocumentEndTestAction.h"
 
-REGISTER_ACTION(PrintDocumentEndTestAction);
+REGISTER_ACTION(PrintDocumentEndTestAction)
 
 PrintDocumentEndTestAction::PrintDocumentEndTestAction() :
     AbstractTestAction("Печать конца документа",

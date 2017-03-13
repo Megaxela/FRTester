@@ -15,13 +15,14 @@
 
 UnitTestsController::UnitTestsController(Ui::MainWindow *ptr, QWidget *parent) :
     AbstractTabController(ptr, parent, nullptr),
-    m_questionResult(false)
+    m_questionResult(false),
+    m_testingExecutor(new TestingExecutor()),
+    m_testLoggerWaiter(new TestLoggerWaiter()),
+    m_commandsCounter()
 {
-    m_testingExecutor = new TestingExecutor();
     TestCore::instance().setTestExecutor(m_testingExecutor);
     TestCore::instance().setUnitTestsController(this);
 
-    m_testLoggerWaiter = new TestLoggerWaiter();
     m_testLoggerWaiter->start();
 
     connect(this,
@@ -344,7 +345,7 @@ void UnitTestsController::onTestingFinished()
 {
     // Выводим статистику в лог по просьбе Прохора
     Log("=============STATISTIC=============")
-    for (uint32_t i = 0; i < ui()->unitTestsStatisticsTableWidget->rowCount(); ++i)
+    for (int i = 0; i < ui()->unitTestsStatisticsTableWidget->rowCount(); ++i)
     {
         Log("[" +
             ui()->unitTestsStatisticsTableWidget->item(i, 0)->text().toStdString() +
@@ -855,7 +856,7 @@ void UnitTestsController::onTriggerSelected(TriggerTestPtr trigger)
 
 void UnitTestsController::setTabSelectionEnabled(bool enabled)
 {
-    for (uint32_t i = 0; i < ui()->mainTabWidget->count(); ++i)
+    for (int i = 0; i < ui()->mainTabWidget->count(); ++i)
     {
         if (ui()->mainTabWidget->currentIndex() != i)
         {

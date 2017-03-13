@@ -195,6 +195,17 @@ public:
      */
     struct ShortState
     {
+        ShortState() :
+            posFlags(0),
+            posMode(0),
+            posSubMode(0),
+            checkNumberOfActions(0),
+            batteryVoltage(0),
+            powerSupplyVoltage(0),
+            checkNumberOfActionsHigher(0),
+            lastPrintResult(0)
+        {}
+
         uint16_t posFlags;                      //< Флаги ККТ
         uint8_t  posMode;                       //< Режим ККТ
         uint8_t  posSubMode;                    //< Подрежим ККТ
@@ -210,8 +221,13 @@ public:
      */
     struct FirmwareVersion
     {
-        char major;
-        char minor;
+        FirmwareVersion() :
+            majorVersion('\x00'),
+            minorVersion('\x00')
+        {}
+
+        char majorVersion;
+        char minorVersion;
     };
 
     /**
@@ -219,6 +235,12 @@ public:
      */
     struct DateStructure
     {
+        DateStructure() :
+            day(0),
+            month(0),
+            year(0)
+        {}
+
         uint8_t day;
         uint8_t month;
         uint8_t year;
@@ -229,6 +251,12 @@ public:
      */
     struct TimeStructure
     {
+        TimeStructure() :
+            hour(0),
+            minute(0),
+            second(0)
+        {}
+
         uint8_t hour;
         uint8_t minute;
         uint8_t second;
@@ -240,6 +268,34 @@ public:
      */
     struct FullState
     {
+        FullState() :
+            firmwareVersion(),
+            firmwareBuild(0),
+            firmwareDate(),
+            numberInHall(0),
+            currentDocumentPassthrougNumber(0),
+            posFlags(0),
+            posMode(0),
+            posSubMode(0),
+            posPort(0),
+            date(),
+            time(),
+            factoryNumberLower(0),
+            lastClosedShiftNumber(0),
+            numberOfReRegistration(0),
+            inn(),
+            factoryNumberUpper(0)
+        {
+            inn[0] = 0;
+            inn[1] = 0;
+            inn[2] = 0;
+            inn[3] = 0;
+            inn[4] = 0;
+            inn[5] = 0;
+            inn[6] = 0;
+            inn[7] = 0;
+        }
+
         FirmwareVersion firmwareVersion;            //< Версия ПО ККТ
         uint16_t firmwareBuild;                     //< Сборка ПО ККТ
         DateStructure firmwareDate;                 //< Дата ПО ККТ [ДД-ММ-ГГ]
@@ -263,6 +319,11 @@ public:
      */
     struct ExchangeConfiguration
     {
+        ExchangeConfiguration() :
+                baudRateCode(0),
+                byteTimeout(0)
+        {}
+
         union{
             uint8_t baudRateCode;  //< Код скорости обмена
             uint8_t tcpPortNumber; //< Номер TCP порта
@@ -276,6 +337,13 @@ public:
      */
     struct FontConfiguration
     {
+        FontConfiguration() :
+            printAreaWidthPixels(0),
+            symbolWidthWithInterval(0),
+            symbolHeightWithInterval(0),
+            numberOfFonts(0)
+        {}
+
         uint16_t printAreaWidthPixels;      //< Ширина области печати в точках
         uint8_t symbolWidthWithInterval;    //< Ширина символа с учетом межсимвольного интервала в точках
         uint8_t symbolHeightWithInterval;   //< Высота символа с учетом межстрочного интервала в точках
@@ -287,6 +355,12 @@ public:
      */
     struct TableStructure
     {
+        TableStructure() :
+            name(),
+            numberOfFields(0),
+            numberOfLines(0)
+        {}
+
         std::string name;       //< Название таблицы
         uint8_t numberOfFields;  //< Количество рядов
         uint16_t numberOfLines;   //< Количество полей
@@ -303,6 +377,14 @@ public:
             String = 1
         };
 
+        FieldStructure() :
+            name(),
+            fieldType(0),
+            numberOfBytes(0),
+            maxValue(0),
+            minValue(0)
+        {}
+
         std::string name;
         uint8_t fieldType;
         uint8_t numberOfBytes;
@@ -315,6 +397,11 @@ public:
      */
     struct CheckResult
     {
+        CheckResult() :
+            change(0),
+            url()
+        {}
+
         uint64_t change; //< Сдача
         std::string url; //< Веб ссылка
     };
@@ -324,6 +411,13 @@ public:
      */
     struct NonZeroSums
     {
+        NonZeroSums() :
+            incomingSum(0),
+            consumptionSum(0),
+            returnIncomingSum(0),
+            returnConsumptionSum(0)
+        {}
+
         uint64_t incomingSum;
         uint64_t consumptionSum;
         uint64_t returnIncomingSum;
@@ -335,6 +429,11 @@ public:
      */
     struct PingResult
     {
+        PingResult() :
+            success(false),
+            time(0)
+        {}
+
         bool success;
         uint32_t time;
     };
@@ -344,6 +443,15 @@ public:
      */
     struct InformExchangeStatus
     {
+        InformExchangeStatus() :
+            status(0),
+            readStatus(0),
+            messagesForOfd(0),
+            firstDocumentNumber(0),
+            time(),
+            date()
+        {}
+
         uint8_t status;               //< Статус информационного обмена (битовое поле)
         uint8_t readStatus;           //< Состояние чтения сообщения
         uint16_t messagesForOfd;      //< Количество сообщений для ОФД.

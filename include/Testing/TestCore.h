@@ -145,6 +145,9 @@ public:
 
 private:
 
+    TestCore(const TestCore&) = delete;
+    TestCore& operator=(const TestCore&) = delete;
+
     void addTest(TestPtr test);
 
     void addTrigger(TriggerTestPtr trigger);
@@ -156,12 +159,22 @@ private:
 
     struct TestData
     {
+        TestData() :
+            test(),
+            enabled(true)
+        {}
+
         TestPtr test;
         bool enabled;
     };
 
     struct TriggerData
     {
+        TriggerData() :
+            trigger(),
+            enabled(true)
+        {}
+
         TriggerTestPtr trigger;
         bool enabled;
     };

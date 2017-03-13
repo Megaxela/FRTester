@@ -9,8 +9,12 @@
 #include <include/Testing/TestCore.h>
 
 QTestsTreeWidget::QTestsTreeWidget(QWidget *parent) :
-        QTreeWidget(parent)
-
+        QTreeWidget(parent),
+        m_tests(),
+        m_triggers(),
+        m_testsRootItem(nullptr),
+        m_triggersRootItem(nullptr),
+        m_testsMenu(nullptr)
 {
     m_testsMenu = new QTestsTreeWidgetMenu(this);
 

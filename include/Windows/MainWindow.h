@@ -36,6 +36,9 @@ public:
 
 private:
 
+    MainWindow(const MainWindow&) = delete;
+    MainWindow& operator=(const MainWindow&) = delete;
+
     Ui::MainWindow* m_ui;
 
     RootController* m_rootController;

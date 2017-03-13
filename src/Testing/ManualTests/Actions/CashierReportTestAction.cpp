@@ -5,7 +5,7 @@
 #include <include/Testing/ManualTests/Actions/CashierReportTestAction.h>
 #include <include/Testing/ManualTests/TestActionFabric.h>
 
-REGISTER_ACTION(CashierReportTestAction);
+REGISTER_ACTION(CashierReportTestAction)
 
 CashierReportTestAction::CashierReportTestAction() :
     AbstractTestAction("Отчет по кассирам",

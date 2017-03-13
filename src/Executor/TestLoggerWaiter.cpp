@@ -6,7 +6,9 @@
 #include <include/Tools/Time.h>
 #include "include/Executor/TestLoggerWaiter.h"
 
-TestLoggerWaiter::TestLoggerWaiter()
+TestLoggerWaiter::TestLoggerWaiter() :
+    m_mutex(),
+    m_running(false)
 {
 
 }

@@ -91,7 +91,7 @@ bool SystemTools::Path::fileExists(const std::string &p)
 #endif
 }
 
-SystemTools::LibraryType SystemTools::loadLibrary(const std::string &path)
+SystemTools::LibraryType SystemTools::loadLibrary(const std::string &/*path*/)
 {
 #ifdef OS_LINUX
     return nullptr;

@@ -30,74 +30,87 @@ struct DataValue
     };
 
     DataValue() :
-            type(Type::UInt32)
+            type(Type::UInt32),
+            value()
+
     {
         value.boolean = false;
         value.integer.uint64 = 0;
     }
 
     DataValue(bool val) :
-            type(Type::Boolean)
+            type(Type::Boolean),
+            value()
     {
         value.boolean = val;
     }
 
     DataValue(uint8_t number) :
-            type(Type::UInt8)
+            type(Type::UInt8),
+            value()
     {
         value.integer.uint8 = number;
     }
 
     DataValue(int8_t number) :
-            type(Type::Int8)
+            type(Type::Int8),
+            value()
     {
         value.integer.int8 = number;
     }
 
     DataValue(uint16_t number) :
-            type(Type::UInt16)
+            type(Type::UInt16),
+            value()
     {
         value.integer.uint16 = number;
     }
 
     DataValue(int16_t number) :
-            type(Type::Int16)
+            type(Type::Int16),
+            value()
     {
         value.integer.int16 = number;
     }
 
     DataValue(uint32_t number) :
-            type(Type::UInt32)
+            type(Type::UInt32),
+            value()
     {
         value.integer.uint32 = number;
     }
 
     DataValue(int32_t number) :
-            type(Type::Int32)
+            type(Type::Int32),
+            value()
     {
         value.integer.int32 = number;
     }
 
     DataValue(uint64_t number) :
-            type(Type::UInt64)
+            type(Type::UInt64),
+            value()
     {
         value.integer.uint64 = number;
     }
 
     DataValue(int64_t number) :
-            type(Type::Int64)
+            type(Type::Int64),
+            value()
     {
         value.integer.int64 = number;
     }
 
     DataValue(const std::string& str) :
-            type(Type::String)
+            type(Type::String),
+            value()
     {
         value.string = str;
     }
 
     DataValue(const ByteArray& byteArray) :
-            type(Type::ByteArray)
+            type(Type::ByteArray),
+            value()
     {
         value.byteArray = byteArray;
     }
@@ -218,7 +231,16 @@ struct DataValue
 
     Type type;
 
-    struct {
+    struct Data {
+        Data() :
+            integer(),
+            boolean(false),
+            string(),
+            byteArray()
+        {
+
+        }
+
         union {
             uint8_t uint8;
             int8_t int8;

@@ -27,8 +27,8 @@
 //#ifndef Error
 //    #define Error(x)
 //#endif
-
-static int TIMEOUT = 1000;
+//
+//static int TIMEOUT = 1000;
 #ifdef OS_WINDOWS
 TTY::TTY() :
         m_afterConnectionWaitingTime(100),
@@ -440,7 +440,7 @@ ByteArray TTY::read(uint32_t size, uint32_t timeoutMcs) const
 
     FD_SET(m_fileDescriptor, &read_fds);
 
-    byte response[size];
+    byte* response = new byte[size];
     memset(response, 0, size * sizeof(byte));
 
     size_t dataRead = 0;
@@ -472,6 +472,8 @@ ByteArray TTY::read(uint32_t size, uint32_t timeoutMcs) const
             Error("Ошибка select. #" +
                        std::to_string(errno) + ": " +
                        strerror(errno));
+
+            delete[] response;
             return ByteArray();
         }
         else if (r == 1)
@@ -489,7 +491,11 @@ ByteArray TTY::read(uint32_t size, uint32_t timeoutMcs) const
     }
 
 #endif
-    return ByteArray(response, static_cast<uint32_t>(dataRead));
+    auto result =  ByteArray(response, static_cast<uint32_t>(dataRead));
+
+    delete[] response;
+
+    return result;
 }
 
 void TTY::sleep(int ms) const

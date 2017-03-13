@@ -15,4 +15,4 @@ STDEXTEND_NAMESPACE
     {
         return s.compare(s.size() - with.size(), s.size(), with) == 0;
     }
-};
+}

@@ -5,7 +5,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/TaxesReportTestAction.h"
 
-REGISTER_ACTION(TaxesReportTestAction);
+REGISTER_ACTION(TaxesReportTestAction)
 
 TaxesReportTestAction::TaxesReportTestAction() :
     AbstractTestAction("Отчет о налогах",

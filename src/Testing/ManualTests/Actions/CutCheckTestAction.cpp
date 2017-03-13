@@ -5,7 +5,7 @@
 #include <include/Testing/ManualTests/TestActionFabric.h>
 #include "include/Testing/ManualTests/Actions/CutCheckTestAction.h"
 
-REGISTER_ACTION(CutCheckTestAction);
+REGISTER_ACTION(CutCheckTestAction)
 
 CutCheckTestAction::CutCheckTestAction() :
     AbstractTestAction("Отрезка чека",

@@ -46,7 +46,7 @@ STDEXTEND_NAMESPACE
      * @return Is string `s` ends with string `with`
      */
     bool ends(const std::string &s, const std::string &with);
-};
+}
 
 
 #endif //FRTESTER_STDEXTEND_H
