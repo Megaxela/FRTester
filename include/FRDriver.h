@@ -70,6 +70,8 @@ public:
         , PrintAds = 0x54                       //< Печать рекламного текста
         , EnterFactoryNumber = 0x55             //< Ввод заводского номера
         , PrintBarcode = 0xC2                   //< Печать штрих-кода EAN-13
+        , LoadData = 0xDD                       //< Загрузка данных
+        , MultidimensionalBarcode = 0xDE        //< Печать многомерного штрих-кода
         , OpenNonFiscalDocument = 0xE2          //< Открытие нефискального документа
         , CloseNonFiscalDocument = 0xE3         //< Закрытие нефискального документа
         , NonZeroSums = 0xFE                    //< Получение необнуляемых сумм
@@ -77,6 +79,18 @@ public:
         , Ping = 0xFEF2                         //< Пинг
         , Reboot = 0xFEF3                       //< Перезапуск
         , GetInformationExchangeStatus = 0xFF39 //< Получить статус информационного обмена
+    };
+
+    /**
+     * @brief Типы многомерных штрих-кодов.
+     */
+    enum class BarcodeType
+    {
+          PDF417 = 0
+        , DATAMATRIX = 1
+        , AZTEC = 2
+        , QRCode1 = 3
+        , QRCode2 = 131
     };
 
     /**
@@ -458,6 +472,17 @@ public:
         uint32_t firstDocumentNumber; //< Номер первого в очереди документа на отправку.
         TimeStructure time; //< Дата первого в очереди документа для ОФД
         DateStructure date; //< Время первого в очереди документа для ОФД
+    };
+
+    struct BarcodeData
+    {
+        uint8_t firstParam;
+        uint8_t secondParam;
+        uint8_t thirdParam;
+        uint8_t fourthParam;
+        uint8_t fifthParam;
+        uint16_t barcodeWidth;
+        uint16_t barcodeHeight;
     };
 
     /**
@@ -1084,6 +1109,44 @@ public:
      * @return Успешность печати.
      */
     bool printBarcode(uint32_t pwd, uint64_t value);
+
+    /**
+     * @brief Метод для печати многомерного штрих-кода.
+     * @param password Пароль.
+     * @param barcodeType Тип штрих-кода.
+     * @param dataLength Длина данных штрих-кода.
+     * @param startBlock Номер начального блока данных.
+     * @param firstParam Параметр 1
+     * @param secondParam Параметр 2
+     * @param thirdParam Параметр 3
+     * @param fourthParam Параметр 4
+     * @param fifthParam Параметр 5
+     * @param align Выравнивание
+     * @return Результат печати многомерного штрих-кода.
+     */
+    BarcodeData printMultidimensionalBarcode(uint32_t password,
+                                             BarcodeType barcodeType,
+                                             uint16_t dataLength,
+                                             uint8_t startBlock,
+                                             uint8_t firstParam,
+                                             uint8_t secondParam,
+                                             uint8_t thirdParam,
+                                             uint8_t fourthParam,
+                                             uint8_t fifthParam,
+                                             uint8_t align);
+
+    /**
+     * @brief Метод для загрузки данных.
+     * @param password Пароль.
+     * @param dataType Тип данных.
+     * @param blockNumber Порядковый номер блока данных.
+     * @param data Данные.
+     * @return Успешность выполнения загрузки данных.
+     */
+    bool loadData(uint32_t password,
+                  uint8_t dataType,
+                  uint8_t blockNumber,
+                  ByteArray data);
 
     // todo: Сменить type на перечисление
     bool sendTag(uint32_t pwd, uint16_t tag, const std::string &str);

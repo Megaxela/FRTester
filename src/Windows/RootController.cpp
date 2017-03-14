@@ -11,6 +11,7 @@
 #include <include/Testing/SettingsSystem.h>
 #include <include/Tools/Logger.h>
 #include <include/Windows/Controllers/TestControllers/TestsEditorController.h>
+#include <include/Windows/Controllers/LogParserTabController.h>
 #include "include/Windows/Controllers/RootController.h"
 
 RootController::RootController(Ui::MainWindow *ptr,
@@ -51,6 +52,13 @@ RootController::RootController(Ui::MainWindow *ptr,
     addTabController(
             ui()->testsEditorTab,
             new TestsEditorController(
+                    ui(),
+                    parentWidget()
+            )
+    );
+    addTabController(
+            ui()->logParserTab,
+            new LogParserTabController(
                     ui(),
                     parentWidget()
             )

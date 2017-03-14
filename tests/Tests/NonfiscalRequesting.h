@@ -20,6 +20,9 @@ public:
 
     bool execute() override;
 
+private:
+    bool print(const std::string& text, uint8_t font);
+
 };
 
 

@@ -80,20 +80,11 @@ bool TCPInterface::closeConnection()
 
 PhysicalInterface::size_t TCPInterface::write(const ByteArray &data)
 {
-    ExcessLog("Write: " + data.toHex());
+    ExcessLog("-> " + data.toHex());
     uint32_t i = 0;
     while (i < data.size())
     {
-//        if (Time::get<std::chrono::microseconds>() - m_lastByteSendTime < m_byteSendTime)
-//        {
-//            Time::sleep<std::chrono::microseconds>(
-//                    m_byteSendTime - (Time::get<std::chrono::microseconds>() - m_lastByteSendTime)
-//            );
-//        }
-
         i += send(m_connectionSocket, (const char*) (data.data() + i), data.length() - i, 0);
-
-//        m_lastByteSendTime = Time::get<std::chrono::microseconds>();
     }
 
     return data.size();
@@ -176,7 +167,7 @@ ByteArray TCPInterface::read(const PhysicalInterface::size_t &size, uint32_t tim
 
     auto ba = ByteArray(response, static_cast<uint32_t>(dataRead));
 
-    ExcessLog(" READ: " + ba.toHex());
+    ExcessLog("<- " + ba.toHex());
     delete[] response;
 
     return ba;

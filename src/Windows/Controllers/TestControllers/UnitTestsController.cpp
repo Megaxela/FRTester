@@ -319,7 +319,7 @@ void UnitTestsController::addLogMessage(QString message,
             break;
     }
 
-    Log("TEST: " + message.toStdString());
+    Log("Лог теста: " + message.toStdString());
 
     auto textCursor = ui()->unitTestsLogTextEdit->textCursor();
 
@@ -425,7 +425,7 @@ void UnitTestsController::onTestingErrorAcquired(QString log)
 
 void UnitTestsController::onTestLoggerWaiterLogAcquired(QString log)
 {
-    addLogMessage("[ТЕСТ]-> " + log, MessageType::TestMessage);
+    addLogMessage("-> " + log, MessageType::TestMessage);
 }
 
 QString UnitTestsController::htmlScreening(QString source)

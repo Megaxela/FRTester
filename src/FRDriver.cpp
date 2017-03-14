@@ -159,7 +159,13 @@ void FRDriver::proceedResponse(const ByteArray &data, bool cashier)
 
     m_lastErrorCode = static_cast<ErrorCode>(data[commandSize]);
 
-    Log("Получена ошибка: #" + std::to_string(data[commandSize]) + " из ответа " + data.toHex());
+    Log("Получена ошибка: #" +
+        std::to_string(data[commandSize]) +
+        " \"" +
+        FRDriver::Converters::errorToString(data[commandSize]) +
+        "\" из ответа " +
+        data.toHex()
+    );
 
     if (cashier)
     {
@@ -1220,6 +1226,90 @@ bool FRDriver::sendTag(uint32_t pwd, uint16_t tag, const std::string &str)
     arguments.append((uint8_t*) str.c_str(), (uint32_t) str.size());
 
     auto data = sendCommand(Command::SendTag, arguments, false);
+
+    return getLastError() == ErrorCode::NoError;
+}
+
+FRDriver::BarcodeData
+FRDriver::printMultidimensionalBarcode(uint32_t password,
+                                       FRDriver::BarcodeType barcodeType,
+                                       uint16_t dataLength,
+                                       uint8_t startBlock,
+                                       uint8_t firstParam,
+                                       uint8_t secondParam,
+                                       uint8_t thirdParam,
+                                       uint8_t fourthParam,
+                                       uint8_t fifthParam,
+                                       uint8_t align)
+{
+    ByteArray arguments;
+
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+    arguments.append((uint8_t) barcodeType, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(dataLength, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(startBlock);
+    arguments.append(firstParam);
+    arguments.append(secondParam);
+    arguments.append(thirdParam);
+    arguments.append(fourthParam);
+    arguments.append(fifthParam);
+    arguments.append(align);
+
+    auto data = sendCommand(Command::MultidimensionalBarcode, arguments, false);
+
+    BarcodeData barcodeData = FRDriver::BarcodeData();
+
+    if (getLastError() != ErrorCode::NoError)
+    {
+        return barcodeData;
+    }
+
+    if (data.length() == 3)
+    {
+        return barcodeData;
+    }
+
+    ByteArrayReader reader(data);
+
+    reader.seek(3);
+
+    barcodeData.firstParam = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
+    barcodeData.secondParam = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
+    barcodeData.thirdParam = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
+    barcodeData.fourthParam = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
+    barcodeData.fifthParam = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
+    barcodeData.barcodeWidth = reader.read<uint16_t>(ByteArray::ByteOrder_LittleEndian);
+    barcodeData.barcodeHeight = reader.read<uint16_t>(ByteArray::ByteOrder_LittleEndian);
+
+    return barcodeData;
+}
+
+bool FRDriver::loadData(uint32_t password,
+                        uint8_t dataType,
+                        uint8_t blockNumber,
+                        ByteArray data)
+{
+    ByteArray arguments;
+
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(dataType);
+    arguments.append(blockNumber);
+    arguments.append(data);
+
+    if (data.length() < 64)
+    {
+        arguments.appendMultiple<uint8_t>(0, 64 - data.length(), ByteArray::ByteOrder_LittleEndian);
+    }
+    else if (data.length() > 64)
+    {
+        Critical(
+            "Массив с данными слишком велик! " +
+            std::to_string(data.length()) +
+            " > 64"
+        );
+    }
+
+    sendCommand(Command::LoadData, arguments, true);
 
     return getLastError() == ErrorCode::NoError;
 }

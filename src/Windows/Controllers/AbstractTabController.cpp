@@ -71,7 +71,7 @@ void AbstractTabController::init()
         }
         catch (std::invalid_argument e)
         {
-            Error("Can't get saved tab for " + name + " controller.");
+            Error("Не удалось получить открытую вкладку для контроллера \"" + name + "\".");
         }
     }
 }

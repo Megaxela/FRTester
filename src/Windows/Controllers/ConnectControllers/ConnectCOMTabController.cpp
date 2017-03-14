@@ -106,7 +106,7 @@ void ConnectCOMTabController::configureWidgets()
     }
     catch (std::invalid_argument e)
     {
-        Warning("Can't get baud rate index.");
+        Warning("Не удалось получить скорость обмена с COM портом.");
     }
 
     // todo: Перевести на диалект контроллера
