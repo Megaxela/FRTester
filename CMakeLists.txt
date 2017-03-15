@@ -311,7 +311,7 @@ set(SOURCE_FILES
         tests/Tests/QuickMiniposTest.cpp
         tests/Tests/QuickMiniposTest.h
         src/Testing/ManualTests/Actions/WaitForPrintingFinishTestAction.cpp
-        include/Testing/ManualTests/Actions/WaitForPrintingFinishTestAction.h include/Tools/ParsedLog.cpp include/Tools/ParsedLog.h include/Tools/LoggerProcessor.cpp include/Tools/LoggerProcessor.h)
+        include/Testing/ManualTests/Actions/WaitForPrintingFinishTestAction.h src/Tools/ParsedLog.cpp include/Tools/ParsedLog.h src/Tools/LoggerProcessor.cpp include/Tools/LoggerProcessor.h src/Testing/ManualTests/Actions/WriteTableStringTestAction.cpp include/Testing/ManualTests/Actions/WriteTableStringTestAction.h src/Testing/ManualTests/Actions/WriteTableBinTestAction.cpp include/Testing/ManualTests/Actions/WriteTableBinTestAction.h)
 
 add_executable(FRTester
         ${MAIN_FILES}

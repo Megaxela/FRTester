@@ -476,6 +476,16 @@ public:
 
     struct BarcodeData
     {
+        BarcodeData() :
+            firstParam(0),
+            secondParam(0),
+            thirdParam(0),
+            fourthParam(0),
+            fifthParam(0),
+            barcodeWidth(0),
+            barcodeHeight(0)
+        {}
+
         uint8_t firstParam;
         uint8_t secondParam;
         uint8_t thirdParam;
