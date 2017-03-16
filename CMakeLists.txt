@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.6)
 project(FRTester)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/../${CMAKE_PROJECT_NAME}_executable")
-set(CMAKE_CXX_FLAGS "-Werror -ansi -pedantic -Wabi -Wall -Wextra -Weffc++ -Woverloaded-virtual -Winit-self -Wunreachable-code ")
+set(CMAKE_CXX_FLAGS "-ansi -pedantic -Wabi -Wall -Wextra -Weffc++ -Woverloaded-virtual -Winit-self -Wunreachable-code ")
 set(CMAKE_CXX_STANDARD 11)
 
 include_directories(${CMAKE_INCLUDE_PATH} libraries)
