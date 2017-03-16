@@ -14,6 +14,7 @@
 #include "Tools/Platform.h"
 
 #ifdef OS_WINDOWS
+    #include <windows.h>
     #define LIB_EXTENSION ".dll"
 #endif
 #ifdef OS_LINUX
@@ -164,8 +165,9 @@ namespace SystemTools
 //        return proc;
 #endif
 #ifdef OS_WINDOWS
-        T* proc = (T*) GetProcAddress(lib, name.c_str());
-        return proc;
+        return 0;
+//        T* proc = (T*) GetProcAddress(lib, name.c_str());
+//        return proc;
 #endif
     }
 

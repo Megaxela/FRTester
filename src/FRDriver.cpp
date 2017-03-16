@@ -1211,7 +1211,7 @@ bool FRDriver::printBarcode(uint32_t pwd, uint64_t value)
     arguments.append(pwd, ByteArray::ByteOrder_LittleEndian);
     arguments.appendPart(value, 5, ByteArray::ByteOrder_LittleEndian);
 
-    auto data = sendCommand(Command::PrintBarcode, arguments, true);
+    auto data = sendCommand(Command::PrintEANBarcode, arguments, true);
 
     return getLastError() == ErrorCode::NoError;
 }
@@ -1282,6 +1282,47 @@ FRDriver::printMultidimensionalBarcode(uint32_t password,
     barcodeData.barcodeHeight = reader.read<uint16_t>(ByteArray::ByteOrder_LittleEndian);
 
     return barcodeData;
+}
+
+uint64_t FRDriver::operationV2(uint32_t password,
+                               FRDriver::OperationType operation,
+                               uint64_t count,
+                               uint64_t price,
+                               uint64_t taxValue,
+                               uint8_t department,
+                               uint8_t calculationMethod,
+                               uint8_t calculationSubject,
+                               const std::string &goodName)
+{
+    ByteArray arguments;
+
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+    arguments.append((uint8_t) operation);
+    arguments.appendPart(count, 6, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(price, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendMultiple(0xFF, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(taxValue, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(department);
+    arguments.append(calculationMethod);
+    arguments.append(calculationSubject);
+
+    arguments.append(
+            reinterpret_cast<const uint8_t *>(goodName.c_str()),
+            static_cast<uint32_t>(goodName.size())
+    );
+
+    auto response = sendCommand(Command::OperationV2, arguments, false);
+
+    if (getLastError() != FRDriver::ErrorCode::NoError)
+    {
+        return 0;
+    }
+
+    ByteArrayReader reader(response);
+
+    reader.seek(1);
+
+    return reader.readPart(5, ByteArray::ByteOrder_LittleEndian);
 }
 
 bool FRDriver::loadData(uint32_t password,

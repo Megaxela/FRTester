@@ -92,8 +92,8 @@ set(SOURCE_FILES
         include/Windows/Controllers/CommandsControllers/StateCommandsTabController.h
         src/Tools/StableController.cpp
         include/Tools/StableController.h
-        src/Windows/Controllers/CommandsControllers/RegisterCommandsTabController.cpp
-        include/Windows/Controllers/CommandsControllers/RegisterCommandsTabController.h
+        src/Windows/Controllers/CommandsControllers/RegisterOperationsV1CommandsTabController.cpp
+        include/Windows/Controllers/CommandsControllers/RegisterOperationsV1CommandsTabController.h
         src/Windows/Controllers/CommandsControllers/ReportsCommandsTabController.cpp
         include/Windows/Controllers/CommandsControllers/ReportsCommandsTabController.h
         src/Tools/TypeConverters.cpp
@@ -311,7 +311,7 @@ set(SOURCE_FILES
         tests/Tests/QuickMiniposTest.cpp
         tests/Tests/QuickMiniposTest.h
         src/Testing/ManualTests/Actions/WaitForPrintingFinishTestAction.cpp
-        include/Testing/ManualTests/Actions/WaitForPrintingFinishTestAction.h src/Tools/ParsedLog.cpp include/Tools/ParsedLog.h src/Tools/LoggerProcessor.cpp include/Tools/LoggerProcessor.h src/Testing/ManualTests/Actions/WriteTableStringTestAction.cpp include/Testing/ManualTests/Actions/WriteTableStringTestAction.h src/Testing/ManualTests/Actions/WriteTableBinTestAction.cpp include/Testing/ManualTests/Actions/WriteTableBinTestAction.h)
+        include/Testing/ManualTests/Actions/WaitForPrintingFinishTestAction.h src/Tools/ParsedLog.cpp include/Tools/ParsedLog.h src/Tools/LoggerProcessor.cpp include/Tools/LoggerProcessor.h src/Testing/ManualTests/Actions/WriteTableStringTestAction.cpp include/Testing/ManualTests/Actions/WriteTableStringTestAction.h src/Testing/ManualTests/Actions/WriteTableBinTestAction.cpp include/Testing/ManualTests/Actions/WriteTableBinTestAction.h src/Windows/Controllers/CommandsControllers/RegisterCommandsTabController.cpp include/Windows/Controllers/CommandsControllers/RegisterCommandsTabController.h src/Windows/Controllers/CommandsControllers/RegisterOperationsV2CommandsTabController.cpp include/Windows/Controllers/CommandsControllers/RegisterOperationsV2CommandsTabController.h)
 
 add_executable(FRTester
         ${MAIN_FILES}

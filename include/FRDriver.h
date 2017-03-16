@@ -27,13 +27,19 @@ public:
      */
     enum class Command
     {
-        ShortStateRequest = 0x10              //< Короткий запрос состояния
+        DumpRequest = 0x01                      //< Запрос дампа
+        , DataRequest = 0x02                    //< Запрос данных
+        , InterruptDataOutput = 0x03            //< Прерывание выдачи данных
+        , ShortStateRequest = 0x10              //< Короткий запрос состояния
         , FullStateRequest = 0x11               //< Полный запрос состояния
+        , PrintBold = 0x12                      //< Печать жирной строки
         , Beep = 0x13                           //< Сигнал
+        , SetExchangeConfiguration = 0x14       //< Установка параметров обмена
         , ReadExchangeConfiguration = 0x15      //< Чтение параметров обмена
         , TechReset = 0x16                      //< Технологическое обнуление
         , StandardStringPrint = 0x17            //< Печать стандартной строки
         , DocumentHeaderPrint = 0x18            //< Печать заголовка документа
+        , Test = 0x19                           //< Тестовый прогон
         , CurrencyRegisterRequest = 0x1A        //< Запрос денежного регистра
         , OperatingRegisterRequest = 0x1B       //< Запрос операционного регистра
         , WriteTable = 0x1E                     //< Запись таблицы
@@ -45,21 +51,15 @@ public:
         , CutCheck = 0x25                       //< Отрезка чека
         , ReadFontConfiguration = 0x26          //< Чтение параметров шрифта
         , TotalExtinction = 0x27                //< Полное гашение
+        , OpenBank = 0x28                       //< Открытие денежного ящика
         , Scrolling = 0x29                      //< Протяжка
+        , InterruptTesting = 0x2B               //< Прерывание тестового прогона
+        , OperationRegisterPrint = 0x2C         //< Снятие показаний операционных регистров
         , TableStructureRequest = 0x2D          //< Запрос структуры таблицы
-        , ShiftReportNoExtinction = 0x40        //< Суточный отчет без гашения
-        , ShiftCloseReport = 0x41               //< Отчет о закрытии смены
-        , Sell = 0x80                           //< Продажа
-        , Buy = 0x81                            //< Покупка
-        , ReturnSell = 0x82                     //< Возврат продажи
-        , ReturnBuy = 0x83                      //< Возврат покупки
-        , CloseCheck = 0x85                     //< Обычное закрытие чека
-        , CancelCheck = 0x88                    //< Аннулирование чека
-        , CheckResult = 0x89                    //< Подытог чека
-        , ContinuePrint = 0xB0                  //< Продолжить печать
-        , OpenShift = 0xE0                      //< Открытие смены
         , FieldStructureRequest = 0x2E          //< Запрос структуры поля
         , FontStringPrint = 0x2F                //< Печать строки данным шрифтом
+        , ShiftReportNoExtinction = 0x40        //< Суточный отчет без гашения
+        , ShiftCloseReport = 0x41               //< Отчет о закрытии смены
         , SectionsReport = 0x42                 //< Отчет по секциям
         , TaxesReport = 0x43                    //< Отчет по налогам
         , CashierReport = 0x44                  //< Отчет по кассирам
@@ -68,17 +68,69 @@ public:
         , PrintCliches = 0x52                   //< Печать клише
         , DocumentEndPrint = 0x53               //< Конец Документа (печать)
         , PrintAds = 0x54                       //< Печать рекламного текста
-        , EnterFactoryNumber = 0x55             //< Ввод заводского номера
-        , PrintBarcode = 0xC2                   //< Печать штрих-кода EAN-13
+        , EnterFactoryNumber = 0x60             //< Ввод заводского номера
+        , Sell = 0x80                           //< Продажа
+        , Buy = 0x81                            //< Покупка
+        , ReturnSell = 0x82                     //< Возврат продажи
+        , ReturnBuy = 0x83                      //< Возврат покупки
+        , Reversal = 0x84                       //< Сторно
+        , CloseCheck = 0x85                     //< Обычное закрытие чека
+        , Discount = 0x86                       //< Скидка
+        , ExtraCharge = 0x87                    //< Надбавка
+        , CancelCheck = 0x88                    //< Аннулирование чека
+        , CheckResult = 0x89                    //< Подытог чека
+        , ReversalDiscount = 0x8A               //< Сторно скидки
+        , ReversalExtraCharge = 0x8B            //< Сторно надбавки
+        , PrintDocumentCopy = 0x8C              //< Печать копии чека
+        , OpenCheck = 0x8D                      //< Открыть чек
+        , CloseCheckExtended = 0x8E             //< Расширенное закрытие чека
+        , ContinuePrint = 0xB0                  //< Продолжить печать
+        , LoadGraphics = 0xC0                   //< Загрузка графики
+        , PrintGraphics = 0xC1                  //< Печать графики
+        , PrintEANBarcode = 0xC2                //< Печать штрих-кода EAN-13
+        , PrintExtendedGraphics = 0xC3          //< Печать расширенной графики
+        , LoadExtendedGraphics = 0xC4           //< Загрузка расширенной графики
+        , PrintLine = 0xC5                      //< Печать графической линии (одномерный штрихкод)
         , LoadData = 0xDD                       //< Загрузка данных
         , MultidimensionalBarcode = 0xDE        //< Печать многомерного штрих-кода
+        , OpenShift = 0xE0                      //< Открытие смены
         , OpenNonFiscalDocument = 0xE2          //< Открытие нефискального документа
         , CloseNonFiscalDocument = 0xE3         //< Закрытие нефискального документа
+        , EnterEnableCode = 0xEC                //< Ввод кода разрешения активизации
         , NonZeroSums = 0xFE                    //< Получение необнуляемых сумм
-        , SendTag = 0xFF0C                      //< Отправка тега
         , Ping = 0xFEF2                         //< Пинг
         , Reboot = 0xFEF3                       //< Перезапуск
+        , FNStatusRequest = 0xFF01              //< Запрос статуса ФН
+        , FNNumberRequest = 0xFF02              //< Запрос номера ФН
+        , FNValidityRequest = 0xFF03            //< Запрос срока действия ФН
+        , FNVersionRequest = 0xFF04             //< Запрос версии ФН
+        , StartRegistrationReport = 0xFF05      //< Начать отчет о регистрации
+        , FormRegistrationReport = 0xFF06       //< Сформировать отчет о регистрации ККТ
+        , ResetFN = 0xFF07                      //< Сброс состояния ФН
+        , CancelFNDocument = 0xFF08             //< Отменить документ в ФН
+        , FiscalisationResultsRequest = 0xFF09  //< Запрос итогов фискализации
+        , FindFiscalDocument = 0xFF0A           //< Найти фискальный документ по номеру
+        , SendTag = 0xFF0C                      //< Отправка тега
+        , OperationWithDiscountsAndExtraCharges = 0xFF0D //< Операция со скидками и надбавками
+        , FormReRegistrationReport = 0xFF34     //< Сформировать отчет о перерегистрации
+        , StartCheckCorrectionForm = 0xFF35     //< Начать формирование чека коррекции
+        , FormCheckCorrection = 0xFF36          //< Сформировать чек коррекции
+        , StartSettlementStatusReport = 0xFF37  //< Начать формирования отчета о состоянии расчетов
+        , FormSettlementStatusReport = 0xFF38   //< Сформировать отчет о состоянии расчетов
         , GetInformationExchangeStatus = 0xFF39 //< Получить статус информационного обмена
+        , RequestTLVFiscalDocument = 0xFF3A     //< Запросить фискальный документ в TLV формате
+        , ReadTLVFiscalDocument = 0xFF3B        //< Чтение TLV фискального документа
+        , RequestOFDSubmit = 0xFF3C             //< Запрос квитации о получении данных в ОФД по номеру документа
+        , StartFiscalModeClose = 0xFF3D         //< Начать закрытие фискального режима
+        , OperationV2 = 0xFF46                  //< Команда для формирования операций верхним ПО
+    };
+
+    enum class OperationType
+    {
+          Incoming = 1          //< Приход
+        , ReturnIncoming = 2    //< Возврат прихода
+        , Consumption = 3       //< Расход
+        , ReturnConsumption = 4 //< Возврат расхода
     };
 
     /**
@@ -1160,6 +1212,36 @@ public:
 
     // todo: Сменить type на перечисление
     bool sendTag(uint32_t pwd, uint16_t tag, const std::string &str);
+
+    /**
+     * @brief Команда для выполнения операции, которая должна
+     * высчитываться верхнем ПО.
+     * @param password Пароль кассира
+     * @param operation Тип операции
+     * @param count Количество (6 байт - 6 знаков после запятой)
+     * @param price Цена (5 байт)
+     * @param taxValue Сумма налога (5 байт)
+     * @param department Номер отдела
+     * @param taxType Номер налога
+     * @param unitOfMeasure Единица измерения товара
+     * @param securityIdentificationMark Контрольный идентификационный знак
+     * @param vatFor1Good НДС за единицу
+     * @param goodName Наименование товара
+     * Если строка начинается символами //, то она передается на сервер
+     * ОФД, но не печатается на кассе.
+     * @return Успешность выполнения операции.
+     */
+    uint64_t operationV2(uint32_t password,
+                         FRDriver::OperationType operation,
+                         uint64_t count,
+                         uint64_t price,
+                         uint64_t taxValue,
+                         uint8_t department,
+                         uint8_t calculationMethod,
+                         uint8_t calculationSubject,
+                         const std::string &goodName);
+
+
 
 protected:
 

@@ -9,12 +9,14 @@
     #include <dirent.h>
     #include <sys/stat.h>
 
+
 //static SystemTools::LibraryType SystemTools::WrongLibrary = nullptr;
 
 #endif
 #ifdef OS_WINDOWS
 //    #include "libraries/dirent/dirent.h"
     #include <windows.h>
+    #include <dirent.h>
 #endif
 
 std::vector<std::string> SystemTools::getAllFilesInDir(const std::string &path)
