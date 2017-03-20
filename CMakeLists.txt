@@ -9,7 +9,7 @@ include_directories(${CMAKE_INCLUDE_PATH} libraries)
 link_directories(${CMAKE_LIBRARY_PATH})
 
 message("${CMAKE_LIBRARY_PATH}")
-
+message(QT_QMAKE_EXECUTABLE)
 #------------------------
 # Setuping Qt
 #------------------------
@@ -311,7 +311,7 @@ set(SOURCE_FILES
         tests/Tests/QuickMiniposTest.cpp
         tests/Tests/QuickMiniposTest.h
         src/Testing/ManualTests/Actions/WaitForPrintingFinishTestAction.cpp
-        include/Testing/ManualTests/Actions/WaitForPrintingFinishTestAction.h src/Tools/ParsedLog.cpp include/Tools/ParsedLog.h src/Tools/LoggerProcessor.cpp include/Tools/LoggerProcessor.h src/Testing/ManualTests/Actions/WriteTableStringTestAction.cpp include/Testing/ManualTests/Actions/WriteTableStringTestAction.h src/Testing/ManualTests/Actions/WriteTableBinTestAction.cpp include/Testing/ManualTests/Actions/WriteTableBinTestAction.h src/Windows/Controllers/CommandsControllers/RegisterCommandsTabController.cpp include/Windows/Controllers/CommandsControllers/RegisterCommandsTabController.h src/Windows/Controllers/CommandsControllers/RegisterOperationsV2CommandsTabController.cpp include/Windows/Controllers/CommandsControllers/RegisterOperationsV2CommandsTabController.h)
+        include/Testing/ManualTests/Actions/WaitForPrintingFinishTestAction.h src/Tools/ParsedLog.cpp include/Tools/ParsedLog.h src/Tools/LoggerProcessor.cpp include/Tools/LoggerProcessor.h src/Testing/ManualTests/Actions/WriteTableStringTestAction.cpp include/Testing/ManualTests/Actions/WriteTableStringTestAction.h src/Testing/ManualTests/Actions/WriteTableBinTestAction.cpp include/Testing/ManualTests/Actions/WriteTableBinTestAction.h src/Windows/Controllers/CommandsControllers/RegisterCommandsTabController.cpp include/Windows/Controllers/CommandsControllers/RegisterCommandsTabController.h src/Windows/Controllers/CommandsControllers/RegisterOperationsV2CommandsTabController.cpp include/Windows/Controllers/CommandsControllers/RegisterOperationsV2CommandsTabController.h tests/Tests/Bug0017479Test.cpp tests/Tests/Bug0017479Test.h tests/Tests/Bug0017515Test.cpp tests/Tests/Bug0017515Test.h tests/Tests/Bug0017483Test.cpp tests/Tests/Bug0017483Test.h)
 
 add_executable(FRTester
         ${MAIN_FILES}

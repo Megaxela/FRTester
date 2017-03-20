@@ -1289,6 +1289,7 @@ uint64_t FRDriver::operationV2(uint32_t password,
                                uint64_t count,
                                uint64_t price,
                                uint64_t taxValue,
+                               uint8_t taxRate,
                                uint8_t department,
                                uint8_t calculationMethod,
                                uint8_t calculationSubject,
@@ -1298,10 +1299,10 @@ uint64_t FRDriver::operationV2(uint32_t password,
 
     arguments.append(password, ByteArray::ByteOrder_LittleEndian);
     arguments.append((uint8_t) operation);
-    arguments.appendPart(count, 6, ByteArray::ByteOrder_LittleEndian);
-    arguments.appendPart(price, 5, ByteArray::ByteOrder_LittleEndian);
-    arguments.appendMultiple(0xFF, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(count,    6, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(price,    5, ByteArray::ByteOrder_LittleEndian);
     arguments.appendPart(taxValue, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(taxRate);
     arguments.append(department);
     arguments.append(calculationMethod);
     arguments.append(calculationSubject);
@@ -1310,6 +1311,7 @@ uint64_t FRDriver::operationV2(uint32_t password,
             reinterpret_cast<const uint8_t *>(goodName.c_str()),
             static_cast<uint32_t>(goodName.size())
     );
+    arguments.appendMultiple(0x00, static_cast<uint32_t>(128 - goodName.size()));
 
     auto response = sendCommand(Command::OperationV2, arguments, false);
 

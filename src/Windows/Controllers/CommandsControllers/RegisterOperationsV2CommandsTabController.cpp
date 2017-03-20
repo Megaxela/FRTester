@@ -135,6 +135,7 @@ uint64_t RegisterOperationsV2CommandsTabController::performOperation(FRDriver::O
             static_cast<uint64_t>(ui()->commandsRegistrationOperationV2CountDoubleSpinBox->value() * 10),
             static_cast<uint64_t>(ui()->commandsRegistrationOperationV2PriceDoubleSpinBox->value() * 10),
             static_cast<uint64_t>(ui()->commandsRegistrationOperationV2TaxValueDoubleSpinBox->value() * 10),
+            static_cast<uint8_t>(ui()->commandsRegistrationOperationV2TaxSpinBox->value()),
             static_cast<uint8_t>(ui()->commandsRegistrationOperationV2DepartmentSpinBox->value()),
             0,
             0,

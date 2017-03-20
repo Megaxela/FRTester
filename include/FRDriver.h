@@ -1236,6 +1236,7 @@ public:
                          uint64_t count,
                          uint64_t price,
                          uint64_t taxValue,
+                         uint8_t taxRate,
                          uint8_t department,
                          uint8_t calculationMethod,
                          uint8_t calculationSubject,
