@@ -98,6 +98,7 @@ public:
         , CloseNonFiscalDocument = 0xE3         //< Закрытие нефискального документа
         , EnterEnableCode = 0xEC                //< Ввод кода разрешения активизации
         , NonZeroSums = 0xFE                    //< Получение необнуляемых сумм
+        , ChangeSerialNumber = 0xFEF1           //< Перезапись заводского номера
         , Ping = 0xFEF2                         //< Пинг
         , Reboot = 0xFEF3                       //< Перезапуск
         , FNStatusRequest = 0xFF01              //< Запрос статуса ФН
@@ -1242,7 +1243,17 @@ public:
                          uint8_t calculationSubject,
                          const std::string &goodName);
 
-
+    /**
+     * @brief Команда для смены заводского номера
+     * на кассах с ключами.
+     * @param newNumber Новый номер - строка 16 символов
+     * @param oldLicense Старая лиценция - строка 8 символов
+     * @return Результат замены.
+     */
+    bool changeFirmware(
+            const std::string& newNumber,
+            const std::string& oldLicense
+    );
 
 protected:
 

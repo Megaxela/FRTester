@@ -1327,6 +1327,47 @@ uint64_t FRDriver::operationV2(uint32_t password,
     return reader.readPart(5, ByteArray::ByteOrder_LittleEndian);
 }
 
+bool FRDriver::changeFirmware(const std::string &newNumber, const std::string &oldLicense)
+{
+    if (newNumber.size() != 16)
+    {
+        ErrorStream()
+                << "Не верный размер нового номера "
+                << newNumber.size()
+                << " != "
+                << 16
+                << std::endl;
+        return false;
+    }
+
+    if (oldLicense.size() != 8)
+    {
+        ErrorStream()
+                << "Не верный размер старой лицензии "
+                << oldLicense.size()
+                << " != "
+                << 8
+                << std::endl;
+        return false;
+    }
+
+    ByteArray arguments;
+
+    arguments.append(
+            (const uint8_t*) newNumber.c_str(),
+            static_cast<uint32_t>(newNumber.size())
+    );
+
+    arguments.append(
+            (const uint8_t*) oldLicense.c_str(),
+            static_cast<uint32_t>(oldLicense.size())
+    );
+
+    auto result = sendCommand(Command::ChangeSerialNumber, arguments, false);
+
+    return getLastError() == ErrorCode::NoError;
+}
+
 bool FRDriver::loadData(uint32_t password,
                         uint8_t dataType,
                         uint8_t blockNumber,

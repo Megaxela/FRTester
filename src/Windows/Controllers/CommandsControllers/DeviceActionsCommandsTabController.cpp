@@ -147,3 +147,45 @@ void DeviceActionsCommandsTabController::onRebootButtonPressed()
 
     commandsTabController()->setLastStatus();
 }
+
+void DeviceActionsCommandsTabController::onFirmwareNumberWriteButtonPressed()
+{
+    if (!commandsTabController()->checkConnectionWithDevice())
+    {
+        return;
+    }
+
+    Log("Проверяем входные данные.");
+
+    auto newKey = ui()->commandsDeviceActionNewKeyLineEdit->text();
+    auto oldLicense = ui()->commandsDeviceActionOldLicenseLineEdit->text();
+
+    if (newKey.size() < 16)
+    {
+        Error("Ключ слишком мал.");
+        QMessageBox::critical(
+                parentWidget(),
+                "Ошибка",
+                "Новый ключ должен иметь 16 символов. (" + newKey.toStdString() + ")."
+        );
+        return;
+    }
+
+    if (oldLicense.size() < 8)
+    {
+        Error("Лицензия слишком мала.");
+        QMessageBox::critical(
+                parentWidget(),
+                "Ошибка",
+                "Старая лицензия должна иметь 8 символов. (" + oldLicense.toStdString() + ")."
+        );
+        return;
+    }
+
+    DriverHolder::driver().changeFirmware(
+            newKey.toStdString(),
+            oldLicense.toStdString()
+    );
+
+    commandsTabController()->setLastStatus();
+}

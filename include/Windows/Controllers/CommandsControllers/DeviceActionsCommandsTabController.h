@@ -36,6 +36,12 @@ public slots:
      */
     void onRebootButtonPressed();
 
+    /**
+     * @brief Слот, вызываемый при нажатии на кнопку
+     * записи нового заводского номера.
+     */
+    void onFirmwareNumberWriteButtonPressed();
+
 protected:
     void setupConnections() override;
 

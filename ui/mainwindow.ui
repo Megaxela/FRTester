@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="mainTabWidget">
       <property name="currentIndex">
-       <number>3</number>
+       <number>2</number>
       </property>
       <property name="movable">
        <bool>true</bool>
@@ -211,7 +211,7 @@
            <enum>QTabWidget::Triangular</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>5</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -1601,7 +1601,7 @@
                 <item>
                  <widget class="QTabWidget" name="commandsPrintTextTabWidget">
                   <property name="currentIndex">
-                   <number>0</number>
+                   <number>2</number>
                   </property>
                   <widget class="QWidget" name="commandsPrintTextPlainTextTabWidget">
                    <attribute name="title">
@@ -1821,7 +1821,7 @@
             <item>
              <widget class="QTabWidget" name="commandsDeviceTabWidget">
               <property name="currentIndex">
-               <number>0</number>
+               <number>2</number>
               </property>
               <widget class="QWidget" name="commandsDeviceMoneyTab">
                <attribute name="title">
@@ -1986,6 +1986,54 @@
                  </layout>
                 </item>
                 <item>
+                 <widget class="QGroupBox" name="groupBox_16">
+                  <property name="title">
+                   <string>Перезапись заводского номера</string>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_2">
+                   <item>
+                    <layout class="QFormLayout" name="formLayout_11">
+                     <item row="0" column="0">
+                      <widget class="QLabel" name="label_44">
+                       <property name="text">
+                        <string>Новый номер</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="0">
+                      <widget class="QLabel" name="label_45">
+                       <property name="text">
+                        <string>Старая лицензия</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QLineEdit" name="commandsDeviceActionNewKeyLineEdit">
+                       <property name="maxLength">
+                        <number>16</number>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="1">
+                      <widget class="QLineEdit" name="commandsDeviceActionOldLicenseLineEdit">
+                       <property name="maxLength">
+                        <number>8</number>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="commandsDeviceActionWriteLicensePushButton">
+                     <property name="text">
+                      <string>Записать</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
                  <widget class="QGroupBox" name="groupBox_6">
                   <property name="title">
                    <string>Команда</string>
@@ -2037,7 +2085,7 @@
                   <property name="sizeHint" stdset="0">
                    <size>
                     <width>20</width>
-                    <height>160</height>
+                    <height>40</height>
                    </size>
                   </property>
                  </spacer>
@@ -2538,8 +2586,8 @@ p, li { white-space: pre-wrap; }
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>16</width>
-                       <height>16</height>
+                       <width>313</width>
+                       <height>279</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_22">
