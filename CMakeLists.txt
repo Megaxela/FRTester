@@ -333,7 +333,7 @@ add_executable(FRTester
         ${UNMANAGED_FILES}
         ${STATIC_TESTS}
         ${RESOURCE_ADDED}
-        ${OBJECT_HEADERS}
+        ${QOBJECT_HEADERS}
 )
 
 # FRTester needs frdrvcross

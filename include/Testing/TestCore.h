@@ -114,6 +114,13 @@ public:
     void setRestorePassword(uint32_t password);
 
     /**
+     * @brief Метод для получения пароля для
+     * восстановления состояния.
+     * @return Пароль.
+     */
+    uint32_t restorePassword() const;
+
+    /**
      * @brief Метод для прерывания тестирования.
      */
     void interruptTesting();

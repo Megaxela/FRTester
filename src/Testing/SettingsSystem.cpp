@@ -20,6 +20,7 @@ const std::string SettingsSystem::GlobalTabSelected = "global_tab_selected";
 const std::string SettingsSystem::TestsSharedTestsPath = "tests_tests_path";
 const std::string SettingsSystem::TestsSharedTriggersPath = "tests_triggers_path";
 const std::string SettingsSystem::TestsManualTestsPath = "tests_manual_tests_path";
+const std::string SettingsSystem::TestsRestoreStatePassword = "tests_restore_state_password";
 
 SettingsSystem::~SettingsSystem()
 {

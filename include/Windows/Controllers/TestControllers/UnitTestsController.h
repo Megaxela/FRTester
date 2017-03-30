@@ -138,6 +138,8 @@ private slots:
 
     void onTestingErrorAcquired(QString log);
 
+    void onRestorePasswordChanged();
+
     // Слоты для TestLoggerWaiter
     void onTestLoggerWaiterLogAcquired(QString log);
 

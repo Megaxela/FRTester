@@ -49,9 +49,10 @@ TestCore::TestCore() :
     m_testingExecutor(nullptr),
     m_sharedTests()
 {
-//    SettingsSystem::instance().getValue(
-//            SettingsSystem::TestsRestoreStatePassword
-//    )
+    m_sysAdmPassword = (uint32_t) std::stoul(SettingsSystem::instance().getValue(
+                SettingsSystem::TestsRestoreStatePassword,
+                "30"
+        ));
 
     init();
 }
@@ -634,4 +635,19 @@ TestEnvironment *TestCore::environment() const
 void TestCore::setUnitTestsController(UnitTestsController *controller)
 {
     m_environment->tools()->setUnitTestsController(controller);
+}
+
+void TestCore::setRestorePassword(uint32_t password)
+{
+    SettingsSystem::instance().setValue(
+            SettingsSystem::TestsRestoreStatePassword,
+            std::to_string(password)
+    );
+
+    m_sysAdmPassword = password;
+}
+
+uint32_t TestCore::restorePassword() const
+{
+    return 0;
 }

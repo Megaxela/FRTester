@@ -12,6 +12,7 @@
 #include <TestDriverHolder.h>
 #include <Tools/GUIHelper.h>
 #include <QMessageBox>
+#include <include/Testing/SettingsSystem.h>
 
 UnitTestsController::UnitTestsController(Ui::MainWindow *ptr, QWidget *parent) :
     AbstractTabController(ptr, parent, nullptr),
@@ -33,6 +34,15 @@ UnitTestsController::UnitTestsController(Ui::MainWindow *ptr, QWidget *parent) :
             &UnitTestsController::openMessageQuestionSignal,
             this,
             &UnitTestsController::openMessageQuestion);
+
+    ui()->unitTestsRestorePasswordLineEdit->setText(
+            QString::fromStdString(
+                    SettingsSystem::instance().getValue(
+                            SettingsSystem::TestsRestoreStatePassword,
+                            "30"
+                    )
+            )
+    );
 }
 
 UnitTestsController::~UnitTestsController()
@@ -155,6 +165,11 @@ void UnitTestsController::setupConnections()
             &QTestsTreeWidget::selectedTestsExecuted,
             this,
             &UnitTestsController::onSelectedTestsExecuted);
+
+    connect(ui()->unitTestsRestorePasswordLineEdit,
+            &QLineEdit::editingFinished,
+            this,
+            &UnitTestsController::onRestorePasswordChanged);
 }
 
 void UnitTestsController::configureWidgets()
@@ -892,4 +907,21 @@ void UnitTestsController::openMessageNotify(QString mess)
 bool UnitTestsController::messageQuestionResult() const
 {
     return m_questionResult;
+}
+
+void UnitTestsController::onRestorePasswordChanged()
+{
+    bool ok = false;
+
+    QString value = ui()->unitTestsRestorePasswordLineEdit->text();
+
+    uint32_t pwd = value.toUInt(&ok);
+
+    if (!ok)
+    {
+        ErrorStream() << value.toStdString() << " is not the 32bit number." << std::endl;
+        return;
+    }
+
+    TestCore::instance().setRestorePassword(pwd);
 }

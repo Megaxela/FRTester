@@ -44,6 +44,7 @@ public:
     static const std::string TestsSharedTestsPath;
     static const std::string TestsSharedTriggersPath;
     static const std::string TestsManualTestsPath;
+    static const std::string TestsRestoreStatePassword;
 
     /**
      * @brief Деструктор.
