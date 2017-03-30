@@ -6,7 +6,7 @@
 #define FRTESTER_EXITIFTESTACTION_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 /**
  * @brief Класс, описывающий действие выхода из теста,

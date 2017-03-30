@@ -6,7 +6,7 @@
 #define FRTESTER_PRINTCOMMANDSTABCONTROLLER_H
 
 
-#include <include/Windows/Controllers/AbstractTabController.h>
+#include <Windows/Controllers/AbstractTabController.h>
 #include <QMap>
 
 class CommandsTabController;

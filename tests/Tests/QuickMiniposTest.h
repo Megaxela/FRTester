@@ -6,7 +6,7 @@
 #define FRTESTER_QUICKMINIPOSTEST_H
 
 
-#include <include/Testing/AbstractTest.h>
+#include <Testing/AbstractTest.h>
 
 class QuickMiniposTest : public AbstractTest
 {

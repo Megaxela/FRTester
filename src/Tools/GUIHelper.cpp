@@ -2,7 +2,7 @@
 // Created by megaxela on 21.02.17.
 //
 
-#include "include/Tools/GUIHelper.h"
+#include "Tools/GUIHelper.h"
 #include <QWidget>
 
 void GUIHelper::cleanFormLayout(QFormLayout *formLayout)

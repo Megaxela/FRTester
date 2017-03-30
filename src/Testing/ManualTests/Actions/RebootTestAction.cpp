@@ -2,8 +2,8 @@
 // Created by megaxela on 27.02.17.
 //
 
-#include <include/Testing/ManualTests/TestActionFabric.h>
-#include "include/Testing/ManualTests/Actions/RebootTestAction.h"
+#include <Testing/ManualTests/TestActionFabric.h>
+#include "Testing/ManualTests/Actions/RebootTestAction.h"
 
 REGISTER_ACTION(RebootTestAction)
 

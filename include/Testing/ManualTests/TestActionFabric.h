@@ -7,7 +7,7 @@
 
 #include "AbstractTestAction.h"
 #include "Fabric.h"
-#include <include/Testing/ManualTests/FabricRegistrator.h>
+#include <Testing/ManualTests/FabricRegistrator.h>
 
 #define REGISTER_ACTION(OBJECT)\
 static FabricRegistrator<TestActionFabric, OBJECT> __registrator(#OBJECT);

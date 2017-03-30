@@ -2,18 +2,17 @@
 // Created by megaxela on 17.02.17.
 //
 
-#include <netinet/in.h>
 #include <QtWidgets/QTreeWidget>
 #include <QWidget>
 #include <QTreeView>
 #include <QMimeData>
-#include <include/Testing/ManualTests/Actions/BeepTestAction.h>
-#include <include/Tools/Logger.h>
-#include <include/Windows/Widgets/QActionTreeWidgetItem.h>
-#include <include/Testing/ManualTests/Actions/LongStateRequestTestAction.h>
-#include <include/Testing/ManualTests/Actions/WhileTestAction.h>
-#include <include/Testing/ManualTests/TestActionFabric.h>
-#include "include/Windows/Widgets/QTestActionsTreeWidget.h"
+#include <Testing/ManualTests/Actions/BeepTestAction.h>
+#include <Tools/Logger.h>
+#include <Windows/Widgets/QActionTreeWidgetItem.h>
+#include <Testing/ManualTests/Actions/LongStateRequestTestAction.h>
+#include <Testing/ManualTests/Actions/WhileTestAction.h>
+#include <Testing/ManualTests/TestActionFabric.h>
+#include "Windows/Widgets/QTestActionsTreeWidget.h"
 
 QTestActionsTreeWidget::QTestActionsTreeWidget(QWidget *parent) :
         QTreeWidget(parent),

@@ -2,7 +2,7 @@
 // Created by megaxela on 28.11.16.
 //
 
-#include "include/Testing/TestEnvironment.h"
+#include "Testing/TestEnvironment.h"
 
 TestEnvironment::TestEnvironment(
         TestDriver *driver,

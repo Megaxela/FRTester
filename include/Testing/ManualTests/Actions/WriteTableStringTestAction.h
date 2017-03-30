@@ -6,7 +6,7 @@
 #define FRTESTER_WRITETABLETESTACTION_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 class WriteTableStringTestAction : public AbstractTestAction
 {

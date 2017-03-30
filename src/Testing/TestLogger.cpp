@@ -2,7 +2,7 @@
 // Created by megaxela on 02.12.16.
 //
 
-#include "include/Testing/TestLogger.h"
+#include "Testing/TestLogger.h"
 
 TestLogger::TestLogger() :
     m_notifier(),

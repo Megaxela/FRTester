@@ -2,10 +2,10 @@
 // Created by megaxela on 17.11.16.
 //
 
-#include <include/DriverHolder.h>
+#include <DriverHolder.h>
 #include <Tools/Logger.h>
-#include <QtWidgets/QMessageBox>
-#include <QtCore/QStringBuilder>
+#include <QMessageBox>
+#include <QStringBuilder>
 #include "Windows/Controllers/CommandsControllers/StateCommandsTabController.h"
 
 #include "ui_mainwindow.h"

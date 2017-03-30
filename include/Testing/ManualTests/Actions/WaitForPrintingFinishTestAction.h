@@ -6,7 +6,7 @@
 #define FRTESTER_WAITFORPRINTINGFINISHACTION_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 class WaitForPrintingFinishTestAction : public AbstractTestAction
 {

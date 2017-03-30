@@ -6,7 +6,7 @@
 #define FRTESTER_REGISTERCOMMANDSTABCONTROLLER_H
 
 
-#include <include/Windows/Controllers/AbstractTabController.h>
+#include <Windows/Controllers/AbstractTabController.h>
 
 class RegisterCommandsTabController : public AbstractTabController
 {

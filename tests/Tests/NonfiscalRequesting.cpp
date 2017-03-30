@@ -6,8 +6,8 @@
 #include "Testing/TestLogger.h"
 #include <thread>
 #include <chrono>
-#include <include/Testing/StaticTestFabric.h>
-#include <include/Tools/Codecs.h>
+#include <Testing/StaticTestFabric.h>
+#include <Tools/Codecs.h>
 
 REGISTER_STATIC_TEST(NonfiscalRequesting)
 

@@ -2,7 +2,7 @@
 // Created by megaxela on 17.02.17.
 //
 
-#include "include/Testing/ManualTests/ManualTest.h"
+#include "Testing/ManualTests/ManualTest.h"
 #include <Testing/TestLogger.h>
 
 ManualTest::ManualTest(const std::string &name,

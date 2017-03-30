@@ -6,7 +6,7 @@
 #define FRTESTER_PRINTBARCODETESTACTION_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 class PrintBarcodeTestAction : public AbstractTestAction
 {

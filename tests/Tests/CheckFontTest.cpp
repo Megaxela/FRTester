@@ -4,7 +4,7 @@
 
 #include "CheckFontTest.h"
 #include <Testing/TestLogger.h>
-#include <include/Testing/StaticTestFabric.h>
+#include <Testing/StaticTestFabric.h>
 
 REGISTER_STATIC_TEST(CheckFontTest)
 

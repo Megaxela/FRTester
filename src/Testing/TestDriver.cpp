@@ -2,11 +2,11 @@
 // Created by megaxela on 21.11.16.
 //
 
-#include <include/DriverHolder.h>
 #include <map>
-#include <include/Testing/TestCore.h>
 #include <Tools/Logger.h>
-#include "include/Testing/TestDriver.h"
+#include <DriverHolder.h>
+#include <Testing/TestCore.h>
+#include "Testing/TestDriver.h"
 #include <Testing/TestLogger.h>
 
 TestDriver::TestDriver() :

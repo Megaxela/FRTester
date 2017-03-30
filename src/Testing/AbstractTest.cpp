@@ -2,10 +2,10 @@
 // Created by megaxela on 22.11.16.
 //
 
-#include <include/Testing/TestEnvironment.h>
-#include <include/Testing/AbstractTest.h>
-#include <include/Testing/SettingsSystem.h>
-#include "include/Testing/AbstractTest.h"
+#include <Testing/TestEnvironment.h>
+#include <Testing/AbstractTest.h>
+#include <Testing/SettingsSystem.h>
+#include "Testing/AbstractTest.h"
 
 AbstractTest::AbstractTest(TestEnvironment *driver,
                            const std::string &name,

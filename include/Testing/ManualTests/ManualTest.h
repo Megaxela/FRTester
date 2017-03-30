@@ -6,7 +6,7 @@
 #define FRTESTER_MANUALTEST_H
 
 #include <memory>
-#include <include/Testing/AbstractTest.h>
+#include <Testing/AbstractTest.h>
 #include "AbstractTestAction.h"
 
 class ManualTest;

@@ -6,7 +6,7 @@
 #define FRTESTER_DOCUMENTHEADERPRINTTESTACTION_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 class DocumentHeaderPrintTestAction : public AbstractTestAction
 {

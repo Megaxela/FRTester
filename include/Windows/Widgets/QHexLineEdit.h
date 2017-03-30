@@ -6,7 +6,7 @@
 #define FRTESTER_QHEXLINEEDIT_H
 
 #include <QLineEdit>
-#include <include/Tools/ByteArray.h>
+#include <Tools/ByteArray.h>
 
 /**
  * @brief Класс, описывающий текстовое поле

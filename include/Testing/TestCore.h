@@ -107,6 +107,13 @@ public:
     bool restoreFRState();
 
     /**
+     * @brief Метод для задачи пароля, который
+     * будет использован при восстановлении состояния.
+     * @param password Пароль.
+     */
+    void setRestorePassword(uint32_t password);
+
+    /**
      * @brief Метод для прерывания тестирования.
      */
     void interruptTesting();

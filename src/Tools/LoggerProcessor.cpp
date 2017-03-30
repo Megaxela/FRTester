@@ -2,8 +2,8 @@
 // Created by megaxela on 13.03.17.
 //
 
-#include "include/Tools/LoggerProcessor.h"
-#include "include/Tools/StdExtend.h"
+#include "Tools/LoggerProcessor.h"
+#include "Tools/StdExtend.h"
 #include <algorithm>
 
 LoggerProcessor::LoggerProcessor() :

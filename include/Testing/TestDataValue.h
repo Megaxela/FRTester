@@ -8,7 +8,7 @@
 #include <cstdint>
 #include <stdexcept>
 #include <libraries/json.hpp>
-#include <include/Tools/ByteArray.h>
+#include <Tools/ByteArray.h>
 
 using nlohmann::json;
 

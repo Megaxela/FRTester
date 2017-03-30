@@ -2,9 +2,9 @@
 // Created by megaxela on 15.03.17.
 //
 
-#include <include/DriverHolder.h>
-#include <include/Tools/Codecs.h>
-#include "include/Windows/Controllers/CommandsControllers/RegisterOperationsV2CommandsTabController.h"
+#include <DriverHolder.h>
+#include <Tools/Codecs.h>
+#include "Windows/Controllers/CommandsControllers/RegisterOperationsV2CommandsTabController.h"
 #include "ui_mainwindow.h"
 
 RegisterOperationsV2CommandsTabController::RegisterOperationsV2CommandsTabController(Ui::MainWindow *ptr,

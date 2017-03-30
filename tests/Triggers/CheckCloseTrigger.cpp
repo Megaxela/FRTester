@@ -4,11 +4,11 @@
 
 #include "CheckCloseTrigger.h"
 #include <algorithm>
-#include <include/Tools/ByteArrayReader.h>
+#include <Tools/ByteArrayReader.h>
 #include <Testing/TestEnvironment.h>
 #include <Testing/TestLogger.h>
-#include <include/Tools/Time.h>
-#include <include/Testing/StaticTriggerFabric.h>
+#include <Tools/Time.h>
+#include <Testing/StaticTriggerFabric.h>
 
 REGISTER_STATIC_TRIGGER(CheckCloseTrigger)
 

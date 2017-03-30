@@ -2,7 +2,7 @@
 // Created by megaxela on 01.12.16.
 //
 
-#include "include/Windows/Widgets/QTestsTreeWidgetMenu.h"
+#include "Windows/Widgets/QTestsTreeWidgetMenu.h"
 
 QTestsTreeWidgetMenu::QTestsTreeWidgetMenu(QWidget *parent) :
         QMenu(parent),

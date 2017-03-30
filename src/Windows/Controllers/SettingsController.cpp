@@ -2,9 +2,9 @@
 // Created by megaxela on 05.12.16.
 //
 
-#include <QtWidgets/QFileDialog>
-#include <include/Testing/SettingsSystem.h>
-#include "include/Windows/Controllers/SettingsController.h"
+#include <QFileDialog>
+#include <Testing/SettingsSystem.h>
+#include "Windows/Controllers/SettingsController.h"
 #include "ui_mainwindow.h"
 
 SettingsController::SettingsController(Ui::MainWindow *ptr, QWidget *parent) :

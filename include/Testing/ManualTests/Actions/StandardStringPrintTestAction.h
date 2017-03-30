@@ -6,7 +6,7 @@
 #define FRTESTER_STANDARDSTRINGPRINTTESTACTION_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 class StandardStringPrintTestAction : public AbstractTestAction
 {

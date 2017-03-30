@@ -6,7 +6,7 @@
 #define FRTESTER_PRINTCLICHES_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 class PrintClichesTestAction : public AbstractTestAction
 {

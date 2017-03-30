@@ -2,8 +2,8 @@
 // Created by megaxela on 27.02.17.
 //
 
-#include <include/Testing/ManualTests/TestActionFabric.h>
-#include "include/Testing/ManualTests/Actions/ShiftReportWithoutExtinctionTestAction.h"
+#include <Testing/ManualTests/TestActionFabric.h>
+#include "Testing/ManualTests/Actions/ShiftReportWithoutExtinctionTestAction.h"
 
 REGISTER_ACTION(ShiftReportWithoutExtinctionTestAction)
 

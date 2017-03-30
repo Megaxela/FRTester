@@ -2,9 +2,9 @@
 // Created by megaxela on 12.01.17.
 //
 
-#include "include/Windows/Controllers/CommandsControllers/DeviceOperationsCommandsTabController.h"
+#include "Windows/Controllers/CommandsControllers/DeviceOperationsCommandsTabController.h"
 #include <Windows/Controllers/CommandsTabController.h>
-#include <include/DriverHolder.h>
+#include <DriverHolder.h>
 #include <ui_mainwindow.h>
 
 DeviceOperationsCommandsTabController::DeviceOperationsCommandsTabController(Ui::MainWindow *ptr, QWidget *parent) :

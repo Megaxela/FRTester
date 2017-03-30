@@ -2,10 +2,10 @@
 // Created by megaxela on 07.12.16.
 //
 
-#include "include/Windows/Controllers/CommandsControllers/PrintTextOperationsCommandsTabController.h"
-#include "include/Windows/Controllers/CommandsTabController.h"
-#include <include/Tools/Logger.h>
-#include <include/DriverHolder.h>
+#include <Windows/Controllers/CommandsControllers/PrintTextOperationsCommandsTabController.h>
+#include <Windows/Controllers/CommandsTabController.h>
+#include <Tools/Logger.h>
+#include <DriverHolder.h>
 #include "ui_mainwindow.h"
 #include <QMessageBox>
 #include <QPushButton>

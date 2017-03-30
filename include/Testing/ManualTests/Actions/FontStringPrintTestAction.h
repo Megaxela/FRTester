@@ -6,7 +6,7 @@
 #define FRTESTER_FONTSTRINGPRINTTESTACTION_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 class FontStringPrintTestAction : public AbstractTestAction
 {

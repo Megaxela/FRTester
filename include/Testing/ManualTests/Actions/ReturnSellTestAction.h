@@ -6,7 +6,7 @@
 #define FRTESTER_RETURNSELLTESTACTION_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 class ReturnSellTestAction : public AbstractTestAction
 {

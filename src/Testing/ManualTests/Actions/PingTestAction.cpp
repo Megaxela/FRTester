@@ -3,8 +3,8 @@
 //
 
 
-#include <include/Testing/ManualTests/Actions/PingTestAction.h>
-#include <include/Testing/ManualTests/TestActionFabric.h>
+#include <Testing/ManualTests/Actions/PingTestAction.h>
+#include <Testing/ManualTests/TestActionFabric.h>
 
 REGISTER_ACTION(PingTestAction)
 

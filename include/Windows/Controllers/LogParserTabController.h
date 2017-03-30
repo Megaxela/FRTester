@@ -6,7 +6,7 @@
 #define FRTESTER_LOGPARSERTABCONTROLLER_H
 
 
-#include <include/Windows/Controllers/AbstractTabController.h>
+#include <Windows/Controllers/AbstractTabController.h>
 
 class LogParserTabController : public AbstractTabController
 {

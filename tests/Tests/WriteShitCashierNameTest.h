@@ -6,7 +6,7 @@
 #define FRTESTER_WRITESHITCASHIERNAMETEST_H
 
 
-#include <include/Testing/AbstractTest.h>
+#include <Testing/AbstractTest.h>
 
 class WriteShitCashierNameTest : public AbstractTest
 {

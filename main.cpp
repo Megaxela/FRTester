@@ -1,11 +1,10 @@
 #include <iostream>
-#include <include/Windows/MainWindow.h>
+#include <Windows/MainWindow.h>
 #include <QtWidgets/QApplication>
 #include <Tools/Logger.h>
-#include <include/Tools/StableController.h>
-#include <include/FRDriver.h>
-#include <include/Implementation/DefaultProtocol.h>
-#include <include/Implementation/TCPInterface.h>
+#include <Tools/StableController.h>
+#include <Implementation/DefaultProtocol.h>
+#include <Implementation/TCPInterface.h>
 
 int main(int argc, char* argv[])
 {

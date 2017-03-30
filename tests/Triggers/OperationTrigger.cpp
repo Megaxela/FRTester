@@ -4,9 +4,9 @@
 
 #include "OperationTrigger.h"
 #include <algorithm>
-#include <include/Tools/ByteArrayReader.h>
-#include <include/Testing/FROperations.h>
-#include <include/Testing/StaticTriggerFabric.h>
+#include <Tools/ByteArrayReader.h>
+#include <Testing/FROperations.h>
+#include <Testing/StaticTriggerFabric.h>
 #include "Testing/TestEnvironment.h"
 #include "Testing/TestLogger.h"
 

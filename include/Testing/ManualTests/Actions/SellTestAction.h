@@ -6,7 +6,7 @@
 #define FRTESTER_SELLTESTACTION_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 class SellTestAction : public AbstractTestAction
 {

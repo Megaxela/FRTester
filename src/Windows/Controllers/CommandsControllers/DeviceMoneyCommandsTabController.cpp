@@ -2,10 +2,10 @@
 // Created by megaxela on 10.01.17.
 //
 
-#include "include/Windows/Controllers/CommandsControllers/DeviceMoneyCommandsTabController.h"
+#include "Windows/Controllers/CommandsControllers/DeviceMoneyCommandsTabController.h"
 #include <ui_mainwindow.h>
 #include <cinttypes>
-#include <include/DriverHolder.h>
+#include <DriverHolder.h>
 #include "Windows/Controllers/CommandsTabController.h"
 
 DeviceMoneyCommandsTabController::DeviceMoneyCommandsTabController(Ui::MainWindow *ptr, QWidget *parent) :

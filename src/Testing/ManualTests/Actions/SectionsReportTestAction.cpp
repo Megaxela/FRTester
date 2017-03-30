@@ -2,8 +2,8 @@
 // Created by megaxela on 27.02.17.
 //
 
-#include <include/Testing/ManualTests/TestActionFabric.h>
-#include "include/Testing/ManualTests/Actions/SectionsReportTestAction.h"
+#include <Testing/ManualTests/TestActionFabric.h>
+#include "Testing/ManualTests/Actions/SectionsReportTestAction.h"
 
 REGISTER_ACTION(SectionsReportTestAction)
 

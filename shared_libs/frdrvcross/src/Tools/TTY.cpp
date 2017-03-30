@@ -18,7 +18,6 @@
 #include "Tools/Logger.h"
 #include "Tools/byte.h"
 #include "Tools/Time.h"
-#include "Tools/StdExtend.h"
 
 //
 //#ifndef Log

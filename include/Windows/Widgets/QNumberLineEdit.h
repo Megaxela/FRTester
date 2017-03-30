@@ -7,7 +7,7 @@
 
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QLineEdit>
-#include <include/Tools/Logger.h>
+#include <Tools/Logger.h>
 #include "QBaseNumberLineEdit.h"
 
 /**

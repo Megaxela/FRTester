@@ -5,7 +5,7 @@
 
 #include <csignal>
 #include <stdlib.h>
-#include "include/Tools/StableController.h"
+#include "Tools/StableController.h"
 
 void posix_death_signal(int signum)
 {

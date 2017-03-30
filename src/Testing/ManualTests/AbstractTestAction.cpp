@@ -2,12 +2,12 @@
 // Created by megaxela on 17.02.17.
 //
 
-#include "include/Testing/ManualTests/AbstractTestAction.h"
+#include <Testing/ManualTests/AbstractTestAction.h>
 #include <Testing/ManualTests/ManualTest.h>
 #include <QString>
 #include <QTreeWidgetItem>
-#include <include/Tools/Logger.h>
-#include <include/Windows/Widgets/QActionTreeWidgetItem.h>
+#include <Tools/Logger.h>
+#include <Windows/Widgets/QActionTreeWidgetItem.h>
 
 AbstractTestAction::AbstractTestAction(const std::string &name,
                                        const std::string &description,

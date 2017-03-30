@@ -7,7 +7,7 @@
 
 
 #include <Testing/AbstractTest.h>
-#include <include/Testing/TestEnvironment.h>
+#include <Testing/TestEnvironment.h>
 
 /**
  * @brief Тест, обрабатывающий следующий кейс:

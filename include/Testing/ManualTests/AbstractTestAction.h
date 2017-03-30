@@ -5,10 +5,10 @@
 #ifndef FRTESTER_ABSTRACTTESTACTION_H
 #define FRTESTER_ABSTRACTTESTACTION_H
 
-#include <include/Testing/TestDataValue.h>
+#include <Testing/TestDataValue.h>
 #include <string>
 #include <vector>
-#include <include/Testing/TestEnvironment.h>
+#include <Testing/TestEnvironment.h>
 
 
 

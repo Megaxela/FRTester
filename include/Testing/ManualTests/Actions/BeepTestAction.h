@@ -5,7 +5,7 @@
 #ifndef FRTESTER_BEEPTESTACTION_H
 #define FRTESTER_BEEPTESTACTION_H
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 /**
  * @brief Класс, описывающий действие beep.

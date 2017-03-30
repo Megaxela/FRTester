@@ -7,7 +7,7 @@
 
 
 #include <Windows/Controllers/AbstractTabController.h>
-#include <include/Executor/TestingExecutor.h>
+#include <Executor/TestingExecutor.h>
 #include "ui_mainwindow.h"
 
 class TestLoggerWaiter;

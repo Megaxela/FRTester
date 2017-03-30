@@ -2,7 +2,7 @@
 // Created by megaxela on 27.02.17.
 //
 
-#include "include/Windows/Widgets/QHexLineEdit.h"
+#include "Windows/Widgets/QHexLineEdit.h"
 
 
 QHexLineEdit::QHexLineEdit(QWidget *parent, uint32_t maxSize) :

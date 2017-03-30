@@ -2,15 +2,15 @@
 // Created by megaxela on 17.02.17.
 //
 
-#include "include/Windows/Controllers/TestControllers/TestsEditorController.h"
+#include "Windows/Controllers/TestControllers/TestsEditorController.h"
 #include "Windows/Widgets/QManualTestsListWidget.h"
 #include <ui_mainwindow.h>
-#include <include/Windows/Widgets/QActionTreeWidgetItem.h>
-#include <include/Tools/GUIHelper.h>
-#include <include/Windows/Widgets/QNumberLineEdit.h>
-#include <QtWidgets/QCheckBox>
+#include <Windows/Widgets/QActionTreeWidgetItem.h>
+#include <Tools/GUIHelper.h>
+#include <Windows/Widgets/QNumberLineEdit.h>
+#include <QCheckBox>
 #include <QModelIndex>
-#include <include/Windows/Widgets/QHexLineEdit.h>
+#include <Windows/Widgets/QHexLineEdit.h>
 
 TestsEditorController::TestsEditorController(Ui::MainWindow *ptr, QWidget *parent):
     AbstractTabController(ptr, parent),

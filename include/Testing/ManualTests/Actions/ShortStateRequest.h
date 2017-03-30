@@ -6,7 +6,7 @@
 #define FRTESTER_SHORTSTATEREQUEST_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 class ShortStateRequest : public AbstractTestAction
 {

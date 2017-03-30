@@ -2,12 +2,12 @@
 // Created by megaxela on 11.01.17.
 //
 
-#include "include/Windows/Controllers/CommandsControllers/DeviceActionsCommandsTabController.h"
+#include <Windows/Controllers/CommandsControllers/DeviceActionsCommandsTabController.h>
 #include <ui_mainwindow.h>
-#include <include/DriverHolder.h>
-#include <QtWidgets/QMessageBox>
-#include <include/Tools/Logger.h>
-#include "Windows/Controllers/CommandsTabController.h"
+#include <DriverHolder.h>
+#include <QMessageBox>
+#include <Tools/Logger.h>
+#include <Windows/Controllers/CommandsTabController.h>
 
 DeviceActionsCommandsTabController::DeviceActionsCommandsTabController(Ui::MainWindow *ptr, QWidget *parent) :
     AbstractTabController(ptr, parent, nullptr)
@@ -166,7 +166,7 @@ void DeviceActionsCommandsTabController::onFirmwareNumberWriteButtonPressed()
         QMessageBox::critical(
                 parentWidget(),
                 "Ошибка",
-                "Новый ключ должен иметь 16 символов. (" + newKey.toStdString() + ")."
+                "Новый ключ должен иметь 16 символов. (" + newKey + ")."
         );
         return;
     }
@@ -177,7 +177,7 @@ void DeviceActionsCommandsTabController::onFirmwareNumberWriteButtonPressed()
         QMessageBox::critical(
                 parentWidget(),
                 "Ошибка",
-                "Старая лицензия должна иметь 8 символов. (" + oldLicense.toStdString() + ")."
+                "Старая лицензия должна иметь 8 символов. (" + oldLicense + ")."
         );
         return;
     }

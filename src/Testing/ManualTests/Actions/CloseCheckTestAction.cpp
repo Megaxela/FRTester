@@ -2,9 +2,9 @@
 // Created by megaxela on 27.02.17.
 //
 
-#include <include/Tools/Codecs.h>
-#include <include/Testing/ManualTests/TestActionFabric.h>
-#include "include/Testing/ManualTests/Actions/CloseCheckTestAction.h"
+#include <Tools/Codecs.h>
+#include <Testing/ManualTests/TestActionFabric.h>
+#include "Testing/ManualTests/Actions/CloseCheckTestAction.h"
 
 REGISTER_ACTION(CloseCheckTestAction)
 

@@ -2,7 +2,7 @@
 // Created by megaxela on 20.02.17.
 //
 
-#include "include/Windows/Widgets/QActionTreeWidgetItem.h"
+#include "Windows/Widgets/QActionTreeWidgetItem.h"
 
 QActionTreeWidgetItem::QActionTreeWidgetItem(QTreeWidget *view, TestActionPtr action) :
         QTreeWidgetItem(view, ActionType),

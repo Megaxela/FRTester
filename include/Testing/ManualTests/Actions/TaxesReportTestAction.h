@@ -6,7 +6,7 @@
 #define FRTESTER_TAXESREPORTTESTACTION_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 class TaxesReportTestAction : public AbstractTestAction
 {

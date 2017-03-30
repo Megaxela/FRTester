@@ -2,13 +2,13 @@
 // Created by megaxela on 09.12.16.
 //
 
-#include <include/Tools/Logger.h>
-#include <QtWidgets/QMessageBox>
-#include <include/DriverHolder.h>
-#include <include/TestDriverHolder.h>
-#include <include/Testing/SettingsSystem.h>
-#include "include/Windows/Controllers/ConnectControllers/ConnectTCPTabController.h"
-#include "ui_mainwindow.h"
+#include <Tools/Logger.h>
+#include <QMessageBox>
+#include <DriverHolder.h>
+#include <TestDriverHolder.h>
+#include <Testing/SettingsSystem.h>
+#include <Windows/Controllers/ConnectControllers/ConnectTCPTabController.h>
+#include <ui_mainwindow.h>
 
 ConnectTCPTabController::ConnectTCPTabController(Ui::MainWindow *ptr, QWidget *parent, QTabWidget *tabWidget)
         : AbstractTabController(ptr, parent, tabWidget),

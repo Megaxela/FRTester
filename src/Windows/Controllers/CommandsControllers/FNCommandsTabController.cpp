@@ -2,8 +2,8 @@
 // Created by megaxela on 13.12.16.
 //
 
-#include <include/Windows/Controllers/CommandsControllers/FNOFDCommandsTabController.h>
-#include "include/Windows/Controllers/CommandsControllers/FNCommandsTabController.h"
+#include <Windows/Controllers/CommandsControllers/FNOFDCommandsTabController.h>
+#include "Windows/Controllers/CommandsControllers/FNCommandsTabController.h"
 #include "ui_mainwindow.h"
 
 FNCommandsTabController::FNCommandsTabController(Ui::MainWindow *ptr, QWidget *parent, QTabWidget *tabWidget)

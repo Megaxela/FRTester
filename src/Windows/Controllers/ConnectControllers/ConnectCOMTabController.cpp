@@ -2,16 +2,16 @@
 // Created by megaxela on 17.11.16.
 //
 
-#include "include/Windows/Controllers/ConnectControllers/ConnectCOMTabController.h"
+#include "Windows/Controllers/ConnectControllers/ConnectCOMTabController.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
 #include <iostream>
 #include <Tools/Logger.h>
-#include <include/DriverHolder.h>
-#include <QtWidgets/QMessageBox>
+#include <DriverHolder.h>
+#include <QMessageBox>
 #include <Implementation/DefaultProtocol.h>
-#include <include/TestDriverHolder.h>
-#include <include/Testing/SettingsSystem.h>
+#include <TestDriverHolder.h>
+#include <Testing/SettingsSystem.h>
 
 ConnectCOMTabController::ConnectCOMTabController(Ui::MainWindow *ptr, QWidget* parent) :
     AbstractTabController(ptr, parent, nullptr),

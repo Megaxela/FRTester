@@ -6,7 +6,7 @@
 #define FRTESTER_OPENSHIFTTESTACTION_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 class OpenShiftTestAction : public AbstractTestAction
 {

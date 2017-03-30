@@ -2,10 +2,10 @@
 // Created by megaxela on 10.01.17.
 //
 
-#include "include/Windows/Controllers/CommandsControllers/DeviceCommandsTabController.h"
-#include "include/Windows/Controllers/CommandsControllers/DeviceMoneyCommandsTabController.h"
-#include "include/Windows/Controllers/CommandsControllers/DeviceActionsCommandsTabController.h"
-#include "include/Windows/Controllers/CommandsControllers/DeviceOperationsCommandsTabController.h"
+#include "Windows/Controllers/CommandsControllers/DeviceCommandsTabController.h"
+#include "Windows/Controllers/CommandsControllers/DeviceMoneyCommandsTabController.h"
+#include "Windows/Controllers/CommandsControllers/DeviceActionsCommandsTabController.h"
+#include "Windows/Controllers/CommandsControllers/DeviceOperationsCommandsTabController.h"
 #include <ui_mainwindow.h>
 
 DeviceCommandsTabController::DeviceCommandsTabController(Ui::MainWindow *ptr, QWidget *parent, QTabWidget *table)

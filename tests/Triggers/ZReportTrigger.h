@@ -6,8 +6,8 @@
 #define FRTESTER_ZREPORTTRIGGER_H
 
 
-#include <include/Testing/AbstractTriggerTest.h>
-#include <include/FRDriver.h>
+#include <Testing/AbstractTriggerTest.h>
+#include <FRDriver.h>
 
 /**
  * @brief Тест, проверяющий корректность выполнения Z отчета.

@@ -6,7 +6,7 @@
 #define FRTESTER_QMANUALTESTSLISTWIDGET_H
 
 #include <QListWidget>
-#include <include/Testing/ManualTests/ManualTest.h>
+#include <Testing/ManualTests/ManualTest.h>
 
 class QManualTestsListWidget : public QListWidget
 {

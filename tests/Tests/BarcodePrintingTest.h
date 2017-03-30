@@ -6,7 +6,7 @@
 #define FRTESTER_BARCODEPRINTINGTEST_H
 
 
-#include <include/Testing/AbstractTest.h>
+#include <Testing/AbstractTest.h>
 
 class BarcodePrintingTest : public AbstractTest
 {

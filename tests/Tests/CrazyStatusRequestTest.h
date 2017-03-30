@@ -6,7 +6,7 @@
 #define FRTESTER_CRAZYSTATUSREQUESTTEST_H
 
 
-#include <include/Testing/AbstractTest.h>
+#include <Testing/AbstractTest.h>
 
 class CrazyStatusRequestTest : public AbstractTest
 {

@@ -6,7 +6,7 @@
 #define FRTESTER_FNCOMMANDSCONTROLLER_H
 
 
-#include <include/Windows/Controllers/AbstractTabController.h>
+#include <Windows/Controllers/AbstractTabController.h>
 
 /**
  * @brief Класс, контроллирующий вкладку ФН в виджете с командами.

@@ -6,7 +6,7 @@
 #define FRTESTER_TABLEFISCALSTORAGELINESTEST_H
 
 
-#include <include/Testing/AbstractTest.h>
+#include <Testing/AbstractTest.h>
 
 class TableFiscalStorageLinesTest : public AbstractTest
 {

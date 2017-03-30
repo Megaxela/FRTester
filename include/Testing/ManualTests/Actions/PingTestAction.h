@@ -6,7 +6,7 @@
 #define FRTESTER_PINGTESTACTION_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 class PingTestAction : public AbstractTestAction
 {

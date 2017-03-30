@@ -3,11 +3,11 @@
 //
 
 #include <chrono>
-#include <include/Tools/Time.h>
-#include <include/Tools/Logger.h>
-#include <include/Tools/byte.h>
-#include "include/Implementation/TCPInterface.h"
-#include "include/Tools/Platform.h"
+#include <Tools/Time.h>
+#include <Tools/Logger.h>
+#include <Tools/byte.h>
+#include <Implementation/TCPInterface.h>
+#include <Tools/Platform.h>
 
 #ifdef OS_LINUX
     #include <termios.h>

@@ -6,15 +6,14 @@
 #ifndef FRTESTER_PRINTTEXTPLAINTEXTCOMMANDSTABCONTROLLER_H
 #define FRTESTER_PRINTTEXTPLAINTEXTCOMMANDSTABCONTROLLER_H
 
-#include <include/Windows/Controllers/AbstractTabController.h>
-#include <include/Windows/Controllers/CommandsTabController.h>
+#include <Windows/Controllers/AbstractTabController.h>
+#include <Windows/Controllers/CommandsTabController.h>
 
 /**
  * @brief Контроллер, работающий со вкладкой печати простого текста.
  */
 class PrintTextPlainTextCommandsTabController : public AbstractTabController
 {
-public:
 public:
     /**
      * @brief Конструктор.

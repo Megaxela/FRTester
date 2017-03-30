@@ -2,34 +2,34 @@
 // Created by megaxela on 21.11.16.
 //
 
-#include <include/Testing/TestCore.h>
-#include <include/DriverHolder.h>
+#include <Testing/TestCore.h>
+#include <DriverHolder.h>
 #include <tests/Tests/CycleTest.h>
 #include <Tools/Logger.h>
-#include <include/Testing/TestLogger.h>
-#include <include/TestDriverHolder.h>
-#include <include/Tools/Time.h>
-#include <tests/Tests/OperationTest.h>
-#include <tests/Triggers/OperationTrigger.h>
-#include <tests/Triggers/CheckCloseTrigger.h>
-#include <tests/Tests/CheckLoaderTest.h>
-#include <tests/Tests/WriteShitCashierNameTest.h>
-#include <tests/Tests/NonfiscalRequesting.h>
-#include <tests/Tests/TableFiscalStorageLinesTest.h>
-#include <tests/Triggers/ZReportTrigger.h>
-#include <tests/Tests/BarcodePrintingTest.h>
-#include <tests/Tests/CheckFontTest.h>
-#include <include/Executor/TestingExecutor.h>
-#include <include/Testing/SettingsSystem.h>
-#include <include/Tools/StdExtend.h>
-#include <include/Testing/ManualTests/ManualTest.h>
-#include <include/Testing/ManualTests/ManualTestFabric.h>
-#include <tests/Tests/MagnitCheckTest.h>
-#include <tests/Tests/MessageBoxTest.h>
-#include <tests/Tests/CrazyStatusRequestTest.h>
-#include <include/Testing/StaticTestFabric.h>
-#include <include/Testing/StaticTriggerFabric.h>
-#include <include/Testing/ManualTests/Fabric.h>
+#include <Testing/TestLogger.h>
+#include <TestDriverHolder.h>
+#include <Tools/Time.h>
+#include <Tests/OperationTest.h>
+#include <Triggers/OperationTrigger.h>
+#include <Triggers/CheckCloseTrigger.h>
+#include <Tests/CheckLoaderTest.h>
+#include <Tests/WriteShitCashierNameTest.h>
+#include <Tests/NonfiscalRequesting.h>
+#include <Tests/TableFiscalStorageLinesTest.h>
+#include <Triggers/ZReportTrigger.h>
+#include <Tests/BarcodePrintingTest.h>
+#include <Tests/CheckFontTest.h>
+#include <Executor/TestingExecutor.h>
+#include <Testing/SettingsSystem.h>
+#include <Tools/StdExtend.h>
+#include <Testing/ManualTests/ManualTest.h>
+#include <Testing/ManualTests/ManualTestFabric.h>
+#include <Tests/MagnitCheckTest.h>
+#include <Tests/MessageBoxTest.h>
+#include <Tests/CrazyStatusRequestTest.h>
+#include <Testing/StaticTestFabric.h>
+#include <Testing/StaticTriggerFabric.h>
+#include <Testing/ManualTests/Fabric.h>
 
 #define PY_LIST_DELIM ':'
 
@@ -49,6 +49,9 @@ TestCore::TestCore() :
     m_testingExecutor(nullptr),
     m_sharedTests()
 {
+//    SettingsSystem::instance().getValue(
+//            SettingsSystem::TestsRestoreStatePassword
+//    )
 
     init();
 }

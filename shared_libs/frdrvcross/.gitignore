@@ -1,0 +1,9 @@
+.directory
+include/.idea/
+.idea/
+cmake_install.cmake
+CMakeCache.txt
+Makefile
+frdrvcross.cbp
+CMakeFiles/
+build/

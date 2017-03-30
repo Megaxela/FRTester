@@ -2,9 +2,9 @@
 // Created by megaxela on 15.03.17.
 //
 
-#include "include/Windows/Controllers/CommandsControllers/RegisterCommandsTabController.h"
-#include "include/Windows/Controllers/CommandsControllers/RegisterOperationsV1CommandsTabController.h"
-#include "include/Windows/Controllers/CommandsControllers/RegisterOperationsV2CommandsTabController.h"
+#include "Windows/Controllers/CommandsControllers/RegisterCommandsTabController.h"
+#include "Windows/Controllers/CommandsControllers/RegisterOperationsV1CommandsTabController.h"
+#include "Windows/Controllers/CommandsControllers/RegisterOperationsV2CommandsTabController.h"
 
 RegisterCommandsTabController::RegisterCommandsTabController(Ui::MainWindow *ptr,
                                                              QWidget *parent,

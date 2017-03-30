@@ -5,10 +5,10 @@
 #include "BarcodePrintingTest.h"
 #include <Testing/TestLogger.h>
 #include <random>
-#include <include/Tools/Time.h>
+#include <Tools/Time.h>
 #include <thread>
 #include <chrono>
-#include <include/Testing/StaticTestFabric.h>
+#include <Testing/StaticTestFabric.h>
 
 REGISTER_STATIC_TEST(BarcodePrintingTest)
 

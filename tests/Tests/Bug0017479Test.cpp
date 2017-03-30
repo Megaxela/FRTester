@@ -2,7 +2,7 @@
 // Created by megaxela on 20.03.17.
 //
 
-#include <include/Testing/StaticTestFabric.h>
+#include <Testing/StaticTestFabric.h>
 #include "Bug0017479Test.h"
 
 REGISTER_STATIC_TEST(Bug0017479Test)

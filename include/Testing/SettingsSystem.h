@@ -5,7 +5,7 @@
 #ifndef FRTESTER_SETTINGSSYSTEM_H
 #define FRTESTER_SETTINGSSYSTEM_H
 
-#include <include/Testing/AbstractTest.h>
+#include <Testing/AbstractTest.h>
 #include <map>
 
 /**

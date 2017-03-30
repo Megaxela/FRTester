@@ -2,9 +2,9 @@
 // Created by megaxela on 27.02.17.
 //
 
-#include <include/Tools/Codecs.h>
-#include <include/Testing/ManualTests/TestActionFabric.h>
-#include "include/Testing/ManualTests/Actions/ReturnSellTestAction.h"
+#include <Tools/Codecs.h>
+#include <Testing/ManualTests/TestActionFabric.h>
+#include "Testing/ManualTests/Actions/ReturnSellTestAction.h"
 
 REGISTER_ACTION(ReturnSellTestAction)
 

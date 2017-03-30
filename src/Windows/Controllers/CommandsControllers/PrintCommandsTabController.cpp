@@ -2,11 +2,11 @@
 // Created by megaxela on 07.12.16.
 //
 
-#include <include/Windows/Controllers/CommandsControllers/PrintTextCommandsTabController.h>
-#include <include/Windows/Controllers/CommandsControllers/PrintTextPlainTextCommandsTabController.h>
-#include "include/Windows/Controllers/CommandsControllers/PrintCommandsTabController.h"
+#include <Windows/Controllers/CommandsControllers/PrintTextCommandsTabController.h>
+#include <Windows/Controllers/CommandsControllers/PrintTextPlainTextCommandsTabController.h>
+#include "Windows/Controllers/CommandsControllers/PrintCommandsTabController.h"
 #include "ui_mainwindow.h"
-#include "include/Windows/Controllers/CommandsTabController.h"
+#include "Windows/Controllers/CommandsTabController.h"
 
 PrintCommandsTabController::PrintCommandsTabController(Ui::MainWindow *ptr,
                                                        QWidget *parent,

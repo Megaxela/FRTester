@@ -2,7 +2,7 @@
 // Created by megaxela on 27.02.17.
 //
 
-#include <include/Testing/StaticTestFabric.h>
+#include <Testing/StaticTestFabric.h>
 #include "MessageBoxTest.h"
 
 REGISTER_STATIC_TEST(MessageBoxTest)

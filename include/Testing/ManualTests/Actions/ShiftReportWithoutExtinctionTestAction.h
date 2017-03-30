@@ -6,7 +6,7 @@
 #define FRTESTER_SHIFTREPORTWITHOUTEXTINCTIONTESTACTION_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 class ShiftReportWithoutExtinctionTestAction : public AbstractTestAction
 {

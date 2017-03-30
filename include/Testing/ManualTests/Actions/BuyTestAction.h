@@ -6,7 +6,7 @@
 #define FRTESTER_BUYTESTACTION_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 class BuyTestAction : public AbstractTestAction
 {

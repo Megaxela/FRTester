@@ -6,7 +6,7 @@
 #define FRTESTER_DEVICEOPERATIONSCOMMANDSTABCONTROLLER_H
 
 
-#include <include/Windows/Controllers/AbstractTabController.h>
+#include <Windows/Controllers/AbstractTabController.h>
 
 class CommandsTabController;
 

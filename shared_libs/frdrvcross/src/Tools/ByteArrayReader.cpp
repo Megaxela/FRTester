@@ -2,7 +2,7 @@
 // Created by megaxela on 13.12.16.
 //
 
-#include "include/Tools/ByteArrayReader.h"
+#include "Tools/ByteArrayReader.h"
 
 ByteArrayReader::ByteArrayReader(const ByteArray &reader) :
     m_pos(0),

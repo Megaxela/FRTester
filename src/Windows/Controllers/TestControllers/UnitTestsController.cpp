@@ -7,11 +7,11 @@
 #include "Windows/Controllers/TestControllers/UnitTestsController.h"
 #include "Executor/TestLoggerWaiter.h"
 #include <QFileDialog>
-#include <include/Windows/Widgets/QNumberLineEdit.h>
-#include <QtWidgets/QCheckBox>
-#include <include/TestDriverHolder.h>
-#include <include/Tools/GUIHelper.h>
-#include <QtWidgets/QMessageBox>
+#include <Windows/Widgets/QNumberLineEdit.h>
+#include <QCheckBox>
+#include <TestDriverHolder.h>
+#include <Tools/GUIHelper.h>
+#include <QMessageBox>
 
 UnitTestsController::UnitTestsController(Ui::MainWindow *ptr, QWidget *parent) :
     AbstractTabController(ptr, parent, nullptr),

@@ -211,7 +211,7 @@
            <enum>QTabWidget::Triangular</enum>
           </property>
           <property name="currentIndex">
-           <number>5</number>
+           <number>1</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -292,7 +292,7 @@
             <item>
              <widget class="QTabWidget" name="commandsRegistrationTabWidget">
               <property name="currentIndex">
-               <number>1</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="commandsRegistrationOperationsV1Tab">
                <attribute name="title">
@@ -458,85 +458,6 @@
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_24">
                    <item>
-                    <layout class="QFormLayout" name="formLayout_10">
-                     <item row="0" column="0">
-                      <widget class="QLabel" name="label_31">
-                       <property name="text">
-                        <string>Оплата 1</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="0" column="1">
-                      <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV1Money1DoubleSpinBox">
-                       <property name="suffix">
-                        <string>р</string>
-                       </property>
-                       <property name="maximum">
-                        <double>99999999.000000000000000</double>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="1" column="0">
-                      <widget class="QLabel" name="label_34">
-                       <property name="text">
-                        <string>Оплата 2</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="1" column="1">
-                      <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV1Money2DoubleSpinBox">
-                       <property name="suffix">
-                        <string>р</string>
-                       </property>
-                       <property name="maximum">
-                        <double>99999999.000000000000000</double>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="2" column="0">
-                      <widget class="QLabel" name="label_32">
-                       <property name="text">
-                        <string>Оплата 3</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="2" column="1">
-                      <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV1Money3DoubleSpinBox">
-                       <property name="suffix">
-                        <string>р</string>
-                       </property>
-                       <property name="maximum">
-                        <double>99999999.000000000000000</double>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="3" column="0">
-                      <widget class="QLabel" name="label_33">
-                       <property name="text">
-                        <string>Оплата 4</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="3" column="1">
-                      <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV1Money4DoubleSpinBox">
-                       <property name="suffix">
-                        <string>р</string>
-                       </property>
-                       <property name="maximum">
-                        <double>99999999.000000000000000</double>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </item>
-                   <item>
-                    <widget class="Line" name="line">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
                     <widget class="QScrollArea" name="scrollArea_2">
                      <property name="widgetResizable">
                       <bool>true</bool>
@@ -547,41 +468,20 @@
                         <x>0</x>
                         <y>0</y>
                         <width>210</width>
-                        <height>464</height>
+                        <height>616</height>
                        </rect>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_25">
                        <item>
                         <layout class="QFormLayout" name="formLayout_5">
-                         <item row="0" column="0">
+                         <item row="4" column="0">
                           <widget class="QLabel" name="label_15">
                            <property name="text">
                             <string>Оплата 5</string>
                            </property>
                           </widget>
                          </item>
-                         <item row="2" column="0">
-                          <widget class="QLabel" name="label_18">
-                           <property name="text">
-                            <string>Оплата 7</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="3" column="0">
-                          <widget class="QLabel" name="label_17">
-                           <property name="text">
-                            <string>Оплата 8</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="1" column="0">
-                          <widget class="QLabel" name="label_16">
-                           <property name="text">
-                            <string>Оплата 6</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="0" column="1">
+                         <item row="4" column="1">
                           <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV1Money5DoubleSpinBox">
                            <property name="suffix">
                             <string>р</string>
@@ -591,7 +491,14 @@
                            </property>
                           </widget>
                          </item>
-                         <item row="1" column="1">
+                         <item row="5" column="0">
+                          <widget class="QLabel" name="label_16">
+                           <property name="text">
+                            <string>Оплата 6</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="5" column="1">
                           <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV1Money6DoubleSpinBox">
                            <property name="suffix">
                             <string>р</string>
@@ -601,7 +508,14 @@
                            </property>
                           </widget>
                          </item>
-                         <item row="2" column="1">
+                         <item row="6" column="0">
+                          <widget class="QLabel" name="label_18">
+                           <property name="text">
+                            <string>Оплата 7</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="6" column="1">
                           <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV1Money7DoubleSpinBox">
                            <property name="suffix">
                             <string>р</string>
@@ -611,7 +525,14 @@
                            </property>
                           </widget>
                          </item>
-                         <item row="3" column="1">
+                         <item row="7" column="0">
+                          <widget class="QLabel" name="label_17">
+                           <property name="text">
+                            <string>Оплата 8</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="7" column="1">
                           <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV1Money8DoubleSpinBox">
                            <property name="suffix">
                             <string>р</string>
@@ -621,63 +542,14 @@
                            </property>
                           </widget>
                          </item>
-                         <item row="4" column="0">
+                         <item row="8" column="0">
                           <widget class="QLabel" name="label_35">
                            <property name="text">
                             <string>Оплата 9</string>
                            </property>
                           </widget>
                          </item>
-                         <item row="5" column="0">
-                          <widget class="QLabel" name="label_36">
-                           <property name="text">
-                            <string>Оплата 10</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="6" column="0">
-                          <widget class="QLabel" name="label_37">
-                           <property name="text">
-                            <string>Оплата 11</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="7" column="0">
-                          <widget class="QLabel" name="label_38">
-                           <property name="text">
-                            <string>Оплата 12</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="8" column="0">
-                          <widget class="QLabel" name="label_39">
-                           <property name="text">
-                            <string>Оплата 13</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="9" column="0">
-                          <widget class="QLabel" name="label_40">
-                           <property name="text">
-                            <string>Оплата 14</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="10" column="0">
-                          <widget class="QLabel" name="label_41">
-                           <property name="text">
-                            <string>Оплата 15</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="11" column="0">
-                          <widget class="QLabel" name="label_42">
-                           <property name="text">
-                            <string>Оплата 16</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="4" column="1">
+                         <item row="8" column="1">
                           <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV1Money11DoubleSpinBox">
                            <property name="suffix">
                             <string>р</string>
@@ -687,7 +559,14 @@
                            </property>
                           </widget>
                          </item>
-                         <item row="5" column="1">
+                         <item row="9" column="0">
+                          <widget class="QLabel" name="label_36">
+                           <property name="text">
+                            <string>Оплата 10</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="9" column="1">
                           <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV1Money12DoubleSpinBox">
                            <property name="suffix">
                             <string>р</string>
@@ -697,7 +576,14 @@
                            </property>
                           </widget>
                          </item>
-                         <item row="6" column="1">
+                         <item row="10" column="0">
+                          <widget class="QLabel" name="label_37">
+                           <property name="text">
+                            <string>Оплата 11</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="10" column="1">
                           <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV1Money13DoubleSpinBox">
                            <property name="suffix">
                             <string>р</string>
@@ -707,7 +593,14 @@
                            </property>
                           </widget>
                          </item>
-                         <item row="7" column="1">
+                         <item row="11" column="0">
+                          <widget class="QLabel" name="label_38">
+                           <property name="text">
+                            <string>Оплата 12</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="11" column="1">
                           <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV1Money14DoubleSpinBox">
                            <property name="suffix">
                             <string>р</string>
@@ -717,7 +610,14 @@
                            </property>
                           </widget>
                          </item>
-                         <item row="8" column="1">
+                         <item row="12" column="0">
+                          <widget class="QLabel" name="label_39">
+                           <property name="text">
+                            <string>Оплата 13</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="12" column="1">
                           <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV1Money15DoubleSpinBox">
                            <property name="suffix">
                             <string>р</string>
@@ -727,7 +627,14 @@
                            </property>
                           </widget>
                          </item>
-                         <item row="9" column="1">
+                         <item row="13" column="0">
+                          <widget class="QLabel" name="label_40">
+                           <property name="text">
+                            <string>Оплата 14</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="13" column="1">
                           <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV1Money16DoubleSpinBox_8">
                            <property name="suffix">
                             <string>р</string>
@@ -737,7 +644,14 @@
                            </property>
                           </widget>
                          </item>
-                         <item row="10" column="1">
+                         <item row="14" column="0">
+                          <widget class="QLabel" name="label_41">
+                           <property name="text">
+                            <string>Оплата 15</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="14" column="1">
                           <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV1Money9DoubleSpinBox">
                            <property name="suffix">
                             <string>р</string>
@@ -747,8 +661,83 @@
                            </property>
                           </widget>
                          </item>
-                         <item row="11" column="1">
+                         <item row="15" column="0">
+                          <widget class="QLabel" name="label_42">
+                           <property name="text">
+                            <string>Оплата 16</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="15" column="1">
                           <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV1Money10DoubleSpinBox">
+                           <property name="suffix">
+                            <string>р</string>
+                           </property>
+                           <property name="maximum">
+                            <double>99999999.000000000000000</double>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="3" column="0">
+                          <widget class="QLabel" name="label_33">
+                           <property name="text">
+                            <string>Оплата 4</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="3" column="1">
+                          <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV1Money4DoubleSpinBox">
+                           <property name="suffix">
+                            <string>р</string>
+                           </property>
+                           <property name="maximum">
+                            <double>99999999.000000000000000</double>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="2" column="0">
+                          <widget class="QLabel" name="label_32">
+                           <property name="text">
+                            <string>Оплата 3</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="2" column="1">
+                          <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV1Money3DoubleSpinBox">
+                           <property name="suffix">
+                            <string>р</string>
+                           </property>
+                           <property name="maximum">
+                            <double>99999999.000000000000000</double>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="0">
+                          <widget class="QLabel" name="label_34">
+                           <property name="text">
+                            <string>Оплата 2</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="1">
+                          <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV1Money2DoubleSpinBox">
+                           <property name="suffix">
+                            <string>р</string>
+                           </property>
+                           <property name="maximum">
+                            <double>99999999.000000000000000</double>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="0" column="0">
+                          <widget class="QLabel" name="label_31">
+                           <property name="text">
+                            <string>Оплата 1</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="0" column="1">
+                          <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV1Money1DoubleSpinBox">
                            <property name="suffix">
                             <string>р</string>
                            </property>
@@ -1105,7 +1094,7 @@
                  <widget class="QGroupBox" name="groupBox_18">
                   <property name="minimumSize">
                    <size>
-                    <width>0</width>
+                    <width>250</width>
                     <height>0</height>
                    </size>
                   </property>
@@ -1114,280 +1103,299 @@
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_26">
                    <item>
-                    <layout class="QFormLayout" name="formLayout_12">
-                     <item row="0" column="0">
-                      <widget class="QLabel" name="label_63">
-                       <property name="text">
-                        <string>Оплата 1</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="0" column="1">
-                      <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money1DoubleSpinBox">
-                       <property name="suffix">
-                        <string>р</string>
-                       </property>
-                       <property name="maximum">
-                        <double>99999999.000000000000000</double>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="1" column="0">
-                      <widget class="QLabel" name="label_64">
-                       <property name="text">
-                        <string>Оплата 2</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="1" column="1">
-                      <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money2DoubleSpinBox">
-                       <property name="suffix">
-                        <string>р</string>
-                       </property>
-                       <property name="maximum">
-                        <double>99999999.000000000000000</double>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="2" column="0">
-                      <widget class="QLabel" name="label_65">
-                       <property name="text">
-                        <string>Оплата 3</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="2" column="1">
-                      <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money3DoubleSpinBox">
-                       <property name="suffix">
-                        <string>р</string>
-                       </property>
-                       <property name="maximum">
-                        <double>99999999.000000000000000</double>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="3" column="0">
-                      <widget class="QLabel" name="label_66">
-                       <property name="text">
-                        <string>Оплата 4</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="3" column="1">
-                      <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money4DoubleSpinBox">
-                       <property name="suffix">
-                        <string>р</string>
-                       </property>
-                       <property name="maximum">
-                        <double>99999999.000000000000000</double>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="4" column="0">
-                      <widget class="QLabel" name="label_67">
-                       <property name="text">
-                        <string>Оплата 5</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="4" column="1">
-                      <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money5DoubleSpinBox">
-                       <property name="suffix">
-                        <string>р</string>
-                       </property>
-                       <property name="maximum">
-                        <double>99999999.000000000000000</double>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="5" column="0">
-                      <widget class="QLabel" name="label_70">
-                       <property name="text">
-                        <string>Оплата 6</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="5" column="1">
-                      <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money6DoubleSpinBox">
-                       <property name="suffix">
-                        <string>р</string>
-                       </property>
-                       <property name="maximum">
-                        <double>99999999.000000000000000</double>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="6" column="0">
-                      <widget class="QLabel" name="label_68">
-                       <property name="text">
-                        <string>Оплата 7</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="6" column="1">
-                      <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money7DoubleSpinBox">
-                       <property name="suffix">
-                        <string>р</string>
-                       </property>
-                       <property name="maximum">
-                        <double>99999999.000000000000000</double>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="7" column="0">
-                      <widget class="QLabel" name="label_69">
-                       <property name="text">
-                        <string>Оплата 8</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="7" column="1">
-                      <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money8DoubleSpinBox">
-                       <property name="suffix">
-                        <string>р</string>
-                       </property>
-                       <property name="maximum">
-                        <double>99999999.000000000000000</double>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="8" column="0">
-                      <widget class="QLabel" name="label_71">
-                       <property name="text">
-                        <string>Оплата 9</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="8" column="1">
-                      <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money11DoubleSpinBox">
-                       <property name="suffix">
-                        <string>р</string>
-                       </property>
-                       <property name="maximum">
-                        <double>99999999.000000000000000</double>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="9" column="0">
-                      <widget class="QLabel" name="label_72">
-                       <property name="text">
-                        <string>Оплата 10</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="9" column="1">
-                      <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money12DoubleSpinBox">
-                       <property name="suffix">
-                        <string>р</string>
-                       </property>
-                       <property name="maximum">
-                        <double>99999999.000000000000000</double>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="10" column="0">
-                      <widget class="QLabel" name="label_73">
-                       <property name="text">
-                        <string>Оплата 11</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="10" column="1">
-                      <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money13DoubleSpinBox">
-                       <property name="suffix">
-                        <string>р</string>
-                       </property>
-                       <property name="maximum">
-                        <double>99999999.000000000000000</double>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="11" column="0">
-                      <widget class="QLabel" name="label_74">
-                       <property name="text">
-                        <string>Оплата 12</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="11" column="1">
-                      <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money14DoubleSpinBox">
-                       <property name="suffix">
-                        <string>р</string>
-                       </property>
-                       <property name="maximum">
-                        <double>99999999.000000000000000</double>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="12" column="0">
-                      <widget class="QLabel" name="label_75">
-                       <property name="text">
-                        <string>Оплата 13</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="12" column="1">
-                      <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money15DoubleSpinBox">
-                       <property name="suffix">
-                        <string>р</string>
-                       </property>
-                       <property name="maximum">
-                        <double>99999999.000000000000000</double>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="13" column="0">
-                      <widget class="QLabel" name="label_76">
-                       <property name="text">
-                        <string>Оплата 14</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="13" column="1">
-                      <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money16DoubleSpinBox">
-                       <property name="suffix">
-                        <string>р</string>
-                       </property>
-                       <property name="maximum">
-                        <double>99999999.000000000000000</double>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="14" column="0">
-                      <widget class="QLabel" name="label_77">
-                       <property name="text">
-                        <string>Оплата 15</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="14" column="1">
-                      <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money9DoubleSpinBox">
-                       <property name="suffix">
-                        <string>р</string>
-                       </property>
-                       <property name="maximum">
-                        <double>99999999.000000000000000</double>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="15" column="0">
-                      <widget class="QLabel" name="label_78">
-                       <property name="text">
-                        <string>Оплата 16</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="15" column="1">
-                      <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money10DoubleSpinBox">
-                       <property name="suffix">
-                        <string>р</string>
-                       </property>
-                       <property name="maximum">
-                        <double>99999999.000000000000000</double>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
+                    <widget class="QScrollArea" name="scrollArea_3">
+                     <property name="widgetResizable">
+                      <bool>true</bool>
+                     </property>
+                     <widget class="QWidget" name="scrollAreaWidgetContents_3">
+                      <property name="geometry">
+                       <rect>
+                        <x>0</x>
+                        <y>0</y>
+                        <width>210</width>
+                        <height>616</height>
+                       </rect>
+                      </property>
+                      <layout class="QHBoxLayout" name="horizontalLayout_36">
+                       <item>
+                        <layout class="QFormLayout" name="formLayout_12">
+                         <item row="0" column="0">
+                          <widget class="QLabel" name="label_63">
+                           <property name="text">
+                            <string>Оплата 1</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="0" column="1">
+                          <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money1DoubleSpinBox">
+                           <property name="suffix">
+                            <string>р</string>
+                           </property>
+                           <property name="maximum">
+                            <double>99999999.000000000000000</double>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="0">
+                          <widget class="QLabel" name="label_64">
+                           <property name="text">
+                            <string>Оплата 2</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="1">
+                          <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money2DoubleSpinBox">
+                           <property name="suffix">
+                            <string>р</string>
+                           </property>
+                           <property name="maximum">
+                            <double>99999999.000000000000000</double>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="2" column="0">
+                          <widget class="QLabel" name="label_65">
+                           <property name="text">
+                            <string>Оплата 3</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="2" column="1">
+                          <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money3DoubleSpinBox">
+                           <property name="suffix">
+                            <string>р</string>
+                           </property>
+                           <property name="maximum">
+                            <double>99999999.000000000000000</double>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="3" column="0">
+                          <widget class="QLabel" name="label_66">
+                           <property name="text">
+                            <string>Оплата 4</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="3" column="1">
+                          <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money4DoubleSpinBox">
+                           <property name="suffix">
+                            <string>р</string>
+                           </property>
+                           <property name="maximum">
+                            <double>99999999.000000000000000</double>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="4" column="0">
+                          <widget class="QLabel" name="label_67">
+                           <property name="text">
+                            <string>Оплата 5</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="4" column="1">
+                          <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money5DoubleSpinBox">
+                           <property name="suffix">
+                            <string>р</string>
+                           </property>
+                           <property name="maximum">
+                            <double>99999999.000000000000000</double>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="5" column="0">
+                          <widget class="QLabel" name="label_70">
+                           <property name="text">
+                            <string>Оплата 6</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="5" column="1">
+                          <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money6DoubleSpinBox">
+                           <property name="suffix">
+                            <string>р</string>
+                           </property>
+                           <property name="maximum">
+                            <double>99999999.000000000000000</double>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="6" column="0">
+                          <widget class="QLabel" name="label_68">
+                           <property name="text">
+                            <string>Оплата 7</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="6" column="1">
+                          <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money7DoubleSpinBox">
+                           <property name="suffix">
+                            <string>р</string>
+                           </property>
+                           <property name="maximum">
+                            <double>99999999.000000000000000</double>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="7" column="0">
+                          <widget class="QLabel" name="label_69">
+                           <property name="text">
+                            <string>Оплата 8</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="7" column="1">
+                          <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money8DoubleSpinBox">
+                           <property name="suffix">
+                            <string>р</string>
+                           </property>
+                           <property name="maximum">
+                            <double>99999999.000000000000000</double>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="8" column="0">
+                          <widget class="QLabel" name="label_71">
+                           <property name="text">
+                            <string>Оплата 9</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="8" column="1">
+                          <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money11DoubleSpinBox">
+                           <property name="suffix">
+                            <string>р</string>
+                           </property>
+                           <property name="maximum">
+                            <double>99999999.000000000000000</double>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="9" column="0">
+                          <widget class="QLabel" name="label_72">
+                           <property name="text">
+                            <string>Оплата 10</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="9" column="1">
+                          <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money12DoubleSpinBox">
+                           <property name="suffix">
+                            <string>р</string>
+                           </property>
+                           <property name="maximum">
+                            <double>99999999.000000000000000</double>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="10" column="0">
+                          <widget class="QLabel" name="label_73">
+                           <property name="text">
+                            <string>Оплата 11</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="10" column="1">
+                          <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money13DoubleSpinBox">
+                           <property name="suffix">
+                            <string>р</string>
+                           </property>
+                           <property name="maximum">
+                            <double>99999999.000000000000000</double>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="11" column="0">
+                          <widget class="QLabel" name="label_74">
+                           <property name="text">
+                            <string>Оплата 12</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="11" column="1">
+                          <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money14DoubleSpinBox">
+                           <property name="suffix">
+                            <string>р</string>
+                           </property>
+                           <property name="maximum">
+                            <double>99999999.000000000000000</double>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="12" column="0">
+                          <widget class="QLabel" name="label_75">
+                           <property name="text">
+                            <string>Оплата 13</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="12" column="1">
+                          <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money15DoubleSpinBox">
+                           <property name="suffix">
+                            <string>р</string>
+                           </property>
+                           <property name="maximum">
+                            <double>99999999.000000000000000</double>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="13" column="0">
+                          <widget class="QLabel" name="label_76">
+                           <property name="text">
+                            <string>Оплата 14</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="13" column="1">
+                          <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money16DoubleSpinBox">
+                           <property name="suffix">
+                            <string>р</string>
+                           </property>
+                           <property name="maximum">
+                            <double>99999999.000000000000000</double>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="14" column="0">
+                          <widget class="QLabel" name="label_77">
+                           <property name="text">
+                            <string>Оплата 15</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="14" column="1">
+                          <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money9DoubleSpinBox">
+                           <property name="suffix">
+                            <string>р</string>
+                           </property>
+                           <property name="maximum">
+                            <double>99999999.000000000000000</double>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="15" column="0">
+                          <widget class="QLabel" name="label_78">
+                           <property name="text">
+                            <string>Оплата 16</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="15" column="1">
+                          <widget class="QDoubleSpinBox" name="commandsRegistrationOperationV2Money10DoubleSpinBox">
+                           <property name="suffix">
+                            <string>р</string>
+                           </property>
+                           <property name="maximum">
+                            <double>99999999.000000000000000</double>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </item>
+                      </layout>
+                     </widget>
+                    </widget>
                    </item>
                   </layout>
                  </widget>
@@ -2586,8 +2594,8 @@ p, li { white-space: pre-wrap; }
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>313</width>
-                       <height>279</height>
+                       <width>16</width>
+                       <height>16</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_22">
@@ -2831,22 +2839,22 @@ p, li { white-space: pre-wrap; }
   <customwidget>
    <class>QTestsTreeWidget</class>
    <extends>QTreeWidget</extends>
-   <header>include/Windows/Widgets/QTestsTreeWidget.h</header>
+   <header>Windows/Widgets/QTestsTreeWidget.h</header>
   </customwidget>
   <customwidget>
    <class>QTestActionsTreeWidget</class>
    <extends>QTreeWidget</extends>
-   <header>include/Windows/Widgets/QTestActionsTreeWidget.h</header>
+   <header>Windows/Widgets/QTestActionsTreeWidget.h</header>
   </customwidget>
   <customwidget>
    <class>QTestDisplayTreeWidget</class>
    <extends>QTreeWidget</extends>
-   <header>include/Windows/Widgets/QTestDisplayTreeWidget.h</header>
+   <header>Windows/Widgets/QTestDisplayTreeWidget.h</header>
   </customwidget>
   <customwidget>
    <class>QManualTestsListWidget</class>
    <extends>QListWidget</extends>
-   <header>include/Windows/Widgets/QManualTestsListWidget.h</header>
+   <header>Windows/Widgets/QManualTestsListWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -6,7 +6,7 @@
 #define FRTESTER_MODALWINDOWTESTACTION_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 class NotifyWindowTestAction : public AbstractTestAction
 {

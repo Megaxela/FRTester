@@ -5,7 +5,7 @@
 #include "ZReportTrigger.h"
 #include <Testing/TestEnvironment.h>
 #include <Testing/TestLogger.h>
-#include <include/Testing/StaticTriggerFabric.h>
+#include <Testing/StaticTriggerFabric.h>
 
 REGISTER_STATIC_TRIGGER(ZReportTrigger)
 

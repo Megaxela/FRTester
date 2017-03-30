@@ -5,9 +5,9 @@
 #ifndef FRTESTER_REPORTSCOMMANDSTABCONTROLLER_H
 #define FRTESTER_REPORTSCOMMANDSTABCONTROLLER_H
 
-#include <include/Windows/Controllers/AbstractTabController.h>
 #include <ui_mainwindow.h>
-#include <include/Windows/Controllers/CommandsTabController.h>
+#include <Windows/Controllers/AbstractTabController.h>
+#include <Windows/Controllers/CommandsTabController.h>
 
 /**
  * @brief Контроллер, управляющий вкладкой с очетами.

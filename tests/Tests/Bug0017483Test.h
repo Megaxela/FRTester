@@ -6,7 +6,7 @@
 #define FRTESTER_BUG0017483TEST_H
 
 
-#include <include/Testing/AbstractTest.h>
+#include <Testing/AbstractTest.h>
 
 /**
  * @brief Тест бага:

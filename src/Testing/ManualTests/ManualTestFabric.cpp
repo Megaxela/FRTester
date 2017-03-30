@@ -2,12 +2,12 @@
 // Created by megaxela on 17.02.17.
 //
 
-#include <include/Testing/ManualTests/Actions/BeepTestAction.h>
-#include <include/Tools/Logger.h>
-#include <include/Testing/ManualTests/Actions/LongStateRequestTestAction.h>
-#include <include/Testing/ManualTests/Actions/WhileTestAction.h>
-#include <include/Testing/ManualTests/TestActionFabric.h>
-#include "include/Testing/ManualTests/ManualTestFabric.h"
+#include <Testing/ManualTests/Actions/BeepTestAction.h>
+#include <Tools/Logger.h>
+#include <Testing/ManualTests/Actions/LongStateRequestTestAction.h>
+#include <Testing/ManualTests/Actions/WhileTestAction.h>
+#include <Testing/ManualTests/TestActionFabric.h>
+#include <Testing/ManualTests/ManualTestFabric.h>
 
 #define ADD_ACTION(NAME)\
 else if(actionName == ""#NAME"")\

@@ -2,12 +2,12 @@
 // Created by megaxela on 03.02.17.
 //
 
-#include <include/Tools/Time.h>
-#include <include/Testing/TestLogger.h>
-#include <include/Tools/Logger.h>
-#include "include/Testing/TestingTools.h"
+#include <Tools/Time.h>
+#include <Testing/TestLogger.h>
+#include <Tools/Logger.h>
+#include <Testing/TestingTools.h>
 #include <Executor/TestingExecutor.h>
-#include <QtWidgets/QMessageBox>
+#include <QMessageBox>
 #include <Windows/Controllers/TestControllers/UnitTestsController.h>
 #include <QObject>
 

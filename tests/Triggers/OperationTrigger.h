@@ -6,7 +6,7 @@
 #define FRTESTER_OPERATIONTRIGGER_H
 
 
-#include <include/Testing/AbstractTriggerTest.h>
+#include <Testing/AbstractTriggerTest.h>
 
 class OperationTrigger : public AbstractTriggerTest
 {

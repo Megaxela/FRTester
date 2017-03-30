@@ -5,7 +5,7 @@
 #ifndef FRTESTER_TESTINGTOOLS_H
 #define FRTESTER_TESTINGTOOLS_H
 
-#include <include/FRDriver.h>
+#include <FRDriver.h>
 #include "TestDriver.h"
 #include <Testing/TestLogger.h>
 

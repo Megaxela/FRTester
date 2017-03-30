@@ -5,7 +5,7 @@
 #ifndef FRTESTER_OPERATIONTEST_H
 #define FRTESTER_OPERATIONTEST_H
 
-#include <include/Testing/AbstractTest.h>
+#include <Testing/AbstractTest.h>
 #include <random>
 
 class OperationTest : public AbstractTest

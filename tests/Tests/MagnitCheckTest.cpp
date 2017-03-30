@@ -2,8 +2,8 @@
 // Created by megaxela on 23.02.17.
 //
 
-#include <include/Tools/Logger.h>
-#include <include/Testing/StaticTestFabric.h>
+#include <Tools/Logger.h>
+#include <Testing/StaticTestFabric.h>
 #include "MagnitCheckTest.h"
 
 REGISTER_STATIC_TEST(MagnitCheckTest)

@@ -2,9 +2,9 @@
 // Created by megaxela on 08.12.16.
 //
 
-#include <include/Tools/Logger.h>
+#include <Tools/Logger.h>
 #include <sstream>
-#include "include/Tools/IPv4Address.h"
+#include <Tools/IPv4Address.h>
 
 IPv4Address::IPv4Address() :
     m_data((in_addr_t) 0x7f000001)

@@ -3,7 +3,7 @@
 //
 
 #include <Tools/Logger.h>
-#include <include/Testing/StaticTestFabric.h>
+#include <Testing/StaticTestFabric.h>
 #include "CycleTest.h"
 
 REGISTER_STATIC_TEST(CycleTest)

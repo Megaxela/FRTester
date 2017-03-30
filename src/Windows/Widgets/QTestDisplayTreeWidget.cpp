@@ -2,18 +2,17 @@
 // Created by megaxela on 20.02.17.
 //
 
-#include <netinet/in.h>
 #include <unordered_map>
-#include <QtCore/QMetaObject>
-#include <QtWidgets/QTreeWidget>
-#include <QtCore/QObject>
-#include <QtGui/QtGui>
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QTreeView>
-#include <include/Tools/Logger.h>
-#include <include/Windows/Widgets/QTestActionsTreeWidget.h>
-#include <include/Windows/Widgets/QActionTreeWidgetItem.h>
-#include "include/Windows/Widgets/QTestDisplayTreeWidget.h"
+#include <QMetaObject>
+#include <QTreeWidget>
+#include <QObject>
+#include <QtGui>
+#include <QWidget>
+#include <QTreeView>
+#include <Tools/Logger.h>
+#include <Windows/Widgets/QTestActionsTreeWidget.h>
+#include <Windows/Widgets/QActionTreeWidgetItem.h>
+#include <Windows/Widgets/QTestDisplayTreeWidget.h>
 
 QTestDisplayTreeWidget::QTestDisplayTreeWidget(QWidget *parent) :
         QTreeWidget(parent),

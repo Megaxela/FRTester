@@ -2,9 +2,9 @@
 // Created by megaxela on 13.12.16.
 //
 
-#include "include/Tools/Codecs.h"
+#include <Tools/Codecs.h>
 #include <QTextCodec>
-#include <include/Tools/Logger.h>
+#include <Tools/Logger.h>
 
 Codecs::Codecs() :
     m_codecs()

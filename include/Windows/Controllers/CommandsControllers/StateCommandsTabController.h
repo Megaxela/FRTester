@@ -7,7 +7,7 @@
 
 
 #include <Windows/Controllers/AbstractTabController.h>
-#include <include/Windows/Controllers/CommandsTabController.h>
+#include <Windows/Controllers/CommandsTabController.h>
 
 namespace Ui
 {

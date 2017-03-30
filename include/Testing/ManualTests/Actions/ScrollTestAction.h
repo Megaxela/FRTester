@@ -6,7 +6,7 @@
 #define FRTESTER_SCROLLTESTACTION_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 class ScrollTestAction : public AbstractTestAction
 {

@@ -6,10 +6,10 @@
 #define FRTESTER_TABLESTABCONTROLLER_H
 
 
-#include <include/Windows/Controllers/AbstractTabController.h>
-#include <include/FRDriver.h>
-#include <QtWidgets/QListWidgetItem>
-#include <QtWidgets/QTableWidgetItem>
+#include <Windows/Controllers/AbstractTabController.h>
+#include <FRDriver.h>
+#include <QListWidgetItem>
+#include <QTableWidgetItem>
 
 /**
  * @brief Класс, управляющий вкладкой с таблицами.

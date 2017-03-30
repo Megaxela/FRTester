@@ -6,8 +6,8 @@
 #define FRTESTER_PYTHONTRIGGER_H
 
 
-#include <include/Testing/AbstractTriggerTest.h>
-#include <include/Testing/TestEnvironment.h>
+#include <Testing/AbstractTriggerTest.h>
+#include <Testing/TestEnvironment.h>
 #include <Python.h>
 
 /**

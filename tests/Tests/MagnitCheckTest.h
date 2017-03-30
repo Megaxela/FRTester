@@ -6,8 +6,8 @@
 #define FRTESTER_MAGNITCHECKTEST_H
 
 
-#include <include/Testing/TestEnvironment.h>
-#include <include/Testing/AbstractTest.h>
+#include <Testing/TestEnvironment.h>
+#include <Testing/AbstractTest.h>
 
 class MagnitCheckTest : public AbstractTest
 {

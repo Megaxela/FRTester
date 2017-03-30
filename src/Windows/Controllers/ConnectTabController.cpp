@@ -2,14 +2,14 @@
 // Created by megaxela on 08.12.16.
 //
 
-#include <include/Windows/Controllers/ConnectTabController.h>
-#include <include/Windows/Controllers/ConnectControllers/ConnectCOMTabController.h>
-#include <include/Windows/Controllers/ConnectControllers/ConnectTCPTabController.h>
-#include <include/TestDriverHolder.h>
-#include <include/Implementation/DefaultProtocol.h>
-#include <include/DriverHolder.h>
-#include <include/Tools/Logger.h>
-#include "ui_mainwindow.h"
+#include <Windows/Controllers/ConnectTabController.h>
+#include <Windows/Controllers/ConnectControllers/ConnectCOMTabController.h>
+#include <Windows/Controllers/ConnectControllers/ConnectTCPTabController.h>
+#include <TestDriverHolder.h>
+#include <Implementation/DefaultProtocol.h>
+#include <DriverHolder.h>
+#include <Tools/Logger.h>
+#include <ui_mainwindow.h>
 
 ConnectTabController::ConnectTabController(Ui::MainWindow *ptr, QWidget *parent, QTabWidget *tabWidget)
         : AbstractTabController(ptr, parent, tabWidget)

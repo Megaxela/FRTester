@@ -2,10 +2,10 @@
 // Created by megaxela on 17.11.16.
 //
 
-#include <include/Tools/Logger.h>
-#include <include/Windows/Controllers/RootController.h>
-#include <include/Testing/TestCore.h>
-#include "include/Windows/MainWindow.h"
+#include <Tools/Logger.h>
+#include <Windows/Controllers/RootController.h>
+#include <Testing/TestCore.h>
+#include "Windows/MainWindow.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :

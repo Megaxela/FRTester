@@ -6,8 +6,8 @@
 #define FRTESTER_CONNECTTCPTABCONTROLLER_H
 
 
-#include <include/Windows/Controllers/AbstractTabController.h>
-#include <include/Implementation/TCPInterface.h>
+#include <Windows/Controllers/AbstractTabController.h>
+#include <Implementation/TCPInterface.h>
 
 /**
  * @brief Класс для усравления вкладкой соединения по

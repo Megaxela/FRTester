@@ -4,9 +4,9 @@
 
 #include "WriteShitCashierNameTest.h"
 #include <Testing/TestLogger.h>
-#include <include/Tools/Codecs.h>
-#include <include/Tools/Logger.h>
-#include <include/Testing/StaticTestFabric.h>
+#include <Tools/Codecs.h>
+#include <Tools/Logger.h>
+#include <Testing/StaticTestFabric.h>
 
 REGISTER_STATIC_TEST(WriteShitCashierNameTest)
 

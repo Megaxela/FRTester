@@ -6,7 +6,7 @@
 #define FRTESTER_CHECKFONTTEST_H
 
 
-#include <include/Testing/AbstractTest.h>
+#include <Testing/AbstractTest.h>
 
 class CheckFontTest : public AbstractTest
 {

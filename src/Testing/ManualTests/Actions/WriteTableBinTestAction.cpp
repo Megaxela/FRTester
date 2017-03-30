@@ -2,8 +2,8 @@
 // Created by megaxela on 15.03.17.
 //
 
-#include <include/Testing/ManualTests/TestActionFabric.h>
-#include "include/Testing/ManualTests/Actions/WriteTableBinTestAction.h"
+#include <Testing/ManualTests/TestActionFabric.h>
+#include "Testing/ManualTests/Actions/WriteTableBinTestAction.h"
 
 REGISTER_ACTION(WriteTableBinTestAction)
 

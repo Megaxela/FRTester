@@ -2,12 +2,12 @@
 // Created by megaxela on 17.11.16.
 //
 
-#include "Windows/Controllers/AbstractTabController.h"
+#include <Windows/Controllers/AbstractTabController.h>
 #include <QDebug>
 #include <iostream>
-#include <include/Tools/Logger.h>
-#include <include/Tools/SystemTools.h>
-#include <include/Testing/SettingsSystem.h>
+#include <Tools/Logger.h>
+#include <Tools/SystemTools.h>
+#include <Testing/SettingsSystem.h>
 
 AbstractTabController::AbstractTabController(Ui::MainWindow* ptr,
                                              QWidget* parent,

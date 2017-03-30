@@ -6,7 +6,7 @@
 #define FRTESTER_RETURNBUYTESTACTION_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 class ReturnBuyTestAction : public AbstractTestAction
 {

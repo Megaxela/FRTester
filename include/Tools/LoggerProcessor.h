@@ -7,7 +7,7 @@
 
 
 #include "ParsedLog.h"
-#include "ByteArray.h"
+#include "Tools/ByteArray.h"
 
 class LoggerProcessor
 {

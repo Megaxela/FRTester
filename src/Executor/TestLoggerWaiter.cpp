@@ -2,9 +2,9 @@
 // Created by megaxela on 02.12.16.
 //
 
-#include <include/Testing/TestLogger.h>
-#include <include/Tools/Time.h>
-#include "include/Executor/TestLoggerWaiter.h"
+#include <Testing/TestLogger.h>
+#include <Tools/Time.h>
+#include <Executor/TestLoggerWaiter.h>
 
 TestLoggerWaiter::TestLoggerWaiter() :
     m_mutex(),

@@ -2,17 +2,17 @@
 // Created by megaxela on 08.12.16.
 //
 
-#include <include/Windows/Controllers/SettingsController.h>
-#include <include/Windows/Controllers/TestControllers/UnitTestsController.h>
-#include <include/Windows/Controllers/CommandsTabController.h>
-#include <include/Windows/Controllers/ConnectControllers/ConnectCOMTabController.h>
-#include <include/Windows/Controllers/ConnectTabController.h>
-#include <include/Windows/Controllers/TablesTabController.h>
-#include <include/Testing/SettingsSystem.h>
-#include <include/Tools/Logger.h>
-#include <include/Windows/Controllers/TestControllers/TestsEditorController.h>
-#include <include/Windows/Controllers/LogParserTabController.h>
-#include "include/Windows/Controllers/RootController.h"
+#include <Windows/Controllers/SettingsController.h>
+#include <Windows/Controllers/TestControllers/UnitTestsController.h>
+#include <Windows/Controllers/CommandsTabController.h>
+#include <Windows/Controllers/ConnectControllers/ConnectCOMTabController.h>
+#include <Windows/Controllers/ConnectTabController.h>
+#include <Windows/Controllers/TablesTabController.h>
+#include <Testing/SettingsSystem.h>
+#include <Tools/Logger.h>
+#include <Windows/Controllers/TestControllers/TestsEditorController.h>
+#include <Windows/Controllers/LogParserTabController.h>
+#include <Windows/Controllers/RootController.h>
 
 RootController::RootController(Ui::MainWindow *ptr,
                                QWidget *parent,

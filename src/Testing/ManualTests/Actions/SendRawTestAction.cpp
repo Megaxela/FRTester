@@ -2,8 +2,8 @@
 // Created by megaxela on 22.02.17.
 //
 
-#include <include/Testing/ManualTests/TestActionFabric.h>
-#include "include/Testing/ManualTests/Actions/SendRawTestAction.h"
+#include <Testing/ManualTests/TestActionFabric.h>
+#include "Testing/ManualTests/Actions/SendRawTestAction.h"
 
 REGISTER_ACTION(SendRawTestAction)
 

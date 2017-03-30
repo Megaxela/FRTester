@@ -6,7 +6,7 @@
 #define FRTESTER_CHECKCLOSETRIGGER_H
 
 
-#include <include/Testing/AbstractTriggerTest.h>
+#include <Testing/AbstractTriggerTest.h>
 
 class CheckCloseTrigger : public AbstractTriggerTest
 {

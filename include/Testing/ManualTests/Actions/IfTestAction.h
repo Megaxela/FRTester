@@ -6,7 +6,7 @@
 #define FRTESTER_IFTESTACTION_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 /**
  * @brief Метод для выполнения определенной последовательности

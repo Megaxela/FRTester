@@ -2,10 +2,10 @@
 // Created by megaxela on 27.02.17.
 //
 
-#include <include/Testing/ManualTests/TestActionFabric.h>
-#include <QtCore/QByteArray>
-#include <include/Tools/Codecs.h>
-#include "include/Testing/ManualTests/Actions/DocumentHeaderPrintTestAction.h"
+#include <Testing/ManualTests/TestActionFabric.h>
+#include <QByteArray>
+#include <Tools/Codecs.h>
+#include "Testing/ManualTests/Actions/DocumentHeaderPrintTestAction.h"
 
 REGISTER_ACTION(DocumentHeaderPrintTestAction)
 

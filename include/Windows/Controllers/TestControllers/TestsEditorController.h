@@ -6,8 +6,8 @@
 #define FRTESTER_TESTSEDITORCONTROLLER_H
 
 
-#include <include/Windows/Controllers/AbstractTabController.h>
-#include <include/Testing/ManualTests/ManualTest.h>
+#include <Windows/Controllers/AbstractTabController.h>
+#include <Testing/ManualTests/ManualTest.h>
 
 class TestsEditorController : public AbstractTabController
 {

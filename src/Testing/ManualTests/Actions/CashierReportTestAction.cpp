@@ -2,8 +2,8 @@
 // Created by megaxela on 27.02.17.
 //
 
-#include <include/Testing/ManualTests/Actions/CashierReportTestAction.h>
-#include <include/Testing/ManualTests/TestActionFabric.h>
+#include <Testing/ManualTests/Actions/CashierReportTestAction.h>
+#include <Testing/ManualTests/TestActionFabric.h>
 
 REGISTER_ACTION(CashierReportTestAction)
 

@@ -5,7 +5,7 @@
 #ifndef FRTESTER_DEVICECOMMANDSTABCONTROLLER_H
 #define FRTESTER_DEVICECOMMANDSTABCONTROLLER_H
 
-#include <include/Windows/Controllers/AbstractTabController.h>
+#include <Windows/Controllers/AbstractTabController.h>
 
 /**
  * @brief Класс, контроллирующий вкладку "Устройство" в виджете

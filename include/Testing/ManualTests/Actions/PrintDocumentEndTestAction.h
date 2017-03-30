@@ -6,7 +6,7 @@
 #define FRTESTER_PRINTDOCUMENTEND_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 class PrintDocumentEndTestAction : public AbstractTestAction
 {

@@ -6,9 +6,9 @@
 #define FRTESTER_TCPINTERFACE_H
 
 
-#include <include/Tools/NetworkTools.h>
-#include <include/Tools/IPv4Address.h>
-#include <include/Abstract/PhysicalInterface.h>
+#include <Tools/NetworkTools.h>
+#include <Tools/IPv4Address.h>
+#include <Abstract/PhysicalInterface.h>
 
 /**
  * @brief Класс, описывающий интерфейс соединения по TCP порту.

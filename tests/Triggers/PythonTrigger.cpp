@@ -3,7 +3,7 @@
 //
 
 #include "PythonTrigger.h"
-#include <include/Tools/Logger.h>
+#include <Tools/Logger.h>
 #include <cython/frdriver.h>
 #include <algorithm>
 

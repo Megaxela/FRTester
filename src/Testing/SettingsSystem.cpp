@@ -3,9 +3,9 @@
 //
 
 #include <fstream>
-#include <include/Tools/Logger.h>
-#include <include/Testing/AbstractTest.h>
-#include "include/Testing/SettingsSystem.h"
+#include <Tools/Logger.h>
+#include <Testing/AbstractTest.h>
+#include "Testing/SettingsSystem.h"
 #include "libraries/json.hpp"
 
 #define SETTINGS_FILE "settings.json"

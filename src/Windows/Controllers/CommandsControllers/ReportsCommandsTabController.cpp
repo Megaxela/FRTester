@@ -3,9 +3,9 @@
 //
 
 #include <Tools/Logger.h>
-#include <include/DriverHolder.h>
-#include <QtWidgets/QMessageBox>
-#include "include/Windows/Controllers/CommandsControllers/ReportsCommandsTabController.h"
+#include <DriverHolder.h>
+#include <QMessageBox>
+#include "Windows/Controllers/CommandsControllers/ReportsCommandsTabController.h"
 
 ReportsCommandsTabController::ReportsCommandsTabController(Ui::MainWindow *ptr,
                                                            QWidget *parent) :

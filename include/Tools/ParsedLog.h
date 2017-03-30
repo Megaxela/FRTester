@@ -7,7 +7,7 @@
 
 #include <cstdint>
 #include <ctime>
-#include "Logger.h"
+#include "Tools/Logger.h"
 
 /**
  * @brief Класс, описывающий обработанный лог.

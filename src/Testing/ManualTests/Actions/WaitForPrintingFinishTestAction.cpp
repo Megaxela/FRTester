@@ -2,8 +2,8 @@
 // Created by megaxela on 13.03.17.
 //
 
-#include <include/Testing/ManualTests/TestActionFabric.h>
-#include "include/Testing/ManualTests/Actions/WaitForPrintingFinishTestAction.h"
+#include <Testing/ManualTests/TestActionFabric.h>
+#include "Testing/ManualTests/Actions/WaitForPrintingFinishTestAction.h"
 
 REGISTER_ACTION(WaitForPrintingFinishTestAction)
 

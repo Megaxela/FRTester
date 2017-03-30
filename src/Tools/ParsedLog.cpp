@@ -2,7 +2,7 @@
 // Created by megaxela on 13.03.17.
 //
 
-#include "include/Tools/ParsedLog.h"
+#include "Tools/ParsedLog.h"
 
 ParsedLog::ParsedLog() :
     m_bytesSent(0),

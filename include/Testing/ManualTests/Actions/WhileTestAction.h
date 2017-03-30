@@ -6,7 +6,7 @@
 #define FRTESTER_WHILETESTACTION_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 /**
  * @brief Класс, описывающий цикл while.

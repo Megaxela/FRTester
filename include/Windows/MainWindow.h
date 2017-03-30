@@ -6,8 +6,8 @@
 #define FRTESTER_MAINWINDOW_H
 
 #include <QMainWindow>
-#include <include/Windows/Controllers/AbstractTabController.h>
-#include <include/Windows/Controllers/RootController.h>
+#include <Windows/Controllers/AbstractTabController.h>
+#include <Windows/Controllers/RootController.h>
 #include <QMap>
 
 namespace Ui

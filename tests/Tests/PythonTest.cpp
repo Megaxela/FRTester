@@ -5,7 +5,7 @@
 #include "PythonTest.h"
 #include <Python.h>
 #include "cython/frdriver.h"
-#include <include/Tools/Logger.h>
+#include <Tools/Logger.h>
 
 PythonTest::PythonTest(TestEnvironment *environment) :
     AbstractTest(environment, std::string(), std::string()),

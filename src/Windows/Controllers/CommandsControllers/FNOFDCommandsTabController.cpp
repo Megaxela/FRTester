@@ -2,14 +2,14 @@
 // Created by megaxela on 13.12.16.
 //
 
-#include <QtGui/QFontDatabase>
-#include <include/Tools/Logger.h>
-#include <include/DriverHolder.h>
-#include <include/FRDriver.h>
+#include <QFontDatabase>
+#include <Tools/Logger.h>
+#include <DriverHolder.h>
+#include <FRDriver.h>
 #include <QPlainTextEdit>
-#include "include/Windows/Controllers/CommandsControllers/FNOFDCommandsTabController.h"
-#include "include/Windows/Controllers/CommandsTabController.h"
-#include "ui_mainwindow.h"
+#include <Windows/Controllers/CommandsControllers/FNOFDCommandsTabController.h>
+#include <Windows/Controllers/CommandsTabController.h>
+#include <ui_mainwindow.h>
 
 FNOFDCommandsTabController::FNOFDCommandsTabController(Ui::MainWindow *ptr, QWidget *parent)
         : AbstractTabController(ptr, parent, nullptr)

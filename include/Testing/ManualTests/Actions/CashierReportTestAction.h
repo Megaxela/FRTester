@@ -6,7 +6,7 @@
 #define FRTESTER_CASHIERREPORTTESTACTIONA_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 class CashierReportTestAction : public AbstractTestAction
 {

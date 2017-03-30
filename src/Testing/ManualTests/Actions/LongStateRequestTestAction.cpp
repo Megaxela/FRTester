@@ -2,9 +2,9 @@
 // Created by megaxela on 21.02.17.
 //
 
-#include "include/Testing/ManualTests/Actions/LongStateRequestTestAction.h"
+#include "Testing/ManualTests/Actions/LongStateRequestTestAction.h"
+#include <Testing/ManualTests/TestActionFabric.h>
 #include <Testing/TestLogger.h>
-#include <include/Testing/ManualTests/TestActionFabric.h>
 
 REGISTER_ACTION(LongStateRequestTestAction)
 

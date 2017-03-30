@@ -6,7 +6,7 @@
 #define FRTESTER_RESUMEPRINTINGTESTACTION_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 class ResumePrintingTestAction : public AbstractTestAction
 {

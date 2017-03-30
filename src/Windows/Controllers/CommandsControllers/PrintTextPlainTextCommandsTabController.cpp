@@ -2,15 +2,15 @@
 // Created by megaxela on 26.12.16.
 //
 
-#include <include/Tools/Logger.h>
-#include "include/Windows/Controllers/CommandsControllers/PrintTextPlainTextCommandsTabController.h"
-#include "ui_mainwindow.h"
+#include <Tools/Logger.h>
+#include <Windows/Controllers/CommandsControllers/PrintTextPlainTextCommandsTabController.h>
+#include <ui_mainwindow.h>
 #include <QPushButton>
 #include <QPlainTextEdit>
-#include <include/Tools/Codecs.h>
-#include <include/DriverHolder.h>
+#include <Tools/Codecs.h>
+#include <DriverHolder.h>
 #include <vector>
-#include <QtWidgets/QMessageBox>
+#include <QMessageBox>
 
 PrintTextPlainTextCommandsTabController::PrintTextPlainTextCommandsTabController(Ui::MainWindow *ptr, QWidget *parent)
         : AbstractTabController(ptr, parent, nullptr)

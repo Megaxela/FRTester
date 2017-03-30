@@ -2,8 +2,8 @@
 // Created by megaxela on 27.02.17.
 //
 
-#include <include/Tools/Time.h>
-#include <include/Testing/StaticTestFabric.h>
+#include <Tools/Time.h>
+#include <Testing/StaticTestFabric.h>
 #include "CrazyStatusRequestTest.h"
 
 REGISTER_STATIC_TEST(CrazyStatusRequestTest)

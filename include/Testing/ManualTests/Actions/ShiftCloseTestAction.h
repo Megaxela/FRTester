@@ -6,7 +6,7 @@
 #define FRTESTER_SHIFTCLOSETESTACTION_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 class ShiftCloseTestAction : public AbstractTestAction
 {

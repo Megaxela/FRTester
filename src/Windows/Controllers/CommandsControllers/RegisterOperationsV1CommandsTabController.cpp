@@ -3,10 +3,10 @@
 //
 
 #include <Tools/Logger.h>
-#include <include/DriverHolder.h>
-#include <QtWidgets/QMessageBox>
-#include <include/Tools/TypeConverters.h>
-#include "include/Windows/Controllers/CommandsControllers/RegisterOperationsV1CommandsTabController.h"
+#include <DriverHolder.h>
+#include <QMessageBox>
+#include <Tools/TypeConverters.h>
+#include "Windows/Controllers/CommandsControllers/RegisterOperationsV1CommandsTabController.h"
 
 RegisterOperationsV1CommandsTabController::RegisterOperationsV1CommandsTabController(Ui::MainWindow *ptr,
                                                              QWidget *parent) :

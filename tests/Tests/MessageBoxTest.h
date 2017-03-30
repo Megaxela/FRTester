@@ -6,7 +6,7 @@
 #define FRTESTER_MESSAGEBOXTEST_H
 
 
-#include <include/Testing/AbstractTest.h>
+#include <Testing/AbstractTest.h>
 
 class MessageBoxTest : public AbstractTest
 {

@@ -6,7 +6,7 @@
 #define FRTESTER_PRINTADSTESTACTION_H
 
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 class PrintAdsTestAction : public AbstractTestAction
 {

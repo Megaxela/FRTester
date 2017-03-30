@@ -3,9 +3,9 @@
 //
 
 #include <Tools/Logger.h>
-#include <include/Testing/TestEnvironment.h>
-#include <include/Testing/SettingsSystem.h>
-#include "include/Testing/AbstractTriggerTest.h"
+#include <Testing/TestEnvironment.h>
+#include <Testing/SettingsSystem.h>
+#include "Testing/AbstractTriggerTest.h"
 
 AbstractTriggerTest::AbstractTriggerTest(TestEnvironment *environment, const std::string &name,
                                          const std::string &description, bool critical,

@@ -2,11 +2,11 @@
 // Created by megaxela on 22.11.16.
 //
 
-#include <include/Testing/TestCore.h>
-#include <include/Tools/Time.h>
-#include <include/DriverHolder.h>
-#include <include/TestDriverHolder.h>
-#include "include/Executor/TestingExecutor.h"
+#include <Testing/TestCore.h>
+#include <Tools/Time.h>
+#include <DriverHolder.h>
+#include <TestDriverHolder.h>
+#include <Executor/TestingExecutor.h>
 
 TestingExecutor::TestingExecutor() :
     m_tempTests(),

@@ -5,9 +5,9 @@
 #include "OperationTest.h"
 #include "Testing/TestLogger.h"
 #include <cmath>
-#include <include/Testing/TestCore.h>
-#include <include/Testing/FROperations.h>
-#include <include/Testing/StaticTestFabric.h>
+#include <Testing/TestCore.h>
+#include <Testing/FROperations.h>
+#include <Testing/StaticTestFabric.h>
 
 REGISTER_STATIC_TEST(OperationTest)
 

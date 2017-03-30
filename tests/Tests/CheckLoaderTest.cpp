@@ -2,12 +2,12 @@
 // Created by megaxela on 11.01.17.
 //
 
-#include <include/Testing/TestCore.h>
-#include <include/Testing/FROperations.h>
+#include <Testing/TestCore.h>
+#include <Testing/FROperations.h>
 #include <thread>
 #include <chrono>
-#include <include/Tools/Time.h>
-#include <include/Testing/StaticTestFabric.h>
+#include <Tools/Time.h>
+#include <Testing/StaticTestFabric.h>
 #include "CheckLoaderTest.h"
 #include "Testing/TestLogger.h"
 

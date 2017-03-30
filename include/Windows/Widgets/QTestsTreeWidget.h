@@ -7,8 +7,8 @@
 
 #include <QWidget>
 #include <QTreeWidget>
-#include <include/Testing/AbstractTest.h>
-#include <include/Testing/AbstractTriggerTest.h>
+#include <Testing/AbstractTest.h>
+#include <Testing/AbstractTriggerTest.h>
 #include "QTestsTreeWidgetMenu.h"
 
 Q_DECLARE_METATYPE(TestPtr)

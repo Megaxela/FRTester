@@ -2,11 +2,11 @@
 // Created by xelam on 30.11.2016.
 //
 
-#include "include/Windows/Widgets/QTestsTreeWidget.h"
+#include "Windows/Widgets/QTestsTreeWidget.h"
 #include <QMouseEvent>
 #include <QMenu>
-#include <include/Tools/Logger.h>
-#include <include/Testing/TestCore.h>
+#include <Tools/Logger.h>
+#include <Testing/TestCore.h>
 
 QTestsTreeWidget::QTestsTreeWidget(QWidget *parent) :
         QTreeWidget(parent),

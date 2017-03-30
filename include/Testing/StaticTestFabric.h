@@ -5,8 +5,8 @@
 #ifndef FRTESTER_STATICTESTFABRIC_H
 #define FRTESTER_STATICTESTFABRIC_H
 
-#include <include/Testing/ManualTests/Fabric.h>
-#include <include/Testing/ManualTests/FabricRegistrator.h>
+#include <Testing/ManualTests/Fabric.h>
+#include <Testing/ManualTests/FabricRegistrator.h>
 #include "AbstractTest.h"
 
 #define REGISTER_STATIC_TEST(OBJECT)\

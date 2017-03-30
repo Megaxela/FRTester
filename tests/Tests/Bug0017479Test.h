@@ -5,7 +5,7 @@
 #ifndef FRTESTER_BUG0017479TEST_H
 #define FRTESTER_BUG0017479TEST_H
 
-#include <include/Testing/AbstractTest.h>
+#include <Testing/AbstractTest.h>
 
 /**
  * @brief Тест для проверки:

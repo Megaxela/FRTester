@@ -2,8 +2,8 @@
 // Created by megaxela on 15.03.17.
 //
 
-#include <include/Testing/ManualTests/TestActionFabric.h>
-#include "include/Testing/ManualTests/Actions/WriteTableStringTestAction.h"
+#include <Testing/ManualTests/TestActionFabric.h>
+#include "Testing/ManualTests/Actions/WriteTableStringTestAction.h"
 
 REGISTER_ACTION(WriteTableStringTestAction)
 

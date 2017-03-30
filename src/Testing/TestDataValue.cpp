@@ -2,8 +2,8 @@
 // Created by megaxela on 03.02.17.
 //
 
-#include <include/Testing/TestDataValue.h>
-#include "include/Testing/TestDataValue.h"
+#include <Testing/TestDataValue.h>
+#include "Testing/TestDataValue.h"
 
 void DataValue::from_json(const json &j, DataValue &value)
 {

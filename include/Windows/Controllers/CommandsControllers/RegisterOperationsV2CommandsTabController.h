@@ -6,8 +6,8 @@
 #define FRTESTER_REGISTEROPERATIONSV2COMMANDSTABCONTROLLER_H
 
 
-#include <include/Windows/Controllers/AbstractTabController.h>
-#include <include/Windows/Controllers/CommandsTabController.h>
+#include <Windows/Controllers/AbstractTabController.h>
+#include <Windows/Controllers/CommandsTabController.h>
 
 /**
  * @brief Контроллер работающий со вкладкой с регистрацией с

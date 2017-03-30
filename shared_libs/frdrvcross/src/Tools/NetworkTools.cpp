@@ -2,14 +2,14 @@
 // Created by megaxela on 08.12.16.
 //
 
-#include "include/Tools/NetworkTools.h"
-#include "include/Tools/Platform.h"
+#include <Tools/NetworkTools.h>
+#include <Tools/Platform.h>
+#include <Tools/Logger.h>
 
-#include <include/Tools/Logger.h>
 #ifdef OS_LINUX
     #include <sys/socket.h>
     #include <netinet/in.h>
-    #include <include/Tools/IPv4Address.h>
+    #include <Tools/IPv4Address.h>
     #include <zconf.h>
 
 #endif

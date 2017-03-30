@@ -7,7 +7,7 @@
 
 #include <QTreeWidget>
 #include <QVector>
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 /**
  * @brief Класс, описывающий виджет для

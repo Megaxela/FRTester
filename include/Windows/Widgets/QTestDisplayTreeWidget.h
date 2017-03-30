@@ -6,7 +6,7 @@
 #define FRTESTER_QTESTDISPLAYTREEWIDGET_H
 
 #include <QTreeWidget>
-#include <include/Testing/ManualTests/ManualTest.h>
+#include <Testing/ManualTests/ManualTest.h>
 
 class QActionTreeWidgetItem;
 

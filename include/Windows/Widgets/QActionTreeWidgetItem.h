@@ -7,7 +7,7 @@
 
 
 #include <QTreeWidgetItem>
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 class QActionTreeWidgetItem : public QTreeWidgetItem
 {

@@ -2,22 +2,14 @@
 // Created by megaxela on 20.02.17.
 //
 
-#include <netinet/in.h>
-#include <QtCore/QMetaObject>
-#include <QtWidgets/QListWidget>
-#include <QtCore/QObject>
-#include <QtGui/QtGui>
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QAbstractScrollArea>
-#include "include/Windows/Widgets/QManualTestsListWidget.h"
-#include <QListWidgetItem>
-#include <include/Testing/ManualTests/Actions/BeepTestAction.h>
-#include <include/Testing/ManualTests/Actions/LongStateRequestTestAction.h>
-#include <include/Testing/ManualTests/Actions/WhileTestAction.h>
-#include <include/Tools/Logger.h>
-#include <include/Testing/SettingsSystem.h>
-#include <include/Tools/StdExtend.h>
-#include <include/Testing/ManualTests/ManualTestFabric.h>
+#include <QMetaObject>
+#include <QListWidget>
+#include <QtGui>
+#include <Windows/Widgets/QManualTestsListWidget.h>
+#include <Tools/Logger.h>
+#include <Testing/SettingsSystem.h>
+#include <Tools/StdExtend.h>
+#include <Testing/ManualTests/ManualTestFabric.h>
 
 QManualTestsListWidget::QManualTestsListWidget(QWidget *parent) :
         QListWidget(parent),

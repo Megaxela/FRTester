@@ -6,8 +6,8 @@
 #define FRTESTER_MANUALTESTFABRIC_H
 
 #include <libraries/json.hpp>
-#include <include/Testing/ManualTests/ManualTest.h>
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/ManualTest.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 using json = nlohmann::json;
 

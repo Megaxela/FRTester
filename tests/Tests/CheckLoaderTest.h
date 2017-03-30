@@ -6,7 +6,7 @@
 #define FRTESTER_CHECKLOADERTEST_H
 
 
-#include <include/Testing/AbstractTest.h>
+#include <Testing/AbstractTest.h>
 
 class CheckLoaderTest : public AbstractTest
 {

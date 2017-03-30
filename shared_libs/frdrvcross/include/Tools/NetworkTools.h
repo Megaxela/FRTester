@@ -6,8 +6,8 @@
 #define FRTESTER_NETWORKTOOLS_H
 
 
-#include "include/Tools/Platform.h"
-#include "IPv4Address.h"
+#include <Tools/Platform.h>
+#include <Tools/IPv4Address.h>
 #include <cstdint>
 
 #ifdef OS_WINDOWS

@@ -2,12 +2,12 @@
 // Created by megaxela on 13.12.16.
 //
 
-#include <include/DriverHolder.h>
-#include <QtWidgets/QMessageBox>
-#include <include/Tools/Codecs.h>
-#include <include/Tools/Logger.h>
-#include "include/Windows/Controllers/TablesTabController.h"
-#include "ui_mainwindow.h"
+#include <DriverHolder.h>
+#include <QMessageBox>
+#include <Tools/Codecs.h>
+#include <Tools/Logger.h>
+#include <Windows/Controllers/TablesTabController.h>
+#include <ui_mainwindow.h>
 
 TablesTabController::TablesTabController(Ui::MainWindow *ptr, QWidget *parent)
         : AbstractTabController(ptr, parent, nullptr),

@@ -5,7 +5,7 @@
 #ifndef FRTESTER_TIMEOUTACTION_H
 #define FRTESTER_TIMEOUTACTION_H
 
-#include <include/Testing/ManualTests/AbstractTestAction.h>
+#include <Testing/ManualTests/AbstractTestAction.h>
 
 /**
  * @brief Класс, описывающий действие, выполняющее
