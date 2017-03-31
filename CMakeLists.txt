@@ -42,7 +42,7 @@ set(UI_FILES
         ui/mainwindow.ui)
 
 set(UNMANAGED_FILES
-        )
+        include/Windows/Controllers/FNStateCommandsTabController.cpp include/Windows/Controllers/FNStateCommandsTabController.h)
 
 set(MAIN_FILE
         main.cpp
@@ -345,5 +345,8 @@ add_dependencies(FRTester frdrvcross)
 message("${CMAKE_SOURCE_DIR}/frdrvcross/lib")
 target_link_libraries(FRTester -L"${CMAKE_SOURCE_DIR}/build/libs" -lfrdrvcross)
 
+add_custom_command(TARGET FRTester PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/build/libs $<TARGET_FILE_DIR:FRTester>)
 
 qt5_use_modules(FRTester Core Widgets Gui)

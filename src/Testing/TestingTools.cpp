@@ -10,6 +10,7 @@
 #include <QMessageBox>
 #include <Windows/Controllers/TestControllers/UnitTestsController.h>
 #include <QObject>
+#include <Implementation/COMInterface.h>
 
 TestingTools::TestingTools(TestDriver *testDriver, TestLogger* logger) :
     m_executor(nullptr),
@@ -233,4 +234,97 @@ void TestingTools::setParentWidget(QWidget *parent)
 void TestingTools::setUnitTestsController(UnitTestsController *controller)
 {
     m_controller = controller;
+}
+
+bool TestingTools::performConnection()
+{
+    if (!messageQuestion(
+            "Соединение с ФР было разорвано. Продолжить работу теста?",
+            "Да",
+            "Нет"
+    ))
+    {
+        return false;
+    }
+
+    if (typeid(*m_currentDriver->physicalInterface()) ==
+        typeid(COMInterface))
+    {
+        m_logger->log(
+                "Обнаружено соединение по COM порту.\n"
+                        "Во избежании включения XMODEM ждем 5 секунд."
+        );
+
+        Time::sleep<std::chrono::seconds>(5);
+    }
+    else
+    {
+        m_logger->log(
+                "Для соединений по TCP можно не ждать отключения режима прошивки по XMODEM."
+        );
+    }
+
+    m_logger->log("Пытаемся подключиться после отключения.");
+
+    bool connected = false;
+
+    while (!connected)
+    {
+        int tries = 10;
+        while (!m_currentDriver->physicalInterface()->openConnection())
+        {
+            Time::sleep<std::chrono::milliseconds>(500);
+            tries--;
+            if (tries == 0)
+            {
+                if (!messageQuestion(
+                        "Не удалось подключиться в течении 10 попыток. Попытаться еще 10 раз?",
+                        "Да",
+                        "Нет"
+                ))
+                {
+                    return false;
+                }
+
+                tries = 10;
+            }
+        }
+
+        m_logger->log("Удалось подключиться. Проверяем наличие соединения.");
+
+        if (!m_currentDriver->checkConnection())
+        {
+            m_logger->log("Вне зависимости от того, что подключение установить удалось. Связь с устройством восстановить не удалось. Пытаемся еще раз.");
+            continue;
+        }
+
+        connected = true;
+    }
+
+    return true;
+}
+
+bool TestingTools::safeOperation(std::function<void(/*_Args&&...*/)> methodToBeSafe)
+{
+    bool done = false;
+
+    while (!done)
+    {
+        methodToBeSafe();
+
+        if (m_currentDriver->getLastError() == FRDriver::ErrorCode::NoError)
+        {
+            if (!performConnection())
+            {
+                m_logger->log("Не удалось совершить действие. Нет соединения с устройством.");
+                return false;
+            }
+
+            continue;
+        }
+
+        done = true;
+    }
+
+    return true;
 }

@@ -1398,6 +1398,51 @@ bool FRDriver::loadData(uint32_t password,
     return getLastError() == ErrorCode::NoError;
 }
 
+FRDriver::FNStatus FRDriver::getFNStatus(uint32_t sysAdmPassword)
+{
+    ByteArray arguments;
+
+    arguments.append(sysAdmPassword, ByteArray::ByteOrder_LittleEndian);
+
+    auto response = sendCommand(Command::FNStatusRequest, arguments, false);
+
+    FRDriver::FNStatus status = FRDriver::FNStatus();
+
+    if (getLastError() != ErrorCode::NoError)
+    {
+        return status;
+    }
+
+    ByteArrayReader reader(response);
+
+    reader.seek(1);
+
+    uint8_t lifeCycleState = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
+
+    status.settedUp = static_cast<bool>(lifeCycleState & 1);                  // 0b00000001
+    status.fiscalModeOpened = static_cast<bool>(lifeCycleState & 2);          // 0b00000010
+    status.fiscalModeClosed = static_cast<bool>(lifeCycleState & 4);          // 0b00000100
+    status.fiscalDataSendingFinished = static_cast<bool>(lifeCycleState & 8); // 0b00001000
+    status.currentDocument = static_cast<FNStatus::Document>(
+            reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian)
+    );
+    status.documentData = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
+    status.shiftOpened = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
+    status.warningsFlags = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
+
+    //todo: Проверить дату и время
+    status.date.year = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
+    status.date.month = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
+    status.date.day = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
+    status.time.hour = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
+    status.time.minute = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
+
+    status.fnNumber = reader.readString(16);
+    status.lastDocumentNumber = reader.read<uint32_t>(ByteArray::ByteOrder_LittleEndian);
+
+    return status;
+}
+
 static std::map<int, std::string> errorString = {
         {0x00, "ФН Успешное выполнение команды"},
         {0x01, "ФН Неизвестная команда, неверный форматпосылки или неизвестные параметры."},
@@ -1576,6 +1621,21 @@ std::map<int, std::string> lastPrintResultString = {
         {5, "Идет печать"}
 };
 
+std::map<uint8_t, std::string> fnDocumentString = {
+        {0x00, "Не открытого документа"},
+        {0x01, "Отчет о фискализации"},
+        {0x02, "Отчет об открытии"},
+        {0x04, "Кассовый чек"},
+        {0x08, "Отчет о закрытии смены"},
+        {0x10, "Отчет о закрытии фискального режима"},
+        {0x11, "Бланк строгой отчетности"},
+        {0x12, "Отчет об изменении параметров регистрации ККТ в связи с заменой ФН"},
+        {0x13, "Отчет об изменении параметров регистрации ККТ"},
+        {0x14, "Кассовый чек коррекции"},
+        {0x15, "БСО коррекции"},
+        {0x17, "Отчет о текущем состоянии расчетов"}
+};
+
 std::string FRDriver::Converters::posModeToString(uint8_t mode)
 {
     auto pos = posModeString.end();
@@ -1618,4 +1678,15 @@ std::string FRDriver::Converters::lastPrintResultToString(uint8_t result)
     }
 
     return "Неизвестный результат печати: " + std::to_string((int) result);
+}
+
+std::string FRDriver::Converters::fnDocumentToString(uint8_t document)
+{
+    auto pos = fnDocumentString.end();
+    if ((pos = fnDocumentString.find(document)) != fnDocumentString.end())
+    {
+        return pos->second;
+    }
+
+    return "Неизвестный тип документа: " + std::to_string((int) document);
 }

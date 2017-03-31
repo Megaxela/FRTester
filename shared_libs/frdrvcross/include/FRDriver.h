@@ -252,6 +252,14 @@ public:
          */
         static std::string lastPrintResultToString(uint8_t result);
 
+        /**
+         * @brief Функция для преобразования числового документа
+         * в строку.
+         * @param document Число с документом.
+         * @return Строковое представление документа в ФН.
+         */
+        static std::string fnDocumentToString(uint8_t document);
+
     private:
         Converters() = delete;
         ~Converters() = delete;
@@ -525,6 +533,53 @@ public:
         uint32_t firstDocumentNumber; //< Номер первого в очереди документа на отправку.
         TimeStructure time; //< Дата первого в очереди документа для ОФД
         DateStructure date; //< Время первого в очереди документа для ОФД
+    };
+
+    struct FNStatus
+    {
+        enum class Document
+        {
+              NoDocument = 0x00
+            , FiscalisationReport = 0x01
+            , ShiftOpenReport = 0x02
+            , Check = 0x04
+            , ShiftCloseReport = 0x08
+            , FiscalModeCloseReport = 0x10
+            , FormOfStrictAccountability = 0x11
+            , RefiscalCauseFN = 0x12
+            , Refiscal = 0x13
+            , CorrectionCheck = 0x14
+            , CorrectionBSO = 0x15
+            , CurrentStateOfPaymentsReport = 0x17
+        };
+
+        FNStatus() :
+                settedUp(false),
+                fiscalModeOpened(false),
+                fiscalModeClosed(false),
+                fiscalDataSendingFinished(false),
+                currentDocument(Document::NoDocument),
+                documentData(false),
+                shiftOpened(false),
+                warningsFlags(0),
+                date(),
+                time(),
+                fnNumber(0),
+                lastDocumentNumber(0)
+        {}
+
+        bool settedUp;
+        bool fiscalModeOpened;
+        bool fiscalModeClosed;
+        bool fiscalDataSendingFinished;
+        Document currentDocument;
+        bool documentData;
+        bool shiftOpened;
+        uint8_t warningsFlags;
+        DateStructure date;
+        TimeStructure time;
+        std::string fnNumber;
+        uint32_t lastDocumentNumber;
     };
 
     struct BarcodeData
@@ -1254,6 +1309,13 @@ public:
             const std::string& newNumber,
             const std::string& oldLicense
     );
+
+    /**
+     * @brief Команда для получения статуса ФН.
+     * @param sysAdmPassword Пароль системного администратора.
+     * @return Статус ФН, если нет ошибок.
+     */
+    FNStatus getFNStatus(uint32_t sysAdmPassword);
 
 protected:
 

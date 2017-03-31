@@ -99,6 +99,25 @@ public:
 
     void setUnitTestsController(UnitTestsController* controller);
 
+    /**
+     * @brief Метод для безопасного выполнения определенной команды
+     * драйвера. В этом методе контроллируется переподключение после
+     * потери соединения.
+     * @param methodToBeSafe Функция, которая будет использоваться в
+     * качестве метода для выполнения.
+     * @return True - если команда точно была выполнена.
+     * False - если по какой-то причине команда выполниться не
+     * смогла.
+     */
+    bool safeOperation(std::function<void(/*_Args&&...*/)> methodToBeSafe);
+
+    /**
+     * @brief Метод для произведения подключения при разрыве соединения.
+     * @return True - если получилось подключиться к ККТ.
+     * False - если по какой-то причине подключения не удалось.
+     */
+    bool performConnection();
+
 private:
     TestingTools(const TestingTools&) = delete;
     TestingTools& operator=(const TestingTools&) = delete;
