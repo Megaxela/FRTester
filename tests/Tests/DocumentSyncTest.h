@@ -7,6 +7,7 @@
 
 
 #include <Testing/AbstractTest.h>
+#include <random>
 
 /**
  * @brief Супер надежный тест для тестирования
@@ -20,6 +21,9 @@ public:
 
     bool execute() override;
 
+private:
+    std::random_device m_randomDevice;
+    std::mt19937 m_rng;
 };
 
 

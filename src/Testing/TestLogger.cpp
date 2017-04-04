@@ -2,6 +2,7 @@
 // Created by megaxela on 02.12.16.
 //
 
+#include <shared_libs/frdrvcross/include/Tools/Logger.h>
 #include "Testing/TestLogger.h"
 
 TestLogger::TestLogger() :
@@ -31,6 +32,7 @@ TestLogger &TestLogger::instance()
 
 void TestLogger::log(const std::string &string)
 {
+    LogStream() << "Тестовый лог: " << string << std::endl;
     std::unique_lock<std::mutex> lock(m_mutex);
     m_messages.push(string);
     m_notifier.notify_all();

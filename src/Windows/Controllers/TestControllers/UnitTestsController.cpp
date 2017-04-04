@@ -334,8 +334,6 @@ void UnitTestsController::addLogMessage(QString message,
             break;
     }
 
-    Log("Лог теста: " + message.toStdString());
-
     auto textCursor = ui()->unitTestsLogTextEdit->textCursor();
 
     ui()->unitTestsLogTextEdit->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);

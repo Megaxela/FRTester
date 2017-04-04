@@ -564,7 +564,7 @@ public:
                 warningsFlags(0),
                 date(),
                 time(),
-                fnNumber(0),
+                fnNumber(),
                 lastDocumentNumber(0)
         {}
 

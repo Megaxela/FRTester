@@ -134,26 +134,26 @@ void CheckCloseTrigger::onPreExecute(const std::string &, const ByteArray &argum
         return;
     }
 
-    m_193to196PayMoneyRegister = environment()->driver()->currencyRegisterRequest(
-            pwd,
-            (uint8_t) (193 + m_currentAction)
-    );
-
-    if (environment()->driver()->getLastError() != FRDriver::ErrorCode::NoError)
-    {
-        environment()->logger()->log(
-                "Не удалось получить значение регистра №" +
-                std::to_string((193 + m_currentAction)) +
-                " Ошибка # " +
-                std::to_string((int) environment()->driver()->getLastError()) +
-                " " +
-                FRDriver::Converters::errorToString(
-                        (int) environment()->driver()->getLastError()
-                )
-        );
-
-        return;
-    }
+//    m_193to196PayMoneyRegister = environment()->driver()->currencyRegisterRequest(
+//            pwd,
+//            (uint8_t) (193 + m_currentAction)
+//    );
+//
+//    if (environment()->driver()->getLastError() != FRDriver::ErrorCode::NoError)
+//    {
+//        environment()->logger()->log(
+//                "Не удалось получить значение регистра №" +
+//                std::to_string((193 + m_currentAction)) +
+//                " Ошибка # " +
+//                std::to_string((int) environment()->driver()->getLastError()) +
+//                " " +
+//                FRDriver::Converters::errorToString(
+//                        (int) environment()->driver()->getLastError()
+//                )
+//        );
+//
+//        return;
+//    }
 
     m_197to200PayMoneyRegister = environment()->driver()->currencyRegisterRequest(
             pwd,
@@ -304,24 +304,24 @@ void CheckCloseTrigger::onPostExecute()
     }
 
     // Проверка регистров 193 по 196
-    newRegisterValue = environment()->driver()->currencyRegisterRequest(
-            pwd,
-            (uint8_t) (193 + m_currentAction)
-    );
-
-    if (newRegisterValue - m_193to196PayMoneyRegister != m_cashSum)
-    {
-        environment()->logger()->log(
-                "Регистр №" +
-                std::to_string(193 + m_currentAction) +
-                " не изменился на количество наличности. " +
-                std::to_string(newRegisterValue - m_193to196PayMoneyRegister) +
-                " != " +
-                std::to_string(m_cashSum)
-        );
-
-        return;
-    }
+//    newRegisterValue = environment()->driver()->currencyRegisterRequest(
+//            pwd,
+//            (uint8_t) (193 + m_currentAction)
+//    );
+//
+//    if (newRegisterValue - m_193to196PayMoneyRegister != m_cashSum)
+//    {
+//        environment()->logger()->log(
+//                "Регистр №" +
+//                std::to_string(193 + m_currentAction) +
+//                " не изменился на количество наличности. " +
+//                std::to_string(newRegisterValue - m_193to196PayMoneyRegister) +
+//                " != " +
+//                std::to_string(m_cashSum)
+//        );
+//
+//        return;
+//    }
 
     // Проверка регистров 197 по 200
     newRegisterValue = environment()->driver()->currencyRegisterRequest(

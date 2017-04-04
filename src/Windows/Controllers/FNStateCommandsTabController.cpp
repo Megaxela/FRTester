@@ -2,7 +2,7 @@
 // Created by megaxela on 31.03.17.
 //
 
-#include "FNStateCommandsTabController.h"
+#include "include/Windows/Controllers/FNStateCommandsTabController.h"
 #include <ui_mainwindow.h>
 #include <Tools/Logger.h>
 #include <Windows/Controllers/CommandsTabController.h>
@@ -64,7 +64,7 @@ void FNStateCommandsTabController::onGetFNState()
     QString divider = "==================================================================";
 
     stringBuilder.append(divider + '\n');
-    stringBuilder.append("Состояние фазы жизни");
+    stringBuilder.append("Состояние фазы жизни\n");
     stringBuilder.append(divider + '\n');
     stringBuilder.append("    Проведена настройка ФН:    " + stringifyBool(requestResult.settedUp) + "\n");
     stringBuilder.append("    Открыт фискальный режим:   " + stringifyBool(requestResult.fiscalModeOpened) + "\n");
@@ -73,17 +73,17 @@ void FNStateCommandsTabController::onGetFNState()
     stringBuilder.append(divider + '\n');
     stringBuilder.append(
             QString::fromStdString(
-                    "Текущий документ     : " + FRDriver::Converters::fnDocumentToString((int) requestResult.currentDocument)
+                    "Текущий документ     : " + FRDriver::Converters::fnDocumentToString((int) requestResult.currentDocument) + "\n"
             )
     );
     stringBuilder.append(
-                    "Есть данные документа: " + stringifyBool(requestResult.documentData)
+                    "Есть данные документа: " + stringifyBool(requestResult.documentData) + "\n"
     );
     stringBuilder.append(
-                    "Смена открыта        : " + stringifyBool(requestResult.shiftOpened)
+                    "Смена открыта        : " + stringifyBool(requestResult.shiftOpened) + "\n"
     );
     stringBuilder.append(
-                    "Флаги предупреждения : " + QString::number(requestResult.warningsFlags, 2)
+                    "Флаги предупреждения : " + QString::number(requestResult.warningsFlags, 2) + "\n"
     );
 
     stringBuilder.append(
@@ -93,16 +93,16 @@ void FNStateCommandsTabController::onGetFNState()
                                                          requestResult.time.hour,
                                                          requestResult.time.minute,
                                                          requestResult.time.second
-                    )
+                    ) + "\n"
     );
 
     stringBuilder.append(
             QString::fromStdString(
                     "Номер ФН:            : " + requestResult.fnNumber
-            )
+            ) + "\n"
     );
     stringBuilder.append(
-                    "Номер последнего ФД  : " + QString::number(requestResult.lastDocumentNumber)
+                    "Номер последнего ФД  : " + QString::number(requestResult.lastDocumentNumber) + "\n"
     );
 
     stringBuilder.append(divider);

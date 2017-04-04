@@ -312,7 +312,7 @@ bool TestingTools::safeOperation(std::function<void(/*_Args&&...*/)> methodToBeS
     {
         methodToBeSafe();
 
-        if (m_currentDriver->getLastError() == FRDriver::ErrorCode::NoError)
+        if (m_currentDriver->getLastError() == FRDriver::ErrorCode::Unknown)
         {
             if (!performConnection())
             {

@@ -55,10 +55,30 @@ void OperationTrigger::onPreExecute(const std::string &realTag,
             registerIndex
     );
 
+    // Проверка необходимости получения подытога
+    bool required = false;
+    for (uint8_t opRegisterIndex = 0; registerIndex < 64; ++registerIndex)
+    {
+        auto result = environment()->driver()->currencyRegisterRequest(
+                password,
+                opRegisterIndex
+        );
+
+        if (result > 0)
+        {
+            required = true;
+            break;
+        }
+    }
+
+    m_previousCheckResult = 0;
     // Попытка получения подытога
-    m_previousCheckResult = environment()->driver()->checkResult(
-            password
-    );
+    if (required)
+    {
+        m_previousCheckResult = environment()->driver()->checkResult(
+                password
+        );
+    }
 }
 
 void OperationTrigger::onPostExecute()

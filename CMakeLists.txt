@@ -42,7 +42,7 @@ set(UI_FILES
         ui/mainwindow.ui)
 
 set(UNMANAGED_FILES
-        include/Windows/Controllers/FNStateCommandsTabController.cpp include/Windows/Controllers/FNStateCommandsTabController.h)
+        src/Windows/Controllers/FNStateCommandsTabController.cpp include/Windows/Controllers/FNStateCommandsTabController.h)
 
 set(MAIN_FILE
         main.cpp

@@ -7,6 +7,7 @@
 #include <shared_libs/frdrvcross/include/Implementation/COMInterface.h>
 #include <include/Tools/Codecs.h>
 #include <include/Testing/FROperations.h>
+#include <shared_libs/frdrvcross/include/Tools/Logger.h>
 #include "DocumentSyncTest.h"
 
 REGISTER_STATIC_TEST(DocumentSyncTest)
@@ -18,7 +19,10 @@ DocumentSyncTest::DocumentSyncTest() :
                  {{"Password", (uint32_t) 30},
                   {"Checks in change", (uint32_t) 20},
                   {"Number of changes", (uint32_t) 1},
-                  {"Number of operations", (uint32_t) 100}})
+                  {"Number of operations", (uint32_t) 100}}),
+    m_randomDevice(),
+    m_rng()
+
 {
 
 }
@@ -38,6 +42,8 @@ bool DocumentSyncTest::execute()
          shiftIndex < numberOfShifts;
          ++shiftIndex)
     {
+        CHECK_IS_TEST_RUNNING
+
         uint64_t shiftOperationMoney = 0;
 
         environment()->logger()->log(
@@ -54,6 +60,43 @@ bool DocumentSyncTest::execute()
                 }
         ))
         {
+            return false;
+        }
+
+        // Ожидаем окончания печати
+        if (!environment()->tools()->waitForPrintingFinished(password, 10000))
+        {
+            environment()->logger()->log("Не удалось дождаться окончания печати.");
+            return false;
+        }
+
+        environment()->logger()->log("Дождались окончания печати документа открытия смены.");
+
+
+
+        FRDriver::FNStatus fnStatus;
+        if (!environment()->tools()->safeOperation(
+                [&]()
+                {
+                    fnStatus = environment()->driver()->getFNStatus(password);
+                }
+        ))
+        {
+            return false;
+        }
+
+        // Проверяем на наличие рядовых ошибок
+        if (environment()->driver()->getLastError() != FRDriver::ErrorCode::NoError)
+        {
+            environment()->logger()->log(
+                    "Во время получения статуса FN была получена ошибка. #" +
+                    std::to_string((int) environment()->driver()->getLastError()) +
+                    " " +
+                    FRDriver::Converters::errorToString(
+                            (int) environment()->driver()->getLastError()
+                    )
+            );
+
             return false;
         }
 
@@ -98,33 +141,53 @@ bool DocumentSyncTest::execute()
             }
         }
 
-        //todo: Проверить состояние смены в ФН
+        if (!fnStatus.shiftOpened)
+        {
+            environment()->logger()->log("Смена в ФН не открылась. Хотя в ККТ открылась.");
+            if (!environment()->tools()->messageQuestion(
+                    "Смена в ФН не открылась, что за дела?",
+                    "Да нормально все.",
+                    "Чет не так."
+            ))
+            {
+                environment()->logger()->log("Ну тогда останавливаем тест.");
+                return false;
+            }
+        }
 
         for (uint32_t checkIndex = 0;
              checkIndex < numberOfChecks;
              ++checkIndex)
         {
+            CHECK_IS_TEST_RUNNING
 
             uint64_t checkOperationsMoney = 0;
+
+            std::uniform_int_distribution<uint64_t> generator(1, 50000);
 
             for (uint32_t operationIndex = 0;
                  operationIndex < numberOfOperations;
                  ++operationIndex)
             {
-                if ((operationIndex % operationsPrintDelta) == 0 ||
+                CHECK_IS_TEST_RUNNING
+
+                if (operationsPrintDelta == 0 ||
+                    ((operationIndex + 1) % operationsPrintDelta) == 0 ||
                     operationIndex == (numberOfOperations - 1))
                 {
                     environment()->logger()->log(
                             "Пробивается операция №" +
-                            std::to_string(operationIndex) +
+                            std::to_string(operationIndex + 1) +
                             " из " +
                             std::to_string(numberOfOperations)
                     );
                 }
 
-                // todo: Добавить случайную генерацию цены и количества
-                uint64_t count = 1000;
-                uint64_t price = 1000;
+//                uint64_t count = 1000;
+//                uint64_t price = 1000;
+
+                uint64_t count = generator(m_rng);
+                uint64_t price = generator(m_rng);
 
                 if (!environment()->tools()->safeOperation(
                         [=]()
@@ -155,10 +218,56 @@ bool DocumentSyncTest::execute()
                     return false;
                 }
 
+                // Проверяем открылся ли документ в ФН
+                if (!environment()->tools()->safeOperation(
+                        [&]()
+                        {
+                            fnStatus = environment()->driver()->getFNStatus(password);
+                        }
+                ))
+                {
+                    return false;
+                }
+
+                // Проверяем на наличие рядовых ошибок
+                if (environment()->driver()->getLastError() != FRDriver::ErrorCode::NoError)
+                {
+                    environment()->logger()->log(
+                            "Во время получения статуса FN была получена ошибка. #" +
+                            std::to_string((int) environment()->driver()->getLastError()) +
+                            " " +
+                            FRDriver::Converters::errorToString(
+                                    (int) environment()->driver()->getLastError()
+                            )
+                    );
+
+                    return false;
+                }
+
+                if (fnStatus.currentDocument != FRDriver::FNStatus::Document::Check)
+                {
+                    environment()->logger()->log(
+                            "Чек открыли, но ФН так не думает. Документ в ФН: " +
+                            FRDriver::Converters::fnDocumentToString((uint8_t) fnStatus.currentDocument)
+                    );
+
+                    if (!environment()->tools()->messageQuestion(
+                            "В ФН не открылся документ. Что за дела?",
+                            "Да нормально все.",
+                            "Чет не так."
+                    ))
+                    {
+                        environment()->logger()->log("Ну тогда останавливаем тест.");
+                        return false;
+                    }
+                }
+
                 // Подсчитываем сумму
-                checkOperationsMoney += FROperations::smartRound(
-                        (count * 0.001) * (price * 0.01)
-                );
+                auto result = FROperations::multiply(price, count);
+
+                Log("Чек с ценой " + std::to_string(price) + " и количеством " + std::to_string(count) + " = " + std::to_string(result));
+
+                checkOperationsMoney += result;
             }
 
             environment()->logger()->log(
@@ -211,8 +320,9 @@ bool DocumentSyncTest::execute()
             uint64_t shortChange = 0;
 
             // Добавляем случайную сумму для сдачи
-            // todo: Добавить случайную генерацию числа.
-            uint64_t randomAdd = 1000;
+            uint64_t randomAdd = generator(m_rng);
+
+            environment()->logger()->log("Случайная добавка: " + std::to_string(randomAdd));
 
             if (!environment()->tools()->safeOperation(
                     [&]()
@@ -246,6 +356,15 @@ bool DocumentSyncTest::execute()
                     }
             ))
             {
+                return false;
+            }
+
+            environment()->logger()->log("Ожидаем окончания печати.");
+
+            // Ожидаем окончания печати
+            if (!environment()->tools()->waitForPrintingFinished(password, 10000))
+            {
+                environment()->logger()->log("Не удалось дождаться окончания печати.");
                 return false;
             }
 
@@ -297,7 +416,14 @@ bool DocumentSyncTest::execute()
             return false;
         }
 
+        environment()->logger()->log("Ожидаем окончания печати.");
 
+        // Ожидаем окончания печати
+        if (!environment()->tools()->waitForPrintingFinished(password, 10000))
+        {
+            environment()->logger()->log("Не удалось дождаться окончания печати.");
+            return false;
+        }
     }
 
     return true;

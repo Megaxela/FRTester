@@ -1415,7 +1415,7 @@ FRDriver::FNStatus FRDriver::getFNStatus(uint32_t sysAdmPassword)
 
     ByteArrayReader reader(response);
 
-    reader.seek(1);
+    reader.seek(3);
 
     uint8_t lifeCycleState = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
 
@@ -1622,7 +1622,7 @@ std::map<int, std::string> lastPrintResultString = {
 };
 
 std::map<uint8_t, std::string> fnDocumentString = {
-        {0x00, "Не открытого документа"},
+        {0x00, "Нет открытого документа"},
         {0x01, "Отчет о фискализации"},
         {0x02, "Отчет об открытии"},
         {0x04, "Кассовый чек"},

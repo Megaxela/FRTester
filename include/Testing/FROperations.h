@@ -17,6 +17,14 @@ namespace FROperations
      * @return Результат округления.
      */
     uint32_t smartRound(double val);
+
+    /**
+     * @brief Функиция для умножения цены на количество.
+     * @param price Цена в копейках.
+     * @param count Количество в тысячных.
+     * @return
+     */
+    uint64_t multiply(uint64_t price, uint64_t count);
 }
 
 
