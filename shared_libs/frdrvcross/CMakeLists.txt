@@ -4,7 +4,7 @@ project(frdrvcross)
 set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_CXX_FLAGS -pthread )
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build/libs")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/../FRTester_executable")
 
 include_directories(include)
 

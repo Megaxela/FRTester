@@ -46,6 +46,25 @@ STDEXTEND_NAMESPACE
      * @return Is string `s` ends with string `with`
      */
     bool ends(const std::string &s, const std::string &with);
+
+    /**
+     * @brief Method for getting median value in container.
+     * @tparam T Int type.
+     * @tparam Container
+     * @param container
+     * @return
+     */
+    template<typename Container>
+    typename Container::value_type median(const Container &container)
+    {
+        typename Container::value_type sum = typename Container::value_type(0);
+        for (auto& el : container)
+        {
+            sum += el;
+        }
+
+        return sum / container.size();
+    }
 }
 
 
