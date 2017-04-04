@@ -158,42 +158,11 @@ set(INCLUDE_FILES
         include/Windows/Controllers/CommandsControllers/RegisterOperationsV2CommandsTabController.h
         )
 
-set(STATIC_TESTS
-        tests/Tests/CycleTest.h
-        tests/Tests/OperationTest.h
-        tests/Triggers/OperationTrigger.h
-        tests/Triggers/CheckCloseTrigger.h
-        tests/Tests/CycleTest.cpp
-        tests/Tests/OperationTest.cpp
-        tests/Triggers/OperationTrigger.cpp
-        tests/Triggers/CheckCloseTrigger.cpp
-        tests/Tests/CheckLoaderTest.cpp
-        tests/Tests/CheckLoaderTest.h
-        tests/Tests/WriteShitCashierNameTest.cpp
-        tests/Tests/WriteShitCashierNameTest.h
-        tests/Tests/NonfiscalRequesting.cpp
-        tests/Tests/NonfiscalRequesting.h
-        tests/Tests/TableFiscalStorageLinesTest.cpp
-        tests/Tests/TableFiscalStorageLinesTest.h
-        tests/Triggers/ZReportTrigger.h
-        tests/Triggers/ZReportTrigger.cpp
-        tests/Tests/BarcodePrintingTest.cpp
-        tests/Tests/BarcodePrintingTest.h
-        tests/Tests/CheckFontTest.cpp
-        tests/Tests/CheckFontTest.h
-        tests/Tests/MagnitCheckTest.cpp tests/Tests/MagnitCheckTest.h
-        tests/Tests/MessageBoxTest.cpp tests/Tests/MessageBoxTest.h
-        tests/Tests/Bug0017479Test.cpp
-        tests/Tests/Bug0017479Test.h
-        tests/Tests/Bug0017515Test.cpp
-        tests/Tests/Bug0017515Test.h
-        tests/Tests/Bug0017483Test.cpp
-        tests/Tests/Bug0017483Test.h
-        tests/Tests/CrazyStatusRequestTest.cpp
-        tests/Tests/CrazyStatusRequestTest.h
-        tests/Tests/QuickMiniposTest.h
-        tests/Tests/QuickMiniposTest.cpp
-        )
+file(GLOB STATIC_TESTS
+        "tests/Tests/*.h"
+        "tests/Tests/*.cpp"
+        "tests/Triggers/*.h"
+        "tests/Triggers/*.cpp")
 
 set(SOURCE_FILES
         src/DriverHolder.cpp
