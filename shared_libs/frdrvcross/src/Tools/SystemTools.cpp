@@ -100,7 +100,8 @@ SystemTools::LibraryType SystemTools::loadLibrary(const std::string &/*path*/)
 //    return dlopen(path.c_str(), RTLD_LAZY);
 #endif
 #ifdef OS_WINDOWS
-    return LoadLibrary(path.c_str());
+//    return LoadLibrary(path.c_str());
+    return 0;
 #endif
 }
 

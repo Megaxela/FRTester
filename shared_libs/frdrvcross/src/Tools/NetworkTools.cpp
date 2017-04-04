@@ -24,7 +24,7 @@ bool NetworkTools::initSockets()
     int result = WSAStartup(MAKEWORD(2, 2), &data);
     if (result != 0)
     {
-        Critical("WSAStartup fail. Error: " + std::to_string(result));
+        CriticalEx("NetworkTools", "WSAStartup fail. Error: " + std::to_string(result));
         return false;
     }
 #endif

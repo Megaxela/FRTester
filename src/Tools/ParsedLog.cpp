@@ -74,7 +74,10 @@ ParsedLog ParsedLog::parse(std::ifstream &stream)
         case State::ReadingTimeSeconds:
             if (character == ' ')
             {
+#ifdef OS_LINUX
+                //todo: Добавить кроссплатформенное преобразование
                 strptime(ss.str().c_str(), "%Y-%m-%dT %H:%M:%S", &lineData.dateTime);
+#endif
                 ss.clear();
                 state = State::ReadingFilename;
             }

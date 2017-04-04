@@ -64,10 +64,10 @@ int TTY::connect(const std::string &port, int baudrate)
     disconnect();
 
 #ifdef OS_WINDOWS
-    if (!stdex::begins(port, "COM"))
-    {
-        return 7;
-    }
+//    if (!stdex::begins(port, "COM"))
+//    {
+//        return 7;
+//    }
 
     Log("Подключаемся к порту \"" + port + "\".");
     m_Handle = CreateFileA(
@@ -102,9 +102,9 @@ int TTY::connect(const std::string &port, int baudrate)
     COMMTIMEOUTS CommTimeOuts;
     CommTimeOuts.ReadIntervalTimeout = 0xFFFFFFFF;
     CommTimeOuts.ReadTotalTimeoutMultiplier = 0;
-    CommTimeOuts.ReadTotalTimeoutConstant = static_cast<DWORD>(TIMEOUT);
+    CommTimeOuts.ReadTotalTimeoutConstant = static_cast<DWORD>(10000);
     CommTimeOuts.WriteTotalTimeoutMultiplier = 0;
-    CommTimeOuts.WriteTotalTimeoutConstant = static_cast<DWORD>(TIMEOUT);
+    CommTimeOuts.WriteTotalTimeoutConstant = static_cast<DWORD>(10000);
 
     if (!SetCommTimeouts(m_Handle, &CommTimeOuts))
     {
@@ -399,7 +399,7 @@ ByteArray TTY::read(uint32_t size, uint32_t timeoutMcs) const
 {
 
 #ifdef OS_WINDOWS
-    byte response[size];
+    byte* response = new byte[size];
     memset(response, 0, size * sizeof(byte));
 
     DWORD feedback = 0;

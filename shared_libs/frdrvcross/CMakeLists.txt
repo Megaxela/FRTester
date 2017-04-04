@@ -54,4 +54,8 @@ add_library(frdrvcross SHARED
         ${HEADER_FILES}
 )
 
+if (WIN32)
+    target_link_libraries(frdrvcross -lws2_32)
+endif()
+
 #set_target_properties(frdrvcross PROPERTIES COMPILE_FLAGS "-m32 " LINK_FLAGS "-m32")

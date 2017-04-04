@@ -312,7 +312,7 @@ add_dependencies(FRTester frdrvcross)
 # Linkage
 #-------------
 message("${CMAKE_SOURCE_DIR}/frdrvcross/lib")
-target_link_libraries(FRTester -L"${CMAKE_SOURCE_DIR}/build/libs" -lfrdrvcross)
+target_link_libraries(FRTester -L"${CMAKE_SOURCE_DIR}/../${CMAKE_PROJECT_NAME}_executable" -lfrdrvcross)
 
 add_custom_command(TARGET FRTester PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
