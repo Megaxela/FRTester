@@ -267,7 +267,7 @@ set(SOURCE_FILES
         src/Windows/Controllers/TablesTabController.cpp
         src/Windows/Controllers/LogParserTabController.cpp
         src/Windows/Controllers/TestControllers/TestsEditorController.cpp
-        tests/Tests/DocumentSyncTest.cpp tests/Tests/DocumentSyncTest.h)
+        tests/Tests/DocumentSyncTest.cpp tests/Tests/DocumentSyncTest.h src/Windows/Controllers/FNFiscalisationTabController.cpp include/Windows/Controllers/CommandsControllers/FNFiscalisationTabController.h src/Testing/ConnectionsManager/ConnectionsManager.cpp include/Testing/ConnectionsManager/ConnectionsManager.h src/Testing/ConnectionsManager/Connection.cpp include/Testing/ConnectionsManager/Connection.h src/Testing/ConnectionsManager/COMConnection.cpp include/Testing/ConnectionsManager/COMConnection.h src/Testing/ConnectionsManager/TCPConnection.cpp include/Testing/ConnectionsManager/TCPConnection.h)
 
 #------------------------
 # Setuping Qt

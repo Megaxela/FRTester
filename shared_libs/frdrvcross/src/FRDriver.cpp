@@ -1443,6 +1443,157 @@ FRDriver::FNStatus FRDriver::getFNStatus(uint32_t sysAdmPassword)
     return status;
 }
 
+std::string FRDriver::getFNNumber(uint32_t sysAdmPassword)
+{
+    ByteArray arguments;
+    arguments.append<uint32_t>(sysAdmPassword, ByteArray::ByteOrder_LittleEndian);
+
+    auto response = sendCommand(Command::FNNumberRequest, arguments, false);
+
+    if (getLastError() != FRDriver::ErrorCode::NoError)
+    {
+        return std::string();
+    }
+
+    ByteArrayReader reader(response);
+    reader.seek(3);
+
+    return reader.readString(16);
+}
+
+FRDriver::FNVersion FRDriver::getFNVersion(uint32_t sysAdmPassword)
+{
+    ByteArray arguments;
+    arguments.append<uint32_t>(sysAdmPassword, ByteArray::ByteOrder_LittleEndian);
+
+    auto response = sendCommand(Command::FNVersionRequest, arguments, false);
+
+    FRDriver::FNVersion version = FRDriver::FNVersion();
+
+    if (getLastError() != FRDriver::ErrorCode::NoError)
+    {
+        return version;
+    }
+
+    ByteArrayReader reader(response);
+    reader.seek(3);
+
+    version.firmwareVersion = reader.readString(16);
+    version.type = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
+
+    return version;
+}
+
+bool FRDriver::beginPOSRegistration(uint32_t sysAdmPassword)
+{
+    ByteArray arguments;
+    arguments.append<uint32_t>(sysAdmPassword, ByteArray::ByteOrder_LittleEndian);
+
+    auto response = sendCommand(Command::FNStartRegistrationReport, arguments, false);
+
+    return getLastError() == FRDriver::ErrorCode::NoError;
+}
+
+FRDriver::POSRegistrationReport FRDriver::formPOSRegistrationReport(uint32_t sysAdmPassword,
+                                                                    const std::string &inn,
+                                                                    const std::string &posRegistrationNumber,
+                                                                    uint8_t taxMode,
+                                                                    uint8_t workMode)
+{
+    assert(inn.size() <= 12);
+    assert(posRegistrationNumber.size() <= 20);
+
+    ByteArray arguments;
+    arguments.append<uint32_t>(sysAdmPassword, ByteArray::ByteOrder_LittleEndian);
+    arguments.append((const uint8_t *) inn.c_str(), static_cast<uint32_t>(inn.size()));
+    arguments.appendMultiple<uint8_t>(0, static_cast<uint32_t>(12 - inn.size()));
+    arguments.append((const uint8_t *) posRegistrationNumber.c_str(), static_cast<uint32_t>(posRegistrationNumber.size()));
+    arguments.appendMultiple<uint8_t>(0, static_cast<uint32_t>(20 - posRegistrationNumber.size()));
+    arguments.append<uint8_t>(taxMode);
+    arguments.append<uint8_t>(workMode);
+
+    auto response = sendCommand(Command::FNFormRegistrationReport, arguments, false);
+
+    POSRegistrationReport registrationReport = POSRegistrationReport();
+
+    if (getLastError() != ErrorCode::NoError)
+    {
+        return registrationReport;
+    }
+
+    ByteArrayReader reader(response);
+    reader.seek(3);
+
+    registrationReport.fdNumber = reader.read<uint32_t>(ByteArray::ByteOrder_LittleEndian);
+    registrationReport.fiscalSign = reader.read<uint32_t>(ByteArray::ByteOrder_LittleEndian);
+
+    return registrationReport;
+}
+
+bool FRDriver::resetFNState(uint32_t sysAdmPassword, uint8_t code)
+{
+    ByteArray arguments;
+
+    arguments.append<uint32_t>(sysAdmPassword, ByteArray::ByteOrder_LittleEndian);
+    arguments.append<uint8_t>(code);
+
+    auto response = sendCommand(Command::ResetFN, arguments, false);
+
+    return getLastError() != ErrorCode::NoError;
+}
+
+FRDriver::DeviceType FRDriver::getDeviceType()
+{
+    auto response = sendCommand(Command::RequestDeviceType, ByteArray(), false);
+
+    FRDriver::DeviceType deviceType = FRDriver::DeviceType();
+
+    if (getLastError() != ErrorCode::NoError)
+    {
+        return deviceType;
+    }
+
+    ByteArrayReader reader(response);
+    reader.seek(2);
+
+    deviceType.deviceType = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
+    deviceType.deviceSubType = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
+    deviceType.protocolVersion = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
+    deviceType.protocolSubVersion = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
+    deviceType.deviceModel = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
+    deviceType.language = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
+    deviceType.deviceName = reader.readString(response.size() - 8);
+
+    return deviceType;
+}
+
+FRDriver::FNDocument FRDriver::findDocument(uint32_t sysAdmPassword, uint32_t documentNumber)
+{
+    ByteArray arguments;
+
+    arguments.append<uint32_t>(sysAdmPassword, ByteArray::ByteOrder_LittleEndian);
+    arguments.append<uint32_t>(documentNumber, ByteArray::ByteOrder_LittleEndian);
+
+    auto response = sendCommand(Command::FindFiscalDocument, arguments, false);
+
+    FRDriver::FNDocument document = FRDriver::FNDocument();
+
+    if (getLastError() != ErrorCode::NoError)
+    {
+        return document;
+    }
+
+    ByteArrayReader reader(response);
+
+    reader.seek(3);
+
+    document.type = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
+    document.receiptReceived = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
+
+    //todo: Добавить сюда получение TLV данных.
+    return document;
+}
+
 static std::map<int, std::string> errorString = {
         {0x00, "ФН Успешное выполнение команды"},
         {0x01, "ФН Неизвестная команда, неверный форматпосылки или неизвестные параметры."},
@@ -1587,7 +1738,7 @@ static std::map<int, std::string> errorString = {
         {0xFF, "Неизвестная ошибка"}
 };
 
-std::map<int, std::string> posModeString = {
+static std::map<int, std::string> posModeString = {
         {1, "Выдача данных."},
         {2, "Открытая смена, 24 часа не кончились."},
         {3, "Открытая смена, 24 часа кончились."},
@@ -1605,7 +1756,7 @@ std::map<int, std::string> posModeString = {
         {15, "Фискальный подкладной документ сформирован1"}
 };
 
-std::map<int, std::string> posSubModeString = {
+static std::map<int, std::string> posSubModeString = {
         {0, "Бумага есть"},
         {1, "Пассивное отсутствие бумаги"},
         {2, "Активное отсутствие бумаги"},
@@ -1614,14 +1765,14 @@ std::map<int, std::string> posSubModeString = {
         {5, "Фаза печати операции"}
 };
 
-std::map<int, std::string> lastPrintResultString = {
+static std::map<int, std::string> lastPrintResultString = {
         {0, "Печать завершена успешно"},
         {1, "Произочел обрыв бумаги"},
         {2, "Ошибка принтера (перегрев головки, другая ошибка)"},
         {5, "Идет печать"}
 };
 
-std::map<uint8_t, std::string> fnDocumentString = {
+static std::map<uint8_t, std::string> fnDocumentString = {
         {0x00, "Нет открытого документа"},
         {0x01, "Отчет о фискализации"},
         {0x02, "Отчет об открытии"},
@@ -1634,6 +1785,21 @@ std::map<uint8_t, std::string> fnDocumentString = {
         {0x14, "Кассовый чек коррекции"},
         {0x15, "БСО коррекции"},
         {0x17, "Отчет о текущем состоянии расчетов"}
+};
+
+static std::map<uint8_t, std::string> languageString = {
+        { 0, "Русский"},
+        { 1, "Английский"},
+        { 2, "Эстонский"},
+        { 3, "Казахский"},
+        { 4, "Белорусский"},
+        { 5, "Армянский"},
+        { 6, "Грузинский"},
+        { 7, "Украинский"},
+        { 8, "Киргизский"},
+        { 9, "Туркменский"},
+        {10, "Молдаванский"}
+
 };
 
 std::string FRDriver::Converters::posModeToString(uint8_t mode)
@@ -1689,4 +1855,15 @@ std::string FRDriver::Converters::fnDocumentToString(uint8_t document)
     }
 
     return "Неизвестный тип документа: " + std::to_string((int) document);
+}
+
+std::string FRDriver::Converters::deviceLanguageToString(uint8_t language)
+{
+    auto pos = languageString.end();
+    if ((pos = languageString.find(language)) != languageString.end())
+    {
+        return pos->second;
+    }
+
+    return "Неизвестный язык: " + std::to_string(language);
 }

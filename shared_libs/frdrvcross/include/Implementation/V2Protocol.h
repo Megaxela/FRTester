@@ -1,33 +1,33 @@
 //
-// Created by megaxela on 14.11.16.
+// Created by megaxela on 05.04.17.
 //
 
-#ifndef FRDRVCROSS_DEFAULTPROTOCOL_H
-#define FRDRVCROSS_DEFAULTPROTOCOL_H
+#ifndef FRTESTER_V2PROTOCOL_H
+#define FRTESTER_V2PROTOCOL_H
 
-
-#include "../Abstract/Protocol.h"
+#include <Abstract/Protocol.h>
 
 /**
- * @brief Стандартный протокол.
+ * @brief Протокол V2.
  */
-class DefaultProtocol : public Protocol
+class V2Protocol : public Protocol
 {
 public:
     /**
      * @brief Конструктор.
      */
-    DefaultProtocol();
+    V2Protocol();
 
     /**
      * @brief Деструктор.
      */
-    ~DefaultProtocol();
+    ~V2Protocol();
 
     /**
-     * @brief Метод для обработки исходящий пакетов.
+     * @brief Метод для обработки исходящих пакетов.
      * @param b Данные команды для отправки.
-     * @return Обернутые данные, которые готовы к передаче на устройство.
+     * @return Обернутые данные, которые готовы к передаче
+     * на устройство.
      */
     ByteArray wrapData(const ByteArray &b) override;
 
@@ -36,7 +36,7 @@ public:
      * @param raw Данные пришедшие с устройства.
      * @return Данные, готовые к обработке.
      */
-    ByteArray proceedReceivedData(const ByteArray &raw) override;
+    ByteArray proceedReceivedData(const ByteArray& raw) override;
 
     /**
      * @brief Получение необходимости отправки данных
@@ -54,7 +54,7 @@ public:
 
     /**
      * @brief Метод для считывания данных с интерфейса.
-     * @param inter Интерфейс
+     * @param inter Интерфейс.
      * @param responseBytesExpected Количество ожидаемых данных.
      * @return Считанные данные.
      */
@@ -67,7 +67,7 @@ public:
     void prepareDeviceToWrite(InterfacePtr physicalInterface) override;
 
     /**
-     * @brief Метод для проверки соединения.
+     * @brief Метод для проверки наличия соединения.
      * @param physicalInterface Интерфейс.
      * @return Результат наличия соединения.
      */
@@ -75,4 +75,4 @@ public:
 };
 
 
-#endif //FRDRVCROSS_DEFAULTPROTOCOL_H
+#endif //FRTESTER_V2PROTOCOL_H

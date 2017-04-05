@@ -9,10 +9,12 @@
 #include <Testing/SettingsSystem.h>
 #include <Windows/Controllers/ConnectControllers/ConnectTCPTabController.h>
 #include <ui_mainwindow.h>
+#include <Windows/Controllers/ConnectTabController.h>
+#include <Testing/ConnectionsManager/ConnectionsManager.h>
 
 ConnectTCPTabController::ConnectTCPTabController(Ui::MainWindow *ptr, QWidget *parent, QTabWidget *tabWidget)
         : AbstractTabController(ptr, parent, tabWidget),
-          m_tcpInterface(std::make_shared<TCPInterface>())
+          m_tcpInterface(ConnectionsManager::instance().getTCPInterface())
 {
 
 }
@@ -172,6 +174,12 @@ void ConnectTCPTabController::onConnecting()
     }
 
     Log("Подключение к IP " + ipString.toStdString() + " на порту " + portString.toStdString() + " успешно.");
+
+    Log("Получение информации по устройству.");
+    if (!connectTabController()->receiveDeviceInfo())
+    {
+        Error("Не удалось получить информацию об устройстве.");
+    }
 }
 
 void ConnectTCPTabController::onIPEditingFinished()
@@ -188,4 +196,9 @@ void ConnectTCPTabController::onPortEditingFinished()
             SettingsSystem::ConnectionIPPort,
             ui()->connectionTCPPortLineEdit->text().toStdString()
     );
+}
+
+ConnectTabController *ConnectTCPTabController::connectTabController()
+{
+    return (ConnectTabController*) parentController();
 }

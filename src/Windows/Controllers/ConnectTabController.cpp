@@ -10,6 +10,7 @@
 #include <DriverHolder.h>
 #include <Tools/Logger.h>
 #include <ui_mainwindow.h>
+#include <include/Tools/Codecs.h>
 
 ConnectTabController::ConnectTabController(Ui::MainWindow *ptr, QWidget *parent, QTabWidget *tabWidget)
         : AbstractTabController(ptr, parent, tabWidget)
@@ -54,4 +55,52 @@ void ConnectTabController::configureWidgets()
 void ConnectTabController::tabSelected()
 {
 
+}
+
+bool ConnectTabController::receiveDeviceInfo()
+{
+    auto deviceType = DriverHolder::driver().getDeviceType();
+
+    if (DriverHolder::driver().getLastError() != FRDriver::ErrorCode::NoError)
+    {
+        Log("Не удалось получить информацию об устройстве.");
+
+        ui()->connectionInfoDeviceNameLabel->setText("Ошибка");
+        ui()->connectionInfoProtocolVersionLabel->setText("Ошибка");
+        ui()->connectionInfoDeviceTypeLabel->setText("Ошибка");
+        ui()->connectionInfoDeviceModelLabel->setText("Ошибка");
+        ui()->connectionInfoLanguageLabel->setText("Ошибка");
+
+        return false;
+    }
+
+    ui()->connectionInfoDeviceNameLabel->setText(
+            Codecs::instance().convert(
+                    "cp1251",
+                    "utf-8",
+                    QByteArray::fromStdString(deviceType.deviceName)
+            )
+    );
+    ui()->connectionInfoProtocolVersionLabel->setText(
+            QString::number(deviceType.protocolVersion) +
+            '.' +
+            QString::number(deviceType.protocolSubVersion)
+    );
+    ui()->connectionInfoDeviceTypeLabel->setText(
+            QString::number(deviceType.deviceType) +
+            '.' +
+            QString::number(deviceType.deviceSubType)
+    );
+    ui()->connectionInfoDeviceModelLabel->setText(
+            QString::number(deviceType.deviceModel)
+    );
+    ui()->connectionInfoLanguageLabel->setText(
+            QString::fromStdString(
+                    FRDriver::Converters::deviceLanguageToString(
+                            deviceType.language
+                    )
+            )
+    );
+
+    return true;
 }

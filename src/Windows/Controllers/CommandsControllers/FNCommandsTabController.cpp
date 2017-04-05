@@ -4,6 +4,7 @@
 
 #include <Windows/Controllers/CommandsControllers/FNOFDCommandsTabController.h>
 #include <Windows/Controllers/FNStateCommandsTabController.h>
+#include <include/Windows/Controllers/CommandsControllers/FNFiscalisationTabController.h>
 #include "Windows/Controllers/CommandsControllers/FNCommandsTabController.h"
 #include "ui_mainwindow.h"
 
@@ -23,6 +24,14 @@ FNCommandsTabController::FNCommandsTabController(Ui::MainWindow *ptr,
     addTabController(
             ui()->commandsFNStateTab,
             new FNStateCommandsTabController(
+                    ptr,
+                    parent
+            )
+    );
+
+    addTabController(
+            ui()->commandsFNFiscalisationTab,
+            new FNFiscalisationTabController(
                     ptr,
                     parent
             )

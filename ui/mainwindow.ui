@@ -32,7 +32,7 @@
          <rect>
           <x>6</x>
           <y>6</y>
-          <width>299</width>
+          <width>291</width>
           <height>160</height>
          </rect>
         </property>
@@ -130,6 +130,95 @@
           </item>
          </layout>
         </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_19">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>180</y>
+          <width>291</width>
+          <height>201</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Информация</string>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_39">
+         <item>
+          <layout class="QFormLayout" name="formLayout_10">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_46">
+             <property name="text">
+              <string>Название:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="connectionInfoDeviceNameLabel">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_48">
+             <property name="text">
+              <string>Версия протокола:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLabel" name="connectionInfoProtocolVersionLabel">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_50">
+             <property name="text">
+              <string>Тип устройства:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_51">
+             <property name="text">
+              <string>Модель устройства:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_52">
+             <property name="text">
+              <string>Язык устройства:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLabel" name="connectionInfoDeviceTypeLabel">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLabel" name="connectionInfoDeviceModelLabel">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QLabel" name="connectionInfoLanguageLabel">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
        </widget>
       </widget>
       <widget class="QWidget" name="tablesTab">
@@ -1779,7 +1868,7 @@
             <item>
              <widget class="QTabWidget" name="commandsFNTabWidget">
               <property name="currentIndex">
-               <number>1</number>
+               <number>2</number>
               </property>
               <widget class="QWidget" name="commandsFNOFDTab">
                <attribute name="title">
@@ -1852,6 +1941,371 @@
                  </layout>
                 </item>
                </layout>
+              </widget>
+              <widget class="QWidget" name="commandsFNFiscalisationTab">
+               <attribute name="title">
+                <string>Фискализация</string>
+               </attribute>
+               <widget class="QGroupBox" name="groupBox_20">
+                <property name="geometry">
+                 <rect>
+                  <x>510</x>
+                  <y>10</y>
+                  <width>321</width>
+                  <height>116</height>
+                 </rect>
+                </property>
+                <property name="title">
+                 <string>Сброс</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_32">
+                 <item>
+                  <layout class="QFormLayout" name="formLayout_13">
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="label_47">
+                     <property name="text">
+                      <string>Код запроса:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QLineEdit" name="commandsFNFiscalisationClearCodeLineEdit"/>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="commandsFNFiscalisationClearPushButton">
+                   <property name="text">
+                    <string>Сбросить состояние</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+               <widget class="QGroupBox" name="groupBox_21">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>10</y>
+                  <width>491</width>
+                  <height>638</height>
+                 </rect>
+                </property>
+                <property name="title">
+                 <string>Фискализация</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_36">
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_42">
+                   <item>
+                    <layout class="QFormLayout" name="formLayout_14">
+                     <item row="0" column="0">
+                      <widget class="QLabel" name="label_49">
+                       <property name="text">
+                        <string>Номер ККТ:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QLineEdit" name="commandsFNFiscalisationPOSNumberLineEdit">
+                       <property name="minimumSize">
+                        <size>
+                         <width>200</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="placeholderText">
+                        <string>Любое число 12 символов</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="0">
+                      <widget class="QLabel" name="label_53">
+                       <property name="text">
+                        <string>ИНН:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="1">
+                      <widget class="QLineEdit" name="commandsFNFiscalisationINNLineEdit">
+                       <property name="placeholderText">
+                        <string>10 или 12 символов</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="1">
+                      <widget class="QLineEdit" name="commandsFNFiscalisationRNMLineEdit">
+                       <property name="placeholderText">
+                        <string>Сгенерированный РНМ</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="0">
+                      <widget class="QLabel" name="label_54">
+                       <property name="text">
+                        <string>РНМ:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="1">
+                      <widget class="QPushButton" name="commandsFNFiscalisationGenerateRNMPushButton">
+                       <property name="text">
+                        <string>Сгенерировать РНМ</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="1">
+                      <widget class="QPushButton" name="commandsFNFiscalisationGenerateINNCSPushButton">
+                       <property name="text">
+                        <string>Сгенерировать КС</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <spacer name="horizontalSpacer_11">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_35">
+                     <item>
+                      <widget class="QPushButton" name="commandsFNFiscalisationRegisterPushButton">
+                       <property name="text">
+                        <string>Регистрировать</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="commandsFNFiscalisationReRegisterPushButton">
+                       <property name="text">
+                        <string>Перерегистрировать</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="verticalSpacer_6">
+                       <property name="orientation">
+                        <enum>Qt::Vertical</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>20</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QGroupBox" name="groupBox_22">
+                   <property name="title">
+                    <string>Код налогообложения</string>
+                   </property>
+                   <layout class="QVBoxLayout" name="verticalLayout_33">
+                    <item>
+                     <layout class="QHBoxLayout" name="horizontalLayout_40">
+                      <item>
+                       <widget class="QLabel" name="label_60">
+                        <property name="text">
+                         <string>Значение:</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QSpinBox" name="commandsFNFiscalisationTaxValueSpinBox">
+                        <property name="maximum">
+                         <number>63</number>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item>
+                     <layout class="QGridLayout" name="gridLayout_5">
+                      <item row="0" column="0">
+                       <widget class="QCheckBox" name="commandsFNFiscalisationTax1CheckBox">
+                        <property name="toolTip">
+                         <string>Основной</string>
+                        </property>
+                        <property name="text">
+                         <string>ОСН</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="1">
+                       <widget class="QCheckBox" name="commandsFNFiscalisationTax4CheckBox">
+                        <property name="toolTip">
+                         <string>Единый налог на вменный доход</string>
+                        </property>
+                        <property name="text">
+                         <string>ЕНВД</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="0">
+                       <widget class="QCheckBox" name="commandsFNFiscalisationTax3CheckBox">
+                        <property name="toolTip">
+                         <string>Упрощенный налог минус расход</string>
+                        </property>
+                        <property name="text">
+                         <string>УПР налог минус расход</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="0">
+                       <widget class="QCheckBox" name="commandsFNFiscalisationTax2CheckBox">
+                        <property name="toolTip">
+                         <string>Упрощенный налог</string>
+                        </property>
+                        <property name="text">
+                         <string>УПР налог</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="1">
+                       <widget class="QCheckBox" name="commandsFNFiscalisationTax5CheckBox">
+                        <property name="toolTip">
+                         <string>Единый сельскохозяйственный налог</string>
+                        </property>
+                        <property name="text">
+                         <string>ЕСН</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="1">
+                       <widget class="QCheckBox" name="commandsFNFiscalisationTax6CheckBox">
+                        <property name="toolTip">
+                         <string>Патентная система налогообложения</string>
+                        </property>
+                        <property name="text">
+                         <string>ПСН</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QGroupBox" name="groupBox_23">
+                   <property name="title">
+                    <string>Режим работы</string>
+                   </property>
+                   <layout class="QVBoxLayout" name="verticalLayout_34">
+                    <item>
+                     <layout class="QHBoxLayout" name="horizontalLayout_41">
+                      <item>
+                       <widget class="QLabel" name="label_61">
+                        <property name="text">
+                         <string>Значение:</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QSpinBox" name="commandsFNFiscalisationWorkModeValueSpinBox">
+                        <property name="maximum">
+                         <number>127</number>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item>
+                     <layout class="QGridLayout" name="gridLayout_6">
+                      <item row="0" column="0">
+                       <widget class="QCheckBox" name="commandsFNFiscalisationWorkMode1CheckBox">
+                        <property name="text">
+                         <string>Шифрование</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="0">
+                       <widget class="QCheckBox" name="commandsFNFiscalisationWorkMode2CheckBox">
+                        <property name="text">
+                         <string>Автономный режим</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="0">
+                       <widget class="QCheckBox" name="commandsFNFiscalisationWorkMode3CheckBox">
+                        <property name="text">
+                         <string>Автоматический режим</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="3" column="0">
+                       <widget class="QCheckBox" name="commandsFNFiscalisationWorkMode4CheckBox">
+                        <property name="text">
+                         <string>Применение в сфере услуг</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="1">
+                       <widget class="QCheckBox" name="commandsFNFiscalisationWorkMode5CheckBox">
+                        <property name="text">
+                         <string>Режим БСО</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="1">
+                       <widget class="QCheckBox" name="commandsFNFiscalisationWorkMode6CheckBox">
+                        <property name="text">
+                         <string>Применение плат. агентами</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="1">
+                       <widget class="QCheckBox" name="commandsFNFiscalisationWorkMode7CheckBox">
+                        <property name="text">
+                         <string>Применение банк. агентами</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item>
+                     <layout class="QFormLayout" name="formLayout_16">
+                      <item row="0" column="0">
+                       <widget class="QLabel" name="label_87">
+                        <property name="text">
+                         <string>Номер автомата:</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="1">
+                       <widget class="QLineEdit" name="commandsFNFiscalisationAutoNumberLineEdit">
+                        <property name="placeholderText">
+                         <string>Только для автоматического режима</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
               </widget>
              </widget>
             </item>

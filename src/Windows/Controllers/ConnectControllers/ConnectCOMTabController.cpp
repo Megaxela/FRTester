@@ -12,10 +12,12 @@
 #include <Implementation/DefaultProtocol.h>
 #include <TestDriverHolder.h>
 #include <Testing/SettingsSystem.h>
+#include <Windows/Controllers/ConnectTabController.h>
+#include <Testing/ConnectionsManager/ConnectionsManager.h>
 
 ConnectCOMTabController::ConnectCOMTabController(Ui::MainWindow *ptr, QWidget* parent) :
     AbstractTabController(ptr, parent, nullptr),
-    m_comInterface(std::make_shared<COMInterface>())
+    m_comInterface(ConnectionsManager::instance().getCOMInterface())
 {
     m_comInterface->setByteSendTime(0);
 
@@ -163,6 +165,12 @@ void ConnectCOMTabController::onConnecting()
     }
 
     Log("Успешное подключение к COM порту №" + deviceName.toStdString());
+
+    Log("Получение информации по устройству.");
+    if (!connectTabController()->receiveDeviceInfo())
+    {
+        Error("Не удалось получить информацию об устройстве.");
+    }
 }
 
 
@@ -182,4 +190,9 @@ void ConnectCOMTabController::onBaudRateEditingFinished()
                     ui()->connectionCOMBaudRateComboBox->currentIndex()
             )
     );
+}
+
+ConnectTabController *ConnectCOMTabController::connectTabController()
+{
+    return (ConnectTabController*) parentController();
 }

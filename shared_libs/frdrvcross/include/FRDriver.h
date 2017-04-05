@@ -97,6 +97,7 @@ public:
         , OpenNonFiscalDocument = 0xE2          //< Открытие нефискального документа
         , CloseNonFiscalDocument = 0xE3         //< Закрытие нефискального документа
         , EnterEnableCode = 0xEC                //< Ввод кода разрешения активизации
+        , RequestDeviceType = 0xFC              //< Получить тип устройства
         , NonZeroSums = 0xFE                    //< Получение необнуляемых сумм
         , ChangeSerialNumber = 0xFEF1           //< Перезапись заводского номера
         , Ping = 0xFEF2                         //< Пинг
@@ -105,8 +106,8 @@ public:
         , FNNumberRequest = 0xFF02              //< Запрос номера ФН
         , FNValidityRequest = 0xFF03            //< Запрос срока действия ФН
         , FNVersionRequest = 0xFF04             //< Запрос версии ФН
-        , StartRegistrationReport = 0xFF05      //< Начать отчет о регистрации
-        , FormRegistrationReport = 0xFF06       //< Сформировать отчет о регистрации ККТ
+        , FNStartRegistrationReport = 0xFF05      //< Начать отчет о регистрации
+        , FNFormRegistrationReport = 0xFF06       //< Сформировать отчет о регистрации ККТ
         , ResetFN = 0xFF07                      //< Сброс состояния ФН
         , CancelFNDocument = 0xFF08             //< Отменить документ в ФН
         , FiscalisationResultsRequest = 0xFF09  //< Запрос итогов фискализации
@@ -259,6 +260,13 @@ public:
          * @return Строковое представление документа в ФН.
          */
         static std::string fnDocumentToString(uint8_t document);
+
+        /**
+         * @brief Функция для преобразования языка устройства в строку.
+         * @param language Код языка.
+         * @return Строковое представление языка.
+         */
+        static std::string deviceLanguageToString(uint8_t language);
 
     private:
         Converters() = delete;
@@ -535,6 +543,9 @@ public:
         DateStructure date; //< Время первого в очереди документа для ОФД
     };
 
+    /**
+     * @brief Структура, описывающая статус ФН.
+     */
     struct FNStatus
     {
         enum class Document
@@ -582,6 +593,10 @@ public:
         uint32_t lastDocumentNumber;
     };
 
+    /**
+     * @brief Структура, описывающая данные
+     * штрих-кода.
+     */
     struct BarcodeData
     {
         BarcodeData() :
@@ -601,6 +616,69 @@ public:
         uint8_t fifthParam;
         uint16_t barcodeWidth;
         uint16_t barcodeHeight;
+    };
+
+    /**
+     * @brief Структура версии ФН.
+     */
+    struct FNVersion
+    {
+        FNVersion() :
+                firmwareVersion(),
+                type(0)
+        {}
+
+        std::string firmwareVersion;
+        uint8_t type;
+    };
+
+    /**
+     * @brief Структура, описывающая
+     * отчет о регистрации ККТ.
+     */
+    struct POSRegistrationReport
+    {
+        POSRegistrationReport() :
+                fdNumber(0),
+                fiscalSign(0)
+        {}
+
+        uint32_t fdNumber;
+        uint32_t fiscalSign;
+    };
+
+    /**
+     * @brief Структура, описывающая тип устройства.
+     */
+    struct DeviceType
+    {
+        DeviceType() :
+                deviceType(0),
+                deviceSubType(0),
+                protocolVersion(0),
+                protocolSubVersion(0),
+                deviceModel(0),
+                language(0),
+                deviceName()
+        {}
+
+        uint8_t deviceType;
+        uint8_t deviceSubType;
+        uint8_t protocolVersion;
+        uint8_t protocolSubVersion;
+        uint8_t deviceModel;
+        uint8_t language;
+        std::string deviceName;
+    };
+
+    /**
+     * @brief Структура, описывающая документ.
+     */
+    struct FNDocument
+    {
+        uint8_t type;
+        bool receiptReceived;
+        ByteArray data;
     };
 
     /**
@@ -1316,6 +1394,67 @@ public:
      * @return Статус ФН, если нет ошибок.
      */
     FNStatus getFNStatus(uint32_t sysAdmPassword);
+
+    /**
+     * @brief Команда для получения номера ФН.
+     * @param sysAdmPassword Пароль системного администратора.
+     * @return Номер ФН в ASCII строке. Валидна только если не
+     * было получено ошибок.
+     */
+    std::string getFNNumber(uint32_t sysAdmPassword);
+
+    /**
+     * @brief Команда для запроса версии ФН.
+     * @param sysAdmPassword Пароль системного администратора.
+     * @return Версия ФН. Валидна только если не было получено ошибок.
+     */
+    FNVersion getFNVersion(uint32_t sysAdmPassword);
+
+    /**
+     * @brief Метод для начала отчета о регистрации ККТ.
+     * @param sysAdmPassword Пароль системного администратора.
+     * @return Успешность выполнения команды.
+     */
+    bool beginPOSRegistration(uint32_t sysAdmPassword);
+
+    /**
+     * @brief Метод для формирования отчета о регистрации ККТ.
+     * @param sysAdmPassword Пароль системного администратора.
+     * @param inn ИНН - 12 байт.
+     * @param posRegistrationNumber Регистрационный номер ККТ - 20 байт.
+     * @param taxMode Код налогооблажения.
+     * @param workMode Режим работы.
+     * @return
+     */
+    POSRegistrationReport formPOSRegistrationReport(uint32_t sysAdmPassword,
+                                                    const std::string& inn,
+                                                    const std::string& posRegistrationNumber,
+                                                    uint8_t taxMode,
+                                                    uint8_t workMode);
+
+    /**
+     * @brief Метод для сброса состояния ФН.
+     * @param sysAdmPassword Пароль системного администратора.
+     * @param code Код запроса.
+     * @return Успешность выполнения команды.
+     */
+    bool resetFNState(uint32_t sysAdmPassword, uint8_t code);
+
+    /**
+     * @brief Метод для получения типа устройства.
+     * @return Структура с типом устройства. Валидна только если
+     * не было получено ошибок.
+     */
+    DeviceType getDeviceType();
+
+    /**
+     * @brief Метод для поиска фискального документа по номеру.
+     * @param sysAdmPassword Пароль системного администратора.
+     * @param documentNumber Номер фискального документа.
+     * @return Струкрута с докумнтом ФН. Валидна только если
+     * не было получено ошибок.
+     */
+    FNDocument findDocument(uint32_t sysAdmPassword, uint32_t documentNumber);
 
 protected:
 

@@ -32,7 +32,7 @@ uint64_t ByteArrayReader::readPart(uint8_t size, ByteArray::ByteOrder order)
 
 std::string ByteArrayReader::readString(uint32_t size)
 {
-    assert(m_reader.length() > m_pos + size);
+    assert(m_reader.length() >= m_pos + size);
 
     std::string result = std::string((const char*) m_reader.data() + m_pos, size);
 

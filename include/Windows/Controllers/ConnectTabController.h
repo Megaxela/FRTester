@@ -35,6 +35,13 @@ public:
      */
     ~ConnectTabController();
 
+    /**
+     * @brief Метод для получения информации об
+     * устройстве и вывода его на экран.
+     * @return Успешность получения информации.
+     */
+    bool receiveDeviceInfo();
+
 protected:
     void setupConnections() override;
 

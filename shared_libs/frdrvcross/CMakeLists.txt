@@ -47,7 +47,7 @@ set(SOURCE_FILES
         src/Implementation/DefaultProtocol.cpp
         src/Tools/Time.cpp
         src/Implementation/TestProtocol.cpp
-)
+        src/Implementation/V2Protocol.cpp include/Implementation/V2Protocol.h)
 
 add_library(frdrvcross SHARED
         ${SOURCE_FILES}

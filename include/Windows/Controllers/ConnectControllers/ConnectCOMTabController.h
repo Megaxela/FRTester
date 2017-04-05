@@ -14,6 +14,8 @@ namespace Ui
     class MainWindow;
 }
 
+class ConnectTabController;
+
 /**
  * @brief Класс для упправления вкладкой соединения.
  */
@@ -47,6 +49,8 @@ protected:
     void setupConnections() override;
 
 private:
+
+    ConnectTabController* connectTabController();
 
     std::shared_ptr<COMInterface> m_comInterface;
 };

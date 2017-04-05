@@ -9,6 +9,8 @@
 #include <Windows/Controllers/AbstractTabController.h>
 #include <Implementation/TCPInterface.h>
 
+class ConnectTabController;
+
 /**
  * @brief Класс для усравления вкладкой соединения по
  * RNDIS (TCPIP)
@@ -56,6 +58,8 @@ protected:
     void configureWidgets() override;
 
 private:
+    ConnectTabController* connectTabController();
+
     std::shared_ptr<TCPInterface> m_tcpInterface;
 };
 
