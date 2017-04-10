@@ -8,6 +8,7 @@
 #include <QObject>
 #include <QMap>
 #include <QTabWidget>
+#include <typeinfo>
 
 namespace Ui
 {
@@ -75,6 +76,22 @@ public:
      * @return
      */
     QTabWidget* tabWidget() const;
+
+    template<typename T>
+    QList<T*> findControllers()
+    {
+        QList<T*> controllers;
+
+        for (auto &controller : m_tabControllers)
+        {
+            if (typeid(*controller) == typeid(T))
+            {
+                controllers.append(static_cast<T*>(controller));
+            }
+        }
+
+        return controllers;
+    }
 
 protected:
 

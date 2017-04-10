@@ -8,6 +8,7 @@
 
 #include <Windows/Controllers/AbstractTabController.h>
 #include <Implementation/TCPInterface.h>
+#include <Testing/ConnectionsManager/Connection.h>
 
 class ConnectTabController;
 
@@ -17,6 +18,8 @@ class ConnectTabController;
  */
 class ConnectTCPTabController : public AbstractTabController
 {
+    Q_OBJECT
+
 public:
     /**
      * @brief Конструктор.
@@ -33,10 +36,14 @@ public:
      */
     ~ConnectTCPTabController();
 
+signals:
+
+    void connectionAdded(std::shared_ptr<Connection> connection);
+
 private slots:
     /**
      * @brief Слот, вызываемый при нажатии на кнопку
-     * соединения с ФР.
+     * соединения с ККТ.
      */
     void onConnecting();
 
@@ -51,6 +58,11 @@ private slots:
      * поля с портом для его сохранения.
      */
     void onPortEditingFinished();
+
+    /**
+     * @brief Слот, вызываемый при нажатии на кнопку доба
+     */
+    void onConnectionAdd();
 
 protected:
     void setupConnections() override;

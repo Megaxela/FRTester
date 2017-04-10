@@ -113,3 +113,10 @@ void ConnectionsManager::saveConnections()
     fl << result.dump(4);
     fl.close();
 }
+
+void ConnectionsManager::addConnection(std::shared_ptr<Connection> connection)
+{
+    m_connections.push_back(connection);
+
+    saveConnections();
+}

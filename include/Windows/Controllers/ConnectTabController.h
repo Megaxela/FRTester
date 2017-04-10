@@ -7,6 +7,7 @@
 
 #include <QWidget>
 #include <QTabWidget>
+#include <Testing/ConnectionsManager/Connection.h>
 #include "AbstractTabController.h"
 
 namespace Ui
@@ -19,6 +20,8 @@ namespace Ui
  */
 class ConnectTabController : public AbstractTabController
 {
+    Q_OBJECT
+
 public:
     /**
      * @brief Конструктор.
@@ -42,13 +45,15 @@ public:
      */
     bool receiveDeviceInfo();
 
+    void tabSelected() override;
+
 protected:
     void setupConnections() override;
 
     void configureWidgets() override;
 
-public:
-    void tabSelected() override;
+private slots:
+    void onConnectionAdded(std::shared_ptr<Connection> connection);
 };
 
 

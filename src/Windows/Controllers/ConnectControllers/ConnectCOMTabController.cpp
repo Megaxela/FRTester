@@ -14,13 +14,13 @@
 #include <Testing/SettingsSystem.h>
 #include <Windows/Controllers/ConnectTabController.h>
 #include <Testing/ConnectionsManager/ConnectionsManager.h>
+#include <Testing/ConnectionsManager/COMConnection.h>
 
 ConnectCOMTabController::ConnectCOMTabController(Ui::MainWindow *ptr, QWidget* parent) :
     AbstractTabController(ptr, parent, nullptr),
     m_comInterface(ConnectionsManager::instance().getCOMInterface())
 {
     m_comInterface->setByteSendTime(0);
-
 }
 
 ConnectCOMTabController::~ConnectCOMTabController()
@@ -190,6 +190,44 @@ void ConnectCOMTabController::onBaudRateEditingFinished()
                     ui()->connectionCOMBaudRateComboBox->currentIndex()
             )
     );
+}
+
+void ConnectCOMTabController::onConnectionAdd()
+{
+    QString device = ui()->connectionCOMDeviceLineEdit->text();
+
+    if (device.isEmpty())
+    {
+        QMessageBox::critical(
+                parentWidget(),
+                "Ошибка",
+                "Невозможно добавить соединение с пустым устройством."
+        );
+
+        return;
+    }
+
+    QString baudRate = ui()->connectionCOMBaudRateComboBox->currentText();
+
+    if (baudRate.isEmpty())
+    {
+        QMessageBox::critical(
+                parentWidget(),
+                "Ошибка",
+                "Невозможно добавить соединение с пустой скоростью."
+        );
+
+        return;
+    }
+
+    auto connection = std::shared_ptr<COMConnection>();
+
+    connection->setDevice(device.toStdString());
+    connection->setSpeed(baudRate.toUInt());
+
+    ConnectionsManager::instance().addConnection(connection);
+
+    emit connectionAdded(connection);
 }
 
 ConnectTabController *ConnectCOMTabController::connectTabController()

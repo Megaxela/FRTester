@@ -8,7 +8,8 @@
 #include <FRDriver.h>
 
 TCPConnection::TCPConnection() :
-    m_address(Type::TCP),
+    Connection(Type::TCP),
+    m_address(),
     m_port(0)
 {
 

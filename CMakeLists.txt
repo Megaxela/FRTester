@@ -54,6 +54,7 @@ set(QOBJECT_HEADERS
         include/Windows/MainWindow.h
         include/Windows/Controllers/AbstractTabController.h
         include/Windows/Controllers/ConnectControllers/ConnectCOMTabController.h
+        include/Windows/Controllers/ConnectControllers/ConnectTCPTabController.h
         include/Windows/Controllers/TestControllers/TestsEditorController.h
         include/Windows/Controllers/TestControllers/UnitTestsController.h
         include/Windows/Widgets/QBaseNumberLineEdit.h
@@ -63,11 +64,12 @@ set(QOBJECT_HEADERS
         include/Windows/Widgets/QTestDisplayTreeWidget.h
         include/Windows/Widgets/QTestsTreeWidget.h
         include/Windows/Widgets/QTestsTreeWidgetMenu.h
+        include/Windows/Controllers/ConnectTabController.h
+        include/Windows/Controllers/CommandsTabController.h
         )
 
 set(INCLUDE_FILES
         include/DriverHolder.h
-        include/Windows/Controllers/CommandsTabController.h
         include/Windows/Controllers/CommandsControllers/StateCommandsTabController.h
         include/Tools/StableController.h
         include/Windows/Controllers/CommandsControllers/RegisterOperationsV1CommandsTabController.h
@@ -84,9 +86,7 @@ set(INCLUDE_FILES
         include/Windows/Controllers/CommandsControllers/PrintCommandsTabController.h
         include/Windows/Controllers/CommandsControllers/PrintTextCommandsTabController.h
         include/Windows/Controllers/CommandsControllers/PrintTextOperationsCommandsTabController.h
-        include/Windows/Controllers/ConnectTabController.h
         include/Windows/Controllers/RootController.h
-        include/Windows/Controllers/ConnectControllers/ConnectTCPTabController.h
         include/Windows/Controllers/CommandsControllers/FNCommandsTabController.h
         include/Windows/Controllers/CommandsControllers/FNOFDCommandsTabController.h
         include/Windows/Controllers/TablesTabController.h
@@ -267,7 +267,7 @@ set(SOURCE_FILES
         src/Windows/Controllers/TablesTabController.cpp
         src/Windows/Controllers/LogParserTabController.cpp
         src/Windows/Controllers/TestControllers/TestsEditorController.cpp
-        tests/Tests/DocumentSyncTest.cpp tests/Tests/DocumentSyncTest.h src/Windows/Controllers/FNFiscalisationTabController.cpp include/Windows/Controllers/CommandsControllers/FNFiscalisationTabController.h src/Testing/ConnectionsManager/ConnectionsManager.cpp include/Testing/ConnectionsManager/ConnectionsManager.h src/Testing/ConnectionsManager/Connection.cpp include/Testing/ConnectionsManager/Connection.h src/Testing/ConnectionsManager/COMConnection.cpp include/Testing/ConnectionsManager/COMConnection.h src/Testing/ConnectionsManager/TCPConnection.cpp include/Testing/ConnectionsManager/TCPConnection.h)
+        tests/Tests/DocumentSyncTest.cpp tests/Tests/DocumentSyncTest.h src/Windows/Controllers/FNFiscalisationTabController.cpp include/Windows/Controllers/CommandsControllers/FNFiscalisationTabController.h src/Testing/ConnectionsManager/ConnectionsManager.cpp include/Testing/ConnectionsManager/ConnectionsManager.h src/Testing/ConnectionsManager/Connection.cpp include/Testing/ConnectionsManager/Connection.h src/Testing/ConnectionsManager/COMConnection.cpp include/Testing/ConnectionsManager/COMConnection.h src/Testing/ConnectionsManager/TCPConnection.cpp include/Testing/ConnectionsManager/TCPConnection.h src/Windows/Widgets/QConnectionsListWidget.cpp include/Windows/Widgets/QConnectionsListWidget.h src/Windows/Widgets/QConnectionsListWidgetItem.cpp include/Windows/Widgets/QConnectionsListWidgetItem.h)
 
 #------------------------
 # Setuping Qt
@@ -311,7 +311,6 @@ add_dependencies(FRTester frdrvcross)
 #-------------
 # Linkage
 #-------------
-message("${CMAKE_SOURCE_DIR}/frdrvcross/lib")
 target_link_libraries(FRTester -L"${CMAKE_SOURCE_DIR}/../${CMAKE_PROJECT_NAME}_executable" -lfrdrvcross)
 
 add_custom_command(TARGET FRTester PRE_BUILD

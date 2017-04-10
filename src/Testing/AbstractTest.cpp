@@ -7,6 +7,14 @@
 #include <Testing/SettingsSystem.h>
 #include "Testing/AbstractTest.h"
 
+AbstractTest::AbstractTest(const std::string &name,
+                           const std::string &description,
+                           const std::vector<std::pair<std::string, DataValue>> &fields) :
+    AbstractTest(nullptr, name, description, fields)
+{
+
+}
+
 AbstractTest::AbstractTest(TestEnvironment *driver,
                            const std::string &name,
                            const std::string &description,

@@ -10,7 +10,8 @@
 #include <DriverHolder.h>
 #include <Tools/Logger.h>
 #include <ui_mainwindow.h>
-#include <include/Tools/Codecs.h>
+#include <Tools/Codecs.h>
+#include <Windows/Widgets/QConnectionsListWidgetItem.h>
 
 ConnectTabController::ConnectTabController(Ui::MainWindow *ptr, QWidget *parent, QTabWidget *tabWidget)
         : AbstractTabController(ptr, parent, tabWidget)
@@ -44,7 +45,15 @@ ConnectTabController::~ConnectTabController()
 
 void ConnectTabController::setupConnections()
 {
+    connect(findControllers<ConnectCOMTabController>()[0],
+            &ConnectCOMTabController::connectionAdded,
+            this,
+            &ConnectTabController::onConnectionAdded);
 
+    connect(findControllers<ConnectTCPTabController>()[0],
+            &ConnectTCPTabController::connectionAdded,
+            this,
+            &ConnectTabController::onConnectionAdded);
 }
 
 void ConnectTabController::configureWidgets()
@@ -103,4 +112,15 @@ bool ConnectTabController::receiveDeviceInfo()
     );
 
     return true;
+}
+
+void ConnectTabController::onConnectionAdded(std::shared_ptr<Connection> connection)
+{
+    // Добавляем соединение в ListWidget
+    ui()->connectionConnectionsListWidget->addItem(
+            new QConnectionsListWidgetItem(
+                    ui()->connectionConnectionsListWidget,
+                    connection
+            )
+    );
 }

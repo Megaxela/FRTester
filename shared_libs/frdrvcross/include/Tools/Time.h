@@ -64,6 +64,11 @@ namespace Time
     template<typename T>
     void sleep(time_t value)
     {
+        if (!value)
+        {
+            return;
+        }
+
         std::this_thread::sleep_for(
             T(value)
         );

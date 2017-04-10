@@ -36,6 +36,16 @@ class AbstractTest
 public:
 
     /**
+     * @brief Облегченный конструктор.
+     * @param name Название.
+     * @param description Описание.
+     * @param fields Переменные поля.
+     */
+    AbstractTest(const std::string &name,
+                 const std::string &description,
+                 const std::vector<std::pair<std::string, DataValue>> &fields=std::vector<std::pair<std::string,DataValue>>());
+
+    /**
      * @brief Конструктор.
      * @param driver Драйвер для вызова функций.
      */

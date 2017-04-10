@@ -11,6 +11,7 @@
 #include <ui_mainwindow.h>
 #include <Windows/Controllers/ConnectTabController.h>
 #include <Testing/ConnectionsManager/ConnectionsManager.h>
+#include <Testing/ConnectionsManager/TCPConnection.h>
 
 ConnectTCPTabController::ConnectTCPTabController(Ui::MainWindow *ptr, QWidget *parent, QTabWidget *tabWidget)
         : AbstractTabController(ptr, parent, tabWidget),
@@ -201,4 +202,55 @@ void ConnectTCPTabController::onPortEditingFinished()
 ConnectTabController *ConnectTCPTabController::connectTabController()
 {
     return (ConnectTabController*) parentController();
+}
+
+void ConnectTCPTabController::onConnectionAdd()
+{
+    QString ipAddress = ui()->connectionTCPIPLineEdit->text();
+
+    if (ipAddress.isEmpty())
+    {
+        QMessageBox::critical(
+                parentWidget(),
+                "Ошибка",
+                "Невозможно добавить соединение с пустым IP адресом."
+        );
+
+        return;
+    }
+
+    QString port = ui()->connectionTCPPortLineEdit->text();
+
+    if (port.isEmpty())
+    {
+        QMessageBox::critical(
+                parentWidget(),
+                "Ошибка",
+                "Невозможно добавить соединение с пустым портом."
+        );
+
+        return;
+    }
+
+    if (port.toUInt() > std::numeric_limits<uint16_t>::max())
+    {
+        QMessageBox::critical(
+                parentWidget(),
+                "Ошибка",
+                "Невозможно добавить соединение с портом больше, чем " + QString::number(std::numeric_limits<uint16_t>::max())
+        );
+
+        return;
+    }
+
+    auto connection = std::shared_ptr<TCPConnection>();
+
+    connection->setAddress(
+            IPv4Address::fromString(ipAddress.toStdString()),
+            static_cast<uint16_t>(port.toUInt())
+    );
+
+    ConnectionsManager::instance().addConnection(connection);
+
+    emit connectionAdded(connection);
 }

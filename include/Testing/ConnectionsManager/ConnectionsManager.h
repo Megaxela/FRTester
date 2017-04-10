@@ -57,7 +57,12 @@ public:
      */
     std::shared_ptr<Connection> getConnection(uint32_t index);
 
-
+    /**
+     * @brief Метод для добавления нового соединения.
+     * Соединение добавляется в конец.
+     * @param connection Умный указатель на объект соединения.
+     */
+    void addConnection(std::shared_ptr<Connection> connection);
 
     /**
      * @brief Метод для удаления соединения по индексу.

@@ -7,6 +7,7 @@
 
 
 #include <QMap>
+#include <Testing/ConnectionsManager/Connection.h>
 #include "AbstractTabController.h"
 #include "FRDriver.h"
 
@@ -20,6 +21,8 @@ namespace Ui
  */
 class CommandsTabController : public AbstractTabController
 {
+    Q_OBJECT
+
 public:
     /**
      * @brief Конструктор.
@@ -59,6 +62,14 @@ public:
      * @return Наличие соединения.
      */
     bool checkConnectionWithDevice();
+
+signals:
+    /**
+     * @brief Сигнал, сообщающий о том, что было добавлено
+     * новое соединение.
+     * @param connection Умный указатель на объект соединения.
+     */
+    void connectionAdded(std::shared_ptr<Connection> connection);
 
 protected:
     /**
