@@ -3,33 +3,19 @@
 //
 
 #include <Testing/TestCore.h>
-#include <DriverHolder.h>
-#include <tests/Tests/CycleTest.h>
-#include <Tools/Logger.h>
-#include <Testing/TestLogger.h>
-#include <TestDriverHolder.h>
-#include <Tools/Time.h>
-#include <Tests/OperationTest.h>
-#include <Triggers/OperationTrigger.h>
-#include <Triggers/CheckCloseTrigger.h>
-#include <Tests/CheckLoaderTest.h>
-#include <Tests/WriteShitCashierNameTest.h>
-#include <Tests/NonfiscalRequesting.h>
-#include <Tests/TableFiscalStorageLinesTest.h>
-#include <Triggers/ZReportTrigger.h>
-#include <Tests/BarcodePrintingTest.h>
-#include <Tests/CheckFontTest.h>
-#include <Executor/TestingExecutor.h>
 #include <Testing/SettingsSystem.h>
-#include <Tools/StdExtend.h>
+#include <Testing/TestLogger.h>
 #include <Testing/ManualTests/ManualTest.h>
 #include <Testing/ManualTests/ManualTestFabric.h>
-#include <Tests/MagnitCheckTest.h>
-#include <Tests/MessageBoxTest.h>
-#include <Tests/CrazyStatusRequestTest.h>
 #include <Testing/StaticTestFabric.h>
 #include <Testing/StaticTriggerFabric.h>
 #include <Testing/ManualTests/Fabric.h>
+#include <Tools/Logger.h>
+#include <Tools/Time.h>
+#include <Tools/StdExtend.h>
+#include <Executor/TestingExecutor.h>
+#include <TestDriverHolder.h>
+#include <DriverHolder.h>
 
 #define PY_LIST_DELIM ':'
 
