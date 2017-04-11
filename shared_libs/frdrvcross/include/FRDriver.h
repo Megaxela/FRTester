@@ -1456,6 +1456,14 @@ public:
      */
     FNDocument findDocument(uint32_t sysAdmPassword, uint32_t documentNumber);
 
+    /**
+     * @brief Метод для печати линии.
+     * @param password Пароль.
+     * @param data Данные для печати. Чем больше значение байта, тем
+     * более темным будет область.
+     */
+    bool printLine(uint32_t password, const ByteArray& data);
+
 protected:
 
     /**

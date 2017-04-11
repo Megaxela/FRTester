@@ -1567,6 +1567,18 @@ FRDriver::DeviceType FRDriver::getDeviceType()
     return deviceType;
 }
 
+bool FRDriver::printLine(uint32_t password, const ByteArray &data)
+{
+    ByteArray arguments;
+    arguments.append<uint32_t>(password, ByteArray::ByteOrder_LittleEndian);
+    arguments.append<uint16_t>(data.size(), ByteArray::ByteOrder_LittleEndian);
+    arguments.append(data);
+
+    auto answer = sendCommand(Command::PrintLine, arguments, false);
+
+    return getLastError() == FRDriver::ErrorCode::NoError;
+}
+
 FRDriver::FNDocument FRDriver::findDocument(uint32_t sysAdmPassword, uint32_t documentNumber)
 {
     ByteArray arguments;
