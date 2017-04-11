@@ -1155,7 +1155,7 @@ bool FRDriver::reboot()
 {
     ByteArray arguments;
 
-    arguments.append((const uint8_t*) "\x00\x00\x00\x00", 2);
+    arguments.append((const uint8_t*) "\x00\x00\x00\x00", 4);
 
     auto data = sendCommand(Command::Reboot, arguments, false);
 
