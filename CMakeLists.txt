@@ -158,11 +158,8 @@ set(INCLUDE_FILES
         include/Windows/Controllers/CommandsControllers/RegisterOperationsV2CommandsTabController.h
         )
 
-file(GLOB STATIC_TESTS
-        "tests/Tests/*.h"
-        "tests/Tests/*.cpp"
-        "tests/Triggers/*.h"
-        "tests/Triggers/*.cpp")
+file(GLOB_RECURSE STATIC_TESTS
+        "tests/*")
 
 set(SOURCE_FILES
         src/DriverHolder.cpp
@@ -267,7 +264,7 @@ set(SOURCE_FILES
         src/Windows/Controllers/TablesTabController.cpp
         src/Windows/Controllers/LogParserTabController.cpp
         src/Windows/Controllers/TestControllers/TestsEditorController.cpp
-        tests/Tests/DocumentSyncTest.cpp tests/Tests/DocumentSyncTest.h src/Windows/Controllers/FNFiscalisationTabController.cpp include/Windows/Controllers/CommandsControllers/FNFiscalisationTabController.h src/Testing/ConnectionsManager/ConnectionsManager.cpp include/Testing/ConnectionsManager/ConnectionsManager.h src/Testing/ConnectionsManager/Connection.cpp include/Testing/ConnectionsManager/Connection.h src/Testing/ConnectionsManager/COMConnection.cpp include/Testing/ConnectionsManager/COMConnection.h src/Testing/ConnectionsManager/TCPConnection.cpp include/Testing/ConnectionsManager/TCPConnection.h src/Windows/Widgets/QConnectionsListWidget.cpp include/Windows/Widgets/QConnectionsListWidget.h src/Windows/Widgets/QConnectionsListWidgetItem.cpp include/Windows/Widgets/QConnectionsListWidgetItem.h)
+        tests/Tests/DocumentSyncTest.cpp tests/Tests/DocumentSyncTest.h src/Windows/Controllers/FNFiscalisationTabController.cpp include/Windows/Controllers/CommandsControllers/FNFiscalisationTabController.h src/Testing/ConnectionsManager/ConnectionsManager.cpp include/Testing/ConnectionsManager/ConnectionsManager.h src/Testing/ConnectionsManager/Connection.cpp include/Testing/ConnectionsManager/Connection.h src/Testing/ConnectionsManager/COMConnection.cpp include/Testing/ConnectionsManager/COMConnection.h src/Testing/ConnectionsManager/TCPConnection.cpp include/Testing/ConnectionsManager/TCPConnection.h src/Windows/Widgets/QConnectionsListWidget.cpp include/Windows/Widgets/QConnectionsListWidget.h src/Windows/Widgets/QConnectionsListWidgetItem.cpp include/Windows/Widgets/QConnectionsListWidgetItem.h include/Testing/TestGroups.h)
 
 #------------------------
 # Setuping Qt

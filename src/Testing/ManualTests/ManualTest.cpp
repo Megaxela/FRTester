@@ -7,7 +7,7 @@
 
 ManualTest::ManualTest(const std::string &name,
                        const std::string &description) :
-        AbstractTest(nullptr, name, description, {}),
+        AbstractTest(name, description, {MANUAL_TESTS_GROUP}),
         m_testActions()
 {}
 

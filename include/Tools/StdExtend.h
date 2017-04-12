@@ -8,6 +8,7 @@
 //#define STD_NAMESPACE
 #include <string>
 #include <sstream>
+#include <vector>
 
 #ifdef STD_NAMESPACE
     #define STDEXTEND_NAMESPACE namespace std
@@ -65,6 +66,14 @@ STDEXTEND_NAMESPACE
 
         return sum / container.size();
     }
+
+    /**
+     * @brief Method for splitting string with delimiter.
+     * @param s String to be splitted.
+     * @param delim Delimiter.
+     * @return Splitted string.
+     */
+    std::vector<std::string> split(const std::string& s, char delim);
 }
 
 

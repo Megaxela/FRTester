@@ -8,6 +8,7 @@
 #include <memory>
 #include "Tools/ByteArray.h"
 #include "TestDataValue.h"
+#include "TestGroups.h"
 
 class TestEnvironment;
 class AbstractTriggerTest;
@@ -23,9 +24,9 @@ public:
     /**
      * @brief Конструктор.
      */
-    AbstractTriggerTest(TestEnvironment *environment,
-                        const std::string &name,
+    AbstractTriggerTest(const std::string &name,
                         const std::string &description,
+                        const std::vector<std::string> &group,
                         bool critical,
                         const std::vector<std::pair<std::string, DataValue>> &fields);
 
@@ -110,133 +111,14 @@ public:
      * @param name Название переменной.
      * @param value Значение переменной.
      */
-    void setValue(const std::string& name, uint8_t value);
-
-    /**
-     * @brief Метод для установки значения переменной.
-     * @param name Название переменной.
-     * @param value Значение переменной.
-     */
-    void setValue(const std::string& name, int8_t value);
-
-    /**
-     * @brief Метод для установки значения переменной.
-     * @param name Название переменной.
-     * @param value Значение переменной.
-     */
-    void setValue(const std::string& name, uint16_t value);
-
-    /**
-     * @brief Метод для установки значения переменной.
-     * @param name Название переменной.
-     * @param value Значение переменной.
-     */
-    void setValue(const std::string& name, int16_t value);
-
-    /**
-     * @brief Метод для установки значения переменной.
-     * @param name Название переменной.
-     * @param value Значение переменной.
-     */
-    void setValue(const std::string& name, uint32_t value);
-
-    /**
-     * @brief Метод для установки значения переменной.
-     * @param name Название переменной.
-     * @param value Значение переменной.
-     */
-    void setValue(const std::string& name, int32_t value);
-
-    /**
-     * @brief Метод для установки значения переменной.
-     * @param name Название переменной.
-     * @param value Значение переменной.
-     */
-    void setValue(const std::string& name, uint64_t value);
-
-    /**
-     * @brief Метод для установки значения переменной.
-     * @param name Название переменной.
-     * @param value Значение переменной.
-     */
-    void setValue(const std::string& name, int64_t value);
-
-    /**
-     * @brief Метод для установки значения переменной.
-     * @param name Название переменной.
-     * @param value Значение переменной.
-     */
-    void setValue(const std::string& name, bool value);
-
-    /**
-     * @brief Метод для установки значения переменной.
-     * @param name Название переменной.
-     * @param value Значение переменной.
-     */
     void setValue(const std::string& name, const DataValue& value);
 
     /**
      * @brief Метод для получения значения переменной.
-     * @param name Название переменной
-     * @return Значение.
+     * @param name Название переменной.
+     * @return Переменная.
      */
-    uint8_t getValueUInt8(const std::string& name) const;
-
-    /**
-     * @brief Метод для получения значения переменной.
-     * @param name Название переменной
-     * @return Значение.
-     */
-    int8_t getValueInt8(const std::string& name) const;
-
-    /**
-     * @brief Метод для получения значения переменной.
-     * @param name Название переменной
-     * @return Значение.
-     */
-    uint16_t getValueUInt16(const std::string& name) const;
-
-    /**
-     * @brief Метод для получения значения переменной.
-     * @param name Название переменной
-     * @return Значение.
-     */
-    int16_t getValueInt16(const std::string& name) const;
-
-    /**
-     * @brief Метод для получения значения переменной.
-     * @param name Название переменной
-     * @return Значение.
-     */
-    uint32_t getValueUInt32(const std::string& name) const;
-
-    /**
-     * @brief Метод для получения значения переменной.
-     * @param name Название переменной
-     * @return Значение.
-     */
-    int32_t getValueInt32(const std::string& name) const;
-
-    /**
-     * @brief Метод для получения значения переменной.
-     * @param name Название переменной
-     * @return Значение.
-     */
-    uint64_t getValueUInt64(const std::string& name) const;
-
-    /**
-     * @brief Метод для получения значения переменной.
-     * @param name Название переменной
-     * @return Значение.
-     */
-    int64_t getValueInt64(const std::string& name) const;
-
-    /**
-     * @brief Метод для получения значения переменной.
-     * @param name Название переменной
-     * @return Значение.
-     */
-    bool getValueBoolean(const std::string& name) const;
+    DataValue getValue(const std::string& name) const;
 
     /**
      * @brief Метод для получения типа переменной.
@@ -266,6 +148,12 @@ public:
      */
     void setEnvironment(TestEnvironment* environment);
 
+    /**
+     * @brief Метод для получения группы.
+     * @return
+     */
+    std::vector<std::string> groups() const;
+
 private:
     AbstractTriggerTest(const AbstractTriggerTest&) = delete;
     AbstractTriggerTest& operator=(const AbstractTriggerTest&) = delete;
@@ -279,6 +167,7 @@ private:
     TestEnvironment* m_environment;
 
     std::vector<std::pair<std::string, DataValue>> m_dynamicValues;
+    std::vector<std::string> m_group;
 };
 
 

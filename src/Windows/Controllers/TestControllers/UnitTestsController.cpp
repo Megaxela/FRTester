@@ -13,6 +13,7 @@
 #include <Tools/GUIHelper.h>
 #include <QMessageBox>
 #include <include/Testing/SettingsSystem.h>
+#include <Windows/Widgets/QHexLineEdit.h>
 
 UnitTestsController::UnitTestsController(Ui::MainWindow *ptr, QWidget *parent) :
     AbstractTabController(ptr, parent, nullptr),
@@ -513,7 +514,7 @@ void UnitTestsController::onTestSelected(TestPtr test)
         case DataValue::Type::UInt8:
         {
             auto numberLineEdit = new QNumberLineEdit<uint8_t>(parentWidget());
-            numberLineEdit->setNumberValue(test->getValueUInt8(variable.first));
+            numberLineEdit->setNumberValue(test->getValue(variable.first).toUInt8());
             connect(numberLineEdit,
                     &QNumberLineEdit<uint8_t>::newUInt8ValueAccepted,
                     [=](uint8_t value)
@@ -527,7 +528,7 @@ void UnitTestsController::onTestSelected(TestPtr test)
         case DataValue::Type::Int8:
         {
             auto numberLineEdit = new QNumberLineEdit<int8_t>(parentWidget());
-            numberLineEdit->setNumberValue(test->getValueInt8(variable.first));
+            numberLineEdit->setNumberValue(test->getValue(variable.first).toInt8());
             connect(numberLineEdit,
                     &QNumberLineEdit<int8_t>::newInt8ValueAccepted,
                     [=](int8_t value)
@@ -541,7 +542,7 @@ void UnitTestsController::onTestSelected(TestPtr test)
         case DataValue::Type::UInt16:
         {
             auto numberLineEdit = new QNumberLineEdit<uint16_t>(parentWidget());
-            numberLineEdit->setNumberValue(test->getValueUInt16(variable.first));
+            numberLineEdit->setNumberValue(test->getValue(variable.first).toUInt16());
             connect(numberLineEdit,
                     &QNumberLineEdit<uint16_t>::newUInt16ValueAccepted,
                     [=](uint16_t value)
@@ -555,7 +556,7 @@ void UnitTestsController::onTestSelected(TestPtr test)
         case DataValue::Type::Int16:
         {
             auto numberLineEdit = new QNumberLineEdit<int16_t>(parentWidget());
-            numberLineEdit->setNumberValue(test->getValueInt16(variable.first));
+            numberLineEdit->setNumberValue(test->getValue(variable.first).toInt16());
             connect(numberLineEdit,
                     &QNumberLineEdit<int16_t>::newInt8ValueAccepted,
                     [=](int16_t value)
@@ -569,7 +570,7 @@ void UnitTestsController::onTestSelected(TestPtr test)
         case DataValue::Type::UInt32:
         {
             auto numberLineEdit = new QNumberLineEdit<uint32_t>(parentWidget());
-            numberLineEdit->setNumberValue(test->getValueUInt32(variable.first));
+            numberLineEdit->setNumberValue(test->getValue(variable.first).toUInt32());
             connect(numberLineEdit,
                     &QNumberLineEdit<uint32_t>::newUInt32ValueAccepted,
                     [=](uint32_t value)
@@ -583,7 +584,7 @@ void UnitTestsController::onTestSelected(TestPtr test)
         case DataValue::Type::Int32:
         {
             auto numberLineEdit = new QNumberLineEdit<int32_t>(parentWidget());
-            numberLineEdit->setNumberValue(test->getValueInt32(variable.first));
+            numberLineEdit->setNumberValue(test->getValue(variable.first).toInt32());
             connect(numberLineEdit,
                     &QNumberLineEdit<int32_t>::newInt32ValueAccepted,
                     [=](int32_t value)
@@ -597,7 +598,7 @@ void UnitTestsController::onTestSelected(TestPtr test)
         case DataValue::Type::UInt64:
         {
             auto numberLineEdit = new QNumberLineEdit<uint64_t>(parentWidget());
-            numberLineEdit->setNumberValue(test->getValueUInt64(variable.first));
+            numberLineEdit->setNumberValue(test->getValue(variable.first).toUInt64());
             connect(numberLineEdit,
                     &QNumberLineEdit<uint64_t>::newUInt64ValueAccepted,
                     [=](uint64_t value)
@@ -611,7 +612,7 @@ void UnitTestsController::onTestSelected(TestPtr test)
         case DataValue::Type::Int64:
         {
             auto numberLineEdit = new QNumberLineEdit<int64_t>(parentWidget());
-            numberLineEdit->setNumberValue(test->getValueInt64(variable.first));
+            numberLineEdit->setNumberValue(test->getValue(variable.first).toInt64());
             connect(numberLineEdit,
                     &QNumberLineEdit<int64_t>::newInt64ValueAccepted,
                     [=](int64_t value)
@@ -625,7 +626,7 @@ void UnitTestsController::onTestSelected(TestPtr test)
         case DataValue::Type::Boolean:
         {
             auto checkBox = new QCheckBox(parentWidget());
-            checkBox->setChecked(test->getValueBoolean(variable.first));
+            checkBox->setChecked(test->getValue(variable.first).toBoolean());
             connect(checkBox,
                     &QCheckBox::stateChanged,
                     [=](int state)
@@ -636,8 +637,35 @@ void UnitTestsController::onTestSelected(TestPtr test)
             widget = checkBox;
             break;
         }
-        default:
-            Critical("Неизвестный тип переменной. Чта?");
+        case DataValue::Type::String:
+        {
+            auto lineEdit = new QLineEdit(parentWidget());
+            lineEdit->setText(QString::fromStdString(test->getValue(variable.first).toString()));
+            connect(lineEdit,
+                    &QLineEdit::textEdited,
+                    [=](QString s)
+                    {
+                        test->setValue(variable.first, s.toStdString());
+                    });
+
+            widget = lineEdit;
+            break;
+        }
+        case DataValue::Type::ByteArray:
+        {
+            auto byteArray = new QHexLineEdit(parentWidget());
+            byteArray->setByteArray(test->getValue(variable.first).toByteArray());
+            connect(byteArray,
+                    &QHexLineEdit::byteArrayChanged,
+                    [=](const ByteArray &a)
+                    {
+                        test->setValue(variable.first, a);
+                    });
+
+            widget = byteArray;
+            break;
+        }
+
         }
 
         if (widget != nullptr)
@@ -730,7 +758,7 @@ void UnitTestsController::onTriggerSelected(TriggerTestPtr trigger)
         case DataValue::Type::UInt8:
         {
             auto numberLineEdit = new QNumberLineEdit<uint8_t>(parentWidget());
-            numberLineEdit->setNumberValue(trigger->getValueUInt8(variable.first));
+            numberLineEdit->setNumberValue(trigger->getValue(variable.first).toUInt8());
             connect(numberLineEdit,
                     &QNumberLineEdit<uint8_t>::newUInt8ValueAccepted,
                     [=](uint8_t value)
@@ -744,7 +772,7 @@ void UnitTestsController::onTriggerSelected(TriggerTestPtr trigger)
         case DataValue::Type::Int8:
         {
             auto numberLineEdit = new QNumberLineEdit<int8_t>(parentWidget());
-            numberLineEdit->setNumberValue(trigger->getValueInt8(variable.first));
+            numberLineEdit->setNumberValue(trigger->getValue(variable.first).toInt8());
             connect(numberLineEdit,
                     &QNumberLineEdit<int8_t>::newInt8ValueAccepted,
                     [=](int8_t value)
@@ -758,7 +786,7 @@ void UnitTestsController::onTriggerSelected(TriggerTestPtr trigger)
         case DataValue::Type::UInt16:
         {
             auto numberLineEdit = new QNumberLineEdit<uint16_t>(parentWidget());
-            numberLineEdit->setNumberValue(trigger->getValueUInt16(variable.first));
+            numberLineEdit->setNumberValue(trigger->getValue(variable.first).toUInt16());
             connect(numberLineEdit,
                     &QNumberLineEdit<uint16_t>::newUInt16ValueAccepted,
                     [=](uint16_t value)
@@ -772,7 +800,7 @@ void UnitTestsController::onTriggerSelected(TriggerTestPtr trigger)
         case DataValue::Type::Int16:
         {
             auto numberLineEdit = new QNumberLineEdit<int16_t>(parentWidget());
-            numberLineEdit->setNumberValue(trigger->getValueInt16(variable.first));
+            numberLineEdit->setNumberValue(trigger->getValue(variable.first).toInt16());
             connect(numberLineEdit,
                     &QNumberLineEdit<int16_t>::newInt8ValueAccepted,
                     [=](int16_t value)
@@ -786,7 +814,7 @@ void UnitTestsController::onTriggerSelected(TriggerTestPtr trigger)
         case DataValue::Type::UInt32:
         {
             auto numberLineEdit = new QNumberLineEdit<uint32_t>(parentWidget());
-            numberLineEdit->setNumberValue(trigger->getValueUInt32(variable.first));
+            numberLineEdit->setNumberValue(trigger->getValue(variable.first).toUInt32());
             connect(numberLineEdit,
                     &QNumberLineEdit<uint32_t>::newUInt32ValueAccepted,
                     [=](uint32_t value)
@@ -800,7 +828,7 @@ void UnitTestsController::onTriggerSelected(TriggerTestPtr trigger)
         case DataValue::Type::Int32:
         {
             auto numberLineEdit = new QNumberLineEdit<int32_t>(parentWidget());
-            numberLineEdit->setNumberValue(trigger->getValueInt32(variable.first));
+            numberLineEdit->setNumberValue(trigger->getValue(variable.first).toInt32());
             connect(numberLineEdit,
                     &QNumberLineEdit<int32_t>::newInt32ValueAccepted,
                     [=](int32_t value)
@@ -814,7 +842,7 @@ void UnitTestsController::onTriggerSelected(TriggerTestPtr trigger)
         case DataValue::Type::UInt64:
         {
             auto numberLineEdit = new QNumberLineEdit<uint64_t>(parentWidget());
-            numberLineEdit->setNumberValue(trigger->getValueUInt64(variable.first));
+            numberLineEdit->setNumberValue(trigger->getValue(variable.first).toUInt64());
             connect(numberLineEdit,
                     &QNumberLineEdit<uint64_t>::newUInt64ValueAccepted,
                     [=](uint64_t value)
@@ -828,7 +856,7 @@ void UnitTestsController::onTriggerSelected(TriggerTestPtr trigger)
         case DataValue::Type::Int64:
         {
             auto numberLineEdit = new QNumberLineEdit<int64_t>(parentWidget());
-            numberLineEdit->setNumberValue(trigger->getValueInt64(variable.first));
+            numberLineEdit->setNumberValue(trigger->getValue(variable.first).toInt64());
             connect(numberLineEdit,
                     &QNumberLineEdit<int64_t>::newInt64ValueAccepted,
                     [=](int64_t value)
@@ -842,7 +870,7 @@ void UnitTestsController::onTriggerSelected(TriggerTestPtr trigger)
         case DataValue::Type::Boolean:
         {
             auto checkBox = new QCheckBox(parentWidget());
-            checkBox->setChecked(trigger->getValueBoolean(variable.first));
+            checkBox->setChecked(trigger->getValue(variable.first).toBoolean());
             connect(checkBox,
                     &QCheckBox::stateChanged,
                     [=](int state)
@@ -853,8 +881,34 @@ void UnitTestsController::onTriggerSelected(TriggerTestPtr trigger)
             widget = checkBox;
             break;
         }
-        default:
-            Critical("Неизвестный тип переменной. Чта?");
+        case DataValue::Type::String:
+        {
+            auto lineEdit = new QLineEdit(parentWidget());
+            lineEdit->setText(QString::fromStdString(trigger->getValue(variable.first).toString()));
+            connect(lineEdit,
+                    &QLineEdit::textEdited,
+                    [=](QString s)
+                    {
+                        trigger->setValue(variable.first, s.toStdString());
+                    });
+
+            widget = lineEdit;
+            break;
+        }
+        case DataValue::Type::ByteArray:
+        {
+            auto byteArray = new QHexLineEdit(parentWidget());
+            byteArray->setByteArray(trigger->getValue(variable.first).toByteArray());
+            connect(byteArray,
+                    &QHexLineEdit::byteArrayChanged,
+                    [=](const ByteArray &a)
+                    {
+                        trigger->setValue(variable.first, a);
+                    });
+
+            widget = byteArray;
+            break;
+        }
         }
 
         if (widget != nullptr)

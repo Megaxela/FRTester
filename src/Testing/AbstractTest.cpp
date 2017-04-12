@@ -9,20 +9,13 @@
 
 AbstractTest::AbstractTest(const std::string &name,
                            const std::string &description,
+                           const std::vector<std::string> &group,
                            const std::vector<std::pair<std::string, DataValue>> &fields) :
-    AbstractTest(nullptr, name, description, fields)
-{
-
-}
-
-AbstractTest::AbstractTest(TestEnvironment *driver,
-                           const std::string &name,
-                           const std::string &description,
-                           const std::vector<std::pair<std::string, DataValue>> &fields) :
-    m_environment(driver),
-    m_name(name),
-    m_description(description),
-    m_dynamicValues(fields)
+        m_environment(nullptr),
+        m_name(name),
+        m_description(description),
+        m_dynamicValues(fields),
+        m_group(group)
 {
     // Загрузка сохраненных значений
     for (auto& value : m_dynamicValues)
@@ -84,159 +77,6 @@ std::vector<std::pair<std::string, DataValue::Type>> AbstractTest::getVariables(
     return result;
 }
 
-void AbstractTest::setValue(const std::string &name, uint8_t value)
-{
-    for (auto& element : m_dynamicValues)
-    {
-        if (element.first == name && element.second.type == DataValue::Type::UInt8)
-        {
-            element.second.value.integer.uint8 = value;
-            SettingsSystem::instance().setTestVariable(
-                    this,
-                    element.first,
-                    element.second
-            );
-            return;
-        }
-    }
-
-    throw std::length_error("Test has no uint8 value with name \"" + name + "\".");
-}
-
-void AbstractTest::setValue(const std::string &name, int8_t value)
-{
-    for (auto& element : m_dynamicValues)
-    {
-        if (element.first == name && element.second.type == DataValue::Type::Int8)
-        {
-            element.second.value.integer.int8 = value;
-
-            SettingsSystem::instance().setTestVariable(
-                    this,
-                    element.first,
-                    element.second
-            );
-            return;
-        }
-    }
-
-    throw std::length_error("Test has no int8 value with name \"" + name + "\".");
-}
-
-void AbstractTest::setValue(const std::string &name, uint16_t value)
-{
-    for (auto& element : m_dynamicValues)
-    {
-        if (element.first == name && element.second.type == DataValue::Type::UInt16)
-        {
-            element.second.value.integer.uint16 = value;
-            SettingsSystem::instance().setTestVariable(
-                    this,
-                    element.first,
-                    element.second
-            );
-            return;
-        }
-    }
-
-    throw std::length_error("Test has no uint16 value with name \"" + name + "\".");
-}
-
-void AbstractTest::setValue(const std::string &name, int16_t value)
-{
-    for (auto& element : m_dynamicValues)
-    {
-        if (element.first == name && element.second.type == DataValue::Type::Int16)
-        {
-            element.second.value.integer.int16 = value;
-            SettingsSystem::instance().setTestVariable(
-                    this,
-                    element.first,
-                    element.second
-            );
-            return;
-        }
-    }
-
-    throw std::length_error("Test has no int16 value with name \"" + name + "\".");
-}
-
-void AbstractTest::setValue(const std::string &name, uint32_t value)
-{
-    for (auto& element : m_dynamicValues)
-    {
-        if (element.first == name && element.second.type == DataValue::Type::UInt32)
-        {
-            element.second.value.integer.uint32 = value;
-            SettingsSystem::instance().setTestVariable(
-                    this,
-                    element.first,
-                    element.second
-            );
-            return;
-        }
-    }
-
-    throw std::length_error("Test has no uint32 value with name \"" + name + "\".");
-}
-
-void AbstractTest::setValue(const std::string &name, int32_t value)
-{
-    for (auto& element : m_dynamicValues)
-    {
-        if (element.first == name && element.second.type == DataValue::Type::Int32)
-        {
-            element.second.value.integer.int32 = value;
-            SettingsSystem::instance().setTestVariable(
-                    this,
-                    element.first,
-                    element.second
-            );
-            return;
-        }
-    }
-
-    throw std::length_error("Test has no int32 value with name \"" + name + "\".");
-}
-
-void AbstractTest::setValue(const std::string &name, uint64_t value)
-{
-    for (auto& element : m_dynamicValues)
-    {
-        if (element.first == name && element.second.type == DataValue::Type::UInt64)
-        {
-            element.second.value.integer.uint64 = value;
-            SettingsSystem::instance().setTestVariable(
-                    this,
-                    element.first,
-                    element.second
-            );
-            return;
-        }
-    }
-
-    throw std::length_error("Test has no uint64 value with name \"" + name + "\".");
-}
-
-void AbstractTest::setValue(const std::string &name, int64_t value)
-{
-    for (auto& element : m_dynamicValues)
-    {
-        if (element.first == name && element.second.type == DataValue::Type::Int64)
-        {
-            element.second.value.integer.int64 = value;
-            SettingsSystem::instance().setTestVariable(
-                    this,
-                    element.first,
-                    element.second
-            );
-            return;
-        }
-    }
-
-    throw std::length_error("Test has no int64 value with name \"" + name + "\".");
-}
-
 void AbstractTest::setValue(const std::string &name, const DataValue &value)
 {
     for (auto& element : m_dynamicValues)
@@ -255,129 +95,6 @@ void AbstractTest::setValue(const std::string &name, const DataValue &value)
     throw std::length_error("Test has no value with name \"" + name + "\".");
 }
 
-void AbstractTest::setValue(const std::string &name, bool value)
-{
-    for (auto& element : m_dynamicValues)
-    {
-        if (element.first == name && element.second.type == DataValue::Type::Boolean)
-        {
-            element.second.value.boolean = value;
-            SettingsSystem::instance().setTestVariable(
-                    this,
-                    element.first,
-                    element.second
-            );
-            return;
-        }
-    }
-
-    throw std::length_error("Test has no boolean value with name \"" + name + "\".");
-}
-
-uint8_t AbstractTest::getValueUInt8(const std::string &name) const
-{
-    for (auto& value : m_dynamicValues)
-    {
-        if (value.first == name && value.second.type == DataValue::Type::UInt8)
-        {
-            return value.second.value.integer.uint8;
-        }
-    }
-
-    throw std::length_error("Test has no uint8 value with name \"" + name + "\".");
-}
-
-int8_t AbstractTest::getValueInt8(const std::string &name) const
-{
-    for (auto& value : m_dynamicValues)
-    {
-        if (value.first == name && value.second.type == DataValue::Type::Int8)
-        {
-            return value.second.value.integer.int8;
-        }
-    }
-
-    throw std::length_error("Test has no int8 value with name \"" + name + "\".");
-}
-
-uint16_t AbstractTest::getValueUInt16(const std::string &name) const
-{
-    for (auto& value : m_dynamicValues)
-    {
-        if (value.first == name && value.second.type == DataValue::Type::UInt16)
-        {
-            return value.second.value.integer.uint16;
-        }
-    }
-
-    throw std::length_error("Test has no uint16 value with name \"" + name + "\".");
-}
-
-int16_t AbstractTest::getValueInt16(const std::string &name) const
-{
-    for (auto& value : m_dynamicValues)
-    {
-        if (value.first == name && value.second.type == DataValue::Type::Int16)
-        {
-            return value.second.value.integer.int16;
-        }
-    }
-
-    throw std::length_error("Test has no int16 value with name \"" + name + "\".");
-}
-
-uint32_t AbstractTest::getValueUInt32(const std::string &name) const
-{
-    for (auto& value : m_dynamicValues)
-    {
-        if (value.first == name && value.second.type == DataValue::Type::UInt32)
-        {
-            return value.second.value.integer.uint32;
-        }
-    }
-
-    throw std::length_error("Test has no uint32 value with name \"" + name + "\".");
-}
-
-int32_t AbstractTest::getValueInt32(const std::string &name) const
-{
-    for (auto& value : m_dynamicValues)
-    {
-        if (value.first == name && value.second.type == DataValue::Type::Int32)
-        {
-            return value.second.value.integer.int32;
-        }
-    }
-
-    throw std::length_error("Test has no int32 value with name \"" + name + "\".");
-}
-
-uint64_t AbstractTest::getValueUInt64(const std::string &name) const
-{
-    for (auto& value : m_dynamicValues)
-    {
-        if (value.first == name && value.second.type == DataValue::Type::UInt64)
-        {
-            return value.second.value.integer.uint64;
-        }
-    }
-
-    throw std::length_error("Test has no uint64 value with name \"" + name + "\".");
-}
-
-int64_t AbstractTest::getValueInt64(const std::string &name) const
-{
-    for (auto& value : m_dynamicValues)
-    {
-        if (value.first == name && value.second.type == DataValue::Type::Int64)
-        {
-            return value.second.value.integer.int64;
-        }
-    }
-
-    throw std::length_error("Test has no int64 value with name \"" + name + "\".");
-}
-
 DataValue AbstractTest::getValue(const std::string &name)
 {
     for (auto& value : m_dynamicValues)
@@ -385,32 +102,6 @@ DataValue AbstractTest::getValue(const std::string &name)
         if (value.first == name)
         {
             return value.second;
-        }
-    }
-
-    throw std::length_error("Test has no int64 value with name \"" + name + "\".");
-}
-
-bool AbstractTest::getValueBoolean(const std::string &name) const
-{
-    for (auto& value : m_dynamicValues)
-    {
-        if (value.first == name && value.second.type == DataValue::Type::Boolean)
-        {
-            return value.second.value.boolean;
-        }
-    }
-
-    throw std::length_error("Test has no boolean value with name \"" + name + "\".");
-}
-
-DataValue::Type AbstractTest::getValueType(const std::string &name) const
-{
-    for (auto& value : m_dynamicValues)
-    {
-        if (value.first == name)
-        {
-            return value.second.type;
         }
     }
 
@@ -446,4 +137,9 @@ bool AbstractTest::containsValue(const std::string &name, DataValue::Type type) 
 void AbstractTest::setEnvironment(TestEnvironment *environment)
 {
     m_environment = environment;
+}
+
+std::vector<std::string> AbstractTest::group() const
+{
+    return m_group;
 }
