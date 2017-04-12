@@ -156,7 +156,14 @@ set(INCLUDE_FILES
         include/Testing/ManualTests/Actions/WriteTableBinTestAction.h
         include/Windows/Controllers/CommandsControllers/RegisterCommandsTabController.h
         include/Windows/Controllers/CommandsControllers/RegisterOperationsV2CommandsTabController.h
-        )
+        include/Windows/Controllers/CommandsControllers/FNFiscalisationTabController.h
+        include/Testing/ConnectionsManager/ConnectionsManager.h
+        include/Testing/ConnectionsManager/Connection.h
+        include/Testing/ConnectionsManager/COMConnection.h
+        include/Testing/ConnectionsManager/TCPConnection.h
+        include/Windows/Widgets/QConnectionsListWidget.h
+        include/Windows/Widgets/QConnectionsListWidgetItem.h
+        include/Testing/TestGroups.h)
 
 file(GLOB_RECURSE STATIC_TESTS
         "tests/*")
@@ -264,7 +271,13 @@ set(SOURCE_FILES
         src/Windows/Controllers/TablesTabController.cpp
         src/Windows/Controllers/LogParserTabController.cpp
         src/Windows/Controllers/TestControllers/TestsEditorController.cpp
-        tests/Tests/DocumentSyncTest.cpp tests/Tests/DocumentSyncTest.h src/Windows/Controllers/FNFiscalisationTabController.cpp include/Windows/Controllers/CommandsControllers/FNFiscalisationTabController.h src/Testing/ConnectionsManager/ConnectionsManager.cpp include/Testing/ConnectionsManager/ConnectionsManager.h src/Testing/ConnectionsManager/Connection.cpp include/Testing/ConnectionsManager/Connection.h src/Testing/ConnectionsManager/COMConnection.cpp include/Testing/ConnectionsManager/COMConnection.h src/Testing/ConnectionsManager/TCPConnection.cpp include/Testing/ConnectionsManager/TCPConnection.h src/Windows/Widgets/QConnectionsListWidget.cpp include/Windows/Widgets/QConnectionsListWidget.h src/Windows/Widgets/QConnectionsListWidgetItem.cpp include/Windows/Widgets/QConnectionsListWidgetItem.h include/Testing/TestGroups.h tests/Tests/CutCheckOfflineTest.cpp tests/Tests/CutCheckOfflineTest.h)
+        src/Windows/Controllers/FNFiscalisationTabController.cpp
+        src/Testing/ConnectionsManager/ConnectionsManager.cpp
+        src/Testing/ConnectionsManager/Connection.cpp
+        src/Testing/ConnectionsManager/COMConnection.cpp
+        src/Testing/ConnectionsManager/TCPConnection.cpp
+        src/Windows/Widgets/QConnectionsListWidget.cpp
+        src/Windows/Widgets/QConnectionsListWidgetItem.cpp)
 
 #------------------------
 # Setuping Qt
