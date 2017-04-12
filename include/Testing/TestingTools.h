@@ -118,6 +118,12 @@ public:
      */
     bool performConnection();
 
+    /**
+     * @brief Метод для получения строки с ошибкой.
+     * @return Строка с ошибкой вида "#0 Ошибок нет"
+     */
+    std::string getErrorString();
+
 private:
     TestingTools(const TestingTools&) = delete;
     TestingTools& operator=(const TestingTools&) = delete;

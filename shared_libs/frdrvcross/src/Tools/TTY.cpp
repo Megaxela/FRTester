@@ -397,7 +397,9 @@ uint32_t TTY::write(const ByteArray &dataArray) const
 
 ByteArray TTY::read(uint32_t size, uint32_t timeoutMcs) const
 {
+    LogStream() << "Запрашиваю " << size << " байт с таймаутом в " << timeoutMcs / 1000.0 << " миллисекунд." << std::endl;
 
+    auto beginReadTime = Time::get<std::chrono::microseconds>();
 #ifdef OS_WINDOWS
     byte* response = new byte[size];
     memset(response, 0, size * sizeof(byte));
@@ -444,17 +446,13 @@ ByteArray TTY::read(uint32_t size, uint32_t timeoutMcs) const
 
     size_t dataRead = 0;
 
-    uint32_t timePassed = 0;
-
-    LogStream() << "Запрашиваю " << size << " байт с таймаутом в " << timeoutMcs << " микросекунд." << std::endl;
+    // Запоминаем время начала чтения
     while (dataRead < size)
     {
-        auto beginReadTime = Time::get<std::chrono::microseconds>();
-
         struct timeval timeout;
 
         timeout.tv_sec = 0;
-        timeout.tv_usec = (__suseconds_t) (timeoutMcs - timePassed);
+        timeout.tv_usec = (__suseconds_t) (timeoutMcs - (Time::getMicroseconds() - beginReadTime));
 
         int r = select(m_fileDescriptor + 1,
                        &read_fds,
@@ -462,10 +460,6 @@ ByteArray TTY::read(uint32_t size, uint32_t timeoutMcs) const
                        &except_fds,
                        &timeout);
 
-//        dataRead += ::read(m_fileDescriptor + 1,
-//                           response + dataRead,
-//                           size - dataRead);
-//        timePassed += (uint32_t) (Time::get<std::chrono::microseconds>() - beginReadTime);
         if (r == -1)
         {
             Error("Ошибка select. #" +
@@ -480,16 +474,30 @@ ByteArray TTY::read(uint32_t size, uint32_t timeoutMcs) const
             dataRead += ::read(m_fileDescriptor,
                                response + dataRead,
                                size - dataRead);
-            timePassed += (uint32_t) (Time::get<std::chrono::microseconds>() - beginReadTime);
         }
         else
         {
-            Error("Timeout чтения.");
+            Error("Таймаут чтения.");
             break;
         }
     }
 
 #endif
+    if (dataRead == size)
+    {
+        LogStream() << "Чтение успешно завершено за "
+                    << (Time::getMicroseconds() - beginReadTime) / 1000.0
+                    << " миллисекунд."
+                    << std::endl;
+    }
+    else
+    {
+        ErrorStream() << "Чтение не полностью завершено за "
+                      << (Time::getMicroseconds() - beginReadTime) / 1000.0
+                      << " миллисекунд."
+                      << std::endl;
+    }
+
     auto result =  ByteArray(response, static_cast<uint32_t>(dataRead));
 
     delete[] response;

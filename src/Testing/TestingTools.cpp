@@ -328,3 +328,13 @@ bool TestingTools::safeOperation(std::function<void(/*_Args&&...*/)> methodToBeS
 
     return true;
 }
+
+std::string TestingTools::getErrorString()
+{
+    auto err = (int) m_currentDriver->getLastError();
+
+    return "#" +
+            std::to_string(err) +
+            ' ' +
+            FRDriver::Converters::errorToString(err);
+}

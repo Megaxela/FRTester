@@ -68,6 +68,8 @@ private:
     QTestsTreeWidget(const QTestsTreeWidget&) = delete;
     QTestsTreeWidget& operator=(const QTestsTreeWidget&) = delete;
 
+    QTreeWidgetItem* getGroupItem(const std::vector<std::string> &group, QTreeWidgetItem* root);
+
     struct TestData
     {
         TestData() :

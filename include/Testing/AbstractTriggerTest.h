@@ -152,7 +152,7 @@ public:
      * @brief Метод для получения группы.
      * @return
      */
-    std::vector<std::string> groups() const;
+    std::vector<std::string> group() const;
 
 private:
     AbstractTriggerTest(const AbstractTriggerTest&) = delete;

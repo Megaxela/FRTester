@@ -92,6 +92,9 @@ PhysicalInterface::size_t TCPInterface::write(const ByteArray &data)
 
 ByteArray TCPInterface::read(const PhysicalInterface::size_t &size, uint32_t timeoutMcs)
 {
+    LogStream() << "Запрашиваю " << size << " байт с таймаутом в " << timeoutMcs / 1000.0 << " миллисекунд." << std::endl;
+
+    auto beginReadTime = Time::get<std::chrono::microseconds>();
     // Добавляем наш дескриптов в файл
     fd_set read_fds;
     fd_set write_fds;
@@ -108,16 +111,13 @@ ByteArray TCPInterface::read(const PhysicalInterface::size_t &size, uint32_t tim
 
     size_t dataRead = 0;
 
-    uint32_t timePassed = 0;
-
     while (dataRead < size)
     {
-        auto beginReadTime = Time::get<std::chrono::microseconds>();
 
         struct timeval timeout;
 
         timeout.tv_sec = 0;
-        timeout.tv_usec = timeoutMcs - timePassed;
+        timeout.tv_usec = timeoutMcs - ((Time::getMicroseconds() - beginReadTime));
 
         int r = select(m_connectionSocket + 1,
                        &read_fds,
@@ -125,10 +125,6 @@ ByteArray TCPInterface::read(const PhysicalInterface::size_t &size, uint32_t tim
                        &except_fds,
                        &timeout);
 
-//        dataRead += ::read(m_fileDescriptor + 1,
-//                           response + dataRead,
-//                           size - dataRead);
-//        timePassed += (uint32_t) (Time::get<std::chrono::microseconds>() - beginReadTime);
         if (r == -1)
         {
             Error("Ошибка select. #" +
@@ -154,8 +150,6 @@ ByteArray TCPInterface::read(const PhysicalInterface::size_t &size, uint32_t tim
             }
 
             dataRead += received;
-
-            timePassed += (uint32_t) (Time::get<std::chrono::microseconds>() - beginReadTime);
         }
         else
         {
@@ -163,6 +157,21 @@ ByteArray TCPInterface::read(const PhysicalInterface::size_t &size, uint32_t tim
             delete[] response;
             return ByteArray();
         }
+    }
+
+    if (dataRead == size)
+    {
+        LogStream() << "Чтение успешно завершено за "
+                    << (Time::getMicroseconds() - beginReadTime) / 1000.0
+                    << " миллисекунд."
+                    << std::endl;
+    }
+    else
+    {
+        ErrorStream() << "Чтение не полностью завершено за "
+                      << (Time::getMicroseconds() - beginReadTime) / 1000.0
+                      << " миллисекунд."
+                      << std::endl;
     }
 
     auto ba = ByteArray(response, static_cast<uint32_t>(dataRead));

@@ -71,7 +71,7 @@ void QTestsTreeWidget::addTrigger(TriggerTestPtr trigger)
 {
     TriggerData data;
     data.trigger = trigger;
-    data.item = new QTreeWidgetItem(m_triggersRootItem);
+    data.item = new QTreeWidgetItem(getGroupItem(trigger->group(), m_triggersRootItem));
     data.item->setText(0, QString::fromStdString(trigger->name()));
     data.item->setToolTip(0, QString::fromStdString(trigger->description()));
     data.item->setWhatsThis(0, QString::fromStdString(trigger->description()));
@@ -84,7 +84,7 @@ void QTestsTreeWidget::addTest(TestPtr test)
 {
     TestData data;
     data.test = test;
-    data.item = new QTreeWidgetItem(m_testsRootItem);
+    data.item = new QTreeWidgetItem(getGroupItem(test->group(), m_testsRootItem));
     data.item->setText(0, QString::fromStdString(test->name()));
     data.item->setToolTip(0, QString::fromStdString(test->description()));
     data.item->setWhatsThis(0, QString::fromStdString(test->description()));
@@ -208,4 +208,38 @@ void QTestsTreeWidget::onCurrentTestExecuted()
     }
 
     emit selectedTestsExecuted(tests);
+}
+
+QTreeWidgetItem *QTestsTreeWidget::getGroupItem(const std::vector<std::string> &group, QTreeWidgetItem* root)
+{
+    QTreeWidgetItem* currentPosition = root;
+
+    for (auto& groupElement : group)
+    {
+        // Ищем элемент в нашей текущей позиции
+        bool found = false;
+        for (int i = 0; i < currentPosition->childCount() && !found; ++i)
+        {
+            auto child = currentPosition->child(i);
+            if (child->text(0) == QString::fromStdString(groupElement))
+            {
+                currentPosition = child;
+                found = true;
+            }
+        }
+
+        if (found)
+        {
+            continue;
+        }
+
+        // Элемент не найден. Удаляем его
+        auto newChild = new QTreeWidgetItem(currentPosition);
+        newChild->setText(0, QString::fromStdString(groupElement));
+        newChild->setToolTip(0, "Это группа");
+
+        currentPosition = newChild;
+    }
+
+    return currentPosition;
 }

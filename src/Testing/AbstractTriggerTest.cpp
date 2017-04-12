@@ -159,7 +159,7 @@ DataValue AbstractTriggerTest::getValue(const std::string &name) const
     throw std::length_error("Trigger has no value with name \"" + name + "\".");
 }
 
-std::vector<std::string> AbstractTriggerTest::groups() const
+std::vector<std::string> AbstractTriggerTest::group() const
 {
     return std::vector<std::string>();
 }
