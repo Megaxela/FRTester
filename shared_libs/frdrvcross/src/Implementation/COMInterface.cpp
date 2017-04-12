@@ -42,7 +42,7 @@ bool COMInterface::closeConnection()
 
 PhysicalInterface::size_t COMInterface::write(const ByteArray &data)
 {
-    ExcessLog("Write: " + data.toHex());
+    ExcessLog("-> " + data.toHex());
     for (uint32_t i = 0; i < data.length(); )
     {
         if (Time::get<std::chrono::microseconds>() - m_lastByteSendTime < m_byteSendTime)
@@ -65,7 +65,7 @@ ByteArray COMInterface::read(const size_t &n,
 {
     auto r = TTY::read(n, timeout);
 
-    ExcessLog("Read: " + r.toHex());
+    ExcessLog("<- " + r.toHex());
 
     return r;
 }
