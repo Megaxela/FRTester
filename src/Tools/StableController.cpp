@@ -20,6 +20,9 @@ void StableController::init(std::function<void()> cb)
     _cb = cb;
 
     signal(SIGSEGV, posix_death_signal);
+    signal(SIGFPE, posix_death_signal);
+    signal(SIGABRT, posix_death_signal);
+    signal(SIGKILL, posix_death_signal);
 }
 
 void StableController::excessExecute()

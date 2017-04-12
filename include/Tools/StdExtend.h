@@ -58,6 +58,11 @@ STDEXTEND_NAMESPACE
     template<typename Container>
     typename Container::value_type median(const Container &container)
     {
+        if (container.size() == 0)
+        {
+            return 0;
+        }
+
         typename Container::value_type sum = typename Container::value_type(0);
         for (auto& el : container)
         {

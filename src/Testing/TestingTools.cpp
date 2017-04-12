@@ -72,7 +72,26 @@ bool TestingTools::waitForPrintingFinished(uint32_t password, uint32_t timeout)
                     "Таймаут ожидания печати. Печать не завершилась за " +
                     std::to_string(timeout) + "мс."
             );
-            return false;
+
+            if (!messageQuestion(
+                    "Печать не завершилась за " +
+                    std::to_string(timeout) + "мс. Кончилась бумага?",
+                    "Да",
+                    "Нет"
+            ))
+            {
+                return false;
+            }
+
+            start = Time::get<std::chrono::milliseconds>();
+
+            if (!m_currentDriver->resumePrinting(password))
+            {
+                m_logger->log("Не удалось продолжить печать. " +
+                              getErrorString());
+
+                return false;
+            }
         }
     }
 }
