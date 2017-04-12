@@ -218,6 +218,7 @@ public:
         , WaitingForCommandToContinuePrinting = 0x58
 
         /* ... todo: Добавить остальные коды ошибок */
+        , Timeout = 0xFE
         , Unknown = 0xFF
     };
 

@@ -53,7 +53,23 @@ ByteArray FRDriver::sendRaw(const ByteArray &data)
         throw DriverException("Адаптеры для драйвера не были установлены.");
     }
 
-    m_protocol->prepareDeviceToWrite(m_interface);
+    auto error = m_protocol->prepareDeviceToWrite(m_interface);
+    if (error != Protocol::Error::NoError)
+    {
+        // Что-то пошло не по плану
+        switch (error)
+        {
+        case Protocol::Timeout:
+            m_lastErrorCode = ErrorCode::Timeout;
+            break;
+        case Protocol::UknownBehaviour:
+            m_lastErrorCode = ErrorCode::Unknown;
+            break;
+        case Protocol::NoError:break;
+        }
+
+        return ByteArray();
+    }
 
     // Оборачиваем данные
     auto formedData = m_protocol->wrapData(data);
@@ -68,12 +84,7 @@ ByteArray FRDriver::sendRaw(const ByteArray &data)
             }
     );
 
-    ExcessLog("Время отправки заняло: " + std::to_string(sendTime) + " микросекунд.");
-
-    if (sendTime == 0)
-    {
-        Warning("Время отправки команды равно нулю.");
-    }
+    ExcessLog("Время отправки заняло: " + std::to_string(sendTime / 1000.0) + " миллисекунд.");
 
     // Проверяем количество отправленных данных
     if (static_cast<uint32_t>(sent) < formedData.length())
@@ -135,7 +146,10 @@ ByteArray FRDriver::sendCommand(const FRDriver::Command &c, const ByteArray &arg
 
     auto response = sendRaw(packedCommand);
 
-    proceedResponse(response, responseHasCashier);
+    if (!response.empty())
+    {
+        proceedResponse(response, responseHasCashier);
+    }
 
     return response;
 }
@@ -1718,6 +1732,7 @@ static std::map<int, std::string> errorString = {
         {0xC4, "Несовпадение номеров смен"},
         {0xC7, "Поле не редактируется в данном режиме"},
         {0xC8, "Нет связи с принтером или отсутствуют импульсы от таходатчика"},
+        {0xFE, "Соединение потеряно"},
         {0xFF, "Неизвестная ошибка"}
 };
 

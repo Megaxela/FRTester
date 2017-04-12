@@ -64,7 +64,7 @@ public:
      * @brief Метод для подготовки устройства к записи.
      * @param physicalInterface Интерфейс.
      */
-    void prepareDeviceToWrite(InterfacePtr physicalInterface) override;
+    Error prepareDeviceToWrite(InterfacePtr physicalInterface) override;
 
     /**
      * @brief Метод для проверки соединения.

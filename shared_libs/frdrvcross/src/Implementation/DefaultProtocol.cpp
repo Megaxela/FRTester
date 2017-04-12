@@ -117,7 +117,7 @@ ByteArray DefaultProtocol::receiveDataFromInterface(InterfacePtr physicalInterfa
     {
         Warning("На этапе считывания данных вместо ACK был получен 0xFF. Пробуем еще раз.");
         expectAck = physicalInterface->read(
-                1, 60 * 1000 * 1000 // 5 секунд
+                1, 50 * 1000 // 5 секунд
         );
     }
 
@@ -165,7 +165,7 @@ ByteArray DefaultProtocol::receiveDataFromInterface(InterfacePtr physicalInterfa
 
     // Считываем длину ответа
     ByteArray dataSize = physicalInterface->read(
-            1, 60 * 1000 * 1000 // 5 Секунд
+            1, 50 * 1000 // 5 Секунд
     );
 
     if (dataSize.empty())
@@ -175,7 +175,7 @@ ByteArray DefaultProtocol::receiveDataFromInterface(InterfacePtr physicalInterfa
     }
 
     ByteArray data = physicalInterface->read(
-            dataSize[0], 60 * 1000 * 1000 // 5 Секунд
+            dataSize[0]50 * 1000 // 5 Секунд
     );
 
     if (data.empty() && dataSize[0] != 0)
@@ -185,7 +185,7 @@ ByteArray DefaultProtocol::receiveDataFromInterface(InterfacePtr physicalInterfa
     }
 
     ByteArray checkSum = physicalInterface->read(
-            1, 60 * 1000 * 1000 // 5 секунд
+            1, 50 * 1000 // 5 секунд
     );
 
     byteArray.append(expectStx);
@@ -196,7 +196,7 @@ ByteArray DefaultProtocol::receiveDataFromInterface(InterfacePtr physicalInterfa
     return byteArray;
 }
 
-void DefaultProtocol::prepareDeviceToWrite(InterfacePtr physicalInterface)
+Error DefaultProtocol::prepareDeviceToWrite(InterfacePtr physicalInterface)
 {
     ByteArray enqArray;
     enqArray.append<uint8_t>(ENQ);
@@ -206,92 +206,109 @@ void DefaultProtocol::prepareDeviceToWrite(InterfacePtr physicalInterface)
 
     physicalInterface->write(enqArray);
 
-    ByteArray data = physicalInterface->read(1, 1000 * 50 * 50);
+    ByteArray data = physicalInterface->read(1, 1000 * 50); // 50 ms
 
     while (true)
     {
         if (data.empty())
         {
             Error("Не удалось получить ответ на ENQ.");
-            return;
+            return Error::Timeout;
         }
 
         // ФР Готов принимать данные
         if (data[0] == NAK)
         {
-            return;
+            return Error::NoError;
         }
             // От ФР остались неподтвержденные данные
             // При чем ACK куда-то потерялся
         else if (data[0] == STX)
         {
             // Считываем данные и подтверждаем их
-            ByteArray length = physicalInterface->read(1, 1000 * 50);
+            ByteArray length = physicalInterface->read(1, 1000 * 50); // 50 ms
 
             if (length.empty())
             {
                 Error("Ошибка при считывании длины оставшихся неподтвержденных данных.");
-                return;
+                return Error::Timeout;
             }
 
-            ByteArray response = physicalInterface->read(length[0], 1000 * 50);
+            ByteArray response = physicalInterface->read(length[0], 1000 * 50); // 50 ms
 
             if (response.empty())
             {
                 Error("Ошибка при считывании оставшихся неподтвержденных данных.");
-                return;
+                return Error::Timeout;
             }
 
-            ByteArray checkSum = physicalInterface->read(1, 1000 * 50);
+            ByteArray checkSum = physicalInterface->read(1, 1000 * 50); // 50 ms
 
             if (response.empty())
             {
                 Error("Ошибка при считывании контрольной суммы.");
-                return;
+                return Error::Timeout;
             }
 
             physicalInterface->write(ackArray);
 
             // После этого ФР должен быть готов к работе
-            return;
+            return Error::NoError;
         }
 
         else if (data[0] == ACK)
         {
-            ByteArray stxExp = physicalInterface->read(1, 1000 * 50);
+            ByteArray stxExp = physicalInterface->read(1, 1000 * 50); // 50 ms
 
             if (stxExp[0] != STX)
             {
                 Critical("Какая-то ахинея исходит от ФР.");
-                return;
+                return Error::UknownBehaviour;
             }
 
             // Считываем данные и подтверждаем их
-            ByteArray length = physicalInterface->read(1, 1000 * 50);
+            ByteArray length = physicalInterface->read(1, 1000 * 50); // 50 ms
 
-            ByteArray response = physicalInterface->read(length[0], 1000 * 50);
+            if (length.empty())
+            {
+                Critical("Не удалось получить длину данных для получения.");
+                return Error::Timeout;
+            }
 
-            ByteArray checkSum = physicalInterface->read(1, 1000 * 50);
+            ByteArray response = physicalInterface->read(length[0], 1000 * 50); // 50 ms
+
+            if (response.empty())
+            {
+                Critical("Не удалось получить данные для получения.");
+                return Error::Timeout;
+            }
+
+            ByteArray checkSum = physicalInterface->read(1, 1000 * 50); // 50 ms
+
+            if (checkSum.empty())
+            {
+                Critical("Не удалось получить контрольную сумму данных для получения.");
+                return Error::Timeout;
+            }
 
             physicalInterface->write(ackArray);
 
             physicalInterface->write(enqArray);
 
-            data = physicalInterface->read(1, 1000 * 50 * 50);
+            data = physicalInterface->read(1, 1000 * 50); // 50 ms
 
             continue;
 
             // После этого ФР должен быть готов к работе
-//            return;
         }
         else if (data[0] == 0xff) // todo: Странное поведение
         {
-            data = physicalInterface->read(1, 1000 * 50);
+            data = physicalInterface->read(1, 1000 * 50); // 50 ms
         }
         else
         {
             Critical("Не известное поведение.");
-            return;
+            return Error::UknownBehaviour;
         }
     }
 }

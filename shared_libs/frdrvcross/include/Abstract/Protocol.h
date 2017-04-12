@@ -19,6 +19,13 @@ typedef std::shared_ptr<Protocol> ProtocolPtr;
 class Protocol
 {
 public:
+    enum Error
+    {
+        NoError,
+        Timeout,
+        UknownBehaviour
+    };
+
     /**
      * @brief Конструктор.
      */
@@ -66,8 +73,9 @@ public:
     /**
      * @brief Метод для подготовки ФР к отправке новых данных.
      * @param physicalInterface Интерфейс.
+     * @return Успешность подготовки устройства к записи
      */
-    virtual void prepareDeviceToWrite(InterfacePtr physicalInterface) = 0;
+    virtual Error prepareDeviceToWrite(InterfacePtr physicalInterface) = 0;
 
     /**
      * @brief Метод для проверки наличия соединения с устройством.
