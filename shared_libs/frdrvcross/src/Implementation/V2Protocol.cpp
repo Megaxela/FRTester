@@ -39,7 +39,7 @@ ByteArray V2Protocol::receiveDataFromInterface(InterfacePtr inter, uint32_t resp
     return ByteArray();
 }
 
-void V2Protocol::prepareDeviceToWrite(InterfacePtr physicalInterface)
+Protocol::Error V2Protocol::prepareDeviceToWrite(InterfacePtr physicalInterface)
 {
 
 }

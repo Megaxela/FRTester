@@ -175,7 +175,7 @@ ByteArray DefaultProtocol::receiveDataFromInterface(InterfacePtr physicalInterfa
     }
 
     ByteArray data = physicalInterface->read(
-            dataSize[0]50 * 1000 // 5 Секунд
+            dataSize[0], 50 * 1000 // 5 Секунд
     );
 
     if (data.empty() && dataSize[0] != 0)
@@ -196,7 +196,7 @@ ByteArray DefaultProtocol::receiveDataFromInterface(InterfacePtr physicalInterfa
     return byteArray;
 }
 
-Error DefaultProtocol::prepareDeviceToWrite(InterfacePtr physicalInterface)
+Protocol::Error DefaultProtocol::prepareDeviceToWrite(InterfacePtr physicalInterface)
 {
     ByteArray enqArray;
     enqArray.append<uint8_t>(ENQ);

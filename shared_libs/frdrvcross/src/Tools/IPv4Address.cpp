@@ -26,7 +26,7 @@ std::string IPv4Address::toString() const
     bytes[2] = (uint8_t) ((m_data >> 16) & 0xFF);
     bytes[3] = (uint8_t) ((m_data >> 24) & 0xFF);
 
-    ss << bytes[3] << '.' << bytes[2] << '.' << bytes[1] << bytes[0];
+    ss << (int) bytes[0] << '.' << (int) bytes[1] << '.' << (int) bytes[2] << '.' << (int) bytes[3];
     return ss.str();
 }
 

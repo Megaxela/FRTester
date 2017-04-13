@@ -27,8 +27,8 @@ set(HEADER_FILES
         include/Abstract/PhysicalInterface.h
         include/Implementation/COMInterface.h
         include/Implementation/TCPInterface.h
-        include/Implementation/TestProtocol.h
         include/Implementation/DefaultProtocol.h
+        include/Implementation/V2Protocol.h
         cython/driver.h)
 
 set(SOURCE_FILES
@@ -46,8 +46,7 @@ set(SOURCE_FILES
         src/Implementation/TCPInterface.cpp
         src/Implementation/DefaultProtocol.cpp
         src/Tools/Time.cpp
-        src/Implementation/TestProtocol.cpp
-        src/Implementation/V2Protocol.cpp include/Implementation/V2Protocol.h)
+        src/Implementation/V2Protocol.cpp)
 
 add_library(frdrvcross SHARED
         ${SOURCE_FILES}
