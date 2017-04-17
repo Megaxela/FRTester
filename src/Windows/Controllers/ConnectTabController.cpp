@@ -219,7 +219,7 @@ void ConnectTabController::onSetTimePushButtonPressed()
             pwd,
             static_cast<uint8_t>(dateTime.date().day()),
             static_cast<uint8_t>(dateTime.date().month()),
-            static_cast<uint8_t>(dateTime.date().year())
+            static_cast<uint8_t>(dateTime.date().year() - 2000)
     ))
     {
         QMessageBox::critical(
@@ -240,7 +240,7 @@ void ConnectTabController::onSetTimePushButtonPressed()
             pwd,
             static_cast<uint8_t>(dateTime.date().day()),
             static_cast<uint8_t>(dateTime.date().month()),
-            static_cast<uint8_t>(dateTime.date().year())
+            static_cast<uint8_t>(dateTime.date().year() - 2000)
     ))
     {
         QMessageBox::critical(
