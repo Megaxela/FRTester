@@ -1645,8 +1645,41 @@ FRDriver::FNDocument FRDriver::findDocument(uint32_t sysAdmPassword, uint32_t do
     return document;
 }
 
+bool FRDriver::discount(uint32_t password,
+                        uint64_t sum,
+                        uint8_t tax1,
+                        uint8_t tax2,
+                        uint8_t tax3,
+                        uint8_t tax4,
+                        const std::string &text)
+{
+    ByteArray arguments;
+    arguments.append<uint32_t>(password, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(sum, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.append<uint8_t>(tax1);
+    arguments.append<uint8_t>(tax2);
+    arguments.append<uint8_t>(tax3);
+    arguments.append<uint8_t>(tax4);
+    arguments.append(
+            (const uint8_t*) text.c_str(),
+            static_cast<uint32_t>(text.size())
+    );
 
-static std::map<int, std::string> errorString = {
+    if (text.size() < 40)
+    {
+        arguments.appendMultiple<uint8_t>(
+                0x00,
+                static_cast<uint32_t>(40 - text.size()),
+                ByteArray::ByteOrder_LittleEndian
+        );
+    }
+
+    auto response = sendCommand(Command::Discount, arguments, true);
+
+    return getLastError() == FRDriver::ErrorCode::NoError;
+}
+
+static const std::map<int, std::string> errorString = {
         {0x00, "Ошибок нет"},
         {0x01, "Неизвестная команда, неверный формат посылки или неизвестные параметры"},
         {0x02, "Неверное состояние ФН"},
@@ -1760,7 +1793,7 @@ static std::map<int, std::string> errorString = {
         {0xFF, "Неизвестная ошибка"}
 };
 
-static std::map<int, std::string> posModeString = {
+static const std::map<int, std::string> posModeString = {
         {1, "Выдача данных."},
         {2, "Открытая смена, 24 часа не кончились."},
         {3, "Открытая смена, 24 часа кончились."},
@@ -1778,7 +1811,7 @@ static std::map<int, std::string> posModeString = {
         {15, "Фискальный подкладной документ сформирован1"}
 };
 
-static std::map<int, std::string> posSubModeString = {
+static const std::map<int, std::string> posSubModeString = {
         {0, "Бумага есть"},
         {1, "Пассивное отсутствие бумаги"},
         {2, "Активное отсутствие бумаги"},
@@ -1787,14 +1820,14 @@ static std::map<int, std::string> posSubModeString = {
         {5, "Фаза печати операции"}
 };
 
-static std::map<int, std::string> lastPrintResultString = {
+static const std::map<int, std::string> lastPrintResultString = {
         {0, "Печать завершена успешно"},
         {1, "Произочел обрыв бумаги"},
         {2, "Ошибка принтера (перегрев головки, другая ошибка)"},
         {5, "Идет печать"}
 };
 
-static std::map<uint8_t, std::string> fnDocumentString = {
+static const std::map<uint8_t, std::string> fnDocumentString = {
         {0x00, "Нет открытого документа"},
         {0x01, "Отчет о фискализации"},
         {0x02, "Отчет об открытии"},
@@ -1809,7 +1842,7 @@ static std::map<uint8_t, std::string> fnDocumentString = {
         {0x17, "Отчет о текущем состоянии расчетов"}
 };
 
-static std::map<uint8_t, std::string> languageString = {
+static const std::map<uint8_t, std::string> languageString = {
         { 0, "Русский"},
         { 1, "Английский"},
         { 2, "Эстонский"},

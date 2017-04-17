@@ -176,7 +176,6 @@ void SettingsSystem::loadData()
 
 void SettingsSystem::saveData()
 {
-    ExcessLog("Сохранение значений.");
     json root;
     root["settings"] = std::map<std::string, std::string>();
     root["test_variables"] = std::map<std::string, json>();

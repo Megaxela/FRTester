@@ -1474,6 +1474,20 @@ public:
      */
     bool printLine(uint32_t password, const ByteArray& data);
 
+    /**
+     * @brief Метод для пробития скидки.
+     * @param password Пароль оператора.
+     * @param sum Сумма.
+     * @param tax1 Налог 1.
+     * @param tax2 Налог 2.
+     * @param tax3 Налог 3.
+     * @param tax4 Налог 4.
+     * @param text Текст.
+     * @return Результат выполнения команды.
+     */
+    bool discount(uint32_t password, uint64_t sum, uint8_t tax1, uint8_t tax2, uint8_t tax3, uint8_t tax4, const std::string& text);
+
+
 protected:
 
     /**
