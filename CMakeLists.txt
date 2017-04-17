@@ -277,7 +277,7 @@ set(SOURCE_FILES
         src/Testing/ConnectionsManager/COMConnection.cpp
         src/Testing/ConnectionsManager/TCPConnection.cpp
         src/Windows/Widgets/QConnectionsListWidget.cpp
-        src/Windows/Widgets/QConnectionsListWidgetItem.cpp tests/Tests/Bug0017092Test.cpp tests/Tests/Bug0017092Test.h)
+        src/Windows/Widgets/QConnectionsListWidgetItem.cpp)
 
 #------------------------
 # Setuping Qt
