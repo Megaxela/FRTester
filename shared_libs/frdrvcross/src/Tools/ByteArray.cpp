@@ -69,11 +69,12 @@ void ByteArray::changeCapacity(uint32_t t)
     uint8_t *newData = new uint8_t[m_c];
     memset(newData, 0, sizeof(uint8_t) * m_c);
 
-    if (m_n > 0)
+    if (m_n > 0 && m_d != nullptr)
+    {
         memcpy(newData, m_d, sizeof(uint8_t) * m_n);
-
-    if (m_d != nullptr)
         delete[] m_d;
+        m_d = nullptr;
+    }
 
     m_d = newData;
 }

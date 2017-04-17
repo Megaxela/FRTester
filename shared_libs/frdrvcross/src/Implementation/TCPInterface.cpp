@@ -107,7 +107,10 @@ ByteArray TCPInterface::read(const PhysicalInterface::size_t &size, uint32_t tim
     FD_SET(m_connectionSocket, &except_fds);
 
     byte* response = new byte[size];
-    memset(response, 0, size * sizeof(byte));
+    // Скорее всего этот memset будет удален.
+    // Если он будет необходим - то надо использовать
+    // memset_s
+//    memset(response, 0, size * sizeof(byte));
 
     size_t dataRead = 0;
 

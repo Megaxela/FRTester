@@ -64,7 +64,7 @@ void QManualTestsListWidget::updateTests()
         {
             manualTest = ManualTestFabric::createTest(json::parse(fileStream));
         }
-        catch (std::invalid_argument e)
+        catch (std::invalid_argument &e)
         {
             Error("Тест \"" + file + "\" поврежден. Не удалось его распарсить. Ошибка: " + e.what());
             continue;

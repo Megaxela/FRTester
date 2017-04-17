@@ -376,8 +376,6 @@ public:
             inn[3] = 0;
             inn[4] = 0;
             inn[5] = 0;
-            inn[6] = 0;
-            inn[7] = 0;
         }
 
         FirmwareVersion firmwareVersion;            //< Версия ПО ККТ

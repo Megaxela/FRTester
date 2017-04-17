@@ -442,7 +442,10 @@ ByteArray TTY::read(uint32_t size, uint32_t timeoutMcs) const
     FD_SET(m_fileDescriptor, &read_fds);
 
     byte* response = new byte[size];
-    memset(response, 0, size * sizeof(byte));
+    // Закомментированно, поскольку компилятор и так
+    // скорее всего удалит этот memset.
+    // Если вдруг пригорит - надо использовать memset_s.
+//    memset(response, 0, size * sizeof(byte));
 
     size_t dataRead = 0;
 

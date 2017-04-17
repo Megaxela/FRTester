@@ -41,7 +41,7 @@ ByteArray V2Protocol::receiveDataFromInterface(InterfacePtr inter, uint32_t resp
 
 Protocol::Error V2Protocol::prepareDeviceToWrite(InterfacePtr physicalInterface)
 {
-
+    return Protocol::Error::NoError;
 }
 
 bool V2Protocol::checkConnection(InterfacePtr physicalInterface)
