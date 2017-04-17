@@ -390,20 +390,96 @@ void FNFiscalisationTabController::onGenerateRNMClicked()
 
 void FNFiscalisationTabController::onRegistrationButtonClicked()
 {
-    QMessageBox::information(
-            parentWidget(),
-            "Ошибка",
-            "Еще не реализовано, сорян."
+    // Проверяем значения
+    auto inn = ui()->commandsFNFiscalisationINNLineEdit->text();
+
+    if (inn.size() != 10 && inn.size() != 12)
+    {
+        QMessageBox::information(
+                parentWidget(),
+                "Ошибка",
+                "ИНН должен быть длиной в 10 или 12 символов."
+        );
+
+        return;
+    }
+
+    auto rnm = ui()->commandsFNFiscalisationRNMLineEdit->text();
+
+    if (rnm.isEmpty())
+    {
+        QMessageBox::information(
+                parentWidget(),
+                "Ошибка",
+                "РНМ требуется сгенерировать."
+        );
+
+        return;
+    }
+
+    if (!commandsTabControllerParent()->checkConnectionWithDevice())
+    {
+        return;
+    }
+
+    auto pwd = commandsTabControllerParent()->password();
+
+    auto report = DriverHolder::driver().formPOSRegistrationReport(
+            pwd,
+            inn.toStdString(),
+            rnm.toStdString(),
+            static_cast<uint8_t>(ui()->commandsFNFiscalisationTaxValueSpinBox->value()),
+            static_cast<uint8_t>(ui()->commandsFNFiscalisationWorkModeValueSpinBox->value())
     );
+
+    commandsTabControllerParent()->setLastStatus();
 }
 
 void FNFiscalisationTabController::onReRegistrationButtonClicked()
 {
-    QMessageBox::information(
-            parentWidget(),
-            "Ошибка",
-            "Еще не реализовано, сорян."
+    // Проверяем значения
+    auto inn = ui()->commandsFNFiscalisationINNLineEdit->text();
+
+    if (inn.size() != 10 && inn.size() != 12)
+    {
+        QMessageBox::information(
+                parentWidget(),
+                "Ошибка",
+                "ИНН должен быть длиной в 10 или 12 символов."
+        );
+
+        return;
+    }
+
+    auto rnm = ui()->commandsFNFiscalisationRNMLineEdit->text();
+
+    if (rnm.isEmpty())
+    {
+        QMessageBox::information(
+                parentWidget(),
+                "Ошибка",
+                "РНМ требуется сгенерировать."
+        );
+
+        return;
+    }
+
+    if (!commandsTabControllerParent()->checkConnectionWithDevice())
+    {
+        return;
+    }
+
+    auto pwd = commandsTabControllerParent()->password();
+
+    auto report = DriverHolder::driver().formPOSRegistrationReport(
+            pwd,
+            inn.toStdString(),
+            rnm.toStdString(),
+            static_cast<uint8_t>(ui()->commandsFNFiscalisationTaxValueSpinBox->value()),
+            static_cast<uint8_t>(ui()->commandsFNFiscalisationWorkModeValueSpinBox->value())
     );
+
+    commandsTabControllerParent()->setLastStatus();
 }
 
 void FNFiscalisationTabController::onResetButtonClicked()

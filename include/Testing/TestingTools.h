@@ -116,7 +116,7 @@ public:
      * @return True - если получилось подключиться к ККТ.
      * False - если по какой-то причине подключения не удалось.
      */
-    bool performConnection();
+    bool performConnection(bool askUser=true);
 
     /**
      * @brief Метод для получения строки с ошибкой.

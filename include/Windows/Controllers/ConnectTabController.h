@@ -54,6 +54,12 @@ protected:
 
 private slots:
     void onConnectionAdded(std::shared_ptr<Connection> connection);
+
+    void onFlashCompletePushButtonPressed();
+
+    void onZeroingPushButtonPressed();
+
+    void onSetTimePushButtonPressed();
 };
 
 

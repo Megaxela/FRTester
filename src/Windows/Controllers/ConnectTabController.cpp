@@ -12,6 +12,8 @@
 #include <ui_mainwindow.h>
 #include <Tools/Codecs.h>
 #include <Windows/Widgets/QConnectionsListWidgetItem.h>
+#include <QMessageBox>
+#include <QTime>
 
 ConnectTabController::ConnectTabController(Ui::MainWindow *ptr, QWidget *parent, QTabWidget *tabWidget)
         : AbstractTabController(ptr, parent, tabWidget)
@@ -54,6 +56,21 @@ void ConnectTabController::setupConnections()
             &ConnectTCPTabController::connectionAdded,
             this,
             &ConnectTabController::onConnectionAdded);
+
+    connect(ui()->connectionFlashingCompletePushButton,
+            &QPushButton::clicked,
+            this,
+            &ConnectTabController::onFlashCompletePushButtonPressed);
+
+    connect(ui()->connectionFlashingZeroingPushButton,
+            &QPushButton::clicked,
+            this,
+            &ConnectTabController::onZeroingPushButtonPressed);
+
+    connect(ui()->connectionFlashingSetTimePushButton,
+            &QPushButton::clicked,
+            this,
+            &ConnectTabController::onSetTimePushButtonPressed);
 }
 
 void ConnectTabController::configureWidgets()
@@ -123,4 +140,141 @@ void ConnectTabController::onConnectionAdded(std::shared_ptr<Connection> connect
                     connection
             )
     );
+}
+
+void ConnectTabController::onFlashCompletePushButtonPressed()
+{
+    if (!DriverHolder::driver().checkConnection())
+    {
+        QMessageBox::critical(
+                parentWidget(),
+                "Ошибка",
+                "Отсутствует соединение с ККТ"
+        );
+        return;
+    }
+
+    onZeroingPushButtonPressed();
+    onSetTimePushButtonPressed();
+}
+
+void ConnectTabController::onZeroingPushButtonPressed()
+{
+    if (!DriverHolder::driver().checkConnection())
+    {
+        QMessageBox::critical(
+                parentWidget(),
+                "Ошибка",
+                "Отсутствует соединение с ККТ"
+        );
+        return;
+    }
+
+    if (!DriverHolder::driver().technologicalReset())
+    {
+        QMessageBox::critical(
+                parentWidget(),
+                "Ошибка",
+                "Не удалось выполнить тех. обнуление: " +
+                QString::fromStdString(
+                        FRDriver::Converters::errorToString(
+                                (int) DriverHolder::driver().getLastError()
+                        )
+                )
+        );
+    }
+}
+
+void ConnectTabController::onSetTimePushButtonPressed()
+{
+    if (!DriverHolder::driver().checkConnection())
+    {
+        QMessageBox::critical(
+                parentWidget(),
+                "Ошибка",
+                "Отсутствует соединение с ККТ"
+        );
+        return;
+    }
+
+    auto pwdString = ui()->connectionFlashingPasswordLineEdit->text();
+
+    bool result = false;
+    auto pwd = pwdString.toUInt(&result);
+
+    if (!result)
+    {
+        QMessageBox::critical(
+                parentWidget(),
+                "Ошибка",
+                "Для установки даты и времени требуется пароль администратора."
+        );
+
+        return;
+    }
+
+    QDateTime dateTime = QDateTime::currentDateTime();
+
+    if (!DriverHolder::driver().dateProgramming(
+            pwd,
+            static_cast<uint8_t>(dateTime.date().day()),
+            static_cast<uint8_t>(dateTime.date().month()),
+            static_cast<uint8_t>(dateTime.date().year())
+    ))
+    {
+        QMessageBox::critical(
+                parentWidget(),
+                "Ошибка",
+                "Не удалось установить дату: " +
+                QString::fromStdString(
+                        FRDriver::Converters::errorToString(
+                                (int) DriverHolder::driver().getLastError()
+                        )
+                )
+        );
+
+        return;
+    }
+
+    if (!DriverHolder::driver().dateConfirm(
+            pwd,
+            static_cast<uint8_t>(dateTime.date().day()),
+            static_cast<uint8_t>(dateTime.date().month()),
+            static_cast<uint8_t>(dateTime.date().year())
+    ))
+    {
+        QMessageBox::critical(
+                parentWidget(),
+                "Ошибка",
+                "Не удалось подтвердить дату: " +
+                QString::fromStdString(
+                        FRDriver::Converters::errorToString(
+                                (int) DriverHolder::driver().getLastError()
+                        )
+                )
+        );
+
+        return;
+    }
+
+    if (!DriverHolder::driver().timeProgramming(
+            pwd,
+            static_cast<uint8_t>(dateTime.time().hour()),
+            static_cast<uint8_t>(dateTime.time().minute()),
+            static_cast<uint8_t>(dateTime.time().second())
+    ))
+    {
+        QMessageBox::critical(
+                parentWidget(),
+                "Ошибка",
+                "Не удалось подтвердить дату: " +
+                QString::fromStdString(
+                        FRDriver::Converters::errorToString(
+                                (int) DriverHolder::driver().getLastError()
+                        )
+                )
+        );
+
+        return;
+    }
 }

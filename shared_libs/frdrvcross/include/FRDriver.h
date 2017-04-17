@@ -1425,13 +1425,22 @@ public:
      * @param posRegistrationNumber Регистрационный номер ККТ - 20 байт.
      * @param taxMode Код налогооблажения.
      * @param workMode Режим работы.
-     * @return
+     * @return Отчет о регистрации ККТ.
      */
     POSRegistrationReport formPOSRegistrationReport(uint32_t sysAdmPassword,
                                                     const std::string& inn,
                                                     const std::string& posRegistrationNumber,
                                                     uint8_t taxMode,
                                                     uint8_t workMode);
+
+    /**
+     * @brief Метод для формирования отчера о перерегистрации ККТ.
+     * @param sysAdmPassword Пароль системного администратора.
+     * @param reason Причина.
+     * @return Отчет о регистрации ККТ.
+     */
+    POSRegistrationReport formPOSReRegistrationReport(uint32_t sysAdmPassword,
+                                                      uint8_t reason);
 
     /**
      * @brief Метод для сброса состояния ФН.

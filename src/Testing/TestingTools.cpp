@@ -255,9 +255,9 @@ void TestingTools::setUnitTestsController(UnitTestsController *controller)
     m_controller = controller;
 }
 
-bool TestingTools::performConnection()
+bool TestingTools::performConnection(bool askUser)
 {
-    if (!messageQuestion(
+    if (askUser && !messageQuestion(
             "Соединение с ФР было разорвано. Продолжить работу теста?",
             "Да",
             "Нет"

@@ -1544,6 +1544,31 @@ FRDriver::POSRegistrationReport FRDriver::formPOSRegistrationReport(uint32_t sys
     return registrationReport;
 }
 
+FRDriver::POSRegistrationReport FRDriver::formPOSReRegistrationReport(uint32_t sysAdmPassword, uint8_t reason)
+{
+    ByteArray arguments;
+
+    arguments.append<uint32_t>(sysAdmPassword, ByteArray::ByteOrder_LittleEndian);
+    arguments.append<uint8_t>(reason);
+
+    auto response = sendCommand(Command::FormReRegistrationReport, arguments, false);
+
+    POSRegistrationReport registrationReport = POSRegistrationReport();
+
+    if (getLastError() != ErrorCode::NoError)
+    {
+        return registrationReport;
+    }
+
+    ByteArrayReader reader(response);
+    reader.seek(3);
+
+    registrationReport.fdNumber = reader.read<uint32_t>(ByteArray::ByteOrder_LittleEndian);
+    registrationReport.fiscalSign = reader.read<uint32_t>(ByteArray::ByteOrder_LittleEndian);
+
+    return registrationReport;
+}
+
 bool FRDriver::resetFNState(uint32_t sysAdmPassword, uint8_t code)
 {
     ByteArray arguments;
@@ -1619,7 +1644,6 @@ FRDriver::FNDocument FRDriver::findDocument(uint32_t sysAdmPassword, uint32_t do
     //todo: Добавить сюда получение TLV данных.
     return document;
 }
-
 
 
 static std::map<int, std::string> errorString = {
