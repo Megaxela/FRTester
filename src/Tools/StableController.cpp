@@ -6,6 +6,7 @@
 #include <csignal>
 #include <stdlib.h>
 #include "Tools/StableController.h"
+#include <Tools/Platform.h>
 
 void posix_death_signal(int signum)
 {
@@ -22,7 +23,10 @@ void StableController::init(std::function<void()> cb)
     signal(SIGSEGV, posix_death_signal);
     signal(SIGFPE, posix_death_signal);
     signal(SIGABRT, posix_death_signal);
+
+#ifdef OS_LINUX
     signal(SIGKILL, posix_death_signal);
+#endif
 }
 
 void StableController::excessExecute()
