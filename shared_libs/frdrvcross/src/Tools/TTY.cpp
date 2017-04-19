@@ -408,8 +408,6 @@ ByteArray TTY::read(uint32_t size, uint32_t timeoutMcs) const
 
     DWORD dataRead = 0;
 
-    auto beginReadTime = Time::get<std::chrono::microseconds>();
-
     while (dataRead < size)
     {
         if (!ReadFile(m_Handle, response + dataRead, size - dataRead, &feedback, NULL))
