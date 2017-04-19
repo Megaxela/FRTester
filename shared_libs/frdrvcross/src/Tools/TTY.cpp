@@ -366,7 +366,10 @@ uint32_t TTY::write(const ByteArray &dataArray) const
 {
 #ifdef OS_WINDOWS
     if (m_Handle == INVALID_HANDLE_VALUE)
-        throw TTYException("[TTY::write] Writing without open connection.");
+    {
+        Error("Попытка записать в COM порт без открытого соединения.");
+        return 0;
+    }
 
     DWORD feedback;
     if (!WriteFile(m_Handle, dataArray.data(), (DWORD) dataArray.size(), &feedback, 0) || feedback != (DWORD) dataArray.size())
@@ -374,7 +377,7 @@ uint32_t TTY::write(const ByteArray &dataArray) const
         Error("Ошибка записи в TTY. Ошибка WriteFile: " + std::to_string(GetLastError()));
         CloseHandle(m_Handle);
         m_Handle = INVALID_HANDLE_VALUE;
-        throw TTYException("[TTY::write] Error while writing.");
+        return 0;
     }
 
     return dataArray.length();
@@ -415,7 +418,7 @@ ByteArray TTY::read(uint32_t size, uint32_t timeoutMcs) const
             Error("Не удалось считать данных из TTY. Ошибка ReadFile: " + std::to_string(GetLastError()));
             CloseHandle(m_Handle);
             m_Handle = INVALID_HANDLE_VALUE;
-            throw TTYException("[TTY::read] Can't read from COM.");
+            return ByteArray();
         }
 
         dataRead += feedback;
