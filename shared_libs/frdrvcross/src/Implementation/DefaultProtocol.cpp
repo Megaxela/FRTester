@@ -104,7 +104,7 @@ ByteArray DefaultProtocol::receiveDataFromInterface(InterfacePtr physicalInterfa
 
     // Считываем ACK
     ByteArray expectAck = physicalInterface->read(
-            1, 60 * 1000 * 1000 // 60 секунд
+            1, smallTimeoutMcs() // 60 секунд
     );
 
     if (expectAck.empty())
@@ -117,7 +117,7 @@ ByteArray DefaultProtocol::receiveDataFromInterface(InterfacePtr physicalInterfa
     {
         Warning("На этапе считывания данных вместо ACK был получен 0xFF. Пробуем еще раз.");
         expectAck = physicalInterface->read(
-                1, 100 * 1000 // 100 миллисекунд
+                1, smallTimeoutMcs() // 100 миллисекунд
         );
     }
 
@@ -131,7 +131,7 @@ ByteArray DefaultProtocol::receiveDataFromInterface(InterfacePtr physicalInterfa
 
     // ФР получил команду и готовит ответ.
     ByteArray expectStx = physicalInterface->read(
-            1, 2 * 60 * 1000 * 1000 // 2 Минуты
+            1, bigTimeoutMcs() // 2 Минуты
     );
 
     if (expectStx.empty())
@@ -147,7 +147,7 @@ ByteArray DefaultProtocol::receiveDataFromInterface(InterfacePtr physicalInterfa
 
         Log("Пробуем считать еще один байт.");
         expectStx = physicalInterface->read(
-                1, 2 * 1000 * 1000 // 2 секунды
+                1, smallTimeoutMcs() // 2 секунды
         );
 
         if (expectStx.empty())
@@ -165,7 +165,7 @@ ByteArray DefaultProtocol::receiveDataFromInterface(InterfacePtr physicalInterfa
 
     // Считываем длину ответа
     ByteArray dataSize = physicalInterface->read(
-            1, 1 * 1000 * 1000 // 1 Секунда
+            1, smallTimeoutMcs() // 1 Секунда
     );
 
     if (dataSize.empty())
@@ -175,7 +175,7 @@ ByteArray DefaultProtocol::receiveDataFromInterface(InterfacePtr physicalInterfa
     }
 
     ByteArray data = physicalInterface->read(
-            dataSize[0], 1 * 1000 * 1000 // 1 Секунда
+            dataSize[0], smallTimeoutMcs() // 1 Секунда
     );
 
     if (data.empty() && dataSize[0] != 0)
@@ -185,7 +185,7 @@ ByteArray DefaultProtocol::receiveDataFromInterface(InterfacePtr physicalInterfa
     }
 
     ByteArray checkSum = physicalInterface->read(
-            1, 1 * 1000 * 1000 // 1 секунда
+            1, smallTimeoutMcs() // 1 секунда
     );
 
     byteArray.append(expectStx);
@@ -206,7 +206,7 @@ Protocol::Error DefaultProtocol::prepareDeviceToWrite(InterfacePtr physicalInter
 
     physicalInterface->write(enqArray);
 
-    ByteArray data = physicalInterface->read(1, 1000 * 100); // 50 ms
+    ByteArray data = physicalInterface->read(1, smallTimeoutMcs()); // 50 ms
 
     while (true)
     {
@@ -226,7 +226,7 @@ Protocol::Error DefaultProtocol::prepareDeviceToWrite(InterfacePtr physicalInter
         else if (data[0] == STX)
         {
             // Считываем данные и подтверждаем их
-            ByteArray length = physicalInterface->read(1, 1000 * 100); // 100 ms
+            ByteArray length = physicalInterface->read(1, smallTimeoutMcs()); // 100 ms
 
             if (length.empty())
             {
@@ -234,7 +234,7 @@ Protocol::Error DefaultProtocol::prepareDeviceToWrite(InterfacePtr physicalInter
                 return Error::Timeout;
             }
 
-            ByteArray response = physicalInterface->read(length[0], 1000 * 100); // 100 ms
+            ByteArray response = physicalInterface->read(length[0], smallTimeoutMcs()); // 100 ms
 
             if (response.empty())
             {
@@ -242,7 +242,7 @@ Protocol::Error DefaultProtocol::prepareDeviceToWrite(InterfacePtr physicalInter
                 return Error::Timeout;
             }
 
-            ByteArray checkSum = physicalInterface->read(1, 1000 * 100); // 100 ms
+            ByteArray checkSum = physicalInterface->read(1, smallTimeoutMcs()); // 100 ms
 
             if (response.empty())
             {
@@ -258,7 +258,7 @@ Protocol::Error DefaultProtocol::prepareDeviceToWrite(InterfacePtr physicalInter
 
         else if (data[0] == ACK)
         {
-            ByteArray stxExp = physicalInterface->read(1, 1000 * 100); // 100 ms
+            ByteArray stxExp = physicalInterface->read(1, smallTimeoutMcs()); // 100 ms
 
             if (stxExp[0] != STX)
             {
@@ -267,7 +267,7 @@ Protocol::Error DefaultProtocol::prepareDeviceToWrite(InterfacePtr physicalInter
             }
 
             // Считываем данные и подтверждаем их
-            ByteArray length = physicalInterface->read(1, 1000 * 100); // 100 ms
+            ByteArray length = physicalInterface->read(1, smallTimeoutMcs()); // 100 ms
 
             if (length.empty())
             {
@@ -275,7 +275,7 @@ Protocol::Error DefaultProtocol::prepareDeviceToWrite(InterfacePtr physicalInter
                 return Error::Timeout;
             }
 
-            ByteArray response = physicalInterface->read(length[0], 1000 * 100); // 100 ms
+            ByteArray response = physicalInterface->read(length[0], smallTimeoutMcs()); // 100 ms
 
             if (response.empty())
             {
@@ -283,7 +283,7 @@ Protocol::Error DefaultProtocol::prepareDeviceToWrite(InterfacePtr physicalInter
                 return Error::Timeout;
             }
 
-            ByteArray checkSum = physicalInterface->read(1, 1000 * 100); // 100 ms
+            ByteArray checkSum = physicalInterface->read(1, smallTimeoutMcs()); // 100 ms
 
             if (checkSum.empty())
             {
@@ -295,7 +295,7 @@ Protocol::Error DefaultProtocol::prepareDeviceToWrite(InterfacePtr physicalInter
 
             physicalInterface->write(enqArray);
 
-            data = physicalInterface->read(1, 1000 * 100); // 100 ms
+            data = physicalInterface->read(1, smallTimeoutMcs()); // 100 ms
 
             continue;
 
@@ -303,7 +303,7 @@ Protocol::Error DefaultProtocol::prepareDeviceToWrite(InterfacePtr physicalInter
         }
         else if (data[0] == 0xff) // todo: Странное поведение
         {
-            data = physicalInterface->read(1, 1000 * 100); // 100 ms
+            data = physicalInterface->read(1, smallTimeoutMcs()); // 100 ms
         }
         else
         {
@@ -324,7 +324,7 @@ bool DefaultProtocol::checkConnection(InterfacePtr physicalInterface)
     physicalInterface->write(enqArr);
 
     // Ожидаем 15
-    ByteArray result = physicalInterface->read(1, 100 * 1000);
+    ByteArray result = physicalInterface->read(1, smallTimeoutMcs());
 
     return !result.empty();
 }

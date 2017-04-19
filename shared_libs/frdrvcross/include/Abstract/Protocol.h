@@ -84,6 +84,22 @@ public:
      * @return Присутствует ли соединение
      */
     virtual bool checkConnection(InterfacePtr physicalInterface) = 0;
+
+    /**
+     * @brief Метод для получения маленького таймаута.
+     * @return Таймаут в микросекундах.
+     */
+    uint32_t smallTimeoutMcs();
+
+    /**
+     * @brief Метод для получения большого таймаута
+     * @return Таймаут в микросекундах.
+     */
+    uint32_t bigTimeoutMcs();
+
+private:
+    uint32_t m_smallTimeoutMcs;
+    uint32_t m_bigTimeoutMcs;
 };
 
 
