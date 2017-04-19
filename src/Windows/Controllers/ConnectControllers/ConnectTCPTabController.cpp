@@ -17,7 +17,10 @@ ConnectTCPTabController::ConnectTCPTabController(Ui::MainWindow *ptr, QWidget *p
         : AbstractTabController(ptr, parent, tabWidget),
           m_tcpInterface(ConnectionsManager::instance().getTCPInterface())
 {
-
+    if (!NetworkTools::initSockets())
+    {
+        Error("Не удалось инициализировать сокет. Доступ по TCP будет закрыт.");
+    }
 }
 
 ConnectTCPTabController::~ConnectTCPTabController()
