@@ -43,6 +43,13 @@ bool COMInterface::closeConnection()
 PhysicalInterface::size_t COMInterface::write(const ByteArray &data)
 {
     ExcessLog("-> " + data.toHex());
+
+    if (data.size() == 0)
+    {
+        return 0;
+    }
+
+    auto lastSend = 0;
     for (uint32_t i = 0; i < data.length(); )
     {
         if (Time::get<std::chrono::microseconds>() - m_lastByteSendTime < m_byteSendTime)
@@ -53,6 +60,12 @@ PhysicalInterface::size_t COMInterface::write(const ByteArray &data)
         }
 
         i += TTY::write(data.mid(i, 1));
+
+        if (lastSend == i)
+        {
+            ErrorStream() << "Данные не отправились. Отправилось " << i << " из " << data.size() << " байт." << std::endl;
+            return i;
+        }
 
         m_lastByteSendTime = Time::get<std::chrono::microseconds>();
     }
