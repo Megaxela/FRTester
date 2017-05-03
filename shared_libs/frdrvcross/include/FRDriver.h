@@ -42,6 +42,8 @@ public:
         , Test = 0x19                           //< Тестовый прогон
         , CurrencyRegisterRequest = 0x1A        //< Запрос денежного регистра
         , OperatingRegisterRequest = 0x1B       //< Запрос операционного регистра
+        , WriteLicense = 0x1C                   //< Запись лицензии
+        , ReadLicense = 0x1D                    //< Чтение лицензии
         , WriteTable = 0x1E                     //< Запись таблицы
         , ReadTable = 0x1F                      //< Чтение таблицы
         , TimeProgramming = 0x21                //< Программирование времени
@@ -1534,6 +1536,14 @@ public:
      * @return Результат выполнения команды.
      */
     bool discount(uint32_t password, uint64_t sum, uint8_t tax1, uint8_t tax2, uint8_t tax3, uint8_t tax4, const std::string& text);
+
+    /**
+     * @brief Метод для чтения лицензии.
+     * @param sysAdmPassword Пароль системного администратора.
+     * @return 5 байт лицензии.
+     */
+    uint64_t readLicense (uint32_t sysAdmPassword);
+
 
 protected:
 

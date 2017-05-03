@@ -1515,10 +1515,10 @@ FRDriver::FNStatus FRDriver::getFNStatus(uint32_t sysAdmPassword)
     status.shiftOpened = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
     status.warningsFlags = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
 
-    //todo: Проверить дату и время
     status.date.year = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
     status.date.month = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
     status.date.day = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
+
     status.time.hour = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
     status.time.minute = reader.read<uint8_t>(ByteArray::ByteOrder_LittleEndian);
 
@@ -1748,6 +1748,19 @@ bool FRDriver::discount(uint32_t password,
     auto response = sendCommand(Command::Discount, arguments, true);
 
     return getLastError() == FRDriver::ErrorCode::NoError;
+}
+
+uint64_t FRDriver::readLicense(uint32_t sysAdmPassword)
+{
+    ByteArray arguments;
+    arguments.append(sysAdmPassword, ByteArray::ByteOrder_LittleEndian);
+
+    auto response = sendCommand(Command::ReadLicense, arguments, false);
+
+    ByteArrayReader reader(response);
+    reader.seek(2);
+
+    return reader.readPart(5,ByteArray::ByteOrder_LittleEndian)
 }
 
 static const std::map<int, std::string> errorString = {

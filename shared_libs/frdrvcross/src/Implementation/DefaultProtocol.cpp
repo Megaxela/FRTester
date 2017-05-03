@@ -301,7 +301,7 @@ Protocol::Error DefaultProtocol::prepareDeviceToWrite(InterfacePtr physicalInter
 
             // После этого ФР должен быть готов к работе
         }
-        else if (data[0] == 0xff) // todo: Странное поведение
+        else if (data[0] == 0xff) // Сделано для ускорения работы TCP в Windows
         {
             data = physicalInterface->read(1, smallTimeoutMcs()); // 100 ms
         }

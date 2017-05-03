@@ -71,6 +71,11 @@ void ConnectTabController::setupConnections()
             &QPushButton::clicked,
             this,
             &ConnectTabController::onSetTimePushButtonPressed);
+
+    connect(ui()->connectionFlashingSetMaxSpeedPushButton,
+            &QPushButton::clicked,
+            this,
+            &ConnectTabController::onMaxSpeedPushButtonPressed);
 }
 
 void ConnectTabController::configureWidgets()
@@ -277,4 +282,9 @@ void ConnectTabController::onSetTimePushButtonPressed()
 
         return;
     }
+}
+
+void ConnectTabController::onMaxSpeedPushButtonPressed()
+{
+    QMessageBox::critical(parentWidget(), "Ошибка", "Еще не реализовано.");
 }

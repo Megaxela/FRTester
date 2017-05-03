@@ -60,6 +60,8 @@ private slots:
     void onZeroingPushButtonPressed();
 
     void onSetTimePushButtonPressed();
+
+    void onMaxSpeedPushButtonPressed();
 };
 
 
