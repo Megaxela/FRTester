@@ -902,6 +902,56 @@ public:
                            const std::string &textToPrint);
 
     /**
+     * @brief Метод для расширенного закрытия чека.
+     * @param password Пароль кассира.
+     * @param cashPaySum Сумма, оплаченная наличными.
+     * @param type2PaySum Сумма, оплаченная безналом 2 типа.
+     * @param type3PaySum Сумма, оплаченная безналом 3 типа.
+     * @param type4PaySum Сумма, оплаченная безналом 4 типа.
+     * @param type5PaySum Сумма, оплаченная безналом 5 типа.
+     * @param type6PaySum Сумма, оплаченная безналом 6 типа.
+     * @param type7PaySum Сумма, оплаченная безналом 7 типа.
+     * @param type8PaySum Сумма, оплаченная безналом 8 типа.
+     * @param type9PaySum Сумма, оплаченная безналом 9 типа.
+     * @param type10PaySum Сумма, оплаченная безналом 10 типа.
+     * @param type11PaySum Сумма, оплаченная безналом 11 типа.
+     * @param type12PaySum Сумма, оплаченная безналом 12 типа.
+     * @param type13PaySum Сумма, оплаченная безналом 13 типа.
+     * @param type14PaySum Сумма, оплаченная безналом 14 типа.
+     * @param type15PaySum Сумма, оплаченная безналом 15 типа.
+     * @param type16PaySum Сумма, оплаченная безналом 16 типа.
+     * @param tax1 Первый налог.
+     * @param tax2 Второй налог.
+     * @param tax3 Третий налог.
+     * @param tax4 Четвертый налог.
+     * @param textToPrint Текст для печати на чеке.
+     * @return
+     */
+    uint64_t closeCheckExtended(uint32_t password,
+                                uint64_t cashPaySum,
+                                uint64_t type2PaySum,
+                                uint64_t type3PaySum,
+                                uint64_t type4PaySum,
+                                uint64_t type5PaySum,
+                                uint64_t type6PaySum,
+                                uint64_t type7PaySum,
+                                uint64_t type8PaySum,
+                                uint64_t type9PaySum,
+                                uint64_t type10PaySum,
+                                uint64_t type11PaySum,
+                                uint64_t type12PaySum,
+                                uint64_t type13PaySum,
+                                uint64_t type14PaySum,
+                                uint64_t type15PaySum,
+                                uint64_t type16PaySum,
+                                uint16_t discount,
+                                uint8_t tax1,
+                                uint8_t tax2,
+                                uint8_t tax3,
+                                uint8_t tax4,
+                                const std::string &textToPrint);
+
+    /**
      * @brief Метод для продолжения печати.
      * @param password Пароль кассира.
      * @return Результат выполнения команды.
@@ -1484,7 +1534,6 @@ public:
      * @return Результат выполнения команды.
      */
     bool discount(uint32_t password, uint64_t sum, uint8_t tax1, uint8_t tax2, uint8_t tax3, uint8_t tax4, const std::string& text);
-
 
 protected:
 

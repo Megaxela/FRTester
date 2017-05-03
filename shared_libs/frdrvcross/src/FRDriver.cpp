@@ -451,6 +451,77 @@ FRDriver::closeCheck(uint32_t password,
     return result;
 }
 
+uint64_t
+FRDriver::closeCheckExtended(uint32_t password,
+                             uint64_t cashPaySum,
+                             uint64_t type2PaySum,
+                             uint64_t type3PaySum,
+                             uint64_t type4PaySum,
+                             uint64_t type5PaySum,
+                             uint64_t type6PaySum,
+                             uint64_t type7PaySum,
+                             uint64_t type8PaySum,
+                             uint64_t type9PaySum,
+                             uint64_t type10PaySum,
+                             uint64_t type11PaySum,
+                             uint64_t type12PaySum,
+                             uint64_t type13PaySum,
+                             uint64_t type14PaySum,
+                             uint64_t type15PaySum,
+                             uint64_t type16PaySum,
+                             uint16_t discount,
+                             uint8_t tax1,
+                             uint8_t tax2,
+                             uint8_t tax3,
+                             uint8_t tax4,
+                             const std::string &textToPrint)
+{
+    ByteArray arguments;
+
+    arguments.append(password, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(cashPaySum,  5, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(type2PaySum, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(type3PaySum, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(type4PaySum, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(type5PaySum, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(type6PaySum, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(type7PaySum, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(type8PaySum, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(type9PaySum, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(type10PaySum, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(type11PaySum, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(type12PaySum, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(type13PaySum, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(type14PaySum, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(type15PaySum, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.appendPart(type16PaySum, 5, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(discount, ByteArray::ByteOrder_LittleEndian);
+    arguments.append(tax1);
+    arguments.append(tax2);
+    arguments.append(tax3);
+    arguments.append(tax4);
+    arguments.append((uint8_t*) textToPrint.c_str(),
+                     textToPrint.length());
+
+    if (textToPrint.length() < 40)
+    {
+        arguments.appendMultiple<uint8_t>(0x00, 40 - textToPrint.length());
+    }
+
+    ByteArray data = sendCommand(Command::CloseCheckExtended, arguments, false);
+
+    if (getLastError() != ErrorCode::NoError)
+    {
+        return 0;
+    }
+
+    ByteArrayReader reader(data);
+
+    reader.seek(2);
+
+    return reader.readPart(5, ByteArray::ByteOrder_LittleEndian);
+}
+
 bool FRDriver::resumePrinting(uint32_t password)
 {
     ByteArray arguments;
