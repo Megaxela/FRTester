@@ -9,4 +9,8 @@
 
 #define MANUAL_TESTS_GROUP "Ручные тесты"
 
+#define MOBILE_PTK_GROUP "Тесты для прошивки Семенова"
+
+
+
 #endif //FRTESTER_TESTGROUPS_H
